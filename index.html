@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>喜播战略共识大屏 | XIBO 2026-2028</title>
+    <!-- 引入现代化英文字体，中文字体回退到系统自带 -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #070913;
+            --panel-bg: rgba(20, 25, 45, 0.6);
+            --panel-border: rgba(255, 255, 255, 0.08);
+            --primary-gradient: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+            --danger-gradient: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+            --warning-gradient: linear-gradient(135deg, #fceabb 0%, #f8b500 100%);
+            --success-gradient: linear-gradient(135deg, #a8ff78 0%, #78ffd6 100%);
+            --text-main: #f0f4f8;
+            --text-muted: #8b9bb4;
+            --glass-blur: blur(16px);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(79, 172, 254, 0.08), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(255, 65, 108, 0.05), transparent 25%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* 顶部导航与 Header */
+        header {
+            width: 100%;
+            padding: 4rem 2rem 2rem;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .sys-badge {
+            display: inline-block;
+            padding: 0.4rem 1.2rem;
+            background: rgba(79, 172, 254, 0.1);
+            border: 1px solid rgba(79, 172, 254, 0.3);
+            border-radius: 50px;
+            color: #4facfe;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* 主体内容容器 */
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 2rem;
+            z-index: 10;
+        }
+
+        /* 玻璃态面板基类 */
+        .glass-panel {
+            background: var(--panel-bg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--panel-border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .glass-panel:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .panel-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .panel-title::before {
+            content: '';
+            display: block;
+            width: 6px;
+            height: 24px;
+            background: var(--primary-gradient);
+            border-radius: 4px;
+        }
+
+        /* 核心共识 - 跨越多列 */
+        .consensus-section {
+            grid-column: span 12;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .stat-card {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .stat-card h3 {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card p {
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        /* 人群分层与三大战役 */
+        .segment-section {
+            grid-column: span 5;
+        }
+
+        .campaign-section {
+            grid-column: span 7;
+        }
+
+        /* ABCD 分层样式 */
+        .user-tier {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+            padding-bottom: 1.2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .user-tier:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .tier-badge {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .tier-a { background: rgba(120, 255, 214, 0.1); color: #78ffd6; border: 1px solid rgba(120, 255, 214, 0.3); }
+        .tier-b { background: rgba(79, 172, 254, 0.1); color: #4facfe; border: 1px solid rgba(79, 172, 254, 0.3); }
+        .tier-c { background: rgba(248, 181, 0, 0.1); color: #f8b500; border: 1px solid rgba(248, 181, 0, 0.3); }
+        .tier-d { background: rgba(255, 65, 108, 0.1); color: #ff416c; border: 1px solid rgba(255, 65, 108, 0.3); }
+
+        .tier-info h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+            font-weight: 600;
+        }
+
+        .tier-info p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* 战役卡片样式 */
+        .campaign-card {
+            background: linear-gradient(to right, rgba(255,255,255,0.02), rgba(255,255,255,0.005));
+            border-left: 3px solid #4facfe;
+            padding: 1.5rem;
+            border-radius: 0 12px 12px 0;
+            margin-bottom: 1.2rem;
+        }
+
+        .campaign-card:nth-child(even) {
+            border-left-color: #78ffd6;
+        }
+
+        .campaign-card:last-child {
+            margin-bottom: 0;
+        }
+
+        .campaign-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+        }
+
+        .campaign-header h4 {
+            font-size: 1.2rem;
+            color: #fff;
+        }
+
+        .campaign-leader {
+            font-size: 0.8rem;
+            padding: 0.2rem 0.6rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            color: #ccc;
+        }
+
+        .campaign-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 0.8rem;
+        }
+
+        .campaign-target {
+            font-size: 0.85rem;
+            color: #4facfe;
+            display: inline-block;
+            background: rgba(79, 172, 254, 0.1);
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+        }
+
+        /* 高压红线区 */
+        .red-line-section {
+            grid-column: span 12;
+            border-color: rgba(255, 65, 108, 0.3);
+            background: radial-gradient(circle at 50% 150%, rgba(255, 65, 108, 0.1), transparent 50%), var(--panel-bg);
+        }
+
+        .red-line-section .panel-title::before {
+            background: var(--danger-gradient);
+        }
+
+        .alert-banner {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            background: rgba(255, 65, 108, 0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 65, 108, 0.3);
+        }
+
+        .alert-icon {
+            font-size: 2.5rem;
+            line-height: 1;
+        }
+
+        .alert-content h3 {
+            color: #ff416c;
+            margin-bottom: 0.5rem;
+        }
+        
+        .alert-content p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* 响应式 */
+        @media (max-width: 1024px) {
+            .segment-section, .campaign-section {
+                grid-column: span 12;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.2rem; }
+            .container { padding: 1rem; }
+            .glass-panel { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="sys-badge">Xibo Strategic Command</div>
+        <h1>喜播全员战略共识大屏</h1>
+        <p class="subtitle">2026-2028 转型基石：从“猎人洗流量”向“农夫经营信任”的全面重构。绝不赚带血的钱，用优良交付成就用户。</p>
+    </header>
+
+    <div class="container">
+        
+        <!-- 核心共识 -->
+        <section class="glass-panel consensus-section">
+            <h2 class="panel-title">核心战略纪律与经营共识</h2>
+            <div class="stat-grid">
+                <div class="stat-card">
+                    <h3>💡 唯一商业信仰</h3>
+                    <p style="color: #fff; font-weight: 600;">放弃规模执念，守护健康利润。</p>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">宁可砍掉一半营收，也必须切断极度受困人群产生的“毒性飞轮”。</p>
+                </div>
+                <div class="stat-card">
+                    <h3>🎯 业务双轨并行</h3>
+                    <p style="color: #fff; font-weight: 600;">一曲排毒，二曲寻路。</p>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">第一曲线（教育）坚定做深高质用户 LTV；第二曲线（大健康/银发）全速跑通 MVP模型。</p>
+                </div>
+                <div class="stat-card">
+                    <h3>🤖 AI Native 组织</h3>
+                    <p style="color: #fff; font-weight: 600;">人员结构重塑。</p>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">班主任与辅导资源 100% 倾斜给A/B类用户，C类用户由“AI数字人+兼职”提供低成本承接。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 人群分层准则 -->
+        <section class="glass-panel segment-section">
+            <h2 class="panel-title">A-D 客户分层运营红线</h2>
+            <div class="user-tier">
+                <div class="tier-badge tier-a">A</div>
+                <div class="tier-info">
+                    <h4 style="color:#78ffd6;">全价值链深耕（高意愿×高能力）</h4>
+                    <p>公司的核心资产与顾问网络火种。配置最优质真人班主任资源，开展 1v1 升单推介，吃透 LTV。</p>
+                </div>
+            </div>
+            <div class="user-tier">
+                <div class="tier-badge tier-b">B</div>
+                <div class="tier-info">
+                    <h4 style="color:#4facfe;">重点培养转化（有执行×缺认知）</h4>
+                    <p>潜力股人群。用高阶课程与督导填补认知缺口，引导成长，逐步使其具备 A 类用户的留存与产出能力。</p>
+                </div>
+            </div>
+            <div class="user-tier">
+                <div class="tier-badge tier-c">C</div>
+                <div class="tier-info">
+                    <h4 style="color:#f8b500;">控本与情绪承接（情绪驱动型）</h4>
+                    <p>防御性强、极易产生预期落差引发客诉。停止一切强营销！利用“AI伴学官”提供低成本社群同频服务即可。</p>
+                </div>
+            </div>
+            <div class="user-tier">
+                <div class="tier-badge tier-d">D</div>
+                <div class="tier-info">
+                    <h4 style="color:#ff416c;">绝对拦截对象（极度受困/大黑黑产）</h4>
+                    <p>炸弹与毒药（包括靠借贷、治病钱付款的用户），是退费与政策风暴的源泉。**必须在支付环节建立熔断，0 转化。**</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Q2 必赢三大战役 -->
+        <section class="glass-panel campaign-section">
+            <h2 class="panel-title">Q2 破局：三大核心必赢战役</h2>
+            
+            <div class="campaign-card">
+                <div class="campaign-header">
+                    <h4>🥇 战役一：D类熔断与铁壁行动</h4>
+                    <span class="campaign-leader">战区统帅：姚涣、马长久</span>
+                </div>
+                <p class="campaign-desc">
+                    **切断毒性飞轮的生死线。** 启用 Antigravity AI 筛查企微/电话，结合外部黑名单自动判定大黑用户群，一旦命中，在 CRM 系统即刻强行阻断支付链接。严管私下收款，一票否决。
+                </p>
+                <div class="campaign-target">Lagging: 大黑拦截外溢 ≤ 8起/月 | 国家级负面舆情为 0</div>
+            </div>
+
+            <div class="campaign-card" style="border-left-color: #f8b500;">
+                <div class="campaign-header">
+                    <h4>🥈 战役二：优质阵地战（利润与AI平替）</h4>
+                    <span class="campaign-leader">战区统帅：马长久、姚涣</span>
+                </div>
+                <p class="campaign-desc">
+                    **保卫现金流的生命线。** 精抽最顶尖班主任资源，通过中期/毕业期 1v1 精准爆破 A/B 类优质用户，拉高客单复购。同时对 C 类底层全面实装硅基员工AI交付，实现降本增效。
+                </p>
+                <div class="campaign-target">Lagging: 第一曲线净利 10%+ | C类交付兼职人效提升 15%</div>
+            </div>
+
+            <div class="campaign-card" style="border-left-color: #a8ff78;">
+                <div class="campaign-header">
+                    <h4>🥉 战役三：星火燎原（第二曲线破局）</h4>
+                    <span class="campaign-leader">战区统帅：苏秦</span>
+                </div>
+                <p class="campaign-desc">
+                    **寻找全新增长密码的未来线。** 面向高分毕业（A类）老用户建立试验田，利用低成本高精准导流，四周内跑通“兴趣培训/食医健康营” 0-0.1 最小化产品闭环测试。
+                </p>
+                <div class="campaign-target">Lagging: 跑通单客模型 UE | 测试回报 ROI > 1</div>
+            </div>
+
+        </section>
+
+        <!-- 违规红线 -->
+        <section class="glass-panel red-line-section">
+            <h2 class="panel-title" style="color: #ff416c;">最高纪律警告：不可触碰的高压线</h2>
+            <div class="alert-banner">
+                <div class="alert-icon">⚠️</div>
+                <div class="alert-content">
+                    <h3>为了公司活路，绝不容忍目光短浅！</h3>
+                    <p>所有人务必铭记：**严禁任何销售为了达成蝇头小利，绕开系统防护违规转化为 D 类极其受困客户（包含诱导借贷、大病强付等套路行为）。**</p>
+                    <p style="margin-top: 0.5rem; color: #fff; font-weight: 600;">惩戒措施：一旦被客户体验中心（质检核查神秘客）或业务线互锁督查发现“欺上瞒下”转化低质客源，当事人将面临立即劝退，且剥夺评优。没有任何豁免权！</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+</body>
+</html>
