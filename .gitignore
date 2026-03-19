@@ -1,0 +1,10 @@
+.DS_Store
+.agent/
+.agents/
+.claude/
+.qoder/
+.trae/
+*.mp4.part
+*.mp4.ytdl
+node_modules/
+dist/
