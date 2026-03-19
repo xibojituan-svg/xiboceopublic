@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>重新定义 ABCD 四类用户 | XIBO 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #F8F9FA;
+            --text-main: #2D3436;
+            --text-muted: #636E72;
+            --primary: #1A4F95;
+            --secondary: #007AFF;
+            --accent-success: #00B894;
+            --accent-warning: #FDCB6E;
+            --accent-danger: #D63031;
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.5);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+            background: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* 顶部导航 */
+        nav {
+            position: sticky;
+            top: 0;
+            background: rgba(248, 249, 250, 0.85);
+            backdrop-filter: blur(12px);
+            z-index: 100;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            padding: 1.2rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-left: 2rem;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        /* Hero 区域 */
+        .hero {
+            padding: 6rem 0 4rem;
+            text-align: center;
+            background: radial-gradient(circle at top right, rgba(0,122,255,0.05), transparent 40%),
+                        radial-gradient(circle at bottom left, rgba(26,79,149,0.05), transparent 40%);
+        }
+
+        .hero-label {
+            display: inline-block;
+            background: rgba(26, 79, 149, 0.1);
+            color: var(--primary);
+            padding: 0.5rem 1.5rem;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: 1px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* 四大类型卡片网格 */
+        .user-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .user-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.03);
+            backdrop-filter: blur(10px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .user-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 45px rgba(0,0,0,0.08);
+        }
+
+        .card-badge {
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            opacity: 0.1;
+            transition: transform 0.4s ease;
+        }
+
+        .user-card:hover .card-badge {
+            transform: scale(1.5);
+        }
+
+        .type-a .card-badge { background: var(--primary); }
+        .type-b .card-badge { background: var(--secondary); }
+        .type-c .card-badge { background: var(--accent-success); }
+        .type-d .card-badge { background: var(--accent-danger); }
+
+        .type-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .user-card h2 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .type-a h2 { color: var(--primary); }
+        .type-b h2 { color: var(--secondary); }
+        .type-c h2 { color: var(--accent-success); }
+        .type-d h2 { color: var(--accent-danger); }
+
+        .subtitle {
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .feature-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.8rem;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .feature-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: inherit;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .type-a .feature-list li::before { color: var(--primary); }
+        .type-b .feature-list li::before { color: var(--secondary); }
+        .type-c .feature-list li::before { color: var(--accent-success); }
+        .type-d .feature-list li::before { color: var(--accent-danger); }
+
+        .strategy-box {
+            background: rgba(0,0,0,0.03);
+            padding: 1.2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border-left: 4px solid transparent;
+        }
+
+        .type-a .strategy-box { border-left-color: var(--primary); color: var(--primary); }
+        .type-b .strategy-box { border-left-color: var(--secondary); color: var(--secondary); }
+        .type-c .strategy-box { border-left-color: var(--accent-success); color: var(--accent-success); }
+        .type-d .strategy-box { border-left-color: var(--accent-danger); background: rgba(214, 48, 49, 0.08); color: var(--accent-danger); }
+
+        /* 战略总结区 */
+        .summary-section {
+            background: white;
+            border-radius: 20px;
+            padding: 4rem;
+            margin: 2rem 0 6rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+            text-align: center;
+        }
+
+        .summary-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 3rem;
+            color: var(--text-main);
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: left;
+        }
+
+        .summary-item {
+            padding: 1.5rem;
+            border-radius: 12px;
+            background: #F8F9FA;
+            border: 1px solid #EEE;
+        }
+
+        .summary-item h4 {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .summary-item p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .summary-item.warn {
+            background: #FFF5F5;
+            border-color: #FFE3E3;
+        }
+        .summary-item.warn h4 {
+            color: var(--accent-danger);
+        }
+
+        footer {
+            text-align: center;
+            padding: 3rem 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(0,0,0,0.05);
+            margin-top: 4rem;
+        }
+
+        /* 微动效 */
+        .animate-up {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .summary-section { padding: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="container nav-content">
+            <div class="nav-brand">XIBO CUSTOMER</div>
+            <div class="nav-links">
+                <a href="#overview">用户视图</a>
+                <a href="#strategy">战略含义</a>
+                <a href="/index.html">返回战略主页</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero container">
+        <span class="hero-label animate-up">XIBO SEGMENTATION STRATEGY</span>
+        <h1 class="animate-up delay-1">重新定义 ABCD 四类用户</h1>
+        <p class="animate-up delay-2">基于第一性原理，彻底摸清用户底牌，匹配最合理的运营与服务模式。告别一刀切，让价值与承载力完美匹配。</p>
+    </header>
+
+    <main class="container">
+        <div id="overview" class="user-grid">
+            
+            <!-- A 类 -->
+            <div class="user-card type-a animate-up delay-1">
+                <div class="card-badge"></div>
+                <span class="type-icon">👑</span>
+                <h2>A类</h2>
+                <div class="subtitle">有能力 × 有意愿的创作者</div>
+                <ul class="feature-list">
+                    <li><strong>本质：</strong>真正具备改变条件且主动寻求改变的用户</li>
+                    <li><strong>特征：</strong>执行力极强，天赋与配套能力同时在线</li>
+                    <li><strong>战略意义：</strong>公司的核心资产，口碑裂变的主要来源，也是未来顾问网络的种子用户</li>
+                </ul>
+                <div class="strategy-box">
+                    🎯 服务策略：全路径深度服务，最大化用户 LTV（终身价值）
+                </div>
+            </div>
+
+            <!-- B 类 -->
+            <div class="user-card type-b animate-up delay-2">
+                <div class="card-badge"></div>
+                <span class="type-icon">🚀</span>
+                <h2>B类</h2>
+                <div class="subtitle">有执行力 × 价值观待补全</div>
+                <ul class="feature-list">
+                    <li><strong>本质：</strong>有一定能力基础，但认知体系或价值观存在缺口</li>
+                    <li><strong>特征：</strong>能推进事情，但在关键抉择上不稳定，容易动作变形</li>
+                    <li><strong>战略意义：</strong>高潜力池。可培养转化为 A 类，需要有效引导而非放任自流</li>
+                </ul>
+                <div class="strategy-box">
+                    🎯 服务策略：重点培养技能，提供教练式辅导，补全意识与认知短板
+                </div>
+            </div>
+
+            <!-- C 类 -->
+            <div class="user-card type-c animate-up delay-3">
+                <div class="card-badge"></div>
+                <span class="type-icon">☕</span>
+                <h2>C类</h2>
+                <div class="subtitle">情绪驱动的防御性用户</div>
+                <ul class="feature-list">
+                    <li><strong>本质：</strong>购买动机以情感需求为主，理性决策成分较低</li>
+                    <li><strong>特征：</strong>核心痛点是需要情感陪伴，对变化天然抗拒，防御性强</li>
+                    <li><strong>战略意义：</strong>基盘用户。保持基础服务即可，必须避免过度承诺引发的反噬与客诉</li>
+                </ul>
+                <div class="strategy-box">
+                    🎯 服务策略：社群同频共振，提供标准化的低成本服务交付与陪伴
+                </div>
+            </div>
+
+            <!-- D 类 -->
+            <div class="user-card type-d animate-up delay-4">
+                <div class="card-badge"></div>
+                <span class="type-icon">⚠️</span>
+                <h2>D类</h2>
+                <div class="subtitle">决策链缺失的脆弱用户</div>
+                <ul class="feature-list">
+                    <li><strong>本质：</strong>客观条件（经济/身体/认知）完全不具备理性消费的能力</li>
+                    <li><strong>特征：</strong>动用借贷/救命钱，或者认知存在严重偏差的（大黑用户）</li>
+                    <li><strong>战略意义：</strong>企业的毒性资产源泉，坚决拦截，实现零转化，保护合规底线</li>
+                </ul>
+                <div class="strategy-box">
+                    🛑 绝对红线：主动保护，主动劝退，绝不允许任何销售转化企图
+                </div>
+            </div>
+
+        </div>
+
+        <section id="strategy" class="summary-section animate-up delay-2">
+            <h3 class="summary-title">分类背后的战略含义</h3>
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <h4>💎 资源倾斜：A/B类</h4>
+                    <p>将核心顾问与班主任的高阶人工服务集中于 A、B 类用户。这是推动企业“健康飞轮”转动的核心动力引擎。</p>
+                </div>
+                <div class="summary-item">
+                    <h4>🛡️ 成本控制：C类</h4>
+                    <p>不盲目超额投入人力。匹配系统化的情感慰藉工具（如AI伴读、社群荣誉体系），大幅降低人工成本与预期管理风险。</p>
+                </div>
+                <div class="summary-item warn">
+                    <h4>🛑 硬性拦截：D类</h4>
+                    <p>D 类拦截率目标设定为 ≥ 90%。任何销售违规强推 D 类客户直接开除。这是生存的高压线。</p>
+                </div>
+                <div class="summary-item">
+                    <h4>⚡ 防线前置</h4>
+                    <p>摒弃事后打补丁的做法。用户分类筛选必须前置，在**支付前**完成初步定性评估，以此作为"交易风险关"的核心阻断机制。</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>来源：喜播2026–2028战略规划 | 用户分类共识</p>
+            <p style="margin-top: 0.5rem; opacity: 0.5;">内部战略控制文档，请勿外传。</p>
+        </div>
+    </footer>
+
+    <script>
+        // 简单的入场动效交叉观察器
+        document.addEventListener("DOMContentLoaded", () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animationPlayState = 'running';
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.animate-up').forEach(el => {
+                el.style.animationPlayState = 'paused';
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>
