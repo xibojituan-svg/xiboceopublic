@@ -1,0 +1,2209 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>D类高危用户识别复盘 · 本质问题与迭代策略</title>
+  <meta name="description" content="喜播集团D类高危用户（特殊关怀）识别机制本质问题深度剖析与可迭代优化路线图">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0c14;
+      --surface: #12152a;
+      --surface-2: #191d35;
+      --border: #252a45;
+      --text: #e2e8f0;
+      --text-dim: #8892b0;
+      --brand: #F86442;
+      --red: #ef4444;
+      --red-glow: rgba(239, 68, 68, 0.25);
+      --amber: #f59e0b;
+      --amber-glow: rgba(245, 158, 11, 0.2);
+      --blue: #3b82f6;
+      --blue-glow: rgba(59, 130, 246, 0.2);
+      --green: #10b981;
+      --green-glow: rgba(16, 185, 129, 0.2);
+      --purple: #a855f7;
+      --purple-glow: rgba(168, 85, 247, 0.2);
+      --cyan: #06b6d4;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ─── Hero ─── */
+    .hero {
+      text-align: center;
+      padding: 80px 20px 60px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -200px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, var(--red-glow) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--red);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 16px;
+      border-radius: 20px;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      margin-bottom: 20px;
+      letter-spacing: 1px;
+    }
+
+    .hero h1 {
+      font-size: 38px;
+      font-weight: 900;
+      background: linear-gradient(135deg, #ff6b6b, #ffa500, #f59e0b);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 16px;
+      letter-spacing: 1px;
+    }
+
+    .hero p {
+      color: var(--text-dim);
+      font-size: 16px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* ─── Container ─── */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ─── Section Title ─── */
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin: 70px 0 30px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-title .icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+
+    .section-title h2 {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+    }
+
+    .section-title .subtitle {
+      font-size: 14px;
+      color: var(--text-dim);
+      margin-top: 4px;
+    }
+
+    /* ─── Iceberg ─── */
+    .iceberg {
+      position: relative;
+      margin: 40px auto;
+      max-width: 800px;
+    }
+
+    .ice-waterline {
+      position: relative;
+      height: 3px;
+      background: linear-gradient(to right, transparent, var(--cyan), transparent);
+      margin: 10px 0;
+    }
+
+    .ice-waterline::after {
+      content: '水面线：可见问题 vs 本质根因';
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: -12px;
+      font-size: 11px;
+      color: var(--cyan);
+      font-weight: 700;
+      padding: 2px 14px;
+      background: var(--bg);
+      letter-spacing: 1px;
+      white-space: nowrap;
+    }
+
+    .ice-above,
+    .ice-below {
+      padding: 20px 0;
+    }
+
+    .ice-label {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      margin-bottom: 16px;
+      padding: 4px 12px;
+      border-radius: 6px;
+      display: inline-block;
+    }
+
+    .ice-label.above {
+      background: rgba(6, 182, 212, 0.15);
+      color: var(--cyan);
+    }
+
+    .ice-label.below {
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--red);
+    }
+
+    .ice-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 14px 18px;
+      margin-bottom: 8px;
+      border-radius: 10px;
+      transition: all 0.25s ease;
+    }
+
+    .ice-item:hover {
+      transform: translateX(6px);
+    }
+
+    .ice-above .ice-item {
+      background: rgba(6, 182, 212, 0.06);
+      border-left: 3px solid rgba(6, 182, 212, 0.4);
+    }
+
+    .ice-below .ice-item {
+      background: rgba(239, 68, 68, 0.06);
+      border-left: 3px solid rgba(239, 68, 68, 0.4);
+    }
+
+    .ice-item .num {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .ice-above .ice-item .num {
+      background: var(--cyan);
+      color: var(--bg);
+    }
+
+    .ice-below .ice-item .num {
+      background: var(--red);
+      color: white;
+    }
+
+    .ice-item .content b {
+      display: block;
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+
+    .ice-item .content span {
+      font-size: 13px;
+      color: var(--text-dim);
+      line-height: 1.6;
+    }
+
+    /* ─── Root Cause Model ─── */
+    .root-model {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin: 30px 0;
+    }
+
+    .root-card {
+      background: var(--surface);
+      border-radius: 16px;
+      padding: 28px 24px;
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .root-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .root-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+    }
+
+    .root-card:nth-child(1)::before {
+      background: linear-gradient(to right, var(--red), #ff8a65);
+    }
+
+    .root-card:nth-child(2)::before {
+      background: linear-gradient(to right, var(--amber), #fcd34d);
+    }
+
+    .root-card:nth-child(3)::before {
+      background: linear-gradient(to right, var(--purple), #c084fc);
+    }
+
+    .root-card .card-icon {
+      font-size: 28px;
+      margin-bottom: 14px;
+    }
+
+    .root-card h3 {
+      font-size: 18px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .root-card p {
+      font-size: 13px;
+      color: var(--text-dim);
+      margin-bottom: 14px;
+      line-height: 1.7;
+    }
+
+    .root-card .evidence {
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 12px;
+      color: var(--text-dim);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .root-card .evidence b {
+      color: var(--text);
+      display: block;
+      font-size: 13px;
+      margin-bottom: 6px;
+    }
+
+    /* ─── Iteration Roadmap ─── */
+    .roadmap-timeline {
+      position: relative;
+      padding-left: 40px;
+      margin: 30px 0 50px;
+    }
+
+    .roadmap-timeline::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 18px;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--red), var(--amber), var(--green), var(--blue));
+    }
+
+    .phase {
+      position: relative;
+      margin-bottom: 40px;
+      padding: 24px 28px;
+      background: var(--surface);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      transition: all 0.3s ease;
+    }
+
+    .phase:hover {
+      transform: translateX(8px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    }
+
+    .phase::before {
+      content: '';
+      position: absolute;
+      left: -32px;
+      top: 28px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 3px solid;
+    }
+
+    .phase:nth-child(1)::before {
+      border-color: var(--red);
+      background: var(--bg);
+      box-shadow: 0 0 12px var(--red-glow);
+    }
+
+    .phase:nth-child(2)::before {
+      border-color: var(--amber);
+      background: var(--bg);
+      box-shadow: 0 0 12px var(--amber-glow);
+    }
+
+    .phase:nth-child(3)::before {
+      border-color: var(--green);
+      background: var(--bg);
+      box-shadow: 0 0 12px var(--green-glow);
+    }
+
+    .phase:nth-child(4)::before {
+      border-color: var(--blue);
+      background: var(--bg);
+      box-shadow: 0 0 12px var(--blue-glow);
+    }
+
+    .phase-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .phase-badge {
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 20px;
+      letter-spacing: 1px;
+      flex-shrink: 0;
+    }
+
+    .phase:nth-child(1) .phase-badge {
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--red);
+    }
+
+    .phase:nth-child(2) .phase-badge {
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--amber);
+    }
+
+    .phase:nth-child(3) .phase-badge {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--green);
+    }
+
+    .phase:nth-child(4) .phase-badge {
+      background: rgba(59, 130, 246, 0.15);
+      color: var(--blue);
+    }
+
+    .phase-header h3 {
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .phase-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .phase-action {
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 10px;
+      padding: 14px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: background 0.2s;
+    }
+
+    .phase-action:hover {
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .phase-action .action-title {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .phase-action .action-desc {
+      font-size: 12px;
+      color: var(--text-dim);
+      line-height: 1.6;
+    }
+
+    .phase-kpi {
+      margin-top: 16px;
+      padding: 12px 16px;
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 8px;
+      font-size: 12px;
+      color: var(--text-dim);
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .phase-kpi b {
+      color: var(--text);
+    }
+
+    /* ─── Data Dashboard ─── */
+    .data-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin: 30px 0;
+    }
+
+    .data-card {
+      background: var(--surface);
+      border-radius: 14px;
+      padding: 24px;
+      border: 1px solid var(--border);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .data-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .data-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+    }
+
+    .data-card:nth-child(1)::after {
+      background: var(--red);
+    }
+
+    .data-card:nth-child(2)::after {
+      background: var(--amber);
+    }
+
+    .data-card:nth-child(3)::after {
+      background: var(--green);
+    }
+
+    .data-card:nth-child(4)::after {
+      background: var(--blue);
+    }
+
+    .data-card .val {
+      font-size: 36px;
+      font-weight: 900;
+      margin-bottom: 6px;
+    }
+
+    .data-card:nth-child(1) .val {
+      color: var(--red);
+    }
+
+    .data-card:nth-child(2) .val {
+      color: var(--amber);
+    }
+
+    .data-card:nth-child(3) .val {
+      color: var(--green);
+    }
+
+    .data-card:nth-child(4) .val {
+      color: var(--blue);
+    }
+
+    .data-card label {
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+
+    /* ─── Flywheel ─── */
+    .flywheel-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 40px 0 50px;
+      gap: 0;
+    }
+
+    .fw-node {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px 24px;
+      text-align: center;
+      width: 180px;
+      transition: all 0.3s ease;
+    }
+
+    .fw-node:hover {
+      transform: scale(1.06);
+    }
+
+    .fw-node .fw-icon {
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+
+    .fw-node h4 {
+      font-size: 14px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .fw-node p {
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+
+    .fw-arrow {
+      font-size: 24px;
+      color: var(--text-dim);
+      margin: 0 6px;
+      animation: pulse-arrow 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-arrow {
+
+      0%,
+      100% {
+        opacity: 0.4;
+        transform: translateX(0);
+      }
+
+      50% {
+        opacity: 1;
+        transform: translateX(4px);
+      }
+    }
+
+    /* ─── Principle Cards ─── */
+    .principle-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin: 30px 0;
+    }
+
+    .principle-card {
+      background: var(--surface);
+      border-radius: 14px;
+      padding: 24px;
+      border: 1px solid var(--border);
+      transition: all 0.3s ease;
+    }
+
+    .principle-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255, 255, 255, 0.12);
+    }
+
+    .principle-card h4 {
+      font-size: 16px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .principle-card p {
+      font-size: 13px;
+      color: var(--text-dim);
+      line-height: 1.7;
+    }
+
+    /* ─── Meeting Alignment ─── */
+    .align-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 30px 0;
+    }
+
+    .align-table th,
+    .align-table td {
+      padding: 14px 16px;
+      font-size: 13px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      line-height: 1.6;
+    }
+
+    .align-table th {
+      background: var(--surface);
+      color: var(--text-dim);
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .align-table td:first-child {
+      font-weight: 600;
+      white-space: nowrap;
+      width: 200px;
+    }
+
+    .align-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .status-tag {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .tag-match {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--green);
+    }
+
+    .tag-added {
+      background: rgba(59, 130, 246, 0.15);
+      color: var(--blue);
+    }
+
+    .tag-adjusted {
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--amber);
+    }
+
+    .owner-tag {
+      display: inline-block;
+      padding: 1px 8px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 700;
+      background: rgba(168, 85, 247, 0.15);
+      color: var(--purple);
+      margin-left: 4px;
+    }
+
+    /* --- Intent Detection --- */
+    .intent-problem {
+      background: var(--surface);
+      border-radius: 16px;
+      padding: 28px;
+      border: 1px solid var(--border);
+      margin: 30px 0;
+    }
+
+    .intent-problem h3 {
+      font-size: 18px;
+      font-weight: 800;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .intent-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+    }
+
+    .intent-table th,
+    .intent-table td {
+      padding: 12px 14px;
+      font-size: 13px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      line-height: 1.5;
+    }
+
+    .intent-table th {
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text-dim);
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.5px;
+    }
+
+    .intent-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .intent-table .type-safe {
+      color: var(--green);
+      font-weight: 700;
+    }
+
+    .intent-table .type-danger {
+      color: var(--red);
+      font-weight: 700;
+    }
+
+    .layer-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin: 30px 0;
+    }
+
+    .layer-card {
+      background: var(--surface);
+      border-radius: 16px;
+      padding: 24px;
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .layer-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .layer-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+    }
+
+    .layer-card:nth-child(1)::before {
+      background: linear-gradient(to right, var(--green), #34d399);
+    }
+
+    .layer-card:nth-child(2)::before {
+      background: linear-gradient(to right, var(--amber), #fbbf24);
+    }
+
+    .layer-card:nth-child(3)::before {
+      background: linear-gradient(to right, var(--blue), #60a5fa);
+    }
+
+    .layer-card .layer-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .layer-card .layer-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 900;
+      flex-shrink: 0;
+    }
+
+    .layer-card:nth-child(1) .layer-num {
+      background: rgba(16, 185, 129, 0.2);
+      color: var(--green);
+    }
+
+    .layer-card:nth-child(2) .layer-num {
+      background: rgba(245, 158, 11, 0.2);
+      color: var(--amber);
+    }
+
+    .layer-card:nth-child(3) .layer-num {
+      background: rgba(59, 130, 246, 0.2);
+      color: var(--blue);
+    }
+
+    .layer-card h3 {
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .layer-meta {
+      display: flex;
+      gap: 12px;
+      margin: 10px 0 14px;
+    }
+
+    .layer-meta span {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-dim);
+    }
+
+    .layer-card p {
+      font-size: 13px;
+      color: var(--text-dim);
+      line-height: 1.7;
+      margin-bottom: 14px;
+    }
+
+    .signal-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .signal-list li {
+      font-size: 12px;
+      color: var(--text-dim);
+      padding: 8px 12px;
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 6px;
+      margin-bottom: 6px;
+      border-left: 3px solid;
+      line-height: 1.5;
+    }
+
+    .layer-card:nth-child(1) .signal-list li {
+      border-color: rgba(16, 185, 129, 0.4);
+    }
+
+    .layer-card:nth-child(2) .signal-list li {
+      border-color: rgba(245, 158, 11, 0.4);
+    }
+
+    .layer-card:nth-child(3) .signal-list li {
+      border-color: rgba(59, 130, 246, 0.4);
+    }
+
+    .signal-list li b {
+      color: var(--text);
+    }
+
+    .fusion-box {
+      background: var(--surface);
+      border-radius: 16px;
+      padding: 28px;
+      border: 1px solid var(--border);
+      margin: 30px 0;
+    }
+
+    .fusion-box h3 {
+      font-size: 18px;
+      font-weight: 800;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .fusion-formula {
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 10px;
+      padding: 20px 24px;
+      font-family: monospace;
+      font-size: 13px;
+      line-height: 2;
+      color: var(--text-dim);
+      margin: 16px 0;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .fusion-formula b {
+      color: var(--text);
+    }
+
+    .threshold-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .threshold-item {
+      text-align: center;
+      padding: 16px 12px;
+      border-radius: 10px;
+      border: 1px solid;
+    }
+
+    .threshold-item .t-score {
+      font-size: 20px;
+      font-weight: 900;
+      margin-bottom: 6px;
+    }
+
+    .threshold-item .t-action {
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .threshold-item .t-desc {
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+
+    .t-red {
+      border-color: rgba(239, 68, 68, 0.3);
+      background: rgba(239, 68, 68, 0.06);
+    }
+
+    .t-red .t-score,
+    .t-red .t-action {
+      color: var(--red);
+    }
+
+    .t-amber {
+      border-color: rgba(245, 158, 11, 0.3);
+      background: rgba(245, 158, 11, 0.06);
+    }
+
+    .t-amber .t-score,
+    .t-amber .t-action {
+      color: var(--amber);
+    }
+
+    .t-blue {
+      border-color: rgba(59, 130, 246, 0.3);
+      background: rgba(59, 130, 246, 0.06);
+    }
+
+    .t-blue .t-score,
+    .t-blue .t-action {
+      color: var(--blue);
+    }
+
+    .t-green {
+      border-color: rgba(16, 185, 129, 0.3);
+      background: rgba(16, 185, 129, 0.06);
+    }
+
+    .t-green .t-score,
+    .t-green .t-action {
+      color: var(--green);
+    }
+
+    /* ─── Footer ─── */
+    .page-footer {
+      margin-top: 80px;
+      padding: 40px 20px;
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+
+    .page-footer p {
+      font-size: 13px;
+      color: var(--text-dim);
+      margin-bottom: 6px;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 16px;
+    }
+
+    .footer-links a {
+      color: var(--blue);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: #60a5fa;
+    }
+
+    /* --- Responsive: Tablet --- */
+    @media (max-width: 768px) {
+      .hero {
+        padding: 50px 16px 40px;
+      }
+
+      .hero h1 {
+        font-size: 24px;
+      }
+
+      .hero p {
+        font-size: 14px;
+      }
+
+      .container {
+        padding: 0 16px;
+      }
+
+      .section-title {
+        margin: 50px 0 20px;
+        gap: 10px;
+      }
+
+      .section-title .icon {
+        width: 36px;
+        height: 36px;
+        font-size: 18px;
+      }
+
+      .section-title h2 {
+        font-size: 18px;
+      }
+
+      .section-title .subtitle {
+        font-size: 12px;
+      }
+
+      /* Data cards 2x2 */
+      .data-row {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+
+      .data-card {
+        padding: 16px 12px;
+      }
+
+      .data-card .val {
+        font-size: 28px;
+      }
+
+      .data-card label {
+        font-size: 11px;
+      }
+
+      /* Iceberg */
+      .ice-item {
+        padding: 10px 12px;
+        gap: 10px;
+      }
+
+      .ice-item .content b {
+        font-size: 13px;
+      }
+
+      .ice-item .content span {
+        font-size: 12px;
+      }
+
+      /* Root cause cards single column */
+      .root-model {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+
+      .root-card {
+        padding: 20px 16px;
+      }
+
+      .root-card h3 {
+        font-size: 16px;
+      }
+
+      .root-card .evidence {
+        font-size: 11px;
+        padding: 10px 12px;
+      }
+
+      /* Flywheel vertical */
+      .flywheel-wrap {
+        flex-direction: column;
+        margin: 30px 0;
+      }
+
+      .fw-node {
+        width: 100%;
+        max-width: 280px;
+        padding: 16px;
+      }
+
+      .fw-node h4 {
+        font-size: 13px;
+      }
+
+      .fw-node .fw-icon {
+        font-size: 22px;
+        margin-bottom: 4px;
+      }
+
+      .fw-arrow {
+        transform: rotate(90deg);
+        margin: 6px 0;
+        font-size: 18px;
+      }
+
+      /* Intent detection */
+      .intent-problem {
+        padding: 18px 14px;
+      }
+
+      .intent-problem h3 {
+        font-size: 15px;
+      }
+
+      .layer-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+
+      .layer-card {
+        padding: 18px 14px;
+      }
+
+      .layer-card h3 {
+        font-size: 15px;
+      }
+
+      .fusion-box {
+        padding: 18px 14px;
+      }
+
+      .fusion-box h3 {
+        font-size: 15px;
+      }
+
+      .fusion-formula {
+        padding: 14px 12px;
+        font-size: 11px;
+        line-height: 1.8;
+        overflow-x: auto;
+      }
+
+      .threshold-row {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+      }
+
+      .threshold-item {
+        padding: 12px 8px;
+      }
+
+      .threshold-item .t-score {
+        font-size: 18px;
+      }
+
+      /* Phase timeline */
+      .roadmap-timeline {
+        padding-left: 28px;
+      }
+
+      .roadmap-timeline::before {
+        left: 10px;
+      }
+
+      .phase {
+        padding: 18px 14px;
+        margin-bottom: 24px;
+      }
+
+      .phase::before {
+        left: -24px;
+        top: 22px;
+        width: 12px;
+        height: 12px;
+      }
+
+      .phase:hover {
+        transform: translateX(0);
+      }
+
+      .phase-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+
+      .phase-header h3 {
+        font-size: 15px;
+      }
+
+      .phase-badge {
+        font-size: 10px;
+      }
+
+      .phase-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      .phase-action {
+        padding: 12px;
+      }
+
+      .phase-action .action-title {
+        font-size: 13px;
+        flex-wrap: wrap;
+      }
+
+      .phase-action .action-desc {
+        font-size: 11px;
+      }
+
+      .phase-kpi {
+        flex-direction: column;
+        gap: 6px;
+        font-size: 11px;
+        padding: 10px 12px;
+      }
+
+      /* Principle cards single column */
+      .principle-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .principle-card {
+        padding: 18px 14px;
+      }
+
+      .principle-card h4 {
+        font-size: 14px;
+      }
+
+      .principle-card p {
+        font-size: 12px;
+      }
+
+      /* Tables: horizontal scroll */
+      .align-table {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .align-table td:first-child {
+        white-space: normal;
+        width: auto;
+        min-width: 100px;
+      }
+
+      .align-table th,
+      .align-table td {
+        padding: 10px 12px;
+        font-size: 12px;
+        min-width: 80px;
+      }
+
+      .intent-table {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .intent-table th,
+      .intent-table td {
+        padding: 10px 12px;
+        font-size: 12px;
+        min-width: 100px;
+      }
+
+      /* Owner tags */
+      .owner-tag {
+        font-size: 10px;
+        margin-left: 2px;
+        padding: 1px 6px;
+      }
+
+      /* Footer */
+      .page-footer {
+        margin-top: 50px;
+        padding: 30px 16px;
+      }
+
+      .footer-links {
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+    }
+
+    /* --- Responsive: Small phone --- */
+    @media (max-width: 420px) {
+      .hero {
+        padding: 40px 12px 30px;
+      }
+
+      .hero h1 {
+        font-size: 20px;
+      }
+
+      .hero-badge {
+        font-size: 10px;
+        padding: 3px 10px;
+      }
+
+      .container {
+        padding: 0 12px;
+      }
+
+      .section-title h2 {
+        font-size: 16px;
+      }
+
+      .data-row {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+
+      .data-card .val {
+        font-size: 24px;
+      }
+
+      .data-card {
+        padding: 12px 8px;
+      }
+
+      .ice-waterline::after {
+        font-size: 10px;
+        padding: 2px 8px;
+      }
+
+      .ice-item .num {
+        width: 20px;
+        height: 20px;
+        font-size: 10px;
+      }
+
+      .ice-item .content b {
+        font-size: 12px;
+      }
+
+      .ice-item .content span {
+        font-size: 11px;
+      }
+
+      .fw-node {
+        max-width: 100%;
+        padding: 12px;
+      }
+
+      .threshold-row {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .threshold-item .t-score {
+        font-size: 16px;
+      }
+
+      .threshold-item .t-action {
+        font-size: 11px;
+      }
+
+      .threshold-item .t-desc {
+        font-size: 10px;
+      }
+
+      .phase {
+        padding: 14px 12px;
+      }
+
+      .phase-header h3 {
+        font-size: 14px;
+      }
+
+      .roadmap-timeline {
+        padding-left: 22px;
+      }
+
+      .roadmap-timeline::before {
+        left: 6px;
+      }
+
+      .phase::before {
+        left: -20px;
+        top: 18px;
+        width: 10px;
+        height: 10px;
+        border-width: 2px;
+      }
+
+      .signal-list li {
+        font-size: 11px;
+        padding: 6px 10px;
+      }
+
+      .fusion-formula {
+        font-size: 10px;
+        padding: 12px 10px;
+      }
+    }
+
+    /* ─── Connection Lines Animation ─── */
+    @keyframes scan-line {
+      0% {
+        opacity: 0;
+        transform: translateY(-100%);
+      }
+
+      50% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 0;
+        transform: translateY(100%);
+      }
+    }
+
+    /* ══ 顶部导航栏 ══ */
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10, 12, 20, 0.94);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+      padding: 0 clamp(12px, 4vw, 32px);
+    }
+
+    .site-nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      height: 50px;
+      gap: 4px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .site-nav-inner::-webkit-scrollbar {
+      display: none;
+    }
+
+    .nav-logo {
+      font-size: 13px;
+      font-weight: 800;
+      color: #f97316;
+      white-space: nowrap;
+      margin-right: 10px;
+      text-decoration: none;
+    }
+
+    .nav-divider {
+      width: 1px;
+      height: 18px;
+      background: rgba(255, 255, 255, 0.1);
+      margin: 0 6px;
+      flex-shrink: 0;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #94a3b8;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+
+    .nav-link:hover {
+      color: #e2e8f0;
+      background: rgba(255, 255, 255, 0.07);
+    }
+
+    .nav-link.active {
+      color: #fff;
+      background: rgba(249, 115, 22, 0.18);
+      border: 1px solid rgba(249, 115, 22, 0.35);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- 顶部导航栏 -->
+  <nav class="site-nav" aria-label="喜播集团内部文件导航">
+    <div class="site-nav-inner">
+      <a href="index.html" class="nav-logo">喜播集团 ⚡</a>
+      <div class="nav-divider"></div>
+      <a href="index.html" class="nav-link">🏠 战略总纲</a>
+      <a href="segmentation_radarmap.html" class="nav-link">📊 用户分层雷达图</a>
+      <a href="d_user_optimization.html" class="nav-link active">🔬 D类用户风控复盘</a>
+      <a href="ue_funnel_simulator.html" class="nav-link">📈 漏斗UE诊断器</a>
+    </div>
+  </nav>
+
+  <!-- ═══════════════ Hero ═══════════════ -->
+  <div class="hero">
+    <div class="hero-badge">🔬 内部复盘 · 深度分析</div>
+    <h1>D类高危用户识别机制<br>本质问题剖析与迭代路线图</h1>
+    <p>跳出"头痛医头"的表层修补，回到第一性原理，看清问题本质，用系统化思维建立可持续进化的拦截体系</p>
+  </div>
+
+  <div class="container">
+
+    <!-- ═══════════════ 关键数据看板 ═══════════════ -->
+    <div class="section-title">
+      <div class="icon" style="background: var(--red-glow);">📊</div>
+      <div>
+        <h2>现状快照</h2>
+        <div class="subtitle">截至2026年3月15日的关键运营数据</div>
+      </div>
+    </div>
+
+    <div class="data-row">
+      <div class="data-card">
+        <div class="val">19,062</div>
+        <label>累计识别特殊关怀用户</label>
+      </div>
+      <div class="data-card">
+        <div class="val">94%</div>
+        <label>识别准确率</label>
+      </div>
+      <div class="data-card">
+        <div class="val">20%</div>
+        <label>特殊关怀用户退费率<br>(整体仅9%)</label>
+      </div>
+      <div class="data-card">
+        <div class="val">2h</div>
+        <label>打标刷新间隔<br>(错失关键窗口)</label>
+      </div>
+    </div>
+
+    <!-- ═══════════════ 冰山模型 ═══════════════ -->
+    <div class="section-title">
+      <div class="icon" style="background: rgba(6,182,212,0.15);">🧊</div>
+      <div>
+        <h2>冰山模型：表面问题 vs 本质根因</h2>
+        <div class="subtitle">复盘暴露了5+3个显性问题，但它们背后指向三个系统性根因</div>
+      </div>
+    </div>
+
+    <div class="iceberg">
+      <div class="ice-above">
+        <div class="ice-label above">水面之上：一线可感知的8个痛点</div>
+        <div class="ice-item">
+          <div class="num">1</div>
+          <div class="content">
+            <b>标签误判：宽泛关键词触发假阳性</b>
+            <span>学员随口提到"梨花教育"等关键词即被打标，申诉后才能解除，严重干扰正常销售流程</span>
+          </div>
+        </div>
+        <div class="ice-item">
+          <div class="num">2</div>
+          <div class="content">
+            <b>标签延迟：大转化节点助教侧无感知</b>
+            <span>学员支付端已被拦截，助教仍看不到标签，等到发现时学员已流失。去标通知也存在部分遗漏</span>
+          </div>
+        </div>
+        <div class="ice-item">
+          <div class="num">3</div>
+          <div class="content">
+            <b>申诉通道慢：付款黄金窗口被卡死</b>
+            <span>非工作时间需要等到次日中午，关键转化窗口被白白浪费</span>
+          </div>
+        </div>
+        <div class="ice-item">
+          <div class="num">4</div>
+          <div class="content">
+            <b>脱标后反复流转：形成二次内耗</b>
+            <span>脱标学员被流转到私域/二转/体验营又被重新打标，形成无效循环</span>
+          </div>
+        </div>
+        <div class="ice-item">
+          <div class="num">5</div>
+          <div class="content">
+            <b>应标未标：数据遗漏导致漏网之鱼</b>
+            <span>企微对话未完全输入、问卷渠道未纳入、AI对模糊表述默认放行</span>
+          </div>
+        </div>
+        <div class="ice-item">
+          <div class="num">6</div>
+          <div class="content">
+            <b>打标时间差：边说边付款的窗口期</b>
+            <span>两小时批量刷新机制导致用户在窗口期内完成付款，变成售后才被标记</span>
+          </div>
+        </div>
+        <div class="ice-item">
+          <div class="num">7</div>
+          <div class="content">
+            <b>放开标准模糊：经济贫困类缺乏自动判定</b>
+            <span>外部画像+人工判断，流程繁重且删标后售后会被AI再次打标</span>
+          </div>
+        </div>
+        <div class="ice-item">
+          <div class="num">8</div>
+          <div class="content">
+            <b>课程并行混乱：稀里糊涂报名</b>
+            <span>有声和张震体验营并行，学员分不清课程分别后误报名，非沟通不足</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="ice-waterline"></div>
+
+      <div class="ice-below">
+        <div class="ice-label below">水面之下：三个系统性根因</div>
+        <div class="ice-item">
+          <div class="num">A</div>
+          <div class="content">
+            <b>信号采集层残缺——"感知器"不够灵敏也不够全面</b>
+            <span>根因在于数据源单一（仅企微文字会话）+采集不完整（部分对话丢失），导致整个识别系统的输入层就存在结构性盲区。问卷、语音、工单、外部投诉等渠道的信号未被纳入统一的"用户风险信号池"</span>
+          </div>
+        </div>
+        <div class="ice-item">
+          <div class="num">B</div>
+          <div class="content">
+            <b>决策引擎粗糙——"大脑"只有二值逻辑，没有灰度判断</b>
+            <span>当前AI引擎非"打标即拦截"即"不打标"，缺乏风险分级能力（如0-100分风险值）。这导致一方面模糊表述全部放行（漏判），另一方面关键词命中一律打标（误判），同时放开/申诉标准也只能靠人工逐个判断，无法规模化</span>
+          </div>
+        </div>
+        <div class="ice-item">
+          <div class="num">C</div>
+          <div class="content">
+            <b>标签生命周期管理缺失——发了出生证但没有户籍制度</b>
+            <span>标签只管"创建"和"删除"，没有完整的生命周期状态机（创建→通知→流转冻结→申诉→开白/解除→复查）。导致去标遗漏、反复流转被重新打标、删标后再次触发等系列连锁问题，本质上是标签系统的状态管理缺乏设计</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ 三大根因拆解 ═══════════════ -->
+    <div class="section-title">
+      <div class="icon" style="background: var(--red-glow);">🔍</div>
+      <div>
+        <h2>三大本质问题深度拆解</h2>
+        <div class="subtitle">每个根因都对应着明确的业务损伤和可测量的改善空间</div>
+      </div>
+    </div>
+
+    <div class="root-model">
+      <div class="root-card">
+        <div class="card-icon">📡</div>
+        <h3>信号感知残缺</h3>
+        <p>识别系统的"眼睛"和"耳朵"不够多，导致该抓的抓不到（漏判），不该抓的误抓（噪声高）。</p>
+        <div class="evidence">
+          <b>表现证据</b>
+          · 企微对话有记录但AI未收到输入<br>
+          · 问卷中提及负债但未纳入识别范围<br>
+          · 对话中简单表述如"又欠款一次"未被标记<br>
+          · 宽泛文本匹配导致"提到梨花"即被打标
+        </div>
+      </div>
+      <div class="root-card">
+        <div class="card-icon">🧠</div>
+        <h3>决策模型过于粗放</h3>
+        <p>AI用"是/否"做判断，没有风险分值概念。阈值卡不准就会同时产生漏判和误判。</p>
+        <div class="evidence">
+          <b>表现证据</b>
+          · 模糊地带默认判为非高危→漏判<br>
+          · 关键词命中即打标→误判<br>
+          · 放开购买标准需人工逐个审核<br>
+          · 退费率20%（全局仅9%），仍有大量问题用户通过
+        </div>
+      </div>
+      <div class="root-card">
+        <div class="card-icon">🔄</div>
+        <h3>标签缺乏生命周期</h3>
+        <p>标签管理像发"纸条"——贴上就完事，没有状态流转、没有联动通知、没有自动过期。</p>
+        <div class="evidence">
+          <b>表现证据</b>
+          · 去标只改了部分助教的备注<br>
+          · 脱标后流转到私域又被重新打标<br>
+          · 删除标签后售后AI再次打标<br>
+          · 助教看到标签比学员被拦截还晚<br>
+          · 标签创建和支付拦截之间的2小时窗口期
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ 迭代策略飞轮 ═══════════════ -->
+    <div class="section-title">
+      <div class="icon" style="background: var(--green-glow);">⚙️</div>
+      <div>
+        <h2>目标状态：智能风控飞轮</h2>
+        <div class="subtitle">优化的终极目标不是"堵住漏洞"，而是建立自进化的风控闭环</div>
+      </div>
+    </div>
+
+    <div class="flywheel-wrap">
+      <div class="fw-node">
+        <div class="fw-icon">📡</div>
+        <h4>全渠道信号融合</h4>
+        <p>企微+问卷+语音+工单+外部投诉</p>
+      </div>
+      <div class="fw-arrow">→</div>
+      <div class="fw-node">
+        <div class="fw-icon">🧠</div>
+        <h4>分级风险评分</h4>
+        <p>0-100分连续风险值 取代二值开关</p>
+      </div>
+      <div class="fw-arrow">→</div>
+      <div class="fw-node">
+        <div class="fw-icon">🔄</div>
+        <h4>状态机管理</h4>
+        <p>标签创建→通知→ 冻结→申诉→开白</p>
+      </div>
+      <div class="fw-arrow">→</div>
+      <div class="fw-node">
+        <div class="fw-icon">📊</div>
+        <h4>效果复盘反馈</h4>
+        <p>误判/漏判case 回流优化模型</p>
+      </div>
+      <div class="fw-arrow">→</div>
+      <div class="fw-node" style="border-color: var(--green);">
+        <div class="fw-icon">🎯</div>
+        <h4>精度持续提升</h4>
+        <p>每月迭代 识别准确率从94%→99%</p>
+      </div>
+    </div>
+
+    <!-- =============== multi-dim intent detection =============== -->
+    <div class="section-title">
+      <div class="icon" style="background: rgba(6,182,212,0.15);">&#127919;</div>
+      <div>
+        <h2>深层命题：多维意图探测方法论</h2>
+        <div class="subtitle">单一文字信号的信息熵不够支撑分类决策 - 用"我没钱了"5个字判断一个人，信息论上就不可能准</div>
+      </div>
+    </div>
+
+    <div class="intent-problem">
+      <h3>&#10067; 为什么同一句话背后有完全不同的意图？</h3>
+      <p style="font-size: 14px; color: var(--text-dim); margin-bottom: 16px;">现在系统在做一件信息论上不可能的事 -
+        用一句"我没有钱了"去判断用户类型。这5个字至少对应4种截然不同的真实意图：</p>
+      <table class="intent-table">
+        <thead>
+          <tr>
+            <th>用户说"我没有钱了"</th>
+            <th>真实意图</th>
+            <th>实际类型</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>对课程价值有疑虑，拿"没钱"当挡箭牌</td>
+            <td>信任不足 / 犹豫观望</td>
+            <td class="type-safe">正常B类用户</td>
+          </tr>
+          <tr>
+            <td>手头确实紧，但课程值的话咬咬牙也能交</td>
+            <td>短期周转困难</td>
+            <td class="type-safe">正常B类用户</td>
+          </tr>
+          <tr>
+            <td>真的负债累累，报课想靠它翻身还债</td>
+            <td>过度收入预期</td>
+            <td class="type-danger">D类高危</td>
+          </tr>
+          <tr>
+            <td>随口说说，其实已经在准备付款了</td>
+            <td>口头禅 / 习惯性表达</td>
+            <td class="type-safe">正常用户</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="font-size: 13px; color: var(--cyan); font-weight: 700; margin-top: 16px;">&#128273;
+        破题关键：不是"关键词不够精确"，而是单一维度信号的信息量（约1-2比特）远不够做出高置信度的分类决策（需要8-10比特）。差距必须从其他维度补齐。</p>
+    </div>
+
+    <div class="layer-grid">
+      <div class="layer-card">
+        <div class="layer-header">
+          <div class="layer-num">1</div>
+          <h3>对话行为模式分析</h3>
+        </div>
+        <div class="layer-meta">
+          <span>&#128295; 实现成本：低</span>
+          <span>&#128100; 用户感知：零</span>
+        </div>
+        <p>不只分析"他说了什么"，更要分析"他怎么说的"。这些信号在已有数据中就能提取。</p>
+        <ul class="signal-list">
+          <li><b>提及频次：</b>"没钱"出现1次 vs 反复提及5次。反复 = 真实概率高</li>
+          <li><b>上下文关联：</b>课程介绍中说 = 犹豫；催缴中说 = 更像真实困境</li>
+          <li><b>情绪浓度：</b>"没钱"+"感觉没希望了" = 高危；"没钱"+"再考虑考虑" = 犹豫</li>
+          <li><b>主动性：</b>主动倾诉 vs 被追问后才说。主动倾诉可信度更高</li>
+          <li><b>时间模式：</b>深夜长段倾诉负债经历 = 真实概率远高于白天随口一说</li>
+          <li><b>语句细节度：</b>提到具体数字（"欠了8万信用卡"） = 真实概率高</li>
+        </ul>
+      </div>
+      <div class="layer-card">
+        <div class="layer-header">
+          <div class="layer-num">2</div>
+          <h3>嵌入式意图探针</h3>
+        </div>
+        <div class="layer-meta">
+          <span>&#128295; 实现成本：中</span>
+          <span>&#128100; 用户感知：极低</span>
+        </div>
+        <p>在助教标准话术中嵌入"探针问题"，让意图判断<b>自然发生在聊天中</b>，而不是让用户填问卷。</p>
+        <ul class="signal-list">
+          <li><b>&#128176; 预算探针：</b>"您大概给学习准备了多少预算？" - 区分真困难 vs 犹豫</li>
+          <li><b>&#9201; 时间框架探针：</b>"希望短期见效还是慢慢学？" - "必须3个月回本" = 高危</li>
+          <li><b>&#128260; 机会成本探针：</b>"还有在了解别的方向吗？" - 只盯一条路 = 过度预期</li>
+          <li><b>&#128218; 过往经验探针：</b>"之前学过类似课程吗？" - 自然暴露竞品经历</li>
+          <li><b>&#128104;&#8205;&#128105;&#8205;&#128103; 家庭支持探针：</b>"家人支持您学吗？" - "不知道/反对" = 风险信号</li>
+        </ul>
+      </div>
+      <div class="layer-card">
+        <div class="layer-header">
+          <div class="layer-num">3</div>
+          <h3>行为轨迹信号</h3>
+        </div>
+        <div class="layer-meta">
+          <span>&#128295; 实现成本：高</span>
+          <span>&#128100; 用户感知：零</span>
+        </div>
+        <p>文字可以伪装，但<b>行为不会撒谎</b>。用户怎么做比怎么说更真实。</p>
+        <ul class="signal-list">
+          <li><b>支付尝试行为：</b>多次尝试不同支付方式 = 可能在拼凑额度（高危）</li>
+          <li><b>课程浏览深度：</b>只看"赚钱案例"不看"课程内容" = 过度预期动机</li>
+          <li><b>互动时段分布：</b>全天候高频互动 = 可能没有稳定工作/收入</li>
+          <li><b>消息响应速度：</b>秒回价格但忽略课程内容 = 动机偏差</li>
+          <li><b>外部画像交叉：</b>第三方消费/收入标签 + 内部信号做交叉验证</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="fusion-box">
+      <h3>&#129518; 融合模型：意图置信度评分</h3>
+      <p style="font-size: 13px; color: var(--text-dim); margin-bottom: 10px;">将三层信号融合为一个连续的置信度分值，取代现在的"关键词命中即打标"二值逻辑：
+      </p>
+      <div class="fusion-formula">
+        <b>意图判断置信度</b> = f(<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;文字语义信号 x 权重1 &nbsp;&nbsp;&nbsp; &larr; 现有能力（当前100%依赖）<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;对话行为模式 x 权重2 &nbsp;&nbsp;&nbsp; &larr; 从已有数据中提取<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;嵌入式探针回答 x 权重3 &nbsp; &larr; 需设计话术流程<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;行为轨迹信号 x 权重4 &nbsp;&nbsp;&nbsp; &larr; 需打通数据管道<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;外部画像数据 x 权重5 &nbsp;&nbsp;&nbsp; &larr; 已有能力<br>
+        )
+      </div>
+      <div class="threshold-row">
+        <div class="threshold-item t-red">
+          <div class="t-score">&ge;80%</div>
+          <div class="t-action">自动拦截</div>
+          <div class="t-desc">多维信号高度一致<br>误判概率极低</div>
+        </div>
+        <div class="threshold-item t-amber">
+          <div class="t-score">60-80%</div>
+          <div class="t-action">人工复核</div>
+          <div class="t-desc">信号暧昧<br>需补充判断</div>
+        </div>
+        <div class="threshold-item t-blue">
+          <div class="t-score">40-60%</div>
+          <div class="t-action">触发探针</div>
+          <div class="t-desc">信息不够<br>主动采集更多维度</div>
+        </div>
+        <div class="threshold-item t-green">
+          <div class="t-score">&lt;40%</div>
+          <div class="t-action">正常放行</div>
+          <div class="t-desc">信号不足以<br>支撑打标决策</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =============== roadmap =============== -->
+    <div class="section-title">
+      <div class="icon" style="background: var(--amber-glow);">🗺️</div>
+      <div>
+        <h2>四阶段渐进迭代路线图</h2>
+        <div class="subtitle">不做"大工程"推翻重建，而是小步快跑、每轮解决一个根因层</div>
+      </div>
+    </div>
+
+    <div class="roadmap-timeline">
+
+      <!-- Phase 1 -->
+      <div class="phase">
+        <div class="phase-header">
+          <div class="phase-badge">第一阶段 · 止血期</div>
+          <h3>堵住最急的漏洞（本周起，2周内）</h3>
+        </div>
+        <div class="phase-grid">
+          <div class="phase-action">
+            <div class="action-title">🔥 一键申诉流程上线 <span class="owner-tag">@叶新</span></div>
+            <div class="action-desc">
+              4月1日上线一线一键申诉按钮，所有申诉<b>默认通过</b>。体验部事后复核，复核不通过按原规则处理。多次恶意申诉者：不算绩效+罚款500元。4.10之前为缓冲期不处罚。<b
+                style="color: var(--amber);">4.1上线</b></div>
+          </div>
+          <div class="phase-action">
+            <div class="action-title">🔥 去标通知全量同步 <span class="owner-tag">@叶新</span></div>
+            <div class="action-desc">修复仅部分助教收到去标通知的问题，确保所有关联老师同步更新备注。<b style="color: var(--green);">已于3.20上线</b></div>
+          </div>
+          <div class="phase-action">
+            <div class="action-title">🔥 标签改"开白"机制 <span class="owner-tag">@叶新</span></div>
+            <div class="action-desc">放开购买时不再删除标签，改为"开白"标记，避免售后AI重新打标。<b style="color: var(--amber);">下周一交付</b></div>
+          </div>
+          <div class="phase-action">
+            <div class="action-title">🔥 标签放开标准简化 <span class="owner-tag">@张凯</span></div>
+            <div class="action-desc">对经济贫困类设定<b>绝对识别标准</b>：内部识别为经济贫困但外部标签收入水平＞1级的，直接不标记为大黑。从入口收窄识别范围，避免增加申诉流程成本。</div>
+          </div>
+          <div class="phase-action">
+            <div class="action-title">🔥 存量用户二转/私域剔除 <span class="owner-tag">@张凯</span></div>
+            <div class="action-desc">已上线禁止被打标学员进入二转/私域。针对已进入的存量学员，同步至乐檬团队做剔除，确保不再次进入体验营。<b
+                style="color: var(--green);">系统已上线</b></div>
+          </div>
+          <div class="phase-action">
+            <div class="action-title">🔥 竞品标签历史清理 <span class="owner-tag">@张凯</span></div>
+            <div class="action-desc">315后"竞品负面经历类"已停止识别，需完成对历史已打标签的批量处理和清理。<b style="color: var(--amber);">下周完成</b>
+            </div>
+          </div>
+          <div class="phase-action">
+            <div class="action-title">🔥 特殊关怀用户禁入体验营 <span class="owner-tag">@叶新</span></div>
+            <div class="action-desc">通过黑名单能力，阻止已标记用户反复主动报名体验营课程。<b style="color: var(--amber);">方案设计中</b></div>
+          </div>
+        </div>
+        <div class="phase-kpi">
+          <span>🎯 <b>关键指标</b></span>
+          <span>申诉响应时效 ≤30分钟</span>
+          <span>去标漏通知率 → 0%</span>
+          <span>脱标后二次打标率 → 0%</span>
+          <span>竞品历史标签清零</span>
+        </div>
+      </div>
+
+      <!-- Phase 2 -->
+      <div class="phase">
+        <div class="phase-header">
+          <div class="phase-badge">第二阶段 · 修基础</div>
+          <h3>修复信号采集层（4月，3-4周）</h3>
+        </div>
+        <div class="phase-grid">
+          <div class="phase-action">
+            <div class="action-title">📡 修复企微对话输入完整性 <span class="owner-tag">@叶新</span></div>
+            <div class="action-desc">排查并解决AI打标时部分企微对话记录丢失/遗漏的问题，结合现有badcase分析原因，确保数据源无盲区</div>
+          </div>
+          <div class="phase-action">
+            <div class="action-title">📡 缩短打标刷新间隔 <span class="owner-tag">@叶新</span></div>
+            <div class="action-desc">从2小时一次提升至30分钟以内，或引入事件驱动的实时触发机制，消除时间差窗口。最早下周二切换</div>
+          </div>
+          <div class="phase-action">
+            <div class="action-title">📡 纳入问卷渠道信号</div>
+            <div class="action-desc">将报名问卷、课后反馈等渠道中用户自述的高危信号纳入AI识别输入</div>
+          </div>
+          <div class="phase-action">
+            <div class="action-title">📡 打标增加时间戳溯源 <span class="owner-tag">@叶新</span></div>
+            <div class="action-desc">AI产出标签时附带触发依据对话的原始时间，区分"说完就付款"和"说完被拦截"的场景</div>
+          </div>
+          <div class="phase-action">
+            <div class="action-title">📢 面向一线完成规则宣贯 <span class="owner-tag">@张凯</span></div>
+            <div class="action-desc">针对共识后的全部新规则（申诉流程、放开标准、竞品标签下线等），<b>4月1日前</b>完成面向一线的宣贯和规则发布文件</div>
+          </div>
+          <div class="phase-action">
+            <div class="action-title">📚 企微工作台政策存档 <span class="owner-tag">@李萍</span></div>
+            <div class="action-desc">在企微工作台增加公司政策存档功能（质检、大黑、绩效薪资），收集一线需求后评估实现。可通过<b>企微智能机器人</b>作为知识库知识点实现 <span
+                class="owner-tag">@王薇薇</span></div>
+          </div>
+        </div>
+        <div class="phase-kpi">
+          <span>🎯 <b>关键指标</b></span>
+          <span>数据输入完整度 → 99%</span>
+          <span>打标延迟 ≤30分钟</span>
+          <span>售后才被标记率 ↓ 50%</span>
+          <span>一线规则知晓率 100%</span>
+        </div>
+      </div>
+
+      <!-- Phase 3 -->
+      <div class="phase">
+        <div class="phase-header">
+          <div class="phase-badge">第三阶段 · 升引擎</div>
+          <h3>升级决策引擎：从二值到分级（5月-6月）</h3>
+        </div>
+        <div class="phase-grid">
+          <div class="phase-action">
+            <div class="action-title">🧠 引入风险评分模型</div>
+            <div class="action-desc">将"标/不标"升级为0-100分连续风险值。≥80分自动拦截，60-80分人工复核，＜60分正常放行</div>
+          </div>
+          <div class="phase-action">
+            <div class="action-title">🧠 多维度特征融合</div>
+            <div class="action-desc">融合文本语义分析 + 外部画像（收入/消费水平） + 行为特征（浏览频次、付款尝试）生成综合评分</div>
+          </div>
+          <div class="phase-action">
+            <div class="action-title">🧠 放开购买自动化判定</div>
+            <div class="action-desc">经济贫困类用户依据外部画像 + 风险评分自动判定是否允许签署风险告知书后购买，消除人工审核瓶颈</div>
+          </div>
+          <div class="phase-action">
+            <div class="action-title">🧠 误判/漏判case自动回流</div>
+            <div class="action-desc">建立标准化的case评审流程，将每月误判和漏判case整理为训练集，回流优化模型权重</div>
+          </div>
+        </div>
+        <div class="phase-kpi">
+          <span>🎯 <b>关键指标</b></span>
+          <span>识别准确率 94% → 97%</span>
+          <span>误判率 6% → 2%</span>
+          <span>放开审核人工耗时 ↓ 80%</span>
+        </div>
+      </div>
+
+      <!-- Phase 4 -->
+      <div class="phase">
+        <div class="phase-header">
+          <div class="phase-badge">第四阶段 · 建体系</div>
+          <h3>构建标签生命周期状态机（Q3起）</h3>
+        </div>
+        <div class="phase-grid">
+          <div class="phase-action">
+            <div class="action-title">🔄 标签状态机设计</div>
+            <div class="action-desc">定义完整状态：创建 → 通知 → 流转冻结 → 申诉中 → 开白/维持 → 复查/自动过期。每个状态转换都有明确触发条件</div>
+          </div>
+          <div class="phase-action">
+            <div class="action-title">🔄 全端联动通知</div>
+            <div class="action-desc">标签状态变更时，学员端、助教端、客服端、系统端同步响应，消除信息不对称</div>
+          </div>
+          <div class="phase-action">
+            <div class="action-title">🔄 风控仪表盘</div>
+            <div class="action-desc">可视化监控每日识别量、误判率、拦截后坚持付款数、退费率趋势，实现运营侧的实时驾驶舱</div>
+          </div>
+          <div class="phase-action">
+            <div class="action-title">🔄 自进化反馈闭环</div>
+            <div class="action-desc">退费case和投诉case自动反馈至风险模型，形成"运营损失 → 模型优化 → 风控提升"的持续飞轮</div>
+          </div>
+        </div>
+        <div class="phase-kpi">
+          <span>🎯 <b>关键指标</b></span>
+          <span>识别准确率 → 99%</span>
+          <span>特殊关怀用户退费率 20% → ≤10%</span>
+          <span>人工干预量 ↓ 90%</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ═══════════════ 会议纪要对照 ═══════════════ -->
+    <div class="section-title">
+      <div class="icon" style="background: var(--purple-glow);">📋</div>
+      <div>
+        <h2>0320复盘会议纪要 · 对照追踪</h2>
+        <div class="subtitle">会议7条决议与策略模型的对应关系与落地状态</div>
+      </div>
+    </div>
+
+    <table class="align-table">
+      <thead>
+        <tr>
+          <th>会议决议</th>
+          <th>策略模型对应</th>
+          <th>状态</th>
+          <th>责任人</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>①申诉流程调整</td>
+          <td>第一阶段「一键申诉流程上线」：4.1上线，默认通过，体验部事后复核，恶意申诉处罚，4.10前缓冲期</td>
+          <td><span class="status-tag tag-match">✅ 完全吻合</span></td>
+          <td><span class="owner-tag">@叶新</span></td>
+        </tr>
+        <tr>
+          <td>②二转/私域禁入</td>
+          <td>第一阶段「存量用户二转/私域剔除」：系统已上线，存量同步乐檬团队</td>
+          <td><span class="status-tag tag-match">✅ 完全吻合</span></td>
+          <td><span class="owner-tag">@张凯</span></td>
+        </tr>
+        <tr>
+          <td>③标签放开标准</td>
+          <td>原策略放在第三阶段，<b>现已前移至第一阶段</b>「标签放开标准简化」：设定绝对识别标准（外部收入水平＞1级直接不标记），入口收窄</td>
+          <td><span class="status-tag tag-adjusted">⚡ 已前移调整</span></td>
+          <td><span class="owner-tag">@张凯</span></td>
+        </tr>
+        <tr>
+          <td>④打标准确性（3子项）</td>
+          <td>第二阶段覆盖：会话记录缺失→「修复企微对话输入完整性」；打标延迟→「缩短打标刷新间隔」；售后打标→「打标增加时间戳溯源」</td>
+          <td><span class="status-tag tag-match">✅ 完全吻合</span></td>
+          <td><span class="owner-tag">@叶新</span></td>
+        </tr>
+        <tr>
+          <td>⑤竞品标签历史处理</td>
+          <td>第一阶段新增「竞品标签历史清理」：315后已停止识别，完成历史标签批量清理</td>
+          <td><span class="status-tag tag-added">🆕 已补充</span></td>
+          <td><span class="owner-tag">@张凯</span></td>
+        </tr>
+        <tr>
+          <td>⑥一线规则宣贯</td>
+          <td>原策略未涉及，<b>现已补充至第二阶段</b>「面向一线完成规则宣贯」：4.1前完成新规发布</td>
+          <td><span class="status-tag tag-added">🆕 已补充</span></td>
+          <td><span class="owner-tag">@张凯</span></td>
+        </tr>
+        <tr>
+          <td>⑦企微工作台政策存档</td>
+          <td>原策略未涉及，<b>现已补充至第二阶段</b>「企微工作台政策存档」：通过企微智能机器人作为知识库实现</td>
+          <td><span class="status-tag tag-added">🆕 已补充</span></td>
+          <td><span class="owner-tag">@李萍</span> <span class="owner-tag">@王薇薇</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- ═══════════════ 核心原则 ═══════════════ -->
+    <div class="section-title">
+      <div class="icon" style="background: var(--blue-glow);">💎</div>
+      <div>
+        <h2>贯穿始终的四个设计原则</h2>
+        <div class="subtitle">不管走到哪个阶段，这四条红线不能变</div>
+      </div>
+    </div>
+
+    <div class="principle-grid">
+      <div class="principle-card">
+        <h4>🛡️ 宁可多拦也不少拦</h4>
+        <p>误判可以申诉修复（成本可控），但漏判导致的退费/投诉/公关灾难不可逆。系统的默认姿态应该是<b>"宁严勿松"</b>，同时通过极速申诉通道降低误判的业务代价。</p>
+      </div>
+      <div class="principle-card">
+        <h4>⚡ 速度即金钱</h4>
+        <p>所有标签操作（打标、去标、申诉、开白）的时效性直接决定转化率。标签延迟1小时就等于浪费1小时的转化窗口，所以<b>实时性是架构设计第一优先级</b>。</p>
+      </div>
+      <div class="principle-card">
+        <h4>🔒 标签对一线不透传</h4>
+        <p>一线助教只需知道"该学员是否可以正常转化"，不需要知道用户被标记的具体原因和细分类型。这既是<b>对用户隐私的保护</b>，也避免一线因知晓原因而产生不当操作。</p>
+      </div>
+      <div class="principle-card">
+        <h4>📐 标准可量化、不可解释</h4>
+        <p>放开/拦截的标准必须能被写成规则或算法自动执行，<b>杜绝"视情况而定"的模糊空间</b>。人工审核仅限于灰度区间内的case，且每个人工决策都需要记录并回流为训练数据。</p>
+      </div>
+    </div>
+
+    <!-- ═══════════════ Footer ═══════════════ -->
+    <div class="page-footer">
+      <p>喜播集团 · 风控策略组</p>
+      <p>2026年3月 · 基于0320复盘会输出</p>
+      <div class="footer-links">
+        <a href="index.html">🏠 战略总纲</a>
+        <a href="segmentation_radarmap.html">📊 用户分层雷达图</a>
+        <a href="ue_funnel_simulator.html">📈 漏斗UE诊断器</a>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+
+</html>

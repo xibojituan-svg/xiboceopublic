@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>喜播集团 · 用户分层与拦截防线雷达图</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0f111a;
+            --surface: #1e2130;
+            --border: #2a2d3d;
+            --text: #e2e8f0;
+            --text-dim: #94a3b8;
+            --ax-blue: #3b82f6;
+
+            --z-pro: rgba(147, 51, 234, 0.15);
+            --z-pro-border: #a855f7;
+
+            --z-exp: rgba(16, 185, 129, 0.15);
+            --z-exp-border: #10b981;
+
+            --z-com: rgba(245, 158, 11, 0.15);
+            --z-com-border: #f59e0b;
+
+            --z-danger: rgba(220, 38, 38, 0.15);
+            --z-danger-border: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 16px;
+        }
+
+        /* ── 整体容器 ── */
+        .chart-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: radial-gradient(circle at center, #1a1d29 0%, #0f111a 100%);
+            border-radius: 20px;
+            padding: clamp(20px, 4vw, 50px) clamp(16px, 5vw, 60px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* ── 标题区 ── */
+        .header {
+            text-align: center;
+            margin-bottom: clamp(24px, 4vw, 50px);
+        }
+
+        .header h1 {
+            font-size: clamp(18px, 4vw, 32px);
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #60a5fa, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.4;
+        }
+
+        .header p {
+            color: var(--text-dim);
+            font-size: clamp(12px, 2.5vw, 15px);
+            letter-spacing: 0.5px;
+            line-height: 1.5;
+        }
+
+        /* ══════════════════════════════════
+           轴线标题条（顶部 / 底部 / 左 / 右）
+        ══════════════════════════════════ */
+        .axis-label-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: clamp(11px, 2vw, 14px);
+            color: var(--text-dim);
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin: 8px 0;
+        }
+
+        .axis-label-bar .badge {
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: clamp(11px, 2vw, 13px);
+            color: var(--text);
+            font-weight: 700;
+            line-height: 1.5;
+            white-space: nowrap;
+        }
+
+        .axis-label-bar .badge span {
+            display: block;
+            font-size: 10px;
+            color: var(--text-dim);
+            font-weight: 500;
+        }
+
+        /* 水平轴行（左标签 + 矩阵 + 右标签） */
+        .matrix-row {
+            display: flex;
+            align-items: stretch;
+            gap: clamp(6px, 2vw, 20px);
+            margin: 4px 0;
+        }
+
+        .side-label {
+            flex: 0 0 auto;
+            text-align: center;
+            width: clamp(64px, 12vw, 120px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .side-label .badge {
+            display: inline-block;
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            padding: 6px 10px;
+            font-size: clamp(10px, 1.8vw, 13px);
+            color: var(--text);
+            font-weight: 700;
+            line-height: 1.5;
+        }
+
+        .side-label .badge span {
+            display: block;
+            font-size: 9px;
+            color: var(--text-dim);
+        }
+
+        /* ── 矩阵主体（四象限） ── */
+        .matrix-grid {
+            flex: 1 1 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto auto;
+            gap: clamp(6px, 1.5vw, 14px);
+            position: relative;
+        }
+
+        /* 中轴线（交叉线） */
+        .matrix-grid::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background:
+                linear-gradient(to right, transparent calc(50% - 0.5px), rgba(255, 255, 255, 0.1) calc(50% - 0.5px), rgba(255, 255, 255, 0.1) calc(50% + 0.5px), transparent calc(50% + 0.5px)),
+                linear-gradient(to bottom, transparent calc(50% - 0.5px), rgba(255, 255, 255, 0.1) calc(50% - 0.5px), rgba(255, 255, 255, 0.1) calc(50% + 0.5px), transparent calc(50% + 0.5px));
+            z-index: 0;
+        }
+
+        /* ── 象限卡片 ── */
+        .quadrant {
+            border-radius: 14px;
+            padding: clamp(12px, 2.5vw, 24px);
+            display: flex;
+            flex-direction: column;
+            border: 2px solid;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .quadrant:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .q-title {
+            font-size: clamp(13px, 2.5vw, 20px);
+            font-weight: 800;
+            margin-bottom: clamp(6px, 1.5vw, 12px);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            line-height: 1.3;
+        }
+
+        .q-desc {
+            font-size: clamp(11px, 1.8vw, 13px);
+            color: var(--text);
+            line-height: 1.6;
+            margin-bottom: clamp(8px, 1.5vw, 16px);
+            flex: 1;
+        }
+
+        .q-action {
+            background: rgba(0, 0, 0, 0.3);
+            padding: clamp(8px, 1.5vw, 12px);
+            border-radius: 8px;
+            font-size: clamp(11px, 1.8vw, 13px);
+            border-left: 4px solid;
+            font-weight: 500;
+            line-height: 1.6;
+        }
+
+        /* 四象限颜色配置 */
+        /* 左列（陪伴型）: 横跨上下两行 */
+        .q-com {
+            grid-column: 1;
+            grid-row: 1 / 3;
+            background: var(--z-com);
+            border-color: var(--z-com-border);
+        }
+
+        .q-com .q-title {
+            color: #fcd34d;
+        }
+
+        .q-com .q-action {
+            border-color: var(--z-com-border);
+            color: #fde68a;
+        }
+
+        /* 右上（专业型） */
+        .q-pro {
+            grid-column: 2;
+            grid-row: 1;
+            background: var(--z-pro);
+            border-color: var(--z-pro-border);
+        }
+
+        .q-pro .q-title {
+            color: #d8b4fe;
+        }
+
+        .q-pro .q-action {
+            border-color: var(--z-pro-border);
+            color: #e9d5ff;
+        }
+
+        /* 右下（探索型） */
+        .q-exp {
+            grid-column: 2;
+            grid-row: 2;
+            background: var(--z-exp);
+            border-color: var(--z-exp-border);
+        }
+
+        .q-exp .q-title {
+            color: #6ee7b7;
+        }
+
+        .q-exp .q-action {
+            border-color: var(--z-exp-border);
+            color: #a7f3d0;
+        }
+
+        /* ══════════════════════════════
+           危险区域
+        ══════════════════════════════ */
+        .danger-zone-container {
+            margin-top: clamp(24px, 4vw, 40px);
+            position: relative;
+        }
+
+        .danger-line {
+            height: 4px;
+            background-image: linear-gradient(to right, #ef4444 50%, transparent 50%);
+            background-size: 20px 100%;
+            box-shadow: 0 0 15px #ef4444;
+            margin-bottom: clamp(20px, 3vw, 32px);
+            position: relative;
+        }
+
+        .danger-line-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #7f1d1d;
+            color: #fca5a5;
+            font-size: clamp(10px, 2vw, 14px);
+            font-weight: 800;
+            padding: 4px 14px;
+            border-radius: 12px;
+            letter-spacing: 1px;
+            border: 1px solid #ef4444;
+            box-shadow: 0 5px 15px rgba(239, 68, 68, 0.3);
+            white-space: nowrap;
+        }
+
+        .q-danger {
+            background: var(--z-danger);
+            border: 2px dashed var(--z-danger-border);
+            border-radius: 16px;
+            padding: clamp(16px, 3vw, 24px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .q-danger-left {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .q-danger-left h2 {
+            color: #fca5a5;
+            font-size: clamp(15px, 3vw, 22px);
+            font-weight: 800;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            line-height: 1.3;
+        }
+
+        .q-danger-left p {
+            color: #f87171;
+            font-size: clamp(11px, 2vw, 14px);
+            line-height: 1.6;
+        }
+
+        .danger-action {
+            background: #7f1d1d;
+            border: 1px solid #ef4444;
+            color: white;
+            padding: clamp(10px, 2vw, 16px) clamp(16px, 3vw, 30px);
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: clamp(14px, 2.5vw, 18px);
+            letter-spacing: 2px;
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+            text-align: center;
+            flex-shrink: 0;
+            white-space: nowrap;
+        }
+
+        /* ══════════════════════════════
+           移动端适配（≤ 600px）
+        ══════════════════════════════ */
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+
+            .chart-container {
+                border-radius: 14px;
+                padding: 18px 14px;
+            }
+
+            /* 矩阵行改为纵向堆叠 */
+            .matrix-row {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            /* 左右标签变上下排，改用横排 */
+            .side-label {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+            }
+
+            .side-label .arrow-hint {
+                font-size: 13px;
+                color: var(--text-dim);
+            }
+
+            /* 矩阵网格在移动端改为单列堆叠 */
+            .matrix-grid {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto;
+            }
+
+            /* 移动端取消跨行 */
+            .q-com {
+                grid-column: 1;
+                grid-row: auto;
+            }
+
+            .q-pro {
+                grid-column: 1;
+                grid-row: auto;
+            }
+
+            .q-exp {
+                grid-column: 1;
+                grid-row: auto;
+            }
+
+            /* 移动端隐藏轴中心线（网格布局下无意义） */
+            .matrix-grid::before {
+                display: none;
+            }
+
+            /* 危险区域改为纵向 */
+            .q-danger {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+
+            .q-danger-left {
+                min-width: unset;
+            }
+
+            .danger-action {
+                width: 100%;
+            }
+
+            /* 危险线文字在小屏截短 */
+            .danger-line-text {
+                font-size: 9px;
+                padding: 3px 8px;
+                white-space: normal;
+                text-align: center;
+                width: 80%;
+            }
+        }
+
+        /* ══ 顶部导航栏 ══ */
+        .site-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(15, 17, 26, 0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+            padding: 0 clamp(12px, 4vw, 32px);
+        }
+
+        .site-nav-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            height: 52px;
+            gap: 6px;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .site-nav-inner::-webkit-scrollbar {
+            display: none;
+        }
+
+        .nav-logo {
+            font-size: 13px;
+            font-weight: 800;
+            color: #f97316;
+            white-space: nowrap;
+            margin-right: 12px;
+            text-decoration: none;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-divider {
+            width: 1px;
+            height: 18px;
+            background: rgba(255, 255, 255, 0.12);
+            margin: 0 6px;
+            flex-shrink: 0;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #94a3b8;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .nav-link:hover {
+            color: #e2e8f0;
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        .nav-link.active {
+            color: #fff;
+            background: rgba(249, 115, 22, 0.18);
+            border: 1px solid rgba(249, 115, 22, 0.35);
+        }
+
+        /* ══ 底部 Footer ══ */
+        .site-footer {
+            margin-top: clamp(32px, 5vw, 60px);
+            padding: clamp(24px, 4vw, 40px) clamp(16px, 4vw, 40px);
+            border-top: 1px solid rgba(255, 255, 255, 0.07);
+            text-align: center;
+        }
+
+        .site-footer p {
+            font-size: 12px;
+            color: #475569;
+            margin-bottom: 16px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .footer-links a {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #94a3b8;
+            text-decoration: none;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: #e2e8f0;
+            border-color: rgba(249, 115, 22, 0.4);
+            background: rgba(249, 115, 22, 0.08);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 顶部导航栏 -->
+    <nav class="site-nav" aria-label="喜播集团内部文件导航">
+        <div class="site-nav-inner">
+            <a href="index.html" class="nav-logo">喜播集团 ⚡</a>
+            <div class="nav-divider"></div>
+            <a href="index.html" class="nav-link">🏠 战略总纲</a>
+            <a href="segmentation_radarmap.html" class="nav-link active">📊 用户分层雷达图</a>
+            <a href="d_user_optimization.html" class="nav-link">🔬 D类用户风控复盘</a>
+            <a href="ue_funnel_simulator.html" class="nav-link">📈 漏斗UE诊断器</a>
+        </div>
+    </nav>
+
+    <div class="chart-container">
+        <!-- 标题 -->
+        <div class="header">
+            <h1>喜播集团 · 用户分层与防线作战雷达图</h1>
+            <p>基于第一性原理重构：从「用户能力基础」与「核心诉求」推导交付体系</p>
+        </div>
+
+        <!-- Y轴顶部标签 -->
+        <div class="axis-label-bar">
+            <span>⬆️ Y轴：现实认知与基础能力</span>
+            <div class="badge">能力强 / 认知高<span>极度理性专业</span></div>
+        </div>
+
+        <!-- 中间行：左标签 + 矩阵 + 右标签 -->
+        <div class="matrix-row">
+            <!-- 左侧标签 -->
+            <div class="side-label">
+                <span class="arrow-hint" aria-hidden="true">⬅️</span>
+                <div class="badge">
+                    偏向 情绪/陪伴
+                    <span>情感依托</span>
+                </div>
+            </div>
+
+            <!-- 四象限矩阵 -->
+            <div class="matrix-grid">
+                <!-- C层：陪伴型（左列跨上下） -->
+                <div class="quadrant q-com">
+                    <div class="q-title">☁️ C层：陪伴/打卡型</div>
+                    <div class="q-desc">
+                        <strong>核心画像：</strong>跨越全认知段。关注群里热不热闹、老师同伴好不好，本质是寻找兴趣寄托、打卡伙伴与情绪宣泄口，对变现没有急迫要求。
+                    </div>
+                    <div class="q-action">
+                        <strong>🎯 交付处方：陪伴订阅制</strong><br>
+                        绝对不造梦、不承诺硬变现。卖轻量级专属群、打卡督学体验。主打长期陪伴与社群粘性，客单低、复购高、退费率极低。
+                    </div>
+                </div>
+
+                <!-- A层：专业进阶型（右上） -->
+                <div class="quadrant q-pro">
+                    <div class="q-title">🚀 A层：专业进阶型</div>
+                    <div class="q-desc">
+                        <strong>核心画像：</strong>自带专业底子（播音/剪辑等），极度理性，只看重资源或最终结果。买课目的明确，就是为了接单和能力复用。
+                    </div>
+                    <div class="q-action">
+                        <strong>🎯 交付处方：高溢价资源包</strong><br>
+                        卖硬核干货进阶课与商机派单池。高客单价+高提成机制。承诺"能力复用与直接派单收益对齐"。
+                    </div>
+                </div>
+
+                <!-- B层：副业探索型（右下） -->
+                <div class="quadrant q-exp">
+                    <div class="q-title">🌱 B层：副业探索型</div>
+                    <div class="q-desc">
+                        <strong>核心画像：</strong>零基础小白。眼馋高收入案例，极度渴望搞钱，对行业和个人执行力一无所知。最容易受到高客单"造梦"蛊惑并暴雷。
+                    </div>
+                    <div class="q-action">
+                        <strong>🎯 交付处方：轻度入门体验</strong><br>
+                        严禁前端收割造梦！降维提供低门槛体系课入门。交付承诺仅限于"花小钱跑通流程体验0到1"。以此筛选并转化出真正的专业玩家。
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧标签 -->
+            <div class="side-label">
+                <div class="badge">
+                    偏向 搞钱/副业
+                    <span>利益变现</span>
+                </div>
+                <span class="arrow-hint" aria-hidden="true">➡️</span>
+            </div>
+        </div>
+
+        <!-- Y轴底部 + X轴标题 -->
+        <div class="axis-label-bar" style="margin-top: 4px; flex-wrap: wrap; row-gap: 6px;">
+            <div class="badge">能力弱 / 认知低<span>零基础偏盲从</span></div>
+            <span>⬇️ Y轴 &nbsp;|&nbsp; ⬅️ X轴：核心诉求驱动力 ➡️</span>
+        </div>
+
+        <!-- D层：绝对隔离危险区 -->
+        <div class="danger-zone-container">
+            <div class="danger-line">
+                <div class="danger-line-text">🚨 绝对风控隔离红线（全业务端前端熔断） 🚨</div>
+            </div>
+
+            <div class="q-danger">
+                <div class="q-danger-left">
+                    <h2>☠️ D层：高危拦截型（原大黑）</h2>
+                    <p>
+                        <strong>识别雷区：</strong>大额负债逾期、疾病求医等遭遇现实困境者；抱有一夜暴富极高预期者；具有外部维权（12315/黑猫）历史者。<br>
+                        <strong>危险本质：</strong>既不为学技能，也不图交朋友，要的是"救命钱"和零风险套利。强行收单必然招致10倍违约反噬（退费+公关灾难）。
+                    </p>
+                </div>
+                <div class="danger-action">
+                    前端一票否决<br>禁止收款转账
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部 Footer -->
+    <footer class="site-footer">
+        <p>喜播集团 · 战略决策支持体系 · 2026年3月</p>
+        <nav class="footer-links" aria-label="相关页面">
+            <a href="index.html">🏠 战略总纲</a>
+            <a href="d_user_optimization.html">🔬 D类用户风控复盘</a>
+            <a href="ue_funnel_simulator.html">📈 漏斗UE诊断器</a>
+        </nav>
+    </footer>
+
+</body>
+
+</html>

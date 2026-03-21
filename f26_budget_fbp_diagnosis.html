@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>F26预算案 FBP 深度诊断报告</title>
+  <style>
+    /* 微信公众号文章风格核心 CSS */
+    :root {
+      --primary: #F86442;
+      /* 喜马拉雅橙 */
+      --text-main: #333333;
+      --text-content: #444444;
+      --text-desc: #777777;
+      --bg-highlight: #FFF5F2;
+      --green-safe: #07C160;
+      --red-warn: #FA5151;
+      --dark-gray: #1E1E1E;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #F7F8FA;
+      font-family: -apple-system-font, system-ui, "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei UI", "Microsoft YaHei", Arial, sans-serif;
+      color: var(--text-main);
+      line-height: 1.8;
+      letter-spacing: 0.03em;
+      padding-bottom: 80px;
+    }
+
+    .article-container {
+      max-width: 677px;
+      margin: 20px auto;
+      background: #FFFFFF;
+      padding: 40px 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    /* 顶部导航 */
+    .top-badge {
+      display: inline-block;
+      background: var(--dark-gray);
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* 标题区 */
+    .header {
+      margin-bottom: 40px;
+      border-bottom: 1px solid #EFEFEF;
+      padding-bottom: 20px;
+    }
+
+    .title {
+      font-size: 26px;
+      font-weight: 800;
+      line-height: 1.4;
+      margin-bottom: 15px;
+      color: var(--text-main);
+    }
+
+    .meta {
+      font-size: 14px;
+      color: var(--text-desc);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .author {
+      color: var(--red-warn);
+      font-weight: 700;
+    }
+
+    /* 正文 */
+    p {
+      margin-bottom: 1.6em;
+      font-size: 16px;
+      color: var(--text-content);
+      text-align: justify;
+    }
+
+    strong {
+      color: #000;
+      font-weight: 700;
+    }
+
+    /* 警告/强调框 */
+    .alert-box {
+      margin: 30px 0;
+      padding: 24px;
+      background-color: #FFF3F3;
+      border-left: 4px solid var(--red-warn);
+      border-radius: 4px;
+    }
+
+    .alert-box h4 {
+      color: var(--red-warn);
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+
+    /* 章节标题 */
+    h2 {
+      display: flex;
+      align-items: center;
+      margin: 50px 0 25px;
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    h2::before {
+      content: "";
+      display: inline-block;
+      width: 4px;
+      height: 20px;
+      background: var(--dark-gray);
+      margin-right: 12px;
+      border-radius: 2px;
+    }
+
+    h3 {
+      font-size: 17px;
+      margin: 35px 0 15px;
+      color: var(--text-main);
+      font-weight: 700;
+    }
+
+    /* 数据对比卡片 */
+    .data-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 15px;
+      margin: 25px 0;
+    }
+
+    .data-card {
+      padding: 20px;
+      background: #F8F9FA;
+      border-radius: 8px;
+      border: 1px solid #EDEDED;
+    }
+
+    .data-title {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text-main);
+    }
+
+    .data-conflict {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px dashed #DDD;
+    }
+
+    .data-down {
+      color: var(--green-safe);
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .data-up {
+      color: var(--red-warn);
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    /* 执行指令列表 */
+    .action-list {
+      margin: 30px 0;
+    }
+
+    .action-item {
+      position: relative;
+      padding-left: 45px;
+      margin-bottom: 25px;
+    }
+
+    .action-item::before {
+      content: "指令";
+      position: absolute;
+      left: 0;
+      top: 2px;
+      background: var(--dark-gray);
+      color: white;
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .action-item h4 {
+      font-size: 16px;
+      color: var(--text-main);
+      margin-bottom: 8px;
+    }
+
+    /* 移动端适配 */
+    @media (max-width: 600px) {
+      .title {
+        font-size: 24px;
+      }
+
+      .article-container {
+        padding: 25px 16px;
+        margin: 0;
+        border-radius: 0;
+      }
+    }
+
+    /* ══ 顶部导航栏 ══ */
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(248, 249, 250, 0.97);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid #E8E8E8;
+      padding: 0 16px;
+    }
+
+    .site-nav-inner {
+      max-width: 677px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      height: 48px;
+      gap: 4px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .site-nav-inner::-webkit-scrollbar {
+      display: none;
+    }
+
+    .nav-logo {
+      font-size: 13px;
+      font-weight: 800;
+      color: #1E1E1E;
+      white-space: nowrap;
+      margin-right: 10px;
+      text-decoration: none;
+    }
+
+    .nav-divider {
+      width: 1px;
+      height: 18px;
+      background: #DDD;
+      margin: 0 6px;
+      flex-shrink: 0;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #777;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+
+    .nav-link:hover {
+      color: #1E1E1E;
+      background: #F0F0F0;
+    }
+
+    .nav-link.active {
+      color: var(--red-warn);
+      background: rgba(250, 81, 81, 0.08);
+      border: 1px solid rgba(250, 81, 81, 0.25);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- 顶部导航栏 -->
+  <nav class="site-nav" aria-label="喜播集团内部文件导航">
+    <div class="site-nav-inner">
+      <a href="index.html" class="nav-logo">喜播集团 ⚡</a>
+      <div class="nav-divider"></div>
+      <a href="index.html" class="nav-link">🏠 战略总纲</a>
+      <a href="segmentation_radarmap.html" class="nav-link">📊 用户分层雷达图</a>
+      <a href="d_user_optimization.html" class="nav-link">🔬 D类用户风控复盘</a>
+      <a href="ue_funnel_simulator.html" class="nav-link">📈 漏斗UE诊断器</a>
+      <a href="f26_budget_fbp_diagnosis.html" class="nav-link active">💰 F26预算诊断</a>
+    </div>
+  </nav>
+
+  <div class="article-container">
+    <div class="top-badge">F26 财务 BP 审查报告</div>
+
+    <div class="header">
+      <h1 class="title">F26 预算案一票否决：关于“慢性自杀计划”的紧急熔断干预</h1>
+      <div class="meta">
+        <span class="author">财务 BP / VP (顶尖合伙人视角)</span>
+        <span>密级：高管可见</span>
+      </div>
+    </div>
+
+    <div class="alert-box">
+      <h4>🚨 核心诊断结论</h4>
+      <p style="margin-bottom: 0;">这不是一份“预算表”，这是一份**“慢性自杀计划”**。作为财务 BP，我**绝对拒绝**在这份 F26
+        预算上签字。整份预算逻辑呈现出极其危险的“分裂”：负责造血的业务端在悬崖式萎缩，而抽血的组织底盘却还在疯狂膨胀！</p>
+    </div>
+
+    <section>
+      <h2>一、 寻找“失血大动脉” (Bleeding Points)</h2>
+      <p>业务线一定会用“大环境不好导致有声线收入滑坡”来做掩护。但真正的致命伤是以下两个：</p>
+
+      <div class="data-grid">
+        <div class="data-card">
+          <div class="data-title">1. 失控的“死亡交叉”：收入崩塌 vs 编制膨胀</div>
+          <p style="margin-bottom:0; font-size:14px;">在营收直接减少过 4 亿的恶劣环境下，竟然还要多发 2000 万的工资和 400
+            万的房租？是谁在默许主营业务如此萎缩的情况下，还在盲目加人和涨薪？</p>
+          <div class="data-conflict">
+            <div>
+              <span style="font-size:12px; color:#666; display:block;">总收入预期 (YOY)</span>
+              <span class="data-down">↓ 45%</span>
+            </div>
+            <div>
+              <span style="font-size:12px; color:#666; display:block;">人力成本预算 (YOY)</span>
+              <span class="data-up">↑ 31%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="data-card">
+          <div class="data-title">2. 新业务的“流血式虚假繁荣”</div>
+          <p style="margin-bottom:0; font-size:14px;">业务线拿着 AI 线 93% 和 IP 1034% 的逆天收入增幅邀功。但看底层的 UE
+            率（真毛利），这根本就是用极端烧钱补贴换取虚假流水，加速抽干公司现金流。</p>
+          <div class="data-conflict">
+            <div>
+              <span style="font-size:12px; color:#666; display:block;">IP线 收入增幅</span>
+              <span class="data-up">↑ 1034%</span>
+            </div>
+            <div>
+              <span style="font-size:12px; color:#666; display:block;">IP线 UE率 (毛利)</span>
+              <span class="data-down">从 42% 跌至 17%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>二、 算清“生死线” (Survival Line)</h2>
+      <p>你们以为今年只是账面上的“战略性亏损 662 万”？错。公司的造血主干已经被行政与人力包袱彻底压断了。</p>
+      <div
+        style="background: #1E1E1E; color: white; padding: 20px; border-radius: 8px; margin: 20px 0; text-align: center;">
+        <p style="margin: 0; font-size: 15px; color: #CCC;">F26 全年总 UE（真毛利）被腰斩至 11,345 万</p>
+        <p style="margin: 8px 0; font-size: 22px; font-weight: 800; color: var(--red-warn);">永远跑不过</p>
+        <p style="margin: 0; font-size: 15px; color: #CCC;">全年固定成本（房租、人力刚性负债）12,007 万</p>
+      </div>
+      <p><strong>生死线结论：</strong>这意味着，哪怕今年业务线没有产生一笔坏账，大家打下的所有江山，**连养活目前编制里的这群人都不够！** 盈利模型已被彻底击穿。</p>
+    </section>
+
+    <section>
+      <h2>三、 手术刀：3 条强制干预指令</h2>
+      <p>这份预算必须打回重做。不落实以下底线动作，财务不批复任何新增额度：</p>
+
+      <div class="action-list">
+        <div class="action-item">
+          <h4>暴力切断人力扩张</h4>
+          <p>立刻冻结全公司新增 Headcount。既然营收掉到了 F25 的一半，人力成本必须从预算的 8980 万**强行砍回** F25 年 6800 万的水位边界内。裁撤低效冗余，或高管带头降薪，必须匹配萎缩的盘子。
+          </p>
+        </div>
+
+        <div class="action-item">
+          <h4>启动“ROI 动态熔断”</h4>
+          <p>停止 AI 和 IP 孵化通过买量做大营收的自残行为。设定硬性盈利门槛：如果 IP 线单月 UE 率不足 **30%**，AI 线不足 **25%**，财务立刻触发熔断，冻结这两条线 50% 以上的前端投放预算。
+          </p>
+        </div>
+
+        <div class="action-item">
+          <h4>全盘更改考核锚点</h4>
+          <p>彻底叫停各业务线对“Topline（总营收大小）”的追逐。高管与一号位的绩效全面挂钩底层的 **“净 UE 贡献绝对值”**。扼杀为了冲量不择手段的前端动作，守住真金白银的利润底线。</p>
+        </div>
+      </div>
+    </section>
+
+    <div style="margin-top: 60px; padding-top: 30px; border-top: 1px solid #EFEFEF; text-align: center;">
+      <p style="font-size:12px; color:#999; margin-bottom: 16px;">喜播集团 · 财务BP审查报告 · 2026年</p>
+      <div style="display:flex; justify-content:center; flex-wrap:wrap; gap:10px;">
+        <a href="index.html" style="color: #576B95; text-decoration: none; font-size: 13px; font-weight: 600;">🏠
+          战略总纲</a>
+        <a href="segmentation_radarmap.html"
+          style="color: #576B95; text-decoration: none; font-size: 13px; font-weight: 600;">📊 用户分层雷达图</a>
+        <a href="d_user_optimization.html"
+          style="color: #576B95; text-decoration: none; font-size: 13px; font-weight: 600;">🔬 D类粁户风控复盘</a>
+        <a href="ue_funnel_simulator.html"
+          style="color: #576B95; text-decoration: none; font-size: 13px; font-weight: 600;">📈 漏斗UE诊断器</a>
+      </div>
+    </div>
+
+  </div>
+</body>
+
+</html>

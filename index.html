@@ -3,293 +3,433 @@
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>喜播集团 2026-2028 长期战略规划 (SP)</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>喜播集团 2026-2028 全员战略共识</title>
   <style>
+    /* 微信公众号文章风格核心 CSS */
     :root {
       --primary: #F86442;
-      --primary-light: #FFF5F2; /* 更浅的背景色 */
-      --text: #333333;
-      --text-muted: #666666;
-      --bg: #FFFFFF;
-      --bg-alt: #F9FAFB;
-      --danger: #E63946;
-      --success: #2A9D8F;
-      --radius: 12px; /* 减小圆角，更显干练 */
-      --border: 1px solid #EEEEEE;
+      /* 喜马拉雅橙 */
+      --text-main: #333333;
+      --text-content: #444444;
+      --text-desc: #777777;
+      --bg-highlight: #FFF5F2;
+      --green-safe: #07C160;
+      --red-warn: #FA5151;
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
     body {
-      font-family: 'Inter', -apple-system, sans-serif;
-      background-color: var(--bg);
-      color: var(--text);
-      line-height: 1.5;
-      -webkit-font-smoothing: antialiased;
+      background-color: #FFFFFF;
+      font-family: -apple-system-font, system-ui, "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei UI", "Microsoft YaHei", Arial, sans-serif;
+      color: var(--text-main);
+      line-height: 1.8;
+      letter-spacing: 0.03em;
+      padding-bottom: 80px;
     }
 
-    .container { max-width: 900px; margin: 0 auto; padding: 0 1.5rem; }
+    .article-container {
+      max-width: 677px;
+      margin: 0 auto;
+      padding: 30px 20px;
+    }
 
-    /* Navigation */
-    nav {
-      position: sticky; top: 0;
-      background: white;
-      z-index: 1000;
-      border-bottom: var(--border);
-      padding: 1rem 0;
-    }
-    .nav-inner { display: flex; justify-content: space-between; align-items: center; }
-    .nav-logo { font-weight: 800; font-size: 1.25rem; color: var(--primary); }
-    .nav-links { display: flex; gap: 1.5rem; }
-    .nav-links a { text-decoration: none; color: var(--text); font-weight: 600; font-size: 0.9rem; }
-    .nav-links a.highlight { color: var(--primary); }
-
-    /* Hero */
-    .hero {
-      padding: 4rem 0 3rem;
-      text-align: center;
-      background-color: var(--primary-light);
-    }
-    .hero-meta {
-      display: inline-block;
-      color: var(--primary);
-      font-weight: 700;
-      font-size: 0.75rem;
-      margin-bottom: 1rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-    .hero-title {
-      font-size: 2.25rem;
-      font-weight: 800;
-      line-height: 1.2;
-      margin-bottom: 1rem;
-    }
-    .hero-title span { color: var(--primary); }
-    .hero-desc {
-      font-size: 1.1rem;
-      color: var(--text-muted);
-      max-width: 600px;
-      margin: 0 auto 2rem;
-    }
-    .btn {
+    /* 顶部导航 */
+    .top-badge {
       display: inline-block;
       background: var(--primary);
       color: white;
-      padding: 0.85rem 2rem;
-      border-radius: 6px;
-      text-decoration: none;
+      font-size: 11px;
       font-weight: 700;
-      font-size: 1rem;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 15px;
+      text-transform: uppercase;
     }
 
-    /* General Section */
-    .section { padding: 4rem 0; border-bottom: var(--border); }
-    .section-title {
-      font-size: 1.75rem;
-      font-weight: 800;
-      margin-bottom: 2.5rem;
-      text-align: left;
+    /* 标题区 */
+    .header {
+      margin-bottom: 40px;
     }
-    .section:last-of-type { border-bottom: none; }
 
-    /* Truth Card */
-    .truth-card {
-      background: #FFF9F9;
-      border: 1px solid #FFEBEB;
-      padding: 2rem;
-      border-radius: var(--radius);
+    .title {
+      font-size: 26px;
+      font-weight: 700;
+      line-height: 1.4;
+      margin-bottom: 15px;
+      color: var(--text-main);
     }
-    .truth-header { color: var(--danger); font-weight: 800; margin-bottom: 1rem; font-size: 1.1rem; }
-    .truth-content { font-size: 1rem; color: #444; }
 
-    /* Timeline */
-    .timeline { display: flex; flex-direction: column; gap: 1.5rem; }
-    .timeline-item {
-      padding: 1.5rem;
-      border: var(--border);
-      border-radius: var(--radius);
+    .meta {
+      font-size: 14px;
+      color: var(--text-desc);
+      margin-bottom: 25px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
-    .timeline-year { color: var(--primary); font-weight: 800; font-size: 1.2rem; margin-bottom: 0.5rem; }
-    .timeline-keyword { font-weight: 700; margin-bottom: 0.75rem; }
-    .timeline-list { list-style: none; color: var(--text-muted); font-size: 0.9rem; }
-    .timeline-list li { margin-bottom: 0.5rem; padding-left: 1.2rem; position: relative; }
-    .timeline-list li::before { content: '→'; position: absolute; left: 0; color: var(--primary); }
 
-    /* Cards */
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-    .card {
-      padding: 2rem;
-      border: var(--border);
-      border-radius: var(--radius);
-      text-align: left;
+    .author {
+      color: #576B95;
+      font-weight: 600;
     }
-    .card-title { font-size: 1.25rem; font-weight: 800; margin-bottom: 1rem; }
-    .card-badge { font-size: 0.75rem; font-weight: 700; color: var(--primary); margin-bottom: 0.5rem; display: block; }
-    .fuel-box { margin-top: 1.5rem; padding: 1rem; border-radius: 8px; font-weight: 700; font-size: 0.9rem; background: var(--bg-alt); }
 
-    /* Table */
-    .table-wrapper { overflow-x: auto; border: var(--border); border-radius: var(--radius); }
-    table { width: 100%; border-collapse: collapse; min-width: 500px; }
-    th { background: var(--bg-alt); padding: 1rem; font-size: 0.85rem; text-align: left; color: var(--text-muted); }
-    td { padding: 1rem; border-top: var(--border); font-size: 0.95rem; }
-    .tag { background: var(--primary-light); color: var(--primary); padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.8rem; font-weight: 700; }
+    /* 正文 */
+    p {
+      margin-bottom: 1.6em;
+      font-size: 16px;
+      color: var(--text-content);
+      text-align: justify;
+    }
 
-    /* Insights Dark */
-    .insights-dark { background: #111827; color: white; padding: 3rem 2rem; border-radius: var(--radius); }
-    .insight-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; margin-top: 2rem; }
-    .insight-item h4 { color: #FFA588; margin-bottom: 0.75rem; font-size: 1.1rem; }
-    .insight-item p { font-size: 0.95rem; opacity: 0.8; }
+    strong {
+      color: #000;
+      font-weight: 700;
+    }
 
-    footer { text-align: center; padding: 3rem 0; color: var(--text-muted); font-size: 0.8rem; border-top: var(--border); }
+    /* 引用/强调框 */
+    blockquote {
+      margin: 30px 0;
+      padding: 24px;
+      background-color: var(--bg-highlight);
+      border-radius: 12px;
+      position: relative;
+    }
 
-    /* Mobile Adaptations */
+    blockquote::before {
+      content: "“";
+      position: absolute;
+      top: 10px;
+      left: 15px;
+      font-size: 40px;
+      color: var(--primary);
+      opacity: 0.2;
+    }
+
+    /* 章节标题 */
+    h2 {
+      display: flex;
+      align-items: center;
+      margin: 50px 0 25px;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    h2::before {
+      content: "";
+      display: inline-block;
+      width: 4px;
+      height: 20px;
+      background: var(--primary);
+      margin-right: 12px;
+      border-radius: 2px;
+    }
+
+    h3 {
+      font-size: 17px;
+      margin: 35px 0 15px;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+    }
+
+    h3 svg {
+      width: 18px;
+      height: 18px;
+      margin-right: 8px;
+      fill: currentColor;
+    }
+
+    /* 战略路线图 */
+    .roadmap {
+      margin: 30px 0;
+      padding: 20px;
+      border: 1px solid #F0F0F0;
+      border-radius: 12px;
+    }
+
+    .step {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .step-num {
+      width: 24px;
+      height: 24px;
+      background: var(--primary);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      flex-shrink: 0;
+      margin-top: 4px;
+    }
+
+    .step-content b {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 16px;
+    }
+
+    .step-content span {
+      font-size: 14px;
+      color: var(--text-desc);
+    }
+
+    /* 取舍卡片 */
+    .tradeoff-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 25px 0;
+    }
+
+    .tradeoff-card {
+      padding: 15px;
+      border-radius: 8px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .card-take {
+      background: #EFFFF6;
+      color: #07C160;
+      border: 1px solid #D1F2E1;
+    }
+
+    .card-give {
+      background: #F7F7F7;
+      color: var(--text-desc);
+      border: 1px solid #EDEDED;
+      text-decoration: line-through;
+    }
+
+    /* 底部签字 */
+    .footer {
+      margin-top: 60px;
+      padding-top: 30px;
+      border-top: 1px solid #F0F0F0;
+      text-align: center;
+    }
+
+    .footer p {
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-desc);
+      margin-bottom: 8px;
+    }
+
+    /* 移动端适配 */
     @media (max-width: 600px) {
-      .hero-title { font-size: 1.75rem; }
-      .grid-2 { grid-template-columns: 1fr; }
-      .section-title { font-size: 1.5rem; }
-      .container { padding: 0 1rem; }
-      .hero { padding: 3rem 0 2rem; }
+      .title {
+        font-size: 24px;
+      }
+
+      .article-container {
+        padding: 20px 16px;
+      }
+
+      .tradeoff-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ══ 顶部导航栏 ══ */
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid #F0F0F0;
+      padding: 0 16px;
+    }
+
+    .site-nav-inner {
+      max-width: 677px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      height: 48px;
+      gap: 4px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .site-nav-inner::-webkit-scrollbar {
+      display: none;
+    }
+
+    .nav-logo {
+      font-size: 13px;
+      font-weight: 800;
+      color: #F86442;
+      white-space: nowrap;
+      margin-right: 10px;
+      text-decoration: none;
+    }
+
+    .nav-divider {
+      width: 1px;
+      height: 18px;
+      background: #E0E0E0;
+      margin: 0 6px;
+      flex-shrink: 0;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #777;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+
+    .nav-link:hover {
+      color: #333;
+      background: #F5F5F5;
+    }
+
+    .nav-link.active {
+      color: #F86442;
+      background: rgba(248, 100, 66, 0.08);
+      border: 1px solid rgba(248, 100, 66, 0.3);
     }
   </style>
 </head>
 
 <body>
-  <nav>
-    <div class="container nav-inner">
-      <div class="nav-logo">XIBO STRATEGY</div>
-      <div class="nav-links">
-        <a href="/customer/consumertype.html" class="highlight">用户分层 👥</a>
-        <a href="/strategy/user_segmentation_workshop.html">高管会议 📅</a>
-      </div>
+
+  <!-- 顶部导航栏 -->
+  <nav class="site-nav" aria-label="喜播集团内部文件导航">
+    <div class="site-nav-inner">
+      <a href="index.html" class="nav-logo">喜播集团 ⚡</a>
+      <div class="nav-divider"></div>
+      <a href="index.html" class="nav-link active">🏠 战略总纲</a>
+      <a href="segmentation_radarmap.html" class="nav-link">📊 用户分层雷达图</a>
+      <a href="d_user_optimization.html" class="nav-link">🔬 D类用户风控复盘</a>
+      <a href="ue_funnel_simulator.html" class="nav-link">📈 漏斗UE诊断器</a>
     </div>
   </nav>
 
-  <header class="hero">
-    <div class="container">
-      <span class="hero-meta">STRATEGIC PLAN 2026-2028</span>
-      <h1 class="hero-title">喜播集团：从<span>“带伤飞行”</span>到<span>“长期健康”</span></h1>
-      <p class="hero-desc">
-        重塑以“用户真实改变”为核心的价值体系，帮助 1000 万女性成为家庭健康掌门人。
+  <div class="article-container">
+    <div class="top-badge">内部共识文件</div>
+
+    <div class="header">
+      <h1 class="title">喜播集团战略转型蓝图：从“带伤飞行”到“长期健康”的共识路径</h1>
+      <div class="meta">
+        <span>2026-03-20</span>
+        <span class="author">战略委员会</span>
+      </div>
+    </div>
+
+    <section>
+      <p><strong>前言：直面残酷真相，重塑团队共识</strong></p>
+      <p>每一位喜播伙伴，在展开 2026-2028 战略规划前，我们必须达成一个共识：我们的本质问题不是简单的“业务波动”，而是<strong>商业模式的升级挑战</strong>。</p>
+      <blockquote>
+        我们过去的繁荣在某种程度上依赖于“卖承诺”，而未来的生存与尊严将完全建立在“<strong>卖价值交付</strong>”之上。
+      </blockquote>
+    </section>
+
+    <section>
+      <h2>一、我们的愿景与使命</h2>
+      <p><strong>到 2028 年，喜播将转型成为：</strong></p>
+      <p style="font-size: 18px; color: var(--primary); font-weight: 700; text-align: center; margin: 20px 0;">
+        中国最值得信赖的“个人健康与幸福服务平台”<br>
+        帮助 1000 万女性成为家庭健康掌门人
       </p>
-      <a href="#vision" class="btn">了解战略</a>
-    </div>
-  </header>
-
-  <main class="container">
-    <section id="vision" class="section">
-      <div class="truth-card">
-        <div class="truth-header">🔴 残酷真相诊断</div>
-        <div class="truth-content">
-          当前核心问题是<strong>商业模式的原罪</strong>，即“卖承诺”而非“卖价值交付”。<br><br>
-          退费率 24%，交付严重脱节。战略核心必须是商业模式的根本重构。
-        </div>
-      </div>
+      <p>这不仅是一个商业数字，更是一份沉甸甸的社会责任。我们将通过“教育+健康”的双轮驱动，实现企业的长期健康增长。</p>
     </section>
 
-    <section id="roadmap" class="section">
-      <h2 class="section-title">战略三步走</h2>
-      <div class="timeline">
-        <div class="timeline-item">
-          <div class="timeline-year">2026</div>
-          <p class="timeline-keyword">“软着陆”：解毒第一曲线</p>
-          <ul class="timeline-list">
-            <li>实现“不暴雷”：退费率降至 < 15%</li>
-            <li>初步跑通第二曲线健康模式</li>
-          </ul>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-year">2027</div>
-          <p class="timeline-keyword">“双轮驱动”：健康业务爆发</p>
-          <ul class="timeline-list">
-            <li>第一曲线无毒化，健康业务占比 20%</li>
-          </ul>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-year">2028</div>
-          <p class="timeline-keyword">“新模式确立”：平台化运营</p>
-          <ul class="timeline-list">
-            <li>健康业务成为主导引擎，形成 AI 数据护城河</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <section id="flywheel" class="section">
-      <h2 class="section-title">飞轮对比</h2>
-      <div class="grid-2">
-        <div class="card">
-          <span class="card-badge">⚠️ 第一曲线</span>
-          <h3 class="card-title">毒飞轮</h3>
-          <p style="font-size: 0.9rem; color: var(--text-muted);">夸大承诺 → 高成交 → 交付缺口 → 投诉压制</p>
-          <div class="fuel-box" style="color: var(--danger);">燃料：消耗用户信任</div>
-        </div>
-        <div class="card">
-          <span class="card-badge">✅ 第二曲线</span>
-          <h3 class="card-title">健康飞轮</h3>
-          <p style="font-size: 0.9rem; color: var(--text-muted);">真实改善 → 真实见证 → 口碑传播 → 信任裂变</p>
-          <div class="fuel-box" style="color: var(--success);">燃料：积累用户信任</div>
-        </div>
-      </div>
-    </section>
-
-    <section id="vrio" class="section">
-      <h2 class="section-title">核心护城河</h2>
-      <div class="table-wrapper">
-        <table>
-          <thead>
-            <tr>
-              <th>资源/能力</th>
-              <th>评估</th>
-              <th>深度</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>10 万有声学员</td>
-              <td>核心资产，需通过顾问激活</td>
-              <td><span class="tag">深</span></td>
-            </tr>
-            <tr>
-              <td>顾问认证网络</td>
-              <td>分布式护城河，转型抓手</td>
-              <td><span class="tag">潜力</span></td>
-            </tr>
-            <tr>
-              <td>AI 数据资产</td>
-              <td>长期壁垒，规模化个性化</td>
-              <td><span class="tag">极深</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <section id="insights" class="section">
-      <div class="insights-dark">
-        <h2 style="font-size: 1.5rem; margin-bottom: 2rem;">战略非共识</h2>
-        <div class="insight-grid">
-          <div class="insight-item">
-            <h4>关于“不暴雷”</h4>
-            <p>通过**改变模式**而非加强风控。让承诺与交付一致，暴雷压力自然消失。</p>
+    <section>
+      <h2>二、转型三步走计划 (2026-2028)</h2>
+      <div class="roadmap">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <b>2026年：软着陆阶段</b>
+            <span>核心目标是“解毒”与“验证”。实现业务合规，退费率降至 15% 以下，开启第二曲线实验。</span>
           </div>
-          <div class="insight-item">
-            <h4>关于依从性</h4>
-            <p>教育的核心壁垒是**“依从性管理”**——谁能让用户坚持改变，谁才是赢家。</p>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <b>2027年：双轮驱动阶段</b>
+            <span>第一曲线业务彻底健康化，健康业务收入占比达 20%，3000 名认证顾问支撑起分布式服务网络。</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <b>2028年：新模式确立阶段</b>
+            <span>健康业务成为主导引擎，基于 AI 和大数据的个性化服务形成绝对护城河，平台化运营完全成型。</span>
           </div>
         </div>
       </div>
     </section>
-  </main>
 
-  <footer>
-    <div class="container">
-      <p>© 2026-2028 XIBO STRATEGY PLANNING</p>
+    <section>
+      <h2>三、核心飞轮：价值循环</h2>
+      <p>我们的成功不再取决于销售技巧，而取决于这个闭环的转速：</p>
+      <div
+        style="background: #F9F9F9; padding: 20px; border-radius: 8px; text-align: center; font-size: 15px; margin: 20px 0;">
+        <span style="color: var(--primary); font-weight: 700;">用户真实改变</span> →
+        <span style="color: #666;">产生真实见证</span> →
+        <span style="color: var(--green-safe); font-weight: 700;">形成信任裂变</span>
+      </div>
+      <p><strong>燃料：</strong> 我们不再消耗用户信任，我们要通过每一个真实案例去<strong>积累信任资本</strong>。</p>
+    </section>
+
+    <section>
+      <h2>四、关键取舍：我们坚持什么？</h2>
+      <p>战略就是选择。为了长期的健康，我们必须做出如下痛苦但坚定的取舍：</p>
+
+      <div class="tradeoff-grid">
+        <div class="tradeoff-card card-take"><b>坚持：</b> 用户真实价值</div>
+        <div class="tradeoff-card card-give"><b>放弃：</b> 单纯追逐短期利润</div>
+        <div class="tradeoff-card card-take"><b>坚持：</b> 交付与承诺一致</div>
+        <div class="tradeoff-card card-give"><b>放弃：</b> 过度承诺的销售行为</div>
+        <div class="tradeoff-card card-take"><b>坚持：</b> 多SKU稳健增长</div>
+        <div class="tradeoff-card card-give"><b>放弃：</b> 单一SKU盲目爆量风险</div>
+      </div>
+    </section>
+
+    <section>
+      <h2>五、写在最后：给全员的寄语</h2>
+      <p>AI 时代，内容是免费的。教育培训真正的壁垒是<strong>“依从性管理”</strong>——即我们是否有能力通过技术和网络，让用户坚持学完并产生改变。</p>
+      <p>这不仅仅是管理层的决定，更需要每一位班主任、每一位销售、每一位技术研发伙伴的全力以赴。<strong>我们要赢，更要赢得有尊严。</strong></p>
+    </section>
+
+    <div class="footer">
+      <p>喜播集团战略委员会</p>
+      <p>2026年3月 · 上海</p>
+      <div style="display: flex; justify-content: center; gap: 12px; margin-top: 20px; flex-wrap: wrap;">
+        <a href="segmentation_radarmap.html" style="color: #576B95; text-decoration: none; font-size: 13px;">📊
+          用户分层雷达图</a>
+        <a href="d_user_optimization.html" style="color: #576B95; text-decoration: none; font-size: 13px;">🔬
+          D类用户风控复盘</a>
+        <a href="ue_funnel_simulator.html" style="color: #576B95; text-decoration: none; font-size: 13px;">📈
+          漏斗UE诊断器</a>
+        <a href="http://w.xiboceo.com" style="color: #576B95; text-decoration: none; font-size: 13px;">🏠 返回外网首页</a>
+      </div>
     </div>
-  </footer>
+  </div>
 </body>
 
 </html>
