@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>核心技术高管面谈逻辑（内部机密）</title>
+    <style>
+        :root {
+            --primary: #2C3E50;
+            --secondary: #34495E;
+            --accent: #E74C3C;
+            --bg-color: #F8F9FA;
+            --text-main: #333333;
+            --text-muted: #7F8C8D;
+            --border-color: #E0E6ED;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.8;
+            padding: 40px 20px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #FFFFFF;
+            padding: 40px 50px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .header-tag {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 4px 12px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        h1 {
+            font-size: 28px;
+            color: var(--primary);
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .subtitle {
+            font-size: 15px;
+            color: var(--text-muted);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            font-size: 20px;
+            color: var(--primary);
+            margin-top: 40px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        h2::before {
+            content: "";
+            display: inline-block;
+            width: 5px;
+            height: 20px;
+            background-color: var(--accent);
+            margin-right: 12px;
+            border-radius: 2px;
+        }
+
+        .dialogue-box {
+            background-color: #F8FAFC;
+            border-left: 4px solid var(--secondary);
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 20px 0;
+        }
+
+        .dialogue-box strong {
+            display: block;
+            color: var(--secondary);
+            font-size: 14px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .dialogue-box p {
+            margin: 0;
+            font-size: 15px;
+            color: #4A5568;
+            font-style: italic;
+        }
+
+        .match-box {
+            margin-top: 15px;
+            padding-left: 15px;
+        }
+
+        .match-box strong {
+            color: var(--accent);
+            font-size: 14px;
+        }
+
+        .match-box ul {
+            margin-top: 8px;
+            padding-left: 20px;
+            color: var(--text-main);
+            font-size: 15px;
+        }
+
+        .match-box li {
+            margin-bottom: 8px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header-tag">CEO 专属阅读 / 绝密级沟通策略</div>
+        <h1>与高端技术候选人 (吴炜/Link Wu) 的核心面谈逻辑推演</h1>
+        <div class="subtitle">
+            核心议题：如何从底层架构支撑“ABCD用户分层”与“UE模型精细化运营”
+        </div>
+
+        <!-- 阶段一 -->
+        <h2>一、 战略对表（切入 UE 模型与分层痛点）</h2>
+        <div class="dialogue-box">
+            <strong>🗣️ CEO 切入话术框架：</strong>
+            <p>“Link，我们公司正在重塑底层的单体经济模型（UE）。目前业务最大的痛点不是没有流量，而是前端为了充量招进来了大量‘薅羊毛、高客诉退费’的 D类
+                高危用户，导致我们的真实获客成本（CAC）被严重稀释，甚至在倒贴固守成本。所以我们决定全面实行‘ABCD分层分级运营’。我看你在新加坡的那家数据公司主导过从‘人找货’到‘货找人’的底层转变，你从产品和数据的角度，怎么看待我们这套基于防抖和止损的分层战略？”
+            </p>
+        </div>
+        <div class="match-box">
+            <strong>🎯 命中候选人履历经验：</strong>
+            <ul>
+                <li>他曾提出“在深刻理解业务目标基础上，通过科学且严谨的技术执行力构建护城河”。</li>
+                <li>过去在 SaaS 与数字医疗领域的经历，使他天然具备鉴别高质量流量的商业敏锐度。</li>
+            </ul>
+        </div>
+
+        <!-- 阶段二 -->
+        <h2>二、 探讨底层数据搭建（人货匹配与甄别机制）</h2>
+        <div class="dialogue-box">
+            <strong>🗣️ CEO 切入话术框架：</strong>
+            <p>“要抓出这些 D类 用户，光靠人工是不行的。我看你之前从 0 到 1 搭建过 ETL 数据管线、实时/离线计算平台以及 CDP
+                系统。结合我们喜播现在的现状（可能有各种历史遗留系统），你进来后，准备如何帮我们搭这套‘用户画像库（Profiling）’底层？我们如何把前端投放的买量数据、微信里的客诉数据、以及 APP
+                里上课的活跃数据打通？”</p>
+        </div>
+        <div class="match-box">
+            <strong>🎯 命中候选人履历经验：</strong>
+            <ul>
+                <li><strong>CDP 搭建专长：</strong> 他的主场，能够回答如何融合跨平台离散数据。</li>
+                <li><strong>RAG / DeepSeek 实战能力：</strong> 曾部署 OpenAI/DeepSeek 系统分析海量群聊，可用大模型自动读取微信客服记录判断用户风险层级。</li>
+            </ul>
+        </div>
+
+        <!-- 阶段三 -->
+        <h2>三、 探讨自动化干预（降低 OPEX 与防御护城河）</h2>
+        <div class="dialogue-box">
+            <strong>🗣️ CEO 切入话术框架：</strong>
+            <p>“把人分出 ABCD 以后，我们的运营人力（班主任）是有限的。我希望好不容易筛出来的 A/B 类用户，能享受到定制化服务；同时 D类 用户一出现退费苗头，系统能自动熔断干预。我看你过去‘开发了 AI
+                营销自动化系统，甚至替换掉了国外的 Hubspot 等工具，显著提升了 ROI’。在这里，你能帮我们这群运营体系打造一套什么样的自动化流水线？”</p>
+        </div>
+        <div class="match-box">
+            <strong>🎯 命中候选人履历经验：</strong>
+            <ul>
+                <li>他具备替换外部高价 SaaS 采购、自研自动化流程降低企业总运营成本（Opex）的成功经验。</li>
+                <li>极大概率能许诺开发一套“班主任AI智能副驾驶”，实现对不同等级用户执行自动化策略触达。</li>
+            </ul>
+        </div>
+
+        <!-- 阶段四 -->
+        <h2>四、 终极牵引（以 ROI 结果为导向绑定产研产出）</h2>
+        <div class="dialogue-box">
+            <strong>🗣️ CEO 切入话术框架：</strong>
+            <p>“在我们的 F26 战略里，技术研发部绝对不能只做一个花钱的成本中心，必须是对业务 ROI
+                负责的乘数引擎。你做的任何一个模型和数据底座，我都会看它：一有没有帮总部降本；二有没有提高业务线的单点毛利生死线。<br><br>我知道你有读
+                DBA，也是连续创业者，我很期待你能以‘大技术合伙人’的姿态来重塑公司的产研骨架。”</p>
+        </div>
+        <div class="match-box">
+            <strong>🎯 命中候选人履历经验：</strong>
+            <ul>
+                <li>作为前 CEO 及 DBA 学者，他拥有强烈的商业自尊心。</li>
+                <li>用业务最终的转化结果（单体经济模型是否健康）压实技术责任，是最对齐他身份的招募语境。</li>
+            </ul>
+        </div>
+
+        <!-- 隐秘提示 -->
+        <div
+            style="margin-top: 50px; font-size: 13px; color: #95A5A6; text-align: center; border-top: 1px dotted #E0E6ED; padding-top: 20px;">
+            内部沟通逻辑指南 · 仅限阅读参考 · 无外部链接
+        </div>
+    </div>
+</body>
+
+</html>
