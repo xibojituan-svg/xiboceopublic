@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>单渠道 UE 熔断查杀报告 - 喜播集团</title>
+    <style>
+        :root {
+            --primary: #1F2937;
+            --secondary: #374151;
+            --accent-red: #EF4444;
+            --accent-yellow: #F59E0B;
+            --accent-green: #10B981;
+            --bg-color: #F3F4F6;
+            --card-bg: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--primary);
+            margin: 0;
+            padding: 40px 20px;
+            text-align: justify;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 40px 50px;
+        }
+
+        .header-tag {
+            background-color: var(--accent-red);
+            color: white;
+            font-size: 13px;
+            font-weight: bold;
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 26px;
+            color: var(--primary);
+            line-height: 1.4;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 15px;
+            color: #6B7280;
+            border-bottom: 2px solid #E5E7EB;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .text-lead {
+            font-size: 16px;
+            color: var(--secondary);
+            margin-bottom: 30px;
+            line-height: 1.7;
+        }
+
+        .warning-box {
+            background-color: #FEF2F2;
+            border-left: 4px solid var(--accent-red);
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box h3 {
+            margin-top: 0;
+            color: #991B1B;
+            font-size: 18px;
+        }
+
+        .card {
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #FAFAFA;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px dashed #D1D5DB;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+
+        .card-header h4 {
+            margin: 0;
+            font-size: 18px;
+            color: var(--accent-red);
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .metric-item strong {
+            display: block;
+            font-size: 12px;
+            color: #6B7280;
+            text-transform: uppercase;
+        }
+
+        .metric-value {
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .metric-value.danger {
+            color: var(--accent-red);
+        }
+
+        .reasoning {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #4B5563;
+            background: #F3F4F6;
+            padding: 12px;
+            border-radius: 6px;
+        }
+
+        .watch-box {
+            background-color: #FFFBEB;
+            border-left: 4px solid var(--accent-yellow);
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .watch-box h3 {
+            margin-top: 0;
+            color: #92400E;
+            font-size: 18px;
+        }
+
+        .quote-block {
+            background: var(--primary);
+            color: white;
+            padding: 24px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 40px;
+            font-size: 16px;
+            font-weight: bold;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            .metrics {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="header-tag">CEO 高级指令 / 财务 BP 警报</div>
+        <h1>单渠道 UE 生死线查杀报告：关于立即切断 5 大亏损大动脉的决策</h1>
+        <div class="subtitle">执行周期：立即执行 ｜ 诊断对象：有声书业务前端所有获客大盘</div>
+
+        <p class="text-lead">
+            根据最新的一级渠道数据汇总反馈，前端业务正在经历严重的“虚假繁荣”。部分渠道前端伪造繁荣（只顾完成订单KPI），实则将庞大的退费金额池与极高客诉的高危 D类 用户甩给后端解决。
+            <strong>依据最新设定的 ROI 动态熔断机制，本报告已圈出必须在此刻彻底切断的“五大吸血渠道”。</strong>
+        </p>
+
+        <!-- 绝对死刑渠道 -->
+        <div class="warning-box">
+            <h3>🚨 第一梯队：绝对熔断名单（ROI为负且退费率超过 100%）</h3>
+            <p style="margin: 0; font-size: 14px; color: #7F1D1D;">以下 5
+                个渠道属于拿公司的资源进行致命失血，烧钱越多亏得越快。一旦发现违规续投，业务线负责人必须承担全部责任。</p>
+        </div>
+
+        <!-- 渠道1 -->
+        <div class="card">
+            <div class="card-header">
+                <h4>#1 直播渠道（最大出血口子）</h4>
+                <span
+                    style="font-size: 12px; font-weight: bold; background: #FEE2E2; color: #991B1B; padding: 2px 8px; border-radius: 12px;">立即停泵</span>
+            </div>
+            <div class="metrics">
+                <div class="metric-item"><strong>利润 ROI</strong><span class="metric-value danger">-0.23</span></div>
+                <div class="metric-item"><strong>退费率</strong><span class="metric-value danger">121.7%</span></div>
+                <div class="metric-item"><strong>投放成本</strong><span class="metric-value danger">1,643,944 (-164万)</span>
+                </div>
+                <div class="metric-item"><strong>退费总额</strong><span class="metric-value danger">2,610,819 (-261万)</span>
+                </div>
+            </div>
+            <div class="reasoning">
+                <strong>一剑封喉理由：</strong>全盘花销最大的黑洞。砸了 164 万进去最后退了 261 万，直播间引来的全是不匹配的羊毛党甚至恶意退费套利，它一个渠道就拉高了公司的全体负债水位。
+            </div>
+        </div>
+
+        <!-- 渠道2 -->
+        <div class="card">
+            <div class="card-header">
+                <h4>#2 站内投放（退费黑洞）</h4>
+                <span
+                    style="font-size: 12px; font-weight: bold; background: #FEE2E2; color: #991B1B; padding: 2px 8px; border-radius: 12px;">内部查账</span>
+            </div>
+            <div class="metrics">
+                <div class="metric-item"><strong>利润 ROI</strong><span class="metric-value danger">-3.64</span></div>
+                <div class="metric-item"><strong>退费率</strong><span class="metric-value danger">315.4%</span></div>
+                <div class="metric-item"><strong>投放成本</strong><span class="metric-value danger">112,794 (-11.2万)</span>
+                </div>
+                <div class="metric-item"><strong>退费总额</strong><span class="metric-value danger">752,087 (-75.2万)</span>
+                </div>
+            </div>
+            <div class="reasoning">
+                <strong>一剑封喉理由：</strong>投 1 块钱甚至要倒赔给退款系统 3 块 6！极高的退费比率暗示前端营销承诺和实际课程履约存在严重的系统性欺诈或机制漏洞。
+            </div>
+        </div>
+
+        <!-- 渠道3/4/5 -->
+        <div class="card">
+            <div class="card-header" style="justify-content: flex-start; gap: 10px;">
+                <h4>#3 快手</h4>
+                <h4>#4 腾讯</h4>
+                <h4>#5 小红书</h4>
+            </div>
+            <div class="metrics">
+                <div class="metric-item"><strong>快手 (利润ROI / 退费率)</strong><span class="metric-value danger">-0.53 /
+                        240.0%</span></div>
+                <div class="metric-item"><strong>腾讯 (利润ROI / 退费率)</strong><span class="metric-value danger">-0.49 /
+                        133.4%</span></div>
+                <div class="metric-item"><strong>小红书 (利润ROI / 退费率)</strong><span class="metric-value danger">-0.39 /
+                        128.5%</span></div>
+            </div>
+            <div class="reasoning">
+                <strong>一剑封喉理由：</strong>虽然这三家的单体消耗不如直播大，但这三个渠道正在产生实质上的倒贴。买进来的客户和产品极其错位，造成后端疯狂的高维权客诉代价，毫无留存。
+            </div>
+        </div>
+
+        <!-- 留校察看名单 -->
+        <div class="watch-box">
+            <h3>⚠️ 第二梯队：黄色警告（ROI 极低、极易跌穿）</h3>
+            <p style="margin: 0; font-size: 14px; color: #92400E;">
+                以下两个主要渠道目前在危险边缘跳舞。必须在接下来的一周给它们设死一道利润生死底线，跌破即刻实施预算减半惩罚。</p>
+
+            <div class="metrics" style="margin-top: 15px;">
+                <div class="metric-item"><strong>B站 (花费近39万)</strong><span class="metric-value danger">ROI 仅0.30 ｜ 退费
+                        77%</span></div>
+                <div class="metric-item"><strong>字节 (头部渠道)</strong><span class="metric-value danger">ROI 仅0.38 ｜ 退费
+                        91.7%</span></div>
+            </div>
+        </div>
+
+        <!-- CEO 绝杀话术 -->
+        <div class="quote-block">
+            "拿不出正向的 UE 数据，就不要假装在做业务！<br><br>明天之前，把所有退费率超过 100% 并且 ROI 是负数的投放水龙头全部给我拧死！拿着亏损来换取虚假规模的时代，在喜播永远结束了。"
+        </div>
+
+    </div>
+
+</body>
+
+</html>
