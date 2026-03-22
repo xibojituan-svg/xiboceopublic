@@ -295,6 +295,112 @@
             font-size: 11px;
             color: #9ca3af;
         }
+
+        /* 乙转甲升级通道 */
+        .upgrade-path {
+            background: linear-gradient(135deg, #faf5ff 0%, #f0f9ff 100%);
+            border: 1px solid #e0e7ff;
+            border-radius: 10px;
+            padding: 22px 20px;
+            margin-top: 24px;
+        }
+
+        .upgrade-path h4 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #4c1d95;
+            margin-bottom: 14px;
+        }
+
+        .path-timeline {
+            position: relative;
+            padding-left: 26px;
+        }
+
+        .path-timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 4px;
+            bottom: 4px;
+            width: 2px;
+            background: linear-gradient(to bottom, #a78bfa, #3b82f6, #059669);
+            border-radius: 2px;
+        }
+
+        .path-step {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .path-step:last-child {
+            margin-bottom: 0;
+        }
+
+        .path-step .dot {
+            position: absolute;
+            left: -22px;
+            top: 3px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            box-shadow: 0 0 0 2px #a78bfa;
+        }
+
+        .path-step .dot.s1 {
+            background: #a78bfa;
+            box-shadow: 0 0 0 2px #a78bfa;
+        }
+
+        .path-step .dot.s2 {
+            background: #3b82f6;
+            box-shadow: 0 0 0 2px #3b82f6;
+        }
+
+        .path-step .dot.s3 {
+            background: #059669;
+            box-shadow: 0 0 0 2px #059669;
+        }
+
+        .path-step h5 {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 4px;
+        }
+
+        .path-step p {
+            font-size: 13px;
+            color: #475569;
+            line-height: 1.6;
+        }
+
+        .path-step .trigger {
+            display: inline-block;
+            background: #ede9fe;
+            color: #6d28d9;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-top: 4px;
+        }
+
+        .path-note {
+            background: #fff;
+            border: 1px solid #e0e7ff;
+            border-radius: 6px;
+            padding: 12px 14px;
+            margin-top: 16px;
+            font-size: 13px;
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        .path-note strong {
+            color: #1e293b;
+        }
     </style>
 </head>
 
@@ -388,6 +494,38 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- 乙转甲升级通道 -->
+                <div class="upgrade-path">
+                    <h4>🚀 产品乙 → 产品甲：内部升级通道</h4>
+                    <p style="font-size:13px;color:#6d28d9;margin-bottom:16px;">
+                        产品乙不是终点，而是入口。当学员在圈层中自然成长并达到客观标准后，可随时升级至职业特训线。这既打消了用户"被分到二等公民"的顾虑，也为产品甲持续输送经过验证的高质量生源。</p>
+                    <div class="path-timeline">
+                        <div class="path-step">
+                            <div class="dot s1"></div>
+                            <h5>阶段一：圈层沉浸期（入会后1-3个月）</h5>
+                            <p>学员在产品乙社群中参与读书会、诊音活动、声音打卡。系统自动记录每位学员的打卡频率、作业完成率、连麦表现评分等行为数据。</p>
+                            <span class="trigger">触发条件：累计完成 30 次打卡 + 3 次以上连麦</span>
+                        </div>
+                        <div class="path-step">
+                            <div class="dot s2"></div>
+                            <h5>阶段二：潜力识别与资格认证</h5>
+                            <p>当学员的行为数据触达升级门槛后，系统主动向其推送一次"演播实力诊断"（由专业导师 1v1 评估声线、咬字、情感表达）。诊断通过者获得"甲级候选人"资格标签。</p>
+                            <span class="trigger">关键动作：导师出具书面诊断报告，明确告知能力差距与可行性</span>
+                        </div>
+                        <div class="path-step">
+                            <div class="dot s3"></div>
+                            <h5>阶段三：补差价升级，无缝衔接</h5>
+                            <p>持有"甲级候选人"标签的学员，可选择补缴差价直接进入产品甲的职业特训体系。已在产品乙中完成的基础训练被自动折算为产品甲的前置学分，实现零浪费无缝过渡。</p>
+                            <span class="trigger">商业闭环：产品乙的已付费用直接抵扣，用户零心理门槛</span>
+                        </div>
+                    </div>
+                    <div class="path-note">
+                        <strong>设计本质：</strong>这条升级通道为直播第三天的转化对话提供了一个极强的"安全网话术"——主播可以直接告诉犹豫的用户：<em>"先加入声音美学圈层，在里面练好基本功，等你准备好了，随时补差价升级到职业线，之前花的钱一分不浪费。"</em>
+                        这句话同时完成了三件事：降低决策门槛、消除用户焦虑、提升产品乙的即时转化率。
+                    </div>
+                </div>
+
             </div>
 
             <!-- 为什么这样做 -->
