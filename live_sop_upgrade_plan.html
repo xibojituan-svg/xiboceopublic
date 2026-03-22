@@ -401,6 +401,173 @@
         .path-note strong {
             color: #1e293b;
         }
+
+        .feedback-block {
+            background: #fff7ed;
+            border: 1px solid #fed7aa;
+            border-radius: 10px;
+            padding: 22px 20px;
+            margin-top: 16px;
+        }
+
+        .feedback-block .fb-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .feedback-block .fb-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #f97316;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .feedback-block .fb-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: #9a3412;
+        }
+
+        .feedback-block .fb-time {
+            font-size: 12px;
+            color: #c2410c;
+        }
+
+        .feedback-block .fb-quote {
+            background: #fff;
+            border: 1px solid #fed7aa;
+            border-radius: 6px;
+            padding: 14px 16px;
+            font-size: 14px;
+            color: #78350f;
+            line-height: 1.7;
+            font-style: italic;
+        }
+
+        .recalibrate {
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            border-radius: 10px;
+            padding: 22px 20px;
+            margin-top: 16px;
+        }
+
+        .recalibrate h4 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #0c4a6e;
+            margin-bottom: 12px;
+        }
+
+        .recalibrate p {
+            font-size: 13px;
+            color: #0369a1;
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+
+        .recalibrate p:last-child {
+            margin-bottom: 0;
+        }
+
+        .compare-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 14px 0;
+        }
+
+        @media (max-width: 480px) {
+            .compare-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .compare-card {
+            border-radius: 8px;
+            padding: 14px 16px;
+        }
+
+        .compare-card.old {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+        }
+
+        .compare-card.old h5 {
+            color: #991b1b;
+        }
+
+        .compare-card.old p {
+            color: #b91c1c;
+            font-size: 12px;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .compare-card.new {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+        }
+
+        .compare-card.new h5 {
+            color: #166534;
+        }
+
+        .compare-card.new p {
+            color: #15803d;
+            font-size: 12px;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .compare-card h5 {
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .analogy-list {
+            list-style: none;
+            padding: 0;
+            margin: 12px 0 0;
+        }
+
+        .analogy-list li {
+            font-size: 13px;
+            color: #0369a1;
+            padding: 6px 0;
+            border-bottom: 1px dashed #bae6fd;
+            line-height: 1.5;
+        }
+
+        .analogy-list li:last-child {
+            border-bottom: none;
+        }
+
+        .analogy-list li strong {
+            color: #0c4a6e;
+        }
+
+        .script-box {
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            border-radius: 6px;
+            padding: 14px 16px;
+            margin-top: 12px;
+            font-size: 13px;
+            color: #78350f;
+            line-height: 1.7;
+            font-style: italic;
+        }
     </style>
 </head>
 
@@ -526,6 +693,68 @@
                     </div>
                 </div>
 
+            </div>
+
+            <!-- 共建反馈：李萍 -->
+            <div class="section">
+                <div class="section-title"><span class="icon" style="background:#ffedd5;color:#c2410c">&#x1F4AC;</span>
+                    共建反馈：来自一线的压力测试</div>
+
+                <div class="feedback-block">
+                    <div class="fb-header">
+                        <div class="fb-avatar">李</div>
+                        <div>
+                            <div class="fb-name">李萍</div>
+                            <div class="fb-time">2026.03.22 14:38</div>
+                        </div>
+                    </div>
+                    <div class="fb-quote">
+                        我也看了下方案。下面这个点如果做改动，整个售卖逻辑都需要改变。单纯为兴趣能花几千块的人，也不算底层用户了。打兴趣这个点，目标会非常分散，有的人兴趣是声音好听，有的人陪孩子读书，不管哪一种都不刚需，也就是说我不学也不会损失什么。而且网上都有免费课程为啥还要花钱，还花几千块。
+                    </div>
+                </div>
+
+                <div class="recalibrate">
+                    <h4>&#x1F4D0; 基于李萍反馈的产品乙校准</h4>
+                    <p><strong>李萍指出的问题成立：</strong>如果产品乙被定义为"兴趣课程"并定价几千块，这条路走不通。"兴趣"不构成刚需、网上有免费替代、底层用户花不起。</p>
+                    <p><strong>但问题的根源不在方向，在于定义。</strong>产品乙不应该是"课程"，而应该是<strong>"社交容器"</strong>。人不会为"学声音"花几千块，但会为"归属感 +
+                        被看见 + 不孤独"持续付费。声音只是一个社交媒介。</p>
+
+                    <p style="font-weight:700;color:#0c4a6e;margin-top:14px;">跨行业验证——人在什么情况下为"非刚需"持续付费：</p>
+                    <ul class="analogy-list">
+                        <li><strong>广场舞群体：</strong>没有人为了"学跳舞"付费，但为那个群体花大量金钱（服装、道具、聚餐、旅游团费）。买的是归属感。</li>
+                        <li><strong>钓鱼圈子：</strong>不是为了吃鱼。装备花费数万，买的是圈子里的身份认同。</li>
+                        <li><strong>老年大学书法班：</strong>没有人要当书法家，但续费率极高。因为那是他们的"第三空间"。</li>
+                        <li><strong>樊登读书会：</strong>365元/年，内容网上全能找到免费替代。但数千万人续费，买的是"我是一个爱读书的人"这个身份标签。</li>
+                    </ul>
+
+                    <p style="font-weight:700;color:#0c4a6e;margin-top:18px;">产品乙的重新定义：</p>
+                    <div class="compare-grid">
+                        <div class="compare-card old">
+                            <h5>&#x274C; 原方案（有漏洞）</h5>
+                            <p>定义：兴趣课程<br>心理账户：教育投资<br>定价：数千元<br>卖点：学声音技巧<br>竞品：网上免费课（无法竞争）</p>
+                        </div>
+                        <div class="compare-card new">
+                            <h5>&#x2705; 校准后</h5>
+                            <p>定义：年度圈层会员<br>心理账户：社交娱乐<br>定价：<strong>398-698元/年</strong><br>卖点：每周读书会 + 月度诊音 + 专属社群 +
+                                线下沙龙<br>对标：老年大学 / 樊登读书会（无替代品）</p>
+                        </div>
+                    </div>
+
+                    <p><strong>定价降至 398-698/年后，李萍提出的三个障碍全部消失：</strong></p>
+                    <ul class="analogy-list">
+                        <li><strong>价格障碍消除：</strong>月均不到 60 元，低于一杯奶茶/天。底层用户完全可承受。</li>
+                        <li><strong>免费替代竞争消除：</strong>卖的不是课程内容，是社群会员资格。网上没有免费的、有温度的、持续运营的社群。</li>
+                        <li><strong>退费风险归零：</strong>398元不构成心理负担，且社交关系沉淀越深，离开成本越高。</li>
+                    </ul>
+
+                    <p style="margin-top:14px;"><strong>LTV 对比：</strong>虽然客单价从数千降至几百，但 398/年 x 续费3年 =
+                        1,194元净收入，零退费。远优于"收几千、退一半"的毒循环。</p>
+
+                    <div class="script-box">
+                        <strong>Day 3 话术校准：</strong>"职业特训适合少数有天赋且愿意吃苦的人。但如果你只是想让自己的声音更好听、想有一个能定期交流的圈子，我们有一个年度会员，一年不到 700
+                        块，每周有读书会，每月导师给你做一次声音诊断。很多姐妹都说，加入之后生活多了一个精神支点。"
+                    </div>
+                </div>
             </div>
 
             <!-- 为什么这样做 -->
