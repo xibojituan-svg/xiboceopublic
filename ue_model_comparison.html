@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>新旧UE模型对照：5000万净利润推演</title>
+  <meta name="description" content="喜播集团新旧UE模型财务推演对照，以5000万净利润、10%净利润率、10%退费率为目标，反推各核心指标达标值">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f8fafc; --surface: #ffffff; --border: #e2e8f0;
+      --text: #0f172a; --text-dim: #64748b; --text-light: #94a3b8;
+      --brand: #f97316;
+      --red: #ef4444; --red-bg: #fef2f2; --red-border: #fecaca;
+      --green: #10b981; --green-bg: #ecfdf5; --green-border: #a7f3d0;
+      --blue: #3b82f6; --blue-bg: #eff6ff; --blue-border: #bfdbfe;
+      --amber: #f59e0b; --amber-bg: #fffbeb; --amber-border: #fde68a;
+      --purple: #8b5cf6; --dark: #1e293b;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, 'PingFang SC', sans-serif;
+      background: var(--bg); color: var(--text); line-height: 1.7;
+    }
+
+    /* Nav */
+    .site-nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(30,41,59,0.95); backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding: 0 clamp(12px, 4vw, 32px);
+    }
+    .site-nav-inner {
+      max-width: 1280px; margin: 0 auto;
+      display: flex; align-items: center; height: 50px;
+      gap: 4px; overflow-x: auto; scrollbar-width: none;
+    }
+    .site-nav-inner::-webkit-scrollbar { display: none; }
+    .nav-logo { font-size: 13px; font-weight: 800; color: var(--brand); white-space: nowrap; margin-right: 10px; text-decoration: none; }
+    .nav-divider { width: 1px; height: 18px; background: rgba(255,255,255,0.18); margin: 0 6px; flex-shrink: 0; }
+    .nav-link {
+      display: flex; align-items: center; gap: 4px;
+      padding: 4px 11px; border-radius: 20px;
+      font-size: 12px; font-weight: 600; color: #94a3b8;
+      text-decoration: none; white-space: nowrap; transition: all 0.2s; flex-shrink: 0;
+    }
+    .nav-link:hover { color: #fff; background: rgba(249,115,22,0.15); }
+    .nav-link.active { color: #fff; background: rgba(249,115,22,0.2); border: 1px solid rgba(249,115,22,0.4); }
+
+    .page { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+
+    /* Hero */
+    .hero { text-align: center; padding: 3rem 1rem 2rem; }
+    .hero-tag { display: inline-block; background: var(--green-bg); color: var(--green); padding: 4px 16px; border-radius: 20px; font-size: 12px; font-weight: 700; margin-bottom: 16px; border: 1px solid var(--green-border); }
+    .hero h1 { font-size: 2.4rem; font-weight: 900; margin-bottom: 12px; letter-spacing: -0.03em; background: linear-gradient(135deg, #0f172a 30%, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero p { color: var(--text-dim); font-size: 1.05rem; max-width: 700px; margin: 0 auto; }
+
+    /* Section */
+    .section-title { font-size: 1.5rem; font-weight: 800; margin: 3rem 0 1.5rem; padding-left: 1rem; border-left: 5px solid var(--blue); }
+
+    /* Target Cards */
+    .target-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 2rem; }
+    .target-card { background: var(--surface); border-radius: 14px; padding: 24px; text-align: center; border: 2px solid; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
+    .target-card .t-value { font-size: 2.4rem; font-weight: 900; margin-bottom: 4px; }
+    .target-card .t-unit { font-size: 0.85rem; font-weight: 600; }
+    .target-card .t-label { font-size: 0.9rem; color: var(--text-dim); margin-top: 8px; }
+    .t-green { border-color: var(--green-border); }
+    .t-green .t-value, .t-green .t-unit { color: var(--green); }
+    .t-blue { border-color: var(--blue-border); }
+    .t-blue .t-value, .t-blue .t-unit { color: var(--blue); }
+    .t-amber { border-color: var(--amber-border); }
+    .t-amber .t-value, .t-amber .t-unit { color: var(--amber); }
+
+    /* Derivation */
+    .derive-card {
+      background: var(--surface); border-radius: 14px; padding: 28px;
+      border: 1px solid var(--border); margin-bottom: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+    }
+    .derive-card h3 { font-size: 1.1rem; font-weight: 800; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+    .formula-box {
+      background: #f1f5f9; border-radius: 10px; padding: 16px 20px;
+      font-family: monospace; font-size: 14px; line-height: 2;
+      margin: 12px 0; border: 1px solid var(--border);
+    }
+    .formula-box .eq-result { color: var(--green); font-weight: 800; }
+    .formula-box .eq-warn { color: var(--red); font-weight: 800; }
+
+    /* Comparison Table */
+    .compare-wrap { overflow-x: auto; margin: 1.5rem 0; -webkit-overflow-scrolling: touch; }
+    .compare-table { width: 100%; border-collapse: collapse; min-width: 700px; }
+    .compare-table th, .compare-table td {
+      padding: 14px 16px; text-align: left; font-size: 14px;
+      border-bottom: 1px solid var(--border); vertical-align: top;
+    }
+    .compare-table th { background: var(--dark); color: white; font-weight: 700; font-size: 13px; letter-spacing: 0.5px; }
+    .compare-table th:first-child { border-radius: 8px 0 0 0; }
+    .compare-table th:last-child { border-radius: 0 8px 0 0; }
+    .compare-table td:first-child { font-weight: 700; color: var(--text); white-space: nowrap; }
+    .compare-table tr:hover td { background: #f8fafc; }
+    .val-old { color: var(--red); font-weight: 700; text-decoration: line-through; opacity: 0.7; }
+    .val-new { color: var(--green); font-weight: 800; }
+    .val-target { color: var(--blue); font-weight: 700; }
+    .badge-up { display: inline-block; background: var(--green-bg); color: var(--green); padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 700; }
+    .badge-down { display: inline-block; background: var(--red-bg); color: var(--red); padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 700; }
+
+    /* Waterfall */
+    .waterfall { display: flex; align-items: flex-end; gap: 8px; margin: 1.5rem 0; padding: 20px 0; }
+    .wf-bar { flex: 1; text-align: center; border-radius: 8px 8px 0 0; color: white; display: flex; flex-direction: column; justify-content: flex-end; padding: 10px 6px; min-height: 40px; font-size: 12px; transition: all 0.3s; }
+    .wf-bar:hover { opacity: 0.85; transform: translateY(-3px); }
+    .wf-bar .wf-val { font-size: 1.1rem; font-weight: 900; }
+    .wf-bar .wf-label { font-size: 10px; margin-top: 4px; opacity: 0.9; }
+    .wf-caption { text-align: center; font-size: 12px; color: var(--text-dim); margin-top: 8px; }
+
+    /* Insight Box */
+    .insight-box {
+      background: linear-gradient(135deg, #eff6ff 0%, #ecfdf5 100%);
+      border-radius: 14px; padding: 24px;
+      border: 1px solid var(--blue-border); margin: 1.5rem 0;
+    }
+    .insight-box h4 { color: var(--blue); font-size: 1rem; font-weight: 800; margin-bottom: 10px; }
+    .insight-box p { font-size: 14px; color: var(--text); margin-bottom: 8px; line-height: 1.8; }
+    .insight-box p:last-child { margin-bottom: 0; }
+
+    /* Red Alert Box */
+    .alert-box {
+      background: var(--red-bg); border-radius: 14px; padding: 24px;
+      border: 1px solid var(--red-border); margin: 1.5rem 0;
+    }
+    .alert-box h4 { color: var(--red); font-size: 1rem; font-weight: 800; margin-bottom: 10px; }
+    .alert-box p { font-size: 14px; color: var(--text); margin-bottom: 8px; line-height: 1.8; }
+
+    /* Checklist */
+    .check-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin: 1.5rem 0; }
+    .check-card {
+      background: var(--surface); border-radius: 12px; padding: 20px;
+      border: 1px solid var(--border); box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+      transition: transform 0.2s;
+    }
+    .check-card:hover { transform: translateY(-3px); }
+    .check-card h5 { font-size: 14px; font-weight: 800; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+    .check-card .metric { font-size: 1.5rem; font-weight: 900; margin: 6px 0; }
+    .check-card .desc { font-size: 12px; color: var(--text-dim); line-height: 1.6; }
+    .check-green .metric { color: var(--green); }
+    .check-blue .metric { color: var(--blue); }
+    .check-amber .metric { color: var(--amber); }
+    .check-red .metric { color: var(--red); }
+
+    /* Footer */
+    .site-footer { margin-top: 3rem; padding: 28px 20px; border-top: 1px solid var(--border); text-align: center; }
+    .site-footer p { font-size: 12px; color: var(--text-light); margin-bottom: 12px; }
+    .footer-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; }
+    .footer-links a { display: inline-flex; align-items: center; gap: 5px; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; color: var(--text-dim); text-decoration: none; border: 1px solid var(--border); transition: all 0.2s; }
+    .footer-links a:hover { color: var(--brand); border-color: var(--brand); background: rgba(249,115,22,0.06); }
+
+    @media (max-width: 768px) {
+      .page { padding: 1rem; }
+      .hero h1 { font-size: 1.6rem; }
+      .hero p { font-size: 0.9rem; }
+      .target-grid { grid-template-columns: 1fr; gap: 10px; }
+      .target-card { padding: 16px; }
+      .target-card .t-value { font-size: 1.8rem; }
+      .check-grid { grid-template-columns: 1fr; }
+      .waterfall { flex-wrap: wrap; }
+      .wf-bar { min-width: calc(33% - 8px); }
+      .derive-card { padding: 18px 14px; }
+      .formula-box { font-size: 12px; padding: 12px; }
+      .section-title { font-size: 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="site-nav">
+  <div class="site-nav-inner">
+    <a href="index.html" class="nav-logo">喜播集团 ⚡</a>
+    <div class="nav-divider"></div>
+    <a href="index.html" class="nav-link">🏠 战略总纲</a>
+    <a href="ue_funnel_simulator.html" class="nav-link">📈 漏斗UE诊断器</a>
+    <a href="new_business_process_infographic.html" class="nav-link">📋 新业务流程</a>
+    <a href="ue_model_comparison.html" class="nav-link active">💰 新旧UE对照</a>
+    <a href="f26_budget_fbp_diagnosis.html" class="nav-link">🩺 F26预算诊断</a>
+  </div>
+</nav>
+
+<div class="page">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-tag">🎯 目标倒推 · 财务对照</div>
+    <h1>新旧UE模型对照推演<br>5000万净利润需要什么？</h1>
+    <p>不做PPT式的"未来可期"，而是从5000万净利润、10%净利润率、10%退费率三个硬约束出发，<b>反推每一个核心指标必须达到的数值</b>，然后与旧UE模型逐项对比，看清"做对了什么"。</p>
+  </div>
+
+  <!-- Target Lock -->
+  <h2 class="section-title">三项硬约束：先锁死目标</h2>
+  <div class="target-grid">
+    <div class="target-card t-green">
+      <div class="t-value">5,000<span class="t-unit">万</span></div>
+      <div class="t-label">全年净利润目标</div>
+    </div>
+    <div class="target-card t-blue">
+      <div class="t-value">10<span class="t-unit">%</span></div>
+      <div class="t-label">净利润率底线</div>
+    </div>
+    <div class="target-card t-amber">
+      <div class="t-value">≤10<span class="t-unit">%</span></div>
+      <div class="t-label">退费率红线</div>
+    </div>
+  </div>
+
+  <!-- Derivation: Revenue -->
+  <h2 class="section-title">第一步：倒推必须的总营收规模</h2>
+  <div class="derive-card">
+    <h3>📐 从净利润率锁定营收</h3>
+    <div class="formula-box">
+      净利润率 = 净利润 / 总营收（确认后）<br>
+      10% = 5,000万 / <b>总营收</b><br>
+      → <span class="eq-result">总营收（确认后）= 5亿元</span><br><br>
+      退费率 ≤ 10%，意味着：<br>
+      总签单金额 = 确认收入 / (1 - 退费率) = 5亿 / 0.9<br>
+      → <span class="eq-result">总签单（合同额）≈ 5.56亿元</span>
+    </div>
+    <div class="insight-box">
+      <h4>💡 与F26预算案对比</h4>
+      <p>F26预算案中总收入预期约<b>5.1亿</b>（较F25的9.3亿腰斩45%）。新模型要求<b>确认收入</b>达到5亿，看起来接近预算数字。但关键区别是：旧模型退费率24%导致确认收入大幅缩水，而新模型退费率控制在10%意味着<b>签单5.56亿就够了</b>，不需要虚胖收入。</p>
+    </div>
+  </div>
+
+  <!-- Derivation: Cost Structure -->
+  <h2 class="section-title">第二步：倒推成本结构必须怎么分配</h2>
+  <div class="derive-card">
+    <h3>🔪 净利润 = 确认收入 - 全部成本</h3>
+    <div class="formula-box">
+      5,000万 = 50,000万 - 全部成本<br>
+      → <span class="eq-result">全部成本上限 = 45,000万（4.5亿）</span><br><br>
+      成本拆分：<br>
+      ├ 固定成本（人力+房租+管理）= <span class="eq-warn">~12,000万</span> [F26预算实际值]<br>
+      ├ 前端获客成本（CAC总额）= ?<br>
+      ├ 履约变动成本（VC总额）= ?<br>
+      └ 退费冲回 = 签单5.56亿 × 10% = <span class="eq-warn">~5,600万</span><br><br>
+      可分配给 CAC + VC = 45,000 - 12,000 - 5,600<br>
+      → <span class="eq-result">CAC + VC 总额上限 = 27,400万（2.74亿）</span>
+    </div>
+  </div>
+
+  <!-- Waterfall Chart -->
+  <div class="derive-card">
+    <h3>📊 新模型利润瀑布图（万元）</h3>
+    <div class="waterfall">
+      <div class="wf-bar" style="background: linear-gradient(135deg, #3b82f6, #60a5fa); height: 200px;">
+        <div class="wf-val">55,600</div>
+        <div class="wf-label">合同签单</div>
+      </div>
+      <div class="wf-bar" style="background: linear-gradient(135deg, #ef4444, #f87171); height: 44px;">
+        <div class="wf-val">-5,600</div>
+        <div class="wf-label">退费冲回<br>10%</div>
+      </div>
+      <div class="wf-bar" style="background: linear-gradient(135deg, #8b5cf6, #a78bfa); height: 32px;">
+        <div class="wf-val">50,000</div>
+        <div class="wf-label">确认收入</div>
+      </div>
+      <div class="wf-bar" style="background: linear-gradient(135deg, #f59e0b, #fbbf24); height: 96px;">
+        <div class="wf-val">-12,000</div>
+        <div class="wf-label">固定成本</div>
+      </div>
+      <div class="wf-bar" style="background: linear-gradient(135deg, #f97316, #fb923c); height: 110px;">
+        <div class="wf-val">-13,600</div>
+        <div class="wf-label">获客成本<br>CAC</div>
+      </div>
+      <div class="wf-bar" style="background: linear-gradient(135deg, #ec4899, #f472b6); height: 110px;">
+        <div class="wf-val">-13,800</div>
+        <div class="wf-label">履约成本<br>VC</div>
+      </div>
+      <div class="wf-bar" style="background: linear-gradient(135deg, #10b981, #34d399); height: 40px;">
+        <div class="wf-val">5,000</div>
+        <div class="wf-label">净利润 ✅</div>
+      </div>
+    </div>
+    <div class="wf-caption">*以上为第一性推演的参考分配，实际比例需根据各业务线UE实测数据微调</div>
+  </div>
+
+  <!-- Core Metrics Comparison -->
+  <h2 class="section-title">第三步：新旧UE核心指标逐项对照</h2>
+
+  <div class="compare-wrap">
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>指标</th>
+          <th>旧模型（实际值）</th>
+          <th>新模型（必须达标值）</th>
+          <th>变化</th>
+          <th>为什么能做到</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>合同签单额</td>
+          <td class="val-old">~9.3亿（F25）<br>~5.1亿（F26预算）</td>
+          <td class="val-target">5.56亿</td>
+          <td><span class="badge-up">与预算接近</span></td>
+          <td>不需要做更大盘子，关键是结构健康</td>
+        </tr>
+        <tr>
+          <td>退费率</td>
+          <td class="val-old">24%</td>
+          <td class="val-new">≤ 10%</td>
+          <td><span class="badge-down">↓ 14个百分点</span></td>
+          <td>ABCD分层 + D类拦截 + 预期校正话术 + 阶梯价格</td>
+        </tr>
+        <tr>
+          <td>确认收入</td>
+          <td class="val-old">~7亿 × (1-24%) = 5.3亿<br>但含大量坏账和客诉</td>
+          <td class="val-new">5亿（干净收入）</td>
+          <td><span class="badge-up">含金量↑↑</span></td>
+          <td>退费率降低后，同样规模签单的实际到手率提升</td>
+        </tr>
+        <tr>
+          <td>综合客单价</td>
+          <td class="val-old">¥7,000一刀切</td>
+          <td class="val-target">加权约 ¥2,800</td>
+          <td><span class="badge-down">↓ 60%</span></td>
+          <td>阶梯价格：C1类¥398、B类¥1280-3980、A类¥7380</td>
+        </tr>
+        <tr>
+          <td>付费用户数</td>
+          <td class="val-old">~1.4万/年<br>（5.1亿/3600人均）</td>
+          <td class="val-target">~19.8万/年</td>
+          <td><span class="badge-up">↑ 14倍</span></td>
+          <td>阶梯价格 + C1类轻课30-40%转化 = 大幅降低决策门槛</td>
+        </tr>
+        <tr>
+          <td>综合转化率</td>
+          <td class="val-old">~3%</td>
+          <td class="val-new">8-10%</td>
+          <td><span class="badge-up">↑ 3倍</span></td>
+          <td>每类用户都有匹配SKU承接，不再"要么7000要么走人"</td>
+        </tr>
+        <tr>
+          <td>D类拦截率</td>
+          <td class="val-old">&lt; 50%</td>
+          <td class="val-new">≥ 90%</td>
+          <td><span class="badge-up">↑ 40个百分点</span></td>
+          <td>多维意图探测 + 系统冻结支付 + 合规劝退</td>
+        </tr>
+        <tr>
+          <td>单客获客成本 CAC</td>
+          <td class="val-old">~¥370/人<br>（高成本低转化）</td>
+          <td class="val-target">~¥69/人</td>
+          <td><span class="badge-down">↓ 81%</span></td>
+          <td>大量C1类用户通过社群/IP自然流进入，极低CAC</td>
+        </tr>
+        <tr>
+          <td>LTV/CAC 比值</td>
+          <td class="val-old">~1.5（危险线附近）</td>
+          <td class="val-new">≥ 4.0</td>
+          <td><span class="badge-up">↑ 2.7倍</span></td>
+          <td>横向扩品复购提升LTV + 低成本自然流降低CAC</td>
+        </tr>
+        <tr>
+          <td>UE率（真毛利率）</td>
+          <td class="val-old">22%（F26预算案实际）</td>
+          <td class="val-new">≥ 34%</td>
+          <td><span class="badge-up">↑ 12个百分点</span></td>
+          <td>退费减少14% + 履约成本因标准化降低 + 获客效率提升</td>
+        </tr>
+        <tr>
+          <td>固定成本率</td>
+          <td class="val-old">~23%（12,007万/5.1亿）</td>
+          <td class="val-target">≤ 24%</td>
+          <td><span class="badge-up">可控</span></td>
+          <td>固定成本需同步优化（人效提升/编制精简），但不是第一拦路虎</td>
+        </tr>
+        <tr>
+          <td>净利润率</td>
+          <td class="val-old">-1.3%（亏损662万）</td>
+          <td class="val-new">10%</td>
+          <td><span class="badge-up">扭亏+盈利</span></td>
+          <td>核心驱动力是退费率下降 + 获客效率提升</td>
+        </tr>
+        <tr>
+          <td>净利润</td>
+          <td class="val-old">-662万（亏损）</td>
+          <td class="val-new">5,000万</td>
+          <td><span class="badge-up">↑ 5,662万</span></td>
+          <td>不是收入变大了，是<b>钱漏掉的口堵住了</b></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Key Insight -->
+  <div class="insight-box">
+    <h4>🔑 最关键的发现：5000万净利润的"钱从哪来"？</h4>
+    <p><b>不是靠做大盘子</b>。签单规模5.56亿 vs F26预算的5.1亿，只多了9%。</p>
+    <p><b>核心是堵住3个漏洞</b>：</p>
+    <p>① 退费率从24%降到10% → 每年<b>少退8,000万</b>（这是最大的利润来源！）</p>
+    <p>② 获客成本从人均¥370降到¥69 → 同样流量下CAC总额<b>省下约5,000万</b></p>
+    <p>③ D类拦截率从50%提到90% → 减少客诉/法务/公关的<b>隐性成本约1,000万</b></p>
+    <p style="color: var(--green); font-weight: 800; margin-top: 12px;">➜ 三项合计可释放约1.4亿的利润空间，5000万净利润完全可达。</p>
+  </div>
+
+  <!-- Verification Checklist -->
+  <h2 class="section-title">第四步："做对了"的8个财务验证指标</h2>
+  <p style="color: var(--text-dim); margin-bottom: 1.5rem; font-size: 14px;">每月财务复盘时，用这8个指标做"健康度检查"。如果多数指标朝绿色方向移动，说明改革工作正在生效。</p>
+
+  <div class="check-grid">
+    <div class="check-card check-green">
+      <h5>🟢 退费率</h5>
+      <div class="metric">≤ 10%</div>
+      <div class="desc">从24%降到10%以内。这是利润释放的<b>第一大来源</b>。每降1个百分点 ≈ 多留住约550万。</div>
+    </div>
+    <div class="check-card check-blue">
+      <h5>🔵 综合转化率</h5>
+      <div class="metric">8-10%</div>
+      <div class="desc">从3%提升3倍。核心是给每类用户匹配价位带，C1类轻课30-40%转化率拉高整体。</div>
+    </div>
+    <div class="check-card check-green">
+      <h5>🟢 UE率（真毛利率）</h5>
+      <div class="metric">≥ 34%</div>
+      <div class="desc">从22%提升到34%。如果低于25%立即触发熔断。UE率 = (确认收入 - 变动成本) / 确认收入。</div>
+    </div>
+    <div class="check-card check-amber">
+      <h5>🟠 单客CAC</h5>
+      <div class="metric">≤ ¥69</div>
+      <div class="desc">含义变了——不是每个人都投¥370买进来。C1类通过社群/IP流入CAC趋近于0，拉低整体。</div>
+    </div>
+    <div class="check-card check-blue">
+      <h5>🔵 LTV/CAC比值</h5>
+      <div class="metric">≥ 4.0</div>
+      <div class="desc">旧模型约1.5（危险线）。新模型通过横向扩品复购提升LTV，同时降低CAC。黄金标准是3.0+。</div>
+    </div>
+    <div class="check-card check-green">
+      <h5>🟢 D类拦截率</h5>
+      <div class="metric">≥ 90%</div>
+      <div class="desc">从50%提到90%。每拦住100个D类用户，避免约¥70万退费 + 客诉 + 法务成本。</div>
+    </div>
+    <div class="check-card check-amber">
+      <h5>🟠 C1类占比</h5>
+      <div class="metric">40-50%</div>
+      <div class="desc">新增指标。C1类是"薄利多销+高复购"的利润稳定器。占比过低说明分层没做到位。</div>
+    </div>
+    <div class="check-card check-red">
+      <h5>🔴 回本周期</h5>
+      <div class="metric">≤ 6个月</div>
+      <div class="desc">旧模型因高退费导致12个月+才能回本。新模型C1类首单即回本，A/B类控制在6个月内。</div>
+    </div>
+  </div>
+
+  <!-- Old Model Autopsy -->
+  <h2 class="section-title">旧UE模型为什么必死？三组致命数字</h2>
+  <div class="alert-box">
+    <h4>💀 致命数字一：退费吞噬了全部利润</h4>
+    <p>旧模型签单7亿 × 退费率24% = <b>每年退掉1.68亿</b>。这1.68亿不只是退款金额——还包括已经发生的获客成本、已支付的师资成本、已消耗的运营人力。实际上每退1万块钱，公司真实损失≈1.4万。</p>
+  </div>
+  <div class="alert-box">
+    <h4>💀 致命数字二：固定成本跑赢了造血速度</h4>
+    <p>F26年UE真毛利仅11,345万，但固定成本12,007万。<b>造血速度已经被固定成本反超</b>。哪怕前端一单都没亏，月底总账还是失血。</p>
+  </div>
+  <div class="alert-box">
+    <h4>💀 致命数字三：新业务在"毒性增长"</h4>
+    <p>IP线收入增长1034%看似惊人，但UE率从42%暴跌至17%。<b>每做1块钱收入只剩1毛7的毛利</b>，覆盖完固定成本后是净亏。这不是增长，这是花钱买流水。</p>
+  </div>
+
+  <!-- Summary -->
+  <div class="insight-box" style="background: linear-gradient(135deg, #ecfdf5 0%, #eff6ff 100%);">
+    <h4>📌 一句话总结</h4>
+    <p style="font-size: 16px; font-weight: 700;">新UE模型的本质不是"卖得更多"，而是<b>"漏得更少"</b>。5000万净利润 = 堵住退费漏洞（8000万）+ 降低获客浪费（5000万）+ 减少客诉隐损（1000万）。收入规模几乎不用变，变的是<b>钱的"含金量"</b>。</p>
+  </div>
+
+  <footer class="site-footer">
+    <p>喜播集团 · 财务BP · 战略决策支持 · 2026年3月</p>
+    <nav class="footer-links">
+      <a href="index.html">🏠 战略总纲</a>
+      <a href="ue_funnel_simulator.html">📈 漏斗UE诊断器</a>
+      <a href="new_business_process_infographic.html">📋 新业务流程</a>
+      <a href="f26_budget_fbp_diagnosis.html">🩺 F26预算诊断</a>
+      <a href="segmentation_radarmap.html">📊 用户分层雷达图</a>
+      <a href="d_user_optimization.html">🔬 D类风控复盘</a>
+    </nav>
+  </footer>
+
+</div>
+</body>
+</html>
