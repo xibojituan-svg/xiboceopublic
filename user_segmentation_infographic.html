@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>喜播：用户分层与鉴客全景作战图 (ABCD模型)</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-light: #dbeafe;
+            --secondary: #475569;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            
+            --a-color: #10b981; /* Green */
+            --a-bg: #d1fae5;
+            --b-color: #f59e0b; /* Orange */
+            --b-bg: #fef3c7;
+            --c-color: #8b5cf6; /* Purple */
+            --c-bg: #ede9fe;
+            --c2-color: #f43f5e; /* Rose */
+            --c2-bg: #ffe4e6;
+            --d-color: #ef4444; /* Red */
+            --d-bg: #fee2e2;
+
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 2rem;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+            font-weight: 800;
+            letter-spacing: -0.025em;
+        }
+
+        header p {
+            font-size: 1.125rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Logic Section */
+        .logic-banner {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            color: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .logic-banner h2 {
+            font-size: 1.5rem;
+            margin-top: 0;
+            margin-bottom: 1rem;
+            color: #e2e8f0;
+        }
+
+        .formula {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: rgba(255,255,255,0.1);
+            display: inline-block;
+            padding: 1rem 2rem;
+            border-radius: 0.75rem;
+            margin-bottom: 1rem;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Matrix Section */
+        .matrix-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            border-top: 6px solid;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            opacity: 0.03;
+            background-image: radial-gradient(circle at 2px 2px, currentColor 1px, transparent 0);
+            background-size: 20px 20px;
+            pointer-events: none;
+        }
+
+        .card-a { border-color: var(--a-color); }
+        .card-b { border-color: var(--b-color); }
+        .card-c1 { border-color: var(--c-color); }
+        .card-c2 { border-color: var(--c2-color); }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin: 0;
+        }
+
+        .card-a .card-title { color: var(--a-color); }
+        .card-b .card-title { color: var(--b-color); }
+        .card-c1 .card-title { color: var(--c-color); }
+        .card-c2 .card-title { color: var(--c2-color); }
+
+        .badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .card-a .badge { background: var(--a-bg); color: var(--a-color); }
+        .card-b .badge { background: var(--b-bg); color: var(--b-color); }
+        .card-c1 .badge { background: var(--c-bg); color: var(--c-color); }
+        .card-c2 .badge { background: var(--c2-bg); color: var(--c2-color); }
+
+        .definition {
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-main);
+            font-size: 1.1rem;
+        }
+
+        .info-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .info-list li {
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .info-list li::before {
+            content: '•';
+            margin-right: 0.5rem;
+            font-weight: bold;
+        }
+        .card-a .info-list li::before { color: var(--a-color); }
+        .card-b .info-list li::before { color: var(--b-color); }
+        .card-c1 .info-list li::before { color: var(--c-color); }
+        .card-c2 .info-list li::before { color: var(--c2-color); }
+
+        .action-box {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .card-a .action-box { background: var(--a-bg); color: #065f46; border: 1px dashed var(--a-color);}
+        .card-b .action-box { background: var(--b-bg); color: #92400e; border: 1px dashed var(--b-color);}
+        .card-c1 .action-box { background: var(--c-bg); color: #4c1d95; border: 1px dashed var(--c-color);}
+        .card-c2 .action-box { background: var(--c2-bg); color: #9f1239; border: 1px dashed var(--c2-color);}
+
+        /* D Class Full Width */
+        .card-d {
+            grid-column: span 2;
+            border-color: var(--d-color);
+            background: #fffafa;
+        }
+        .card-d .card-title { color: var(--d-color); }
+        .card-d .badge { background: var(--d-bg); color: var(--d-color); }
+        .card-d .action-box { background: var(--d-bg); color: #7f1d1d; border: 1px dashed var(--d-color); }
+        .card-d .info-list li::before { color: var(--d-color); }
+
+        /* Decision Tree Section */
+        .tree-section {
+            background: white;
+            border-radius: 1rem;
+            padding: 3rem 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            margin-bottom: 3rem;
+        }
+
+        .tree-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+        
+        .tree-header h2 {
+            font-size: 1.8rem;
+            color: var(--text-main);
+            margin: 0;
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            width: 4px;
+            background: #e2e8f0;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -2px;
+            border-radius: 2px;
+        }
+
+        .node {
+            padding: 1rem 0;
+            position: relative;
+            width: 50%;
+            box-sizing: border-box;
+        }
+
+        .node:nth-child(odd) {
+            left: 0;
+            padding-right: 3rem;
+            text-align: right;
+        }
+
+        .node:nth-child(even) {
+            left: 50%;
+            padding-left: 3rem;
+        }
+
+        .node-number {
+            position: absolute;
+            top: 1.5rem;
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            z-index: 10;
+            box-shadow: 0 0 0 4px white;
+        }
+
+        .node:nth-child(odd) .node-number {
+            right: -20px;
+        }
+
+        .node:nth-child(even) .node-number {
+            left: -20px;
+        }
+
+        .node-content {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            transition: all 0.3s;
+        }
+        
+        .node-content:hover {
+            border-color: var(--primary);
+            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.1);
+        }
+
+        .node-q {
+            font-weight: 700;
+            color: var(--text-main);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            margin-top: 0;
+        }
+
+        .node-branch {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .branch-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.95rem;
+            padding: 0.5rem;
+            background: #f8fafc;
+            border-radius: 0.375rem;
+        }
+        .node:nth-child(odd) .branch-item {
+            flex-direction: row-reverse;
+        }
+
+        .branch-label { font-weight: 500; }
+        .branch-result { font-weight: 700; font-size: 0.85rem;}
+        
+        .res-a { color: var(--a-color); }
+        .res-b { color: var(--b-color); }
+        .res-c { color: var(--c2-color); }
+        .res-d { color: var(--d-color); }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .matrix-container { grid-template-columns: 1fr; }
+            .card-d { grid-column: span 1; }
+            .timeline::before { left: 30px; }
+            .node { width: 100%; padding-left: 80px !important; padding-right: 0 !important; text-align: left !important; }
+            .node:nth-child(odd), .node:nth-child(even) { left: 0; }
+            .node-number { left: 10px !important; right: auto !important; }
+            .node:nth-child(odd) .branch-item { flex-direction: row; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>喜播分层鉴客作战图 (ABCD模型)</h1>
+        <p>基于真实业务体检，构建数据驱动的精细化鉴客风控塔</p>
+    </header>
+
+    <div class="logic-banner">
+        <h2>底层逻辑：从卖"承诺"转向验"底座"</h2>
+        <div class="formula">识别价值 = 需求真实度 × 资源底座（资金/时间/认知）</div>
+        <p style="margin: 0; color: #cbd5e1; font-size: 1.1rem;">所有的冲动都显得极具动机，决定能否成为A/B类的，是抗风险的下限能力。</p>
+    </div>
+
+    <!-- 象限矩阵 -->
+    <div class="matrix-container">
+        <!-- A类 -->
+        <div class="card card-a">
+            <div class="card-header">
+                <h3 class="card-title">A类：价值共创型</h3>
+                <span class="badge">SVIP / 高净值</span>
+            </div>
+            <div class="definition">【真需求 × 强底座】 追求真实成长，不轻信暴富承诺。</div>
+            <ul class="info-list">
+                <li><strong>画像：</strong> 35-50岁，一二线城市，新款旗舰机。</li>
+                <li><strong>行为：</strong> 咨询期>3天，问的都是"教什么/学到哪"，看完播率。</li>
+                <li><strong>财力：</strong> 全款直付，甚至要求更高阶服务，有稳定主业。</li>
+                <li><strong>识别：</strong> Fogg高能力，首抓BANT里的**预算&需求**。</li>
+            </ul>
+            <div class="action-box">
+                ⚔️ 战术动作：切断标准流程 ➔ 资深顾问1对1 ➔ 置换变现话术为"圈层与资源赋能"。
+            </div>
+        </div>
+
+        <!-- B类 -->
+        <div class="card card-b">
+            <div class="card-header">
+                <h3 class="card-title">B类：成长投资型</h3>
+                <span class="badge">业务基本盘</span>
+            </div>
+            <div class="definition">【真需求 × 弱底座】 有上进心但拮据，容易被过度诱导。</div>
+            <ul class="info-list">
+                <li><strong>画像：</strong> 28-40岁，三四线职员/小老板，中端安卓或旧苹果。</li>
+                <li><strong>行为：</strong> 问题偏向"多久能把钱赚回来"，比对多家机构。</li>
+                <li><strong>财力：</strong> 价格敏感，通常使用合理分期或花呗。</li>
+                <li><strong>识别：</strong> 意愿高但兜里钱有限，属于有理智的向往者。</li>
+            </ul>
+            <div class="action-box">
+                ⚔️ 战术动作：严控预期 ➔ 入学1周强制认知重构(降火) ➔ 小步快走推低客单(兜底)。
+            </div>
+        </div>
+
+        <!-- C1类 -->
+        <div class="card card-c1">
+            <div class="card-header">
+                <h3 class="card-title">C1类：情绪消费型</h3>
+                <span class="badge">错位需求池</span>
+            </div>
+            <div class="definition">【假需求 × 强底座】 图陪伴、找乐子，不图变现。</div>
+            <ul class="info-list">
+                <li><strong>画像：</strong> 退休中老年/部分全职主妇，有闲散资金。</li>
+                <li><strong>行为：</strong> 爱在群里聊天发图，但不交作业。</li>
+                <li><strong>话术：</strong> "就是想找点事干"、"防老年痴呆"、"看着好玩"。</li>
+                <li><strong>风险：</strong> 本来没风险，如果你硬塞"变现承诺"就会制造出客诉。</li>
+            </ul>
+            <div class="action-box">
+                ⚔️ 战术动作：主推兴趣陪伴轻量课 ➔ 签署《无变现承诺纯兴趣协议》 ➔ 严控逼单。
+            </div>
+        </div>
+
+        <!-- C2类 -->
+        <div class="card card-c2">
+            <div class="card-header">
+                <h3 class="card-title">C2类：冲动风控型</h3>
+                <span class="badge">高危预警</span>
+            </div>
+            <div class="definition">【假需求 × 弱底座】 情绪亢奋，掏尽家底赌一把。</div>
+            <ul class="info-list">
+                <li><strong>画像：</strong> 下沉市场，年轻负债群体或偏远地区低收入者，低端旧机型。</li>
+                <li><strong>行为：</strong> 进场后10分钟付款，满嘴抱怨命运不公。</li>
+                <li><strong>话术：</strong> "能不能保证赚钱？""不赚钱能退吗？"。</li>
+                <li><strong>风控：</strong> 心理防线极脆，7天内退费率和客诉率极高。</li>
+            </ul>
+            <div class="action-box">
+                ⚔️ 战术动作：防退费为主 ➔ 入学签强感知风险书 ➔ 开设快速退费绿道减损。
+            </div>
+        </div>
+
+        <!-- D类 -->
+        <div class="card card-d">
+            <div class="card-header">
+                <h3 class="card-title">D类：熔断斩杀型 (不可触碰的红线)</h3>
+                <span class="badge">绝对禁区</span>
+            </div>
+            <div class="definition">【底座崩塌 / 违规涉诈】 只要收了款，必定成为引爆公司的核弹。必须一票否决！</div>
+            <ul class="info-list" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem;">
+                <li>触发词1："这是我最后救命的三千块钱了"</li>
+                <li>触发词2："这钱我从各网贷退出来的，不能让我家人知道"</li>
+                <li>触发词3："能包过/包接单挂靠吗？我全靠这个活了"</li>
+                <li>触发词4：未成年人隐瞒年龄。</li>
+            </ul>
+            <div class="action-box" style="text-align: center;">
+                🚨 系统级战术：一旦触发风控词汇 ➔ 强制冻结支付码 ➔ 合规部强制劝退 ➔ 罚没违规成单利润。
+            </div>
+        </div>
+    </div>
+
+    <!-- 决策树 -->
+    <div class="tree-section">
+        <div class="tree-header">
+            <h2>鉴客 3 分钟极速决策树</h2>
+            <p style="color: var(--text-muted); margin-top: 0.5rem;">销售前置，基于数据和首答定位用户防线</p>
+        </div>
+        
+        <div class="timeline">
+            <!-- Node 1 -->
+            <div class="node">
+                <div class="node-number">1</div>
+                <div class="node-content">
+                    <p class="node-q">核心意图：破冰第一句话问什么？</p>
+                    <div class="node-branch">
+                        <div class="branch-item">
+                            <span class="branch-label">"课程怎么上/学到什么程度"</span>
+                            <span class="branch-result res-a">➔ A/B 轨</span>
+                        </div>
+                        <div class="branch-item">
+                            <span class="branch-label">"包底吗/保证赚钱吗"</span>
+                            <span class="branch-result res-c">➔ C2/D 预警</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Node 2 -->
+            <div class="node">
+                <div class="node-number">2</div>
+                <div class="node-content">
+                    <p class="node-q">底座扫描：手机系统及型号？</p>
+                    <div class="node-branch">
+                        <div class="branch-item">
+                            <span class="branch-label">新款苹果Pro/华为Mate旗舰</span>
+                            <span class="branch-result res-a">➔ A加分</span>
+                        </div>
+                        <div class="branch-item">
+                            <span class="branch-label">中端安卓机/旧款iPhone</span>
+                            <span class="branch-result res-b">➔ B类区间</span>
+                        </div>
+                        <div class="branch-item">
+                            <span class="branch-label">超低端机/多年前旧款</span>
+                            <span class="branch-result res-c">➔ C2警报</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Node 3 -->
+            <div class="node">
+                <div class="node-number">3</div>
+                <div class="node-content">
+                    <p class="node-q">冲动指数：成交决策速度？</p>
+                    <div class="node-branch">
+                        <div class="branch-item">
+                            <span class="branch-label">对比超3天，反复确认细节</span>
+                            <span class="branch-result res-a">➔ 理性A/B</span>
+                        </div>
+                        <div class="branch-item">
+                            <span class="branch-label">思考了半天/1天左右</span>
+                            <span class="branch-result res-b">➔ 正常B/C1</span>
+                        </div>
+                        <div class="branch-item">
+                            <span class="branch-label">进直播间听了5分钟直接要链</span>
+                            <span class="branch-result res-c">➔ 高危C2/D</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Node 4 -->
+            <div class="node">
+                <div class="node-number">4</div>
+                <div class="node-content">
+                    <p class="node-q">支付能力：购买付款方式是？</p>
+                    <div class="node-branch">
+                        <div class="branch-item">
+                            <span class="branch-label">全款秒付大额</span>
+                            <span class="branch-result res-a">➔ 稳妥A类</span>
+                        </div>
+                        <div class="branch-item">
+                            <span class="branch-label">理性分期 (额度不局促)</span>
+                            <span class="branch-result res-b">➔ 兜底B类</span>
+                        </div>
+                        <div class="branch-item">
+                            <span class="branch-label">刷爆多张卡/多头借贷</span>
+                            <span class="branch-result res-d">➔ 熔断D类</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
