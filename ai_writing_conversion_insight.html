@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI写作用户画像数据透视与洞察</title>
+    <style>
+        :root {
+            --text-main: #333333;
+            --text-light: #666666;
+            --border-line: #e0e0e0;
+            --bg-body: #f7f9fa;
+            --bg-card: #ffffff;
+            --table-header: #2b3a4a;
+            --insight-bg: #f2f7ff;
+            --insight-border: #4d8ffd;
+            --primary-blue: #2f54eb;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: var(--bg-body);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        .report-container {
+            max-width: 960px;
+            margin: 0 auto;
+            background-color: var(--bg-card);
+            padding: 30px 40px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            border-radius: 8px;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin: 0 0 10px 0;
+            text-align: center;
+        }
+
+        .meta-info {
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-light);
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed var(--border-line);
+        }
+
+        .data-section {
+            margin-bottom: 36px;
+        }
+
+        h3 {
+            font-size: 16px;
+            color: var(--primary-blue);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+
+        h3::before {
+            content: "";
+            display: inline-block;
+            width: 4px;
+            height: 14px;
+            background-color: var(--primary-blue);
+            margin-right: 8px;
+            flex-shrink: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        th {
+            background-color: var(--table-header);
+            color: #fff;
+            font-weight: 600;
+            padding: 10px 14px;
+            text-align: left;
+            border: 1px solid #1f2d3d;
+        }
+
+        td {
+            border: 1px solid var(--border-line);
+            padding: 10px 14px;
+            color: #4a4a4a;
+            vertical-align: top;
+        }
+
+        .col-dimension { width: 12%; }
+        .col-data { width: 26%; }
+        .col-insight { width: 36%; }
+
+        .insight-cell {
+            background-color: var(--insight-bg);
+            border-left: 3px solid var(--insight-border);
+            font-size: 13px;
+            color: #2b4570;
+            line-height: 1.7;
+        }
+
+        .insight-tag {
+            display: inline-block;
+            background-color: #4d8ffd;
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 3px;
+            margin-bottom: 6px;
+        }
+        
+        .insight-tag.neutral { background-color: #a0aec0; }
+        .insight-tag.warning { background-color: #f6ad55; }
+        .insight-tag.critical { background-color: #e53e3e; }
+
+        .note {
+            font-size: 12px;
+            color: #999;
+            margin-top: 4px;
+        }
+
+        @media (max-width: 768px) {
+            .report-container { padding: 16px; }
+            th, td { padding: 8px; font-size: 13px; }
+            .col-dimension { width: 15%; }
+            .col-data { width: 28%; }
+            .col-insight { width: 29%; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="report-container">
+    <h1>AI写作用户画像数据透视与洞察</h1>
+    <div class="meta-info">
+        数据统计时点：截至2026年3月24日<br>
+        报告类型：基础事实数据呈现 + 大卫AI助手逐项洞察（涵盖Customer PRISM及漏斗归因方法论）<br>
+        *声明：洞察仅供CEO推演业务结构参考，非最终执行指令。
+    </div>
+
+    <!-- 第一部分：人口学基础特征 -->
+    <div class="data-section">
+        <h3>1. 人口统计维度的漏斗检视 (Profile)</h3>
+        <table>
+            <tr>
+                <th class="col-dimension">维度</th>
+                <th class="col-data">未转化人群 (Top量级)</th>
+                <th class="col-data">转化人群 (Top量级)</th>
+                <th class="col-insight">大卫AI助手洞察</th>
+            </tr>
+            <tr>
+                <td><strong>性别</strong></td>
+                <td>1. 男 (10,267)<br>2. 女 (8,735)</td>
+                <td>1. 男 (631)<br>2. 女 (548)</td>
+                <td class="insight-cell">
+                    <span class="insight-tag neutral">无显著差异</span><br>
+                    AI写作大盘呈“男多女少”的稳定占比（约54% vs 46%），在漏斗转化前后占比未发生偏离。性别不构成转化门槛的分水岭。
+                </td>
+            </tr>
+            <tr>
+                <td><strong>年龄段</strong></td>
+                <td>1. 25-29岁 (5,065)<br>2. 30-34岁 (3,654)<br>3. 35-39岁 (3,268)<br>4. 40-49岁 (2,920)</td>
+                <td>1. 25-29岁 (270)<br>2. 40-49岁 (242)<br>3. 30-34岁 (222)<br>4. 35-39岁 (222)</td>
+                <td class="insight-cell">
+                    <span class="insight-tag warning">微妙偏移</span><br>
+                    与有声书彻底排除低龄用户不同，AI写作在 25-29岁（职场早期）保有强劲的首位霸榜基础。但值得注意的是，<strong>40-49岁资深职场人群在付费盘骤然逆袭升至第二</strong>（未转化盘排第四）。这揭示了该年龄段可能面临的严重“技术掉队焦虑”或为了“降本提效”产生的高果断购买意愿。
+                </td>
+            </tr>
+            <tr>
+                <td><strong>学历</strong></td>
+                <td>1. 本科 (7,235)<br>2. 高中及以下 (5,501)<br>3. 大专 (2,361)<br>4. 硕士 (800)</td>
+                <td>1. 本科 (493)<br>2. 高中及以下 (328)<br>3. 大专 (111)<br>4. 硕士 (78)</td>
+                <td class="insight-cell">
+                    <span class="insight-tag neutral">结构一致</span><br>
+                    本科人群在这两组中均稳占鳌头。AI生产力工具本身的技术心智接纳存在学历门槛，当前前端导流的“本科主体”命中有效，建议保持该画像基底。
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- 第二部分：地域与资源特征 -->
+    <div class="data-section">
+        <h3>2. 地域资源与消费能力断层分析 (Region & Spending)</h3>
+        <table>
+            <tr>
+                <th class="col-dimension">维度</th>
+                <th class="col-data">未转化人群 (Top量级)</th>
+                <th class="col-data">转化人群 (Top量级)</th>
+                <th class="col-insight">大卫AI助手洞察</th>
+            </tr>
+            <tr>
+                <td><strong>城市等级</strong></td>
+                <td>1. 二线 (6,190)<br>2. 三线 (3,482)<br>3. 一线 (3,174)<br>4. 五线 (2,489)</td>
+                <td>1. 二线 (412)<br>2. 一线 (249)<br>3. 三线 (197)<br>4. 五线 (131)</td>
+                <td class="insight-cell">
+                    <span class="insight-tag warning">排名逆转</span><br>
+                    核心变动：一线城市在付费盘跃升至第二（挤掉三线）。“一线+二线”不仅是留资主力，更是付费绝对票仓。反映出一线高烈度的职场竞争更需要AI工具做溢价产出。
+                </td>
+            </tr>
+            <tr>
+                <td><strong>手机品牌</strong></td>
+                <td>1. 苹果 (4,478)<br>2. 小米 (3,253)<br>3. 华为 (3,098)<br>4. vivo (2,801)<br>5. 荣耀 (2,189)</td>
+                <td>1. 华为 (240)<br>2. 苹果 (233)<br>3. 小米 (186)<br>4. vivo (165)<br>5. 荣耀 (158)</td>
+                <td class="insight-cell">
+                    <span class="insight-tag critical">多维共振·关键分水岭</span><br>
+                    极其亮眼的倒挂变动：<strong>华为从未转化盘的第三位，直接在付费端登顶超越了苹果。</strong> 结合上述“一线城市升阶”及“40-49岁人群”特征的共振，清晰勾勒出一幅高净值画像：持有华为旗舰机的成熟（政企或企业中层）打工人。这类人群可能时间极度宝贵，把AI视为买效率的刚需。
+                </td>
+            </tr>
+            <tr>
+                <td><strong>消费水平</strong></td>
+                <td>1. 5档 (6,855)<br>2. 3档 (4,883)<br>3. 1档 (4,386)<br>4. 4档 (2,802)</td>
+                <td>1. 5档 (438)<br>2. 3档 (342)<br>3. 1档 (232)<br>4. 4档 (160)</td>
+                <td class="insight-cell">
+                    <span class="insight-tag neutral">无显著差异</span><br>
+                    由于AI写作产品通常客单价与硬核职教类可能存在差异或门槛效应更偏普惠，并未像有声书一样在消费档位出现剧烈的中层折叠现象，高消费力依然是最稳定的基本盘。
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- 第三部分：获客渠道洞察 -->
+    <div class="data-section">
+        <h3>3. 获客渠道归因诊断 (Channel & Intent)</h3>
+        <table>
+            <tr>
+                <th class="col-dimension">维度</th>
+                <th class="col-data">未转化人群 (Top量级)</th>
+                <th class="col-data">转化人群 (Top量级)</th>
+                <th class="col-insight">大卫AI助手洞察</th>
+            </tr>
+            <tr>
+                <td><strong>一级渠道</strong></td>
+                <td>1. B站 (14,166)<br>2. 私域 (2,324)<br>3. 小红书 (1,990)<br>4. 站内资源位 (1,328)<br>5. APPpush (1,166)</td>
+                <td>1. B站 (869)<br>2. 小红书 (97)<br>3. 站内资源位 (83)<br>4. 新媒体 (74)<br>5. 私域 (70)</td>
+                <td class="insight-cell">
+                    <span class="insight-tag critical">效率崩塌/关键分水岭</span><br>
+                    <strong>冰火两极剧变：</strong><br>
+                    ① <strong>B站</strong>不仅在留资盘以压倒性优势领先（1.4万），其长内容教育属性使其直接贡献了<strong>七成以上的付费订单 (869单)</strong>。说明生产力工具完全契合B站深度演示的信任培养机制。<br>
+                    ② <strong>私域渠道大崩盘：</strong>2,324个留资（排第二）的私域流量，到转化端直接跌到底谷（仅70单，惨跌至第五）。<strong>转化率低至2.9%左右。</strong>这提示我们要高度警惕当前的私域运营手法，AI产品难以通过常规社群洗脑或客服逼单来转化，必须依托真实的工具演示场域。
+                </td>
+            </tr>
+        </table>
+        <div class="note">* 数据来源与说明：底层数据提取自最新的【AI写作（未转化）与（转化）画像_20260324】系统归档文件。</div>
+    </div>
+
+</div>
+
+</body>
+</html>
