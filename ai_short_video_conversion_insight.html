@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI短视频用户画像数据透视与洞察</title>
+    <style>
+        :root {
+            --text-main: #333333;
+            --text-light: #666666;
+            --border-line: #e0e0e0;
+            --bg-body: #f7f9fa;
+            --bg-card: #ffffff;
+            --table-header: #2b3a4a;
+            --insight-bg: #f9f5ff; /* AI短视频用淡紫色区分 */
+            --insight-border: #9b51e0;
+            --primary-blue: #2f54eb;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: var(--bg-body);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        .report-container {
+            max-width: 960px;
+            margin: 0 auto;
+            background-color: var(--bg-card);
+            padding: 30px 40px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            border-radius: 8px;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin: 0 0 10px 0;
+            text-align: center;
+        }
+
+        .meta-info {
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-light);
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed var(--border-line);
+        }
+
+        .data-section {
+            margin-bottom: 36px;
+        }
+
+        h3 {
+            font-size: 16px;
+            color: var(--primary-blue);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+
+        h3::before {
+            content: "";
+            display: inline-block;
+            width: 4px;
+            height: 14px;
+            background-color: var(--primary-blue);
+            margin-right: 8px;
+            flex-shrink: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        th {
+            background-color: var(--table-header);
+            color: #fff;
+            font-weight: 600;
+            padding: 10px 14px;
+            text-align: left;
+            border: 1px solid #1f2d3d;
+        }
+
+        td {
+            border: 1px solid var(--border-line);
+            padding: 10px 14px;
+            color: #4a4a4a;
+            vertical-align: top;
+        }
+
+        .col-dimension { width: 12%; }
+        .col-data { width: 26%; }
+        .col-insight { width: 36%; }
+
+        .insight-cell {
+            background-color: var(--insight-bg);
+            border-left: 3px solid var(--insight-border);
+            font-size: 13px;
+            color: #3b2a50;
+            line-height: 1.7;
+        }
+
+        .insight-tag {
+            display: inline-block;
+            background-color: #9b51e0;
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 3px;
+            margin-bottom: 6px;
+        }
+        
+        .insight-tag.neutral { background-color: #a0aec0; }
+        .insight-tag.warning { background-color: #f6ad55; }
+        .insight-tag.critical { background-color: #e53e3e; }
+
+        .note {
+            font-size: 12px;
+            color: #999;
+            margin-top: 4px;
+        }
+
+        @media (max-width: 768px) {
+            .report-container { padding: 16px; }
+            th, td { padding: 8px; font-size: 13px; }
+            .col-dimension { width: 15%; }
+            .col-data { width: 28%; }
+            .col-insight { width: 29%; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="report-container">
+    <h1>AI短视频用户画像数据透视与洞察</h1>
+    <div class="meta-info">
+        数据统计时点：截至2026年3月24日<br>
+        报告类型：基础事实数据呈现 + 大卫AI助手逐项洞察（涵盖Customer PRISM及漏斗归因方法论）<br>
+        *声明：洞察仅供CEO推演业务结构参考，非最终执行指令。
+    </div>
+
+    <!-- 第一部分：人口学基础特征 -->
+    <div class="data-section">
+        <h3>1. 人口统计维度的漏斗检视 (Profile)</h3>
+        <table>
+            <tr>
+                <th class="col-dimension">维度</th>
+                <th class="col-data">未转化人群 (Top量级)</th>
+                <th class="col-data">转化人群 (Top量级)</th>
+                <th class="col-insight">大卫AI助手洞察</th>
+            </tr>
+            <tr>
+                <td><strong>性别</strong></td>
+                <td>1. 男 (14,282)<br>2. 女 (10,856)</td>
+                <td>1. 男 (993)<br>2. 女 (709)</td>
+                <td class="insight-cell">
+                    <span class="insight-tag neutral">无显著差异</span><br>
+                    男女比例稳定在 58% vs 42%。短视频领域的AI工具对男性具备轻微偏向，但在漏斗筛除中比例维持平衡，非关键转化因子。
+                </td>
+            </tr>
+            <tr>
+                <td><strong>年龄段</strong></td>
+                <td>1. 25-29岁 (6,272)<br>2. 30-34岁 (5,024)<br>3. 35-39岁 (4,759)<br>4. 40-49岁 (4,017)</td>
+                <td>1. 25-29岁 (449)<br>2. 40-49岁 (336)<br>3. 35-39岁 (320)<br>4. 30-34岁 (317)</td>
+                <td class="insight-cell">
+                    <span class="insight-tag critical">关键分水岭（与AI写作高度同频）</span><br>
+                    25-29岁年轻群体因为“副业搞钱图新奇”意愿高，在两组均霸榜。但剧烈变动发生在中年层：<strong>40-49岁直接从未转化盘第四，飙升至付费盘第二</strong>。这验证了我们此前在“AI写作”中的结论：职场“老兵”对AI工具提效的需求极度硬核且更愿意重金投入（他们是用钱买时间）。
+                </td>
+            </tr>
+            <tr>
+                <td><strong>学历</strong></td>
+                <td>1. 本科 (9,114)<br>2. 高中及以下 (7,572)<br>3. 大专 (3,118)<br>4. 硕士 (970)</td>
+                <td>1. 本科 (623)<br>2. 高中及以下 (475)<br>3. 大专 (185)<br>4. 硕士 (110)</td>
+                <td class="insight-cell">
+                    <span class="insight-tag neutral">结构一致</span><br>
+                    由于短视频生成的入门门槛低于纯代码或长篇写作，本科和“高中及以下”均保持原位。
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- 第二部分：地域与资源特征 -->
+    <div class="data-section">
+        <h3>2. 地域资源与消费能力断层分析 (Region & Spending)</h3>
+        <table>
+            <tr>
+                <th class="col-dimension">维度</th>
+                <th class="col-data">未转化人群 (Top量级)</th>
+                <th class="col-data">转化人群 (Top量级)</th>
+                <th class="col-insight">大卫AI助手洞察</th>
+            </tr>
+            <tr>
+                <td><strong>城市等级</strong></td>
+                <td>1. 二线 (8,838)<br>2. 三线 (4,979)<br>3. 一线 (4,051)<br>4. 五线 (2,941)</td>
+                <td>1. 二线 (592)<br>2. 一线 (377)<br>3. 三线 (294)<br>4. 五线 (177)</td>
+                <td class="insight-cell">
+                    <span class="insight-tag warning">排名向上集聚</span><br>
+                    一线城市大幅超越三线，升至付费榜第二。短视频相关从业者（电商、MCN、新媒体）大量盘踞于一二线城市，他们是最终采购AI视频工具的最硬核力量。
+                </td>
+            </tr>
+            <tr>
+                <td><strong>手机品牌</strong></td>
+                <td>1. 苹果 (6,111)<br>2. 小米 (4,301)<br>3. 华为 (3,895)<br>4. vivo (3,624)<br>5. 荣耀 (2,962)</td>
+                <td>1. 苹果 (376)<br>2. 华为 (348)<br>3. 小米 (299)<br>4. vivo (225)<br>5. 荣耀 (181)</td>
+                <td class="insight-cell">
+                    <span class="insight-tag critical">趋势印证：华为上攻</span><br>
+                    和有声书、AI写作如出一辙的走向！<strong>华为手机从未转化榜第三，强势反超小米升至付费榜第二</strong>，极大地缩短了与榜首苹果的差距。结合40-49岁人群跃升，华为高净值圈层的“支付决断力”在这三项业务中全部得到了铁血验证。
+                </td>
+            </tr>
+            <tr>
+                <td><strong>手机价格</strong></td>
+                <td>1. 7000+ (5,562)<br>2. 2000-2999 (4,723)<br>3. 1000-1999 (3,989)<br>4. 3000-3999 (3,208)<br>5. 4000-4999 (3,168)</td>
+                <td>1. 7000+ (359)<br>2. 2000-2999 (311)<br>3. 4000-4999 (233)<br>4. 1000-1999 (221)<br>5. 3000-3999 (216)</td>
+                <td class="insight-cell">
+                    <span class="insight-tag warning">微妙偏移：高端机上浮</span><br>
+                    中高端机型“4000-4999元档”强力跃升至第三（挤掉1-3千元机型段）。支付终端的资产厚度，进一步佐证了高转化人群有更扎实的现金流底座。
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- 第三部分：获客渠道洞察 -->
+    <div class="data-section">
+        <h3>3. 获客渠道归因诊断 (Channel & Intent)</h3>
+        <table>
+            <tr>
+                <th class="col-dimension">维度</th>
+                <th class="col-data">未转化人群 (Top量级)</th>
+                <th class="col-data">转化人群 (Top量级)</th>
+                <th class="col-insight">大卫AI助手洞察</th>
+            </tr>
+            <tr>
+                <td><strong>一级渠道</strong></td>
+                <td>1. B站 (20,281)<br>2. 私域 (4,230)<br>3. 站内资源位 (3,024)<br>4. APPpush (1,501)<br>5. 新媒体 (640)</td>
+                <td>1. B站 (1,376)<br>2. 私域 (162)<br>3. 站内资源位 (144)<br>4. 新媒体 (70)<br>5. APPpush (50)</td>
+                <td class="insight-cell">
+                    <span class="insight-tag warning">B站的绝对堡垒效应</span><br>
+                    ① <strong>B站：</strong>无论在留资（2万+）还是最终转化（近1400单）上，B站都展现出了恐怖的统治力。短视频工具本身就需要“视频教程/效果演示”，B站用户心智与原生场景在此业务上达到了完美匹配。<br>
+                    ② <strong>私域转化阻滞：</strong>私域仍排第二，但转化率（约3.8%）被B站（约6.7%）拉开了身位。短视频这种讲究“所见即所得”的视觉型交付，在微信私域环境下的成交效率天生会被削弱。
+                </td>
+            </tr>
+        </table>
+        <div class="note">* 数据来源与说明：底层数据提取自最新的【AI短视频（未转化）与（转化）画像_20260324】系统归档文件。</div>
+    </div>
+
+</div>
+
+</body>
+</html>
