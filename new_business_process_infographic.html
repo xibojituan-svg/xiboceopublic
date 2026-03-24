@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>喜播新业务流程全景图：ABCD分层驱动</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+        :root {
+            --a: #10b981; --a-bg: #ecfdf5; --a-border: #a7f3d0;
+            --b: #f59e0b; --b-bg: #fffbeb; --b-border: #fde68a;
+            --c1: #8b5cf6; --c1-bg: #f5f3ff; --c1-border: #ddd6fe;
+            --c2: #f43f5e; --c2-bg: #fff1f2; --c2-border: #fecdd3;
+            --d: #dc2626; --d-bg: #fef2f2; --d-border: #fecaca;
+            --dark: #0f172a; --muted: #64748b; --light: #f8fafc;
+            --card: #ffffff; --line: #e2e8f0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', -apple-system, sans-serif; background: var(--light); color: var(--dark); }
+
+        .page { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+
+        /* Header */
+        .hero { text-align: center; padding: 3rem 1rem; margin-bottom: 2rem; }
+        .hero h1 { font-size: 2.5rem; font-weight: 900; letter-spacing: -0.03em; margin-bottom: 0.75rem; background: linear-gradient(135deg, #1e293b, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero p { font-size: 1.15rem; color: var(--muted); max-width: 700px; margin: 0 auto; }
+        .hero .tag { display: inline-block; background: #dbeafe; color: #1d4ed8; padding: 0.3rem 1rem; border-radius: 99px; font-size: 0.85rem; font-weight: 600; margin-bottom: 1rem; }
+
+        /* Section Titles */
+        .section-title { font-size: 1.6rem; font-weight: 800; margin-bottom: 1.5rem; padding-left: 1rem; border-left: 5px solid #3b82f6; }
+
+        /* Comparison Banner */
+        .compare-banner { display: grid; grid-template-columns: 1fr auto 1fr; gap: 1.5rem; align-items: stretch; margin-bottom: 3rem; }
+        .compare-card { background: var(--card); border-radius: 1rem; padding: 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
+        .compare-old { border: 2px solid var(--c2-border); }
+        .compare-new { border: 2px solid var(--a-border); }
+        .compare-card h3 { font-size: 1.2rem; margin-bottom: 1rem; }
+        .compare-old h3 { color: var(--c2); }
+        .compare-new h3 { color: var(--a); }
+        .compare-arrow { display: flex; align-items: center; justify-content: center; font-size: 2.5rem; color: #3b82f6; font-weight: 900; }
+        .compare-card ul { list-style: none; padding: 0; }
+        .compare-card li { padding: 0.5rem 0; border-bottom: 1px solid var(--line); font-size: 0.95rem; display: flex; align-items: center; gap: 0.5rem; }
+        .compare-card li:last-child { border: none; }
+        .icon-bad { color: var(--d); font-weight: bold; }
+        .icon-good { color: var(--a); font-weight: bold; }
+
+        /* Flow Pipeline */
+        .pipeline { display: flex; gap: 0; margin-bottom: 3rem; position: relative; }
+        .pipe-stage { flex: 1; text-align: center; position: relative; }
+        .pipe-box { background: var(--card); border-radius: 1rem; padding: 1.5rem 1rem; margin: 0 0.25rem; box-shadow: 0 4px 12px rgba(0,0,0,0.04); border-top: 5px solid; min-height: 200px; transition: transform 0.3s; }
+        .pipe-box:hover { transform: translateY(-5px); }
+        .pipe-box h4 { font-size: 1.1rem; margin-bottom: 0.5rem; font-weight: 700; }
+        .pipe-box p { font-size: 0.85rem; color: var(--muted); line-height: 1.5; }
+        .pipe-num { width: 36px; height: 36px; background: #3b82f6; color: white; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1rem; margin-bottom: 0.75rem; }
+        .pipe-arrow { position: absolute; right: -14px; top: 50%; transform: translateY(-50%); z-index: 10; font-size: 1.5rem; color: #94a3b8; }
+        .pipe-stage:last-child .pipe-arrow { display: none; }
+        .s1 .pipe-box { border-color: #3b82f6; }
+        .s2 .pipe-box { border-color: #6366f1; }
+        .s3 .pipe-box { border-color: #8b5cf6; }
+        .s4 .pipe-box { border-color: #10b981; }
+        .s5 .pipe-box { border-color: #f59e0b; }
+
+        /* ABCD Lanes */
+        .lanes { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 3rem; }
+        .lane { border-radius: 1rem; padding: 1.5rem; position: relative; overflow: hidden; }
+        .lane::after { content: ''; position: absolute; top: 0; right: 0; width: 80px; height: 80px; border-radius: 50%; opacity: 0.08; transform: translate(30%, -30%); }
+        .lane-a { background: var(--a-bg); border: 1px solid var(--a-border); }
+        .lane-a::after { background: var(--a); }
+        .lane-b { background: var(--b-bg); border: 1px solid var(--b-border); }
+        .lane-b::after { background: var(--b); }
+        .lane-c1 { background: var(--c1-bg); border: 1px solid var(--c1-border); }
+        .lane-c1::after { background: var(--c1); }
+        .lane-cd { background: var(--c2-bg); border: 1px solid var(--c2-border); }
+        .lane-cd::after { background: var(--c2); }
+        .lane h4 { font-size: 1.15rem; font-weight: 800; margin-bottom: 0.75rem; }
+        .lane-a h4 { color: var(--a); }
+        .lane-b h4 { color: var(--b); }
+        .lane-c1 h4 { color: var(--c1); }
+        .lane-cd h4 { color: var(--c2); }
+        .lane-step { background: rgba(255,255,255,0.7); border-radius: 0.5rem; padding: 0.6rem 0.8rem; margin-bottom: 0.5rem; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; }
+        .lane-step .step-icon { font-size: 1rem; }
+        .lane-tag { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 700; margin-top: 0.25rem; }
+        .tag-price { background: #dbeafe; color: #1d4ed8; }
+        .tag-conv { background: #d1fae5; color: #065f46; }
+        .tag-risk { background: #fee2e2; color: #991b1b; }
+
+        /* SKU Ladder */
+        .sku-section { margin-bottom: 3rem; }
+        .sku-ladder { display: flex; align-items: flex-end; gap: 1rem; justify-content: center; padding: 2rem 0; }
+        .sku-bar { text-align: center; border-radius: 0.75rem 0.75rem 0 0; color: white; display: flex; flex-direction: column; justify-content: flex-end; padding: 1rem; min-width: 140px; transition: transform 0.3s; cursor: default; }
+        .sku-bar:hover { transform: scale(1.05); }
+        .sku-bar .sku-price { font-size: 1.5rem; font-weight: 900; }
+        .sku-bar .sku-name { font-size: 0.85rem; margin-top: 0.25rem; opacity: 0.9; }
+        .sku-bar .sku-target { font-size: 0.75rem; margin-top: 0.5rem; background: rgba(255,255,255,0.2); padding: 0.2rem 0.5rem; border-radius: 4px; }
+        .sku1 { background: linear-gradient(135deg, #6366f1, #818cf8); height: 100px; }
+        .sku2 { background: linear-gradient(135deg, #8b5cf6, #a78bfa); height: 150px; }
+        .sku3 { background: linear-gradient(135deg, #3b82f6, #60a5fa); height: 220px; }
+        .sku4 { background: linear-gradient(135deg, #10b981, #34d399); height: 300px; }
+
+        /* VIP Levels */
+        .vip-section { margin-bottom: 3rem; }
+        .vip-track { display: flex; align-items: center; gap: 0; background: var(--card); border-radius: 1rem; padding: 1.5rem 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.04); overflow-x: auto; }
+        .vip-node { text-align: center; flex: 1; position: relative; min-width: 120px; }
+        .vip-dot { width: 48px; height: 48px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: 800; color: white; font-size: 0.85rem; margin-bottom: 0.5rem; }
+        .vip-node .vip-label { font-size: 0.8rem; font-weight: 600; color: var(--dark); }
+        .vip-node .vip-price { font-size: 0.7rem; color: var(--muted); margin-top: 0.15rem; }
+        .vip-connector { flex: 0 0 40px; height: 3px; background: linear-gradient(90deg, #e2e8f0, #94a3b8); border-radius: 2px; }
+        .v1 .vip-dot { background: #94a3b8; }
+        .v3 .vip-dot { background: #6366f1; }
+        .v5 .vip-dot { background: #3b82f6; }
+        .v7 .vip-dot { background: #10b981; }
+        .v10 .vip-dot { background: linear-gradient(135deg, #f59e0b, #f97316); }
+
+        /* KPI Grid */
+        .kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 3rem; }
+        .kpi-card { background: var(--card); border-radius: 1rem; padding: 1.5rem; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.04); transition: transform 0.3s; }
+        .kpi-card:hover { transform: translateY(-3px); }
+        .kpi-old { font-size: 1.8rem; font-weight: 900; color: var(--c2); text-decoration: line-through; opacity: 0.5; }
+        .kpi-new { font-size: 2.2rem; font-weight: 900; color: var(--a); }
+        .kpi-label { font-size: 0.9rem; color: var(--muted); margin-top: 0.5rem; font-weight: 500; }
+        .kpi-arrow { font-size: 1.2rem; color: var(--a); margin: 0.25rem 0; }
+
+        /* Priority List */
+        .priority-section { margin-bottom: 3rem; }
+        .priority-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+        .priority-card { background: var(--card); border-radius: 1rem; padding: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.04); border-left: 5px solid; }
+        .p0 { border-color: var(--d); }
+        .p1 { border-color: var(--b); }
+        .p2 { border-color: #3b82f6; }
+        .priority-card h4 { font-size: 1rem; font-weight: 700; margin-bottom: 0.75rem; }
+        .p0 h4 { color: var(--d); }
+        .p1 h4 { color: var(--b); }
+        .p2 h4 { color: #3b82f6; }
+        .priority-card ol { padding-left: 1.25rem; font-size: 0.9rem; }
+        .priority-card li { margin-bottom: 0.5rem; line-height: 1.4; }
+
+        /* Footer */
+        .footer { text-align: center; padding: 2rem; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--line); margin-top: 2rem; }
+
+        @media (max-width: 768px) {
+            .compare-banner { grid-template-columns: 1fr; }
+            .compare-arrow { transform: rotate(90deg); padding: 0.5rem; }
+            .pipeline { flex-direction: column; }
+            .pipe-arrow { display: none !important; }
+            .lanes { grid-template-columns: 1fr; }
+            .sku-ladder { flex-direction: column; align-items: center; }
+            .sku-bar { min-width: 80%; height: auto !important; }
+            .kpi-grid, .priority-list { grid-template-columns: 1fr; }
+            .vip-track { flex-wrap: wrap; gap: 0.5rem; }
+            .vip-connector { display: none; }
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+
+    <!-- Hero -->
+    <div class="hero">
+        <div class="tag">方案设计 · 2026-03-24</div>
+        <h1>喜播新业务流程全景图</h1>
+        <p>从"一条流水线洗全量用户"到"前端即分流，每类用户走专属旅程"——基于ABCD分层与兴趣岛模型的全流程重构</p>
+    </div>
+
+    <!-- Old vs New -->
+    <h2 class="section-title">新旧模式对比</h2>
+    <div class="compare-banner">
+        <div class="compare-card compare-old">
+            <h3>❌ 旧模式（高风险）</h3>
+            <ul>
+                <li><span class="icon-bad">✗</span> 0元进来全量用户进同一直播间</li>
+                <li><span class="icon-bad">✗</span> 3天强销售逼单，成交极速</li>
+                <li><span class="icon-bad">✗</span> ¥7000 一刀切，不分用户类型</li>
+                <li><span class="icon-bad">✗</span> 复购靠纵向压榨（逼升仓）</li>
+                <li><span class="icon-bad">✗</span> 没有兜底产品，要么买7000要么走人</li>
+                <li><span class="icon-bad">✗</span> 退费率 24%，D类拦截率 <50%</li>
+            </ul>
+        </div>
+        <div class="compare-arrow">➜</div>
+        <div class="compare-card compare-new">
+            <h3>✅ 新模式（健康增长）</h3>
+            <ul>
+                <li><span class="icon-good">✓</span> 三类素材分投，精准吸引不同人群</li>
+                <li><span class="icon-good">✓</span> 3天体验期做行为采集+AI分层评分</li>
+                <li><span class="icon-good">✓</span> 阶梯价格 ¥398 / ¥1280 / ¥3980 / ¥7380</li>
+                <li><span class="icon-good">✓</span> 横向扩品复购（交叉兴趣课）</li>
+                <li><span class="icon-good">✓</span> 每类用户都有匹配的SKU承接</li>
+                <li><span class="icon-good">✓</span> 退费率目标 <10%，D类拦截 ≥90%</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 5-Stage Pipeline -->
+    <h2 class="section-title">五层业务流程架构</h2>
+    <div class="pipeline">
+        <div class="pipe-stage s1">
+            <div class="pipe-box">
+                <div class="pipe-num">1</div>
+                <h4>前端获客</h4>
+                <p>付费投放分三类素材（技能型/兴趣型/体验型）+ IP矩阵自然流 + 口碑裂变</p>
+            </div>
+            <div class="pipe-arrow">▸</div>
+        </div>
+        <div class="pipe-stage s2">
+            <div class="pipe-box">
+                <div class="pipe-num">2</div>
+                <h4>3天体验期</h4>
+                <p>Day0破冰画像 → Day1行为采集 → Day2 AI评分出分层结果</p>
+            </div>
+            <div class="pipe-arrow">▸</div>
+        </div>
+        <div class="pipe-stage s3">
+            <div class="pipe-box">
+                <div class="pipe-num">3</div>
+                <h4>分层转化</h4>
+                <p>A类顾问通道 / B类阶梯通道 / C1社群通道 / C2&D拦截通道</p>
+            </div>
+            <div class="pipe-arrow">▸</div>
+        </div>
+        <div class="pipe-stage s4">
+            <div class="pipe-box">
+                <div class="pipe-num">4</div>
+                <h4>分层交付</h4>
+                <p>A类三师定制 / B类标准+预期校正 / C1社群陪伴式交付</p>
+            </div>
+            <div class="pipe-arrow">▸</div>
+        </div>
+        <div class="pipe-stage s5">
+            <div class="pipe-box">
+                <div class="pipe-num">5</div>
+                <h4>复购增长</h4>
+                <p>横向扩品 + 累计VIP等级体系（V1→V10），替代纵向逼升仓</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ABCD Lanes -->
+    <h2 class="section-title">四条专属用户旅程</h2>
+    <div class="lanes">
+        <!-- A Lane -->
+        <div class="lane lane-a">
+            <h4>A类：价值共创</h4>
+            <div class="lane-step"><span class="step-icon">🎯</span> 专业IP内容/口碑推荐引入</div>
+            <div class="lane-step"><span class="step-icon">📊</span> AI评分≥7分，标记A类</div>
+            <div class="lane-step"><span class="step-icon">👤</span> 高阶顾问1对1需求诊断</div>
+            <div class="lane-step"><span class="step-icon">💎</span> 旗舰课 + 线下圈层活动</div>
+            <div class="lane-step"><span class="step-icon">🔄</span> 横向扩品 + IP孵化支持</div>
+            <span class="lane-tag tag-price">¥7380+</span>
+            <span class="lane-tag tag-conv">转化率 15-20%</span>
+        </div>
+
+        <!-- B Lane -->
+        <div class="lane lane-b">
+            <h4>B类：成长投资</h4>
+            <div class="lane-step"><span class="step-icon">📱</span> 信息流广告/直播间引入</div>
+            <div class="lane-step"><span class="step-icon">📊</span> AI评分4-6分，标记B类</div>
+            <div class="lane-step"><span class="step-icon">📋</span> 展示真实学员案例，阶梯报价</div>
+            <div class="lane-step"><span class="step-icon">🔥</span> 入学第1周预期校正（72h关键期）</div>
+            <div class="lane-step"><span class="step-icon">🔄</span> 完课后横向推荐 + 能力认证</div>
+            <span class="lane-tag tag-price">¥1280-3980</span>
+            <span class="lane-tag tag-conv">转化率 5-8%</span>
+        </div>
+
+        <!-- C1 Lane -->
+        <div class="lane lane-c1">
+            <h4>C1类：兴趣陪伴</h4>
+            <div class="lane-step"><span class="step-icon">❤️</span> 陪伴型IP内容/朋友推荐</div>
+            <div class="lane-step"><span class="step-icon">📊</span> 高底座低需求，标记C1类</div>
+            <div class="lane-step"><span class="step-icon">👥</span> 引导进入兴趣社群（非销售群）</div>
+            <div class="lane-step"><span class="step-icon">🎨</span> ¥98-398轻课 + 作品展示墙</div>
+            <div class="lane-step"><span class="step-icon">🔄</span> 多兴趣交叉复购（书法→国画→…）</div>
+            <span class="lane-tag tag-price">¥98-398</span>
+            <span class="lane-tag tag-conv">转化率 30-40%</span>
+        </div>
+
+        <!-- C2/D Lane -->
+        <div class="lane lane-cd">
+            <h4>C2/D类：风控拦截</h4>
+            <div class="lane-step"><span class="step-icon">⚡</span> 冲动型广告/极短视频引入</div>
+            <div class="lane-step"><span class="step-icon">🚨</span> 触发风控关键词/行为预警</div>
+            <div class="lane-step"><span class="step-icon">🔒</span> C2：仅推¥98体验包+风险告知书</div>
+            <div class="lane-step"><span class="step-icon">🛑</span> D类：系统冻结支付+合规劝退</div>
+            <div class="lane-step"><span class="step-icon">💬</span> "等您准备好了，我们随时欢迎"</div>
+            <span class="lane-tag tag-risk">拦截率 ≥90%</span>
+        </div>
+    </div>
+
+    <!-- SKU Ladder -->
+    <h2 class="section-title">阶梯价格体系（替代¥7000一刀切）</h2>
+    <div class="sku-section">
+        <div class="sku-ladder">
+            <div class="sku-bar sku1">
+                <div class="sku-name">单模块体验课</div>
+                <div class="sku-price">¥398</div>
+                <div class="sku-target">犹豫的B类 / C1类</div>
+            </div>
+            <div class="sku-bar sku2">
+                <div class="sku-name">精选入门课</div>
+                <div class="sku-price">¥1,280</div>
+                <div class="sku-target">预算有限的B类</div>
+            </div>
+            <div class="sku-bar sku3">
+                <div class="sku-name">标准正价课</div>
+                <div class="sku-price">¥3,980</div>
+                <div class="sku-target">B类主推</div>
+            </div>
+            <div class="sku-bar sku4">
+                <div class="sku-name">全能进阶课</div>
+                <div class="sku-price">¥7,380</div>
+                <div class="sku-target">A/B类高意愿</div>
+            </div>
+        </div>
+        <p style="text-align:center; color:var(--muted); font-size:0.9rem; margin-top:1rem;">核心逻辑：不是每个用户都要花¥7000。让每类用户在自己的价位带"停下来"，而不是"走掉"。</p>
+    </div>
+
+    <!-- VIP Track -->
+    <h2 class="section-title">累计会员等级体系（替代纵向逼升仓）</h2>
+    <div class="vip-section">
+        <div class="vip-track">
+            <div class="vip-node v1">
+                <div class="vip-dot">V1</div>
+                <div class="vip-label">体验会员</div>
+                <div class="vip-price">¥0-398</div>
+            </div>
+            <div class="vip-connector"></div>
+            <div class="vip-node v3">
+                <div class="vip-dot">V3</div>
+                <div class="vip-label">成长会员</div>
+                <div class="vip-price">¥399-3980</div>
+            </div>
+            <div class="vip-connector"></div>
+            <div class="vip-node v5">
+                <div class="vip-dot">V5</div>
+                <div class="vip-label">进阶会员</div>
+                <div class="vip-price">¥3981-9800</div>
+            </div>
+            <div class="vip-connector"></div>
+            <div class="vip-node v7">
+                <div class="vip-dot">V7</div>
+                <div class="vip-label">精英会员</div>
+                <div class="vip-price">¥9801-20000</div>
+            </div>
+            <div class="vip-connector"></div>
+            <div class="vip-node v10">
+                <div class="vip-dot">V10</div>
+                <div class="vip-label">合伙人</div>
+                <div class="vip-price">¥20001+</div>
+            </div>
+        </div>
+        <p style="text-align:center; color:var(--muted); font-size:0.9rem; margin-top:1rem;">用户心理从"又要我花钱"变成"我在攒等级"——累计制而非一次性大额，降低每次决策压力。</p>
+    </div>
+
+    <!-- KPI Grid -->
+    <h2 class="section-title">核心指标：旧→新</h2>
+    <div class="kpi-grid">
+        <div class="kpi-card">
+            <div class="kpi-old">3%</div>
+            <div class="kpi-arrow">▼</div>
+            <div class="kpi-new">8-10%</div>
+            <div class="kpi-label">综合转化率</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-old">24%</div>
+            <div class="kpi-arrow">▼</div>
+            <div class="kpi-new">&lt;10%</div>
+            <div class="kpi-label">退费率</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-old">&lt;50%</div>
+            <div class="kpi-arrow">▼</div>
+            <div class="kpi-new">≥90%</div>
+            <div class="kpi-label">D类拦截率</div>
+        </div>
+    </div>
+
+    <!-- Priority -->
+    <h2 class="section-title">落地优先级</h2>
+    <div class="priority-list">
+        <div class="priority-card p0">
+            <h4>🔴 P0 - 本月启动</h4>
+            <ol>
+                <li>下架所有"月入过万"类投放素材</li>
+                <li>CRM上线ABCD评分模型（最简版）</li>
+                <li>设计¥398和¥1280两个Down-sell SKU</li>
+            </ol>
+        </div>
+        <div class="priority-card p1">
+            <h4>🟠 P1 - 下月完成</h4>
+            <ol>
+                <li>3天体验期行为采集SOP建立</li>
+                <li>培训班主任"预期校正话术"</li>
+                <li>D类触发词写进系统自动预警</li>
+            </ol>
+        </div>
+        <div class="priority-card p2">
+            <h4>🔵 P2 - 季度内完成</h4>
+            <ol>
+                <li>累计会员等级体系上线</li>
+                <li>横向扩品推荐引擎开发</li>
+                <li>首场A类线下圈层活动策划</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>大卫AI助手 · 基于兴趣岛模型与ABCD分层体系综合设计 · 2026-03-24</p>
+        <p style="margin-top:0.25rem;">非最终业务决策建议，落地前请结合实际运营数据验证可行性</p>
+    </div>
+
+</div>
+</body>
+</html>
