@@ -677,23 +677,67 @@ flowchart TD
 
   <!-- SKU Matrix -->
   <div style="background:var(--card);border-radius:16px;box-shadow:0 2px 16px rgba(0,0,0,.08);padding:28px;margin-top:20px">
-    <div style="font-size:17px;font-weight:700;color:var(--header);margin-bottom:6px">产品 SKU 矩阵 × 用户分层匹配</div>
-    <div style="color:var(--muted);font-size:13px;margin-bottom:20px">每类用户的推荐产品层级 · 绿色为主推 · 黄色为 Down-sell 兜底</div>
-    <div class="mermaid">
-%%{init: {"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","fontSize":"13px"}}}%%
-quadrantChart
-    title 产品价格带 × 用户分层适配矩阵
-    x-axis 价格从低到高
-    y-axis 客单价承受力从低到高
-    quadrant-1 旗舰区（A类主场）
-    quadrant-2 高潜区（B类进阶）
-    quadrant-3 入门区（B类/C2兜底）
-    quadrant-4 兴趣区（C1主场）
-    ¥98兴趣轻课: [0.08, 0.20]
-    ¥398单模块: [0.22, 0.35]
-    ¥1280精选入门: [0.42, 0.48]
-    ¥3980标准正价: [0.62, 0.65]
-    ¥7380全能进阶: [0.82, 0.82]
+    <div style="font-size:17px;font-weight:700;color:var(--header);margin-bottom:6px">产品 SKU 矩阵 &times; 用户分层匹配</div>
+    <div style="color:var(--muted);font-size:13px;margin-bottom:24px">每类用户的推荐产品层级 · 绿色主推 · 灰色兜底 · 红色禁止</div>
+
+    <!-- SKU Bar Chart -->
+    <div style="display:flex;flex-direction:column;gap:14px;">
+
+      <div style="display:grid;grid-template-columns:140px 1fr;align-items:center;gap:16px;">
+        <div style="text-align:right;font-size:13px;font-weight:700;color:#555;">¥98 兴趣轻课</div>
+        <div style="display:flex;gap:6px;align-items:center;">
+          <div style="background:var(--c1);border-radius:6px;padding:5px 14px;font-size:12px;font-weight:700;color:#fff;">C1 主推</div>
+          <div style="background:#e0e0e0;border-radius:6px;padding:5px 14px;font-size:12px;color:#888;">C2 兜底</div>
+          <div style="margin-left:8px;font-size:12px;color:var(--muted);">毛利率 70%+  ·  零客诉</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:140px 1fr;align-items:center;gap:16px;">
+        <div style="text-align:right;font-size:13px;font-weight:700;color:#555;">¥398 单模块</div>
+        <div style="display:flex;gap:6px;align-items:center;">
+          <div style="background:var(--c1);border-radius:6px;padding:5px 14px;font-size:12px;font-weight:700;color:#fff;">C1 主推</div>
+          <div style="background:#e0e0e0;border-radius:6px;padding:5px 14px;font-size:12px;color:#888;">B 兜底</div>
+          <div style="margin-left:8px;font-size:12px;color:var(--muted);">Down-sell 最后防线</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:140px 1fr;align-items:center;gap:16px;">
+        <div style="text-align:right;font-size:13px;font-weight:700;color:#555;">¥1,280 精选入门</div>
+        <div style="display:flex;gap:6px;align-items:center;">
+          <div style="background:var(--b);border-radius:6px;padding:5px 14px;font-size:12px;font-weight:700;color:#fff;">B 主推</div>
+          <div style="background:#e0e0e0;border-radius:6px;padding:5px 14px;font-size:12px;color:#888;">B Down-sell</div>
+          <div style="margin-left:8px;font-size:12px;color:var(--muted);">预算有限但态度认真</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:140px 1fr;align-items:center;gap:16px;">
+        <div style="text-align:right;font-size:13px;font-weight:700;color:#555;">¥3,980 标准正价</div>
+        <div style="display:flex;gap:6px;align-items:center;">
+          <div style="background:var(--b);border-radius:6px;padding:5px 14px;font-size:12px;font-weight:700;color:#fff;">B 主推</div>
+          <div style="background:#e0e0e0;border-radius:6px;padding:5px 14px;font-size:12px;color:#888;">A 起点</div>
+          <div style="margin-left:8px;font-size:12px;color:var(--muted);">喜播基本盘核心 SKU</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:140px 1fr;align-items:center;gap:16px;">
+        <div style="text-align:right;font-size:13px;font-weight:700;color:#555;">¥7,380 全能旗舰</div>
+        <div style="display:flex;gap:6px;align-items:center;">
+          <div style="background:var(--a);border-radius:6px;padding:5px 14px;font-size:12px;font-weight:700;color:#fff;">A 主推</div>
+          <div style="background:#e0e0e0;border-radius:6px;padding:5px 14px;font-size:12px;color:#888;">B 高意愿</div>
+          <div style="background:#ffebee;border:1px solid #ef9a9a;border-radius:6px;padding:5px 14px;font-size:12px;color:#c62828;">C2/D 禁止</div>
+          <div style="margin-left:8px;font-size:12px;color:var(--muted);">顾问 1v1 · 三师服务</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 分层说明条 -->
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;padding-top:16px;border-top:1px solid #eee;">
+      <div style="display:flex;align-items:center;gap:6px;font-size:12px;"><div style="width:12px;height:12px;border-radius:3px;background:var(--a)"></div>A类专属</div>
+      <div style="display:flex;align-items:center;gap:6px;font-size:12px;"><div style="width:12px;height:12px;border-radius:3px;background:var(--b)"></div>B类主推</div>
+      <div style="display:flex;align-items:center;gap:6px;font-size:12px;"><div style="width:12px;height:12px;border-radius:3px;background:var(--c1)"></div>C1类主推</div>
+      <div style="display:flex;align-items:center;gap:6px;font-size:12px;"><div style="width:12px;height:12px;border-radius:3px;background:#e0e0e0"></div>兜底/Down-sell</div>
+      <div style="display:flex;align-items:center;gap:6px;font-size:12px;"><div style="width:12px;height:12px;border-radius:3px;background:#ffebee;border:1px solid #ef9a9a"></div>禁止推荐</div>
     </div>
   </div>
 
