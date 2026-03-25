@@ -79,15 +79,20 @@ DARK_CSS = """
     body, p, div, span, li, td, article, main, section {
         color: rgba(255, 255, 255, 0.85) !important;
     }
-    .report-container, .page-container, .dashboard-container, .process-container, .map-container {
+    .report-container, .page-container, .dashboard-container, .process-container, .map-container, .container, .card, .tree-section, .node-content, .branch-item, .panel, .box {
        background-color: var(--bg-surface) !important;
        border: 1px solid var(--border) !important;
        box-shadow: 0 10px 40px rgba(0,0,0,0.5) !important;
-       border-radius: 16px;
-       margin-top: 40px;
-       margin-bottom: 40px;
+       /* remove border radius override to keep custom card curves */
     }
-    h1, h2, h3, h4, .title, strong, b { color: #ffffff !important; }
+    .logic-banner {
+       background: linear-gradient(135deg, #1e1e24, #09090b) !important;
+       box-shadow: 0 10px 40px rgba(0,0,0,0.5) !important;
+    }
+    .branch-item { background-color: #27272a !important; }
+    .card-d { background-color: #2e1010 !important; border-color: #ef4444 !important;}
+    .formula { background: rgba(255,255,255,0.05) !important; color: #facc15 !important; }
+    h1, h2, h3, h4, .title, strong, b, .card-title, .node-q, .branch-label { color: #ffffff !important; }
     td, .text-content, p { border-color: var(--border) !important;}
     th { background: #18181b !important; border-color: var(--border) !important; color: #ffffff !important;}
     table { border-collapse: collapse; }
@@ -96,7 +101,7 @@ DARK_CSS = """
         background-color: rgba(155, 81, 224, 0.05) !important;
     }
     .insight-tag { color: #ffffff !important; }
-    .note, .meta-info, .desc, .text-muted, .text-light, .text-dim { color: #a1a1aa !important; }
+    .note, .meta-info, .desc, .text-muted, .text-light, .text-dim, .definition { color: #a1a1aa !important; }
     a { color: #60a5fa !important; }
 
     .main-container {
