@@ -86,7 +86,10 @@ DARK_CSS = """
     .container, .tree-section, .node-content, .branch-item, .panel, table, .table-wrapper, .page,
     [class*="card"]:not(.card-d), [class*="-box"]:not(.action-box), [class*="-wrap"], 
     [class*="bg-gray-"], [class*="bg-blue-"], [class*="bg-red-"], [class*="bg-orange-"], [class*="bg-white"],
-    [class*="lane"], [class*="-step"], [class*="-track"], [class*="tag"], [class*="badge"] {
+    [class*="lane"], [class*="-step"], [class*="-track"], [class*="tag"], [class*="badge"],
+    [class*="alert"], [class*="-block"], [class*="banner"], [class*="reasoning"], [class*="insight"],
+    [class*="greeting"], [class*="recalibrate"], [class*="hook-"], input, select, textarea, button,
+    div[style*="background:#FFF"], div[style*="background-color: #FFF"] {
        background-color: var(--bg-surface) !important;
        border-color: var(--border) !important;
        box-shadow: 0 4px 20px rgba(0,0,0,0.5) !important;
