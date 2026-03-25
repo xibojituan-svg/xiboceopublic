@@ -83,9 +83,10 @@ DARK_CSS = """
     
     /* COMPREHENSIVE SUBSTRING MATCHING FOR CONTAINER BACKGROUNDS */
     .report-container, .page-container, .dashboard-container, .process-container, .map-container, 
-    .container, .tree-section, .node-content, .branch-item, .panel, table, .table-wrapper,
+    .container, .tree-section, .node-content, .branch-item, .panel, table, .table-wrapper, .page,
     [class*="card"]:not(.card-d), [class*="-box"]:not(.action-box), [class*="-wrap"], 
-    [class*="bg-gray-"], [class*="bg-blue-"], [class*="bg-red-"], [class*="bg-orange-"], [class*="bg-white"] {
+    [class*="bg-gray-"], [class*="bg-blue-"], [class*="bg-red-"], [class*="bg-orange-"], [class*="bg-white"],
+    [class*="lane"], [class*="-step"], [class*="-track"], [class*="tag"], [class*="badge"] {
        background-color: var(--bg-surface) !important;
        border-color: var(--border) !important;
        box-shadow: 0 4px 20px rgba(0,0,0,0.5) !important;
