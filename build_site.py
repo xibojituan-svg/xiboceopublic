@@ -65,7 +65,7 @@ index_html = f"""<!doctype html>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>喜播集团 2026 战略导航台</title>
-  {{generic_css}}
+  {generic_css}
   <style>
     body {{ background: #f1f5f9; }}
     .page-container {{
