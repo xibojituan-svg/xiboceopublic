@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>喜播 ABCD 用户分层流程图</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+  :root {
+    --a: #1565C0; --a-light: #E3F2FD; --a-mid: #90CAF9;
+    --b: #2E7D32; --b-light: #E8F5E9; --b-mid: #A5D6A7;
+    --c1: #E65100; --c1-light: #FFF3E0; --c1-mid: #FFCC80;
+    --c2: #AD1457; --c2-light: #FCE4EC; --c2-mid: #F48FB1;
+    --d: #B71C1C; --d-light: #FFEBEE; --d-mid: #EF9A9A;
+    --gray: #546E7A; --bg: #F0F4F8; --card: #FFFFFF;
+    --header: #1E3A5F; --text: #263238; --muted: #78909C;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.5;
+  }
+
+  /* ── NAV ── */
+  .nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--header); display: flex; align-items: center;
+    padding: 0 32px; box-shadow: 0 2px 8px rgba(0,0,0,.3);
+  }
+  .nav-brand { color: #fff; font-size: 16px; font-weight: 700; padding: 14px 0; margin-right: 40px; }
+  .nav-brand span { opacity: .6; font-weight: 400; }
+  .tab-btn {
+    color: rgba(255,255,255,.65); font-size: 14px; padding: 16px 20px;
+    border: none; background: none; cursor: pointer; border-bottom: 3px solid transparent;
+    transition: all .2s;
+  }
+  .tab-btn.active { color: #fff; border-bottom-color: #64B5F6; }
+  .tab-btn:hover { color: #fff; }
+
+  /* ── SECTIONS ── */
+  .section { display: none; padding: 32px; max-width: 1400px; margin: 0 auto; }
+  .section.active { display: block; }
+
+  .page-title { font-size: 24px; font-weight: 700; color: var(--header); margin-bottom: 6px; }
+  .page-sub { color: var(--muted); font-size: 14px; margin-bottom: 28px; }
+
+  /* ── LEGEND ── */
+  .legend { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 28px; }
+  .legend-item {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--card); border-radius: 20px;
+    padding: 6px 14px; font-size: 13px; font-weight: 500;
+    box-shadow: 0 1px 4px rgba(0,0,0,.08);
+  }
+  .legend-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+
+  /* ── DIAGRAM 1: CONVERSION FUNNEL ── */
+  .funnel-wrap {
+    background: var(--card); border-radius: 16px;
+    box-shadow: 0 2px 16px rgba(0,0,0,.08);
+    padding: 32px; overflow-x: auto;
+  }
+  .mermaid { min-width: 700px; }
+
+  /* ── DIAGRAM 2: SERVICE JOURNEY ── */
+  .journey-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  @media (max-width: 900px) { .journey-grid { grid-template-columns: 1fr; } }
+
+  .journey-card {
+    background: var(--card); border-radius: 16px;
+    box-shadow: 0 2px 16px rgba(0,0,0,.08); overflow: hidden;
+  }
+  .journey-header {
+    padding: 16px 24px; display: flex; align-items: center; gap: 12px;
+  }
+  .journey-header h2 { color: #fff; font-size: 17px; font-weight: 700; }
+  .journey-header .badge {
+    background: rgba(255,255,255,.2); color: #fff;
+    font-size: 11px; padding: 3px 10px; border-radius: 12px;
+  }
+  .journey-body { padding: 20px 24px 24px; }
+
+  /* Timeline */
+  .timeline { position: relative; padding-left: 32px; }
+  .timeline::before {
+    content: ""; position: absolute; left: 10px; top: 12px; bottom: 12px;
+    width: 2px; background: linear-gradient(180deg, var(--line-color) 0%, #e0e0e0 100%);
+  }
+  .tl-item { position: relative; margin-bottom: 16px; }
+  .tl-item:last-child { margin-bottom: 0; }
+  .tl-dot {
+    position: absolute; left: -28px; top: 10px;
+    width: 18px; height: 18px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 700; color: #fff; flex-shrink: 0;
+    box-shadow: 0 0 0 3px #fff;
+  }
+  .tl-box {
+    border-radius: 10px; padding: 10px 14px;
+    border-left: 3px solid var(--line-color);
+  }
+  .tl-box .tl-head {
+    font-size: 13px; font-weight: 700; margin-bottom: 4px;
+  }
+  .tl-box .tl-detail {
+    font-size: 12px; color: var(--muted); line-height: 1.6;
+  }
+  .tl-box .tl-kpi {
+    margin-top: 6px; display: inline-block;
+    font-size: 11px; font-weight: 600; padding: 2px 10px;
+    border-radius: 10px; background: var(--line-color);
+    color: #fff;
+  }
+
+  /* ── RISK BOX ── */
+  .risk-box {
+    background: #FFF3E0; border: 1.5px solid #FF9800;
+    border-radius: 10px; padding: 12px 16px; margin-bottom: 20px;
+    font-size: 13px;
+  }
+  .risk-box strong { color: #E65100; }
+
+  /* ── METRIC CARDS ── */
+  .metrics { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
+  .metric-card {
+    flex: 1; min-width: 120px; border-radius: 12px;
+    padding: 12px 16px; text-align: center;
+  }
+  .metric-card .m-val { font-size: 22px; font-weight: 800; }
+  .metric-card .m-label { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  /* ── SECTION 3: COMPARISON ── */
+  .compare-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 16px; margin-bottom: 24px; }
+  .compare-col { border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,.08); }
+  .compare-col-header { padding: 14px 12px; text-align: center; color: #fff; font-weight: 700; font-size: 14px; }
+  .compare-col-body { background: #fff; }
+  .compare-row { padding: 10px 12px; border-bottom: 1px solid #F5F5F5; font-size: 12px; }
+  .compare-row:last-child { border-bottom: none; }
+  .compare-row .cr-label { color: var(--muted); font-size: 11px; margin-bottom: 3px; }
+  .compare-row .cr-val { font-weight: 600; color: var(--text); }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-brand">喜播教育 <span>ABCD 用户分层系统</span></div>
+  <button class="tab-btn active" onclick="showTab('tab1',this)">① 转化路径流程图</button>
+  <button class="tab-btn" onclick="showTab('tab2',this)">② 产品服务路径</button>
+  <button class="tab-btn" onclick="showTab('tab3',this)">③ 四类用户对比</button>
+</nav>
+
+<!-- ════════════════════════════════════════════ TAB 1 ════ -->
+<div class="section active" id="tab1">
+  <div class="page-title">转化路径流程图</div>
+  <div class="page-sub">从用户首次接触到成交转化的完整决策漏斗 · 含 ABCD 四类分流节点</div>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:var(--a)"></div>A类 价值共创型</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--b)"></div>B类 成长投资型</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--c1)"></div>C1类 情绪消费型</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--c2)"></div>C2类 冲动风险型</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--d)"></div>D类 高危熔断型</div>
+  </div>
+
+  <div class="funnel-wrap">
+    <div class="mermaid">
+%%{init: {"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#1a1a1a","primaryBorderColor":"#90CAF9","lineColor":"#90A4AE","secondaryColor":"#F5F5F5","tertiaryColor":"#fff","fontSize":"14px"}}}%%
+flowchart TD
+    classDef entry    fill:#E8EAF6,stroke:#3F51B5,color:#1a237e,font-weight:bold
+    classDef process  fill:#F3E5F5,stroke:#9C27B0,color:#4A148C,font-weight:bold
+    classDef decision fill:#FFFDE7,stroke:#F9A825,color:#5D4037,font-weight:bold
+    classDef aClass   fill:#1565C0,stroke:#0D47A1,color:#fff,font-weight:bold
+    classDef bClass   fill:#2E7D32,stroke:#1B5E20,color:#fff,font-weight:bold
+    classDef c1Class  fill:#E65100,stroke:#BF360C,color:#fff,font-weight:bold
+    classDef c2Class  fill:#AD1457,stroke:#880E4F,color:#fff,font-weight:bold
+    classDef dClass   fill:#B71C1C,stroke:#7F0000,color:#fff,font-weight:bold
+    classDef aResult  fill:#E3F2FD,stroke:#1565C0,color:#1565C0,font-weight:bold
+    classDef bResult  fill:#E8F5E9,stroke:#2E7D32,color:#2E7D32,font-weight:bold
+    classDef c1Result fill:#FFF3E0,stroke:#E65100,color:#E65100,font-weight:bold
+    classDef c2Result fill:#FCE4EC,stroke:#AD1457,color:#AD1457,font-weight:bold
+    classDef dResult  fill:#FFEBEE,stroke:#B71C1C,color:#B71C1C,font-weight:bold
+
+    IN1["📱 付费信息流/直播投放"] & IN2["🎬 IP矩阵自然流量"] & IN3["👥 口碑/学员裂变"] & IN4["📺 直播间/短视频"] --> JOIN
+
+    JOIN(["▼  用户首次接触  ▼"]):::entry
+
+    JOIN --> ENTRY["0元 / 1元体验课入口\n加微信 · 进体验营"]:::entry
+
+    ENTRY --> D0["Day 0 — 破冰问卷 + 基础画像采集\n设备型号 · 城市层级 · 预算意向 · 来源渠道"]:::process
+
+    D0 --> DQ1{"触发 D 类关键词？\n借钱 / 救命钱 / 未成年 / 信用卡套现…"}:::decision
+
+    DQ1 -- "🚨 是" --> DOUT["D类 熔断\n系统锁定支付通道\n合规审查 → 友好劝退"]:::dClass
+
+    DQ1 -- "✅ 否" --> D12["Day 1-2 — 体验营行为数据采集\n到课率 · 完播率 · 作业提交 · 群发言内容 · 主动咨询次数"]:::process
+
+    D12 --> D2Q{"Day 2 — AI 评分分层\n设备(2分) + 城市(2分) + 行为(3分) + 咨询(2分) + 预算(1分)"}:::decision
+
+    D2Q -- "≥ 7分" --> AC["A 类通道\n价值共创型"]:::aClass
+    D2Q -- "4 - 6 分" --> BC["B 类通道\n成长投资型"]:::bClass
+    D2Q -- "2-3分\n高底座低需求" --> C1C["C1 类通道\n情绪消费型"]:::c1Class
+    D2Q -- "2-3分\n低底座高冲动" --> C2C["C2 类通道\n冲动风险型"]:::c2Class
+
+    AC --> AR["顾问伙伴式转化\n1v1 电话深度需求诊断\n定制非标学习方案\n推旗舰课 ¥7380+\n🎯 目标转化率：15–20%"]:::aResult
+    BC --> BR["阶梯引导式转化\n展示真实学员案例\n三档价：¥3980 / ¥1280 / ¥398\n🎯 目标转化率：8–12%"]:::bResult
+    C1C --> C1R["社群兴趣式转化\n引导进兴趣社群\n仅推 ¥98–398 轻课\n不逼单 · 不制造焦虑\n🎯 目标转化率：30–40%"]:::c1Result
+    C2C --> C2R["风险防御式处理\n仅推 ¥98 体验包\n坚持购买 → 预期声明\n🎯 严禁升仓话术"]:::c2Result
+
+    AR --> ADONE["✅ 成交\n分配资深班主任\n进入 A 类服务旅程"]:::aClass
+    BR --> BDONE["✅ 成交\n分配中级班主任\n入学第一周预期校正"]:::bClass
+    C1R --> C1DONE["✅ 低价成交\n毛利 70%+\n长期社群陪伴留存"]:::c1Class
+    C2R --> C2DONE["⚠️ 有条件成交\n签署预期声明\n配客服型班主任"]:::c2Class
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ TAB 2 ════ -->
+<div class="section" id="tab2">
+  <div class="page-title">产品服务路径流程图</div>
+  <div class="page-sub">成交后各类用户的完整服务旅程 · 从交付到复购的每个关键节点</div>
+
+  <div class="journey-grid">
+
+    <!-- A类 -->
+    <div class="journey-card">
+      <div class="journey-header" style="background:var(--a)">
+        <div>
+          <h2>A 类 — 价值共创型</h2>
+        </div>
+        <div class="badge">旗舰课 ¥7380+</div>
+        <div class="badge">目标LTV ¥25,000/年</div>
+      </div>
+      <div class="journey-body">
+        <div class="metrics">
+          <div class="metric-card" style="background:var(--a-light)">
+            <div class="m-val" style="color:var(--a)">15–20%</div>
+            <div class="m-label">转化率目标</div>
+          </div>
+          <div class="metric-card" style="background:var(--a-light)">
+            <div class="m-val" style="color:var(--a)">&lt; 5%</div>
+            <div class="m-label">退费率目标</div>
+          </div>
+          <div class="metric-card" style="background:var(--a-light)">
+            <div class="m-val" style="color:var(--a)">&gt; 60%</div>
+            <div class="m-label">复购率目标</div>
+          </div>
+        </div>
+        <div class="timeline" style="--line-color:var(--a)">
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--a)">1</div>
+            <div class="tl-box" style="background:var(--a-light); border-color:var(--a)">
+              <div class="tl-head">Day 0 · 成交旗舰课</div>
+              <div class="tl-detail">顾问 1v1 完成非标定制方案 · 切断标准话术 · 分配资深班主任</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--a)">2</div>
+            <div class="tl-box" style="background:#fff; border-color:var(--a-mid)">
+              <div class="tl-head">Day 1–7 · 深度需求诊断</div>
+              <div class="tl-detail">1v1 电话/视频 · 规划完整学习路径 · 了解职业目标与背景</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--a)">3</div>
+            <div class="tl-box" style="background:#fff; border-color:var(--a-mid)">
+              <div class="tl-head">Day 7–30 · 三师服务启动</div>
+              <div class="tl-detail">讲师周直播大课 + 月度 1v1 辅导<br>班主任每周 2 次进度追踪 + 作品点评<br>AI 助教 24h 实时答疑</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--a)">4</div>
+            <div class="tl-box" style="background:#fff; border-color:var(--a-mid)">
+              <div class="tl-head">Day 30 · 首次成果展示</div>
+              <div class="tl-detail">作品点评 · 班主任正向反馈 · 增强信心与粘性</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--a)">5</div>
+            <div class="tl-box" style="background:#fff; border-color:var(--a-mid)">
+              <div class="tl-head">Day 60 · 线下圈层活动</div>
+              <div class="tl-detail">仅限 A 类邀约 · 行业人脉资源对接 · 季度游学/采风</div>
+              <span class="tl-kpi" style="background:var(--a)">A 类专属权益</span>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--a)">6</div>
+            <div class="tl-box" style="background:#fff; border-color:var(--a-mid)">
+              <div class="tl-head">Day 90 · 课程完成 + 能力认证</div>
+              <div class="tl-detail">颁发能力认证证书 · 推荐横向扩品（AI写作 / AI短视频）</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--a)">7</div>
+            <div class="tl-box" style="background:#fff; border-color:var(--a-mid)">
+              <div class="tl-head">Day 120 · 累计等级 V5/V7</div>
+              <div class="tl-detail">全课程 8.5折 · 1v1 顾问 · 资源对接权益解锁</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--a)">8</div>
+            <div class="tl-box" style="background:var(--a-light); border-color:var(--a)">
+              <div class="tl-head">Day 150+ · 推荐官计划</div>
+              <div class="tl-detail">推荐 1 人 → 下阶课折扣 · 推荐 3 人 → 免费游学名额</div>
+              <span class="tl-kpi" style="background:var(--a)">LTV ¥25,000/年</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- B类 -->
+    <div class="journey-card">
+      <div class="journey-header" style="background:var(--b)">
+        <div>
+          <h2>B 类 — 成长投资型</h2>
+        </div>
+        <div class="badge">¥1,280 – ¥3,980</div>
+        <div class="badge">目标LTV ¥8,000/年</div>
+      </div>
+      <div class="journey-body">
+        <div class="metrics">
+          <div class="metric-card" style="background:var(--b-light)">
+            <div class="m-val" style="color:var(--b)">8–12%</div>
+            <div class="m-label">转化率目标</div>
+          </div>
+          <div class="metric-card" style="background:var(--b-light)">
+            <div class="m-val" style="color:var(--b)">&lt; 12%</div>
+            <div class="m-label">退费率目标</div>
+          </div>
+          <div class="metric-card" style="background:var(--b-light)">
+            <div class="m-val" style="color:var(--b)">&gt; 50%</div>
+            <div class="m-label">30天完课率</div>
+          </div>
+        </div>
+        <div class="risk-box">
+          <strong>⚡ 关键风险：</strong>入学第一周是生死线。预期未校正 → 30天退费率高达 20%。B 类是喜播基本盘，体量最大。
+        </div>
+        <div class="timeline" style="--line-color:var(--b)">
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--b)">1</div>
+            <div class="tl-box" style="background:var(--b-light); border-color:var(--b)">
+              <div class="tl-head">Day 0 · 阶梯价格成交</div>
+              <div class="tl-detail">¥3,980 标准课 / ¥1,280 精选课 / ¥398 单模块课（Down-sell 兜底）</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:#C62828">!</div>
+            <div class="tl-box" style="background:#FFEBEE; border-color:#C62828; border-width:2px">
+              <div class="tl-head" style="color:#C62828">Day 1–7 · 🔴 预期校正黄金期</div>
+              <div class="tl-detail">班主任必须完成认知重构对话<br>核心话术：「学会 ≠ 立刻变现，我们保证教学质量」<br>发放《90天学习路径指南》</div>
+              <span class="tl-kpi" style="background:#C62828">B类退费率 20% → 目标 ≤10%</span>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--b)">3</div>
+            <div class="tl-box" style="background:#fff; border-color:var(--b-mid)">
+              <div class="tl-head">Day 7–60 · 标准教学交付</div>
+              <div class="tl-detail">AI 助教自动批改作业 + 推送学习提醒<br>班主任每周 1 次学习跟进<br>班级群学员互动 · 作品分享</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--b)">4</div>
+            <div class="tl-box" style="background:#fff; border-color:var(--b-mid)">
+              <div class="tl-head">Day 60 · 作品成果展示</div>
+              <div class="tl-detail">增强完课信心 · 正向反馈循环 · 减少中途退费</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--b)">5</div>
+            <div class="tl-box" style="background:#fff; border-color:var(--b-mid)">
+              <div class="tl-head">Day 90 · 课程完成</div>
+              <div class="tl-detail">横向扩品推荐（¥398–1280）<br>禁止推高价升仓 · 先验证完成度再提升仓</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--b)">6</div>
+            <div class="tl-box" style="background:#fff; border-color:var(--b-mid)">
+              <div class="tl-head">Day 90–120 · 自然升级</div>
+              <div class="tl-detail">累计消费达到 V3/V5 等级 · 解锁全课程折扣权益</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--b)">7</div>
+            <div class="tl-box" style="background:var(--b-light); border-color:var(--b)">
+              <div class="tl-head">长期 · LTV 提升</div>
+              <div class="tl-detail">多课程横向复购 · 能力认证考试路径</div>
+              <span class="tl-kpi" style="background:var(--b)">LTV ¥8,000/年</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- C1类 -->
+    <div class="journey-card">
+      <div class="journey-header" style="background:var(--c1)">
+        <div>
+          <h2>C1 类 — 情绪消费型</h2>
+        </div>
+        <div class="badge">¥98 – ¥398</div>
+        <div class="badge">目标LTV ¥2,000/年</div>
+      </div>
+      <div class="journey-body">
+        <div class="metrics">
+          <div class="metric-card" style="background:var(--c1-light)">
+            <div class="m-val" style="color:var(--c1)">30–40%</div>
+            <div class="m-label">转化率目标</div>
+          </div>
+          <div class="metric-card" style="background:var(--c1-light)">
+            <div class="m-val" style="color:var(--c1)">&lt; 3%</div>
+            <div class="m-label">退费率目标</div>
+          </div>
+          <div class="metric-card" style="background:var(--c1-light)">
+            <div class="m-val" style="color:var(--c1)">70%+</div>
+            <div class="m-label">课程毛利率</div>
+          </div>
+        </div>
+        <div class="risk-box" style="background:#FFF8E1; border-color:#FFB300">
+          <strong style="color:#E65100">⚠️ 禁忌：</strong>严禁对 C1 类使用变现承诺话术。C1 用户买的是「归属感」和「不被孤立的安全感」，一旦用变现逻辑必然失望转投诉。
+        </div>
+        <div class="timeline" style="--line-color:var(--c1)">
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--c1)">1</div>
+            <div class="tl-box" style="background:var(--c1-light); border-color:var(--c1)">
+              <div class="tl-head">Day 0 · 引导进兴趣社群</div>
+              <div class="tl-detail">推荐 ¥98–398 兴趣轻课 · 不推正价课 · 进专属兴趣社群（非销售群）</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--c1)">2</div>
+            <div class="tl-box" style="background:#fff; border-color:var(--c1-mid)">
+              <div class="tl-head">第 1–4 周 · 兴趣社群陪伴</div>
+              <div class="tl-detail">每周 2 次兴趣直播（非销售）<br>AI 自动生成学员作品海报 · 社群互动 · 作品展示墙</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--c1)">3</div>
+            <div class="tl-box" style="background:#fff; border-color:var(--c1-mid)">
+              <div class="tl-head">第 1 个月 · 轻课完成</div>
+              <div class="tl-detail">线上读书会 / 朗诵会 / 作品赏析活动 · 社群内成就感展示</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--c1)">4</div>
+            <div class="tl-box" style="background:#fff; border-color:var(--c1-mid)">
+              <div class="tl-head">第 2 个月 · 横向扩品</div>
+              <div class="tl-detail">有声书完成 → 推 AI 写作课<br>朗诵完成 → 推唱歌课 · 国画课<br>横向扩展体验 而非 纵向升仓压榨</div>
+              <span class="tl-kpi" style="background:var(--c1)">用户心理：在探索 而非 被收割</span>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--c1)">5</div>
+            <div class="tl-box" style="background:#fff; border-color:var(--c1-mid)">
+              <div class="tl-head">累计消费 · V3 等级</div>
+              <div class="tl-detail">全课程 9折 · 月度直播答疑权益 · 累计消费 ¥399–3980</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--c1)">6</div>
+            <div class="tl-box" style="background:var(--c1-light); border-color:var(--c1)">
+              <div class="tl-head">长期 · 低频高粘性</div>
+              <div class="tl-detail">口碑传播 · 推荐朋友加入 · 量大利薄但零客诉</div>
+              <span class="tl-kpi" style="background:var(--c1)">LTV ¥2,000/年 · 毛利 70%+</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- C2/D类 -->
+    <div class="journey-card">
+      <div class="journey-header" style="background:var(--d)">
+        <div>
+          <h2>C2 / D 类 — 风险处置路径</h2>
+        </div>
+        <div class="badge">C2: 条件成交</div>
+        <div class="badge">D: 一票否决</div>
+      </div>
+      <div class="journey-body">
+        <div class="metrics">
+          <div class="metric-card" style="background:var(--d-light)">
+            <div class="m-val" style="color:var(--d)">&gt; 90%</div>
+            <div class="m-label">D类拦截率目标</div>
+          </div>
+          <div class="metric-card" style="background:var(--d-light)">
+            <div class="m-val" style="color:var(--d)">&lt; 50%</div>
+            <div class="m-label">当前拦截率（问题）</div>
+          </div>
+          <div class="metric-card" style="background:var(--d-light)">
+            <div class="m-val" style="color:var(--d)">-50%</div>
+            <div class="m-label">客诉率目标降幅</div>
+          </div>
+        </div>
+
+        <div style="font-size:13px; font-weight:700; color:var(--d); margin-bottom:10px">D 类 — 系统熔断路径</div>
+        <div class="timeline" style="--line-color:var(--d); margin-bottom:24px">
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--d)">!</div>
+            <div class="tl-box" style="background:var(--d-light); border-color:var(--d)">
+              <div class="tl-head">触发 D 类关键词</div>
+              <div class="tl-detail">「借的钱」「救命钱」「信用卡套现」「瞒着家里」「未成年」…</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--d)">2</div>
+            <div class="tl-box" style="background:#fff; border-color:var(--d-mid)">
+              <div class="tl-head">系统硬阻断（P0 优先上线）</div>
+              <div class="tl-detail">CRM 实时正则匹配 → 弹窗锁定支付 → 无法生成收款码</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--d)">3</div>
+            <div class="tl-box" style="background:#fff; border-color:var(--d-mid)">
+              <div class="tl-head">合规审查介入</div>
+              <div class="tl-detail">主管唯一一级审批权（强制放行需记录日志）<br>审查不通过 → 友好劝退</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--d)">4</div>
+            <div class="tl-box" style="background:var(--d-light); border-color:var(--d)">
+              <div class="tl-head">友好劝退话术</div>
+              <div class="tl-detail">「我们非常希望帮助您，但更希望您在准备充分的时候开始。等财务状况更稳定，我们随时欢迎您。」</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="font-size:13px; font-weight:700; color:var(--c2); margin-bottom:10px">C2 类 — 降级引导路径</div>
+        <div class="timeline" style="--line-color:var(--c2)">
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--c2)">1</div>
+            <div class="tl-box" style="background:var(--c2-light); border-color:var(--c2)">
+              <div class="tl-head">触发 C2 标签</div>
+              <div class="tl-detail">注册到付款 &lt; 2h + 含「包赚/立刻回本/保证变现」词汇</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--c2)">2</div>
+            <div class="tl-box" style="background:#fff; border-color:var(--c2-mid)">
+              <div class="tl-head">降级引导 — 仅推 ¥98 体验包</div>
+              <div class="tl-detail">严禁高客单价推荐 · 严禁升仓话术 · 不主动推课</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--c2)">3</div>
+            <div class="tl-box" style="background:#fff; border-color:var(--c2-mid)">
+              <div class="tl-head">坚持购买 → 强制预期声明</div>
+              <div class="tl-detail">弹出「预期确认书」：手动勾选「已知学习≠立刻变现」才可拉起支付</div>
+              <span class="tl-kpi" style="background:var(--c2)">法律合规防护</span>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--c2)">4</div>
+            <div class="tl-box" style="background:#fff; border-color:var(--c2-mid)">
+              <div class="tl-head">成交后 — 客服型班主任</div>
+              <div class="tl-detail">最有耐心的班主任 · 核心目标：防退费 而非 拉升仓</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--c2)">5</div>
+            <div class="tl-box" style="background:var(--c2-light); border-color:var(--c2)">
+              <div class="tl-head">7天无理由退费绿色通道</div>
+              <div class="tl-detail">主动消化 比 被动处理 成本低 3 倍 · 快速退费 = 降客诉</div>
+              <span class="tl-kpi" style="background:var(--c2)">拦截转投诉</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /journey-grid -->
+</div>
+
+<!-- ════════════════════════════════════════════ TAB 3 ════ -->
+<div class="section" id="tab3">
+  <div class="page-title">四类用户对比一览</div>
+  <div class="page-sub">核心识别信号 · 服务策略 · 关键指标 · 禁忌动作</div>
+
+  <div class="compare-grid">
+    <div class="compare-col">
+      <div class="compare-col-header" style="background:var(--gray)">对比维度</div>
+      <div class="compare-col-body">
+        <div class="compare-row"><div class="cr-label">定义</div></div>
+        <div class="compare-row"><div class="cr-label">核心设备信号</div></div>
+        <div class="compare-row"><div class="cr-label">城市层级</div></div>
+        <div class="compare-row"><div class="cr-label">决策速度</div></div>
+        <div class="compare-row"><div class="cr-label">付款方式</div></div>
+        <div class="compare-row"><div class="cr-label">第一句话</div></div>
+        <div class="compare-row"><div class="cr-label">转化率目标</div></div>
+        <div class="compare-row"><div class="cr-label">客单价</div></div>
+        <div class="compare-row"><div class="cr-label">退费率目标</div></div>
+        <div class="compare-row"><div class="cr-label">LTV目标/年</div></div>
+        <div class="compare-row"><div class="cr-label">班主任配置</div></div>
+        <div class="compare-row"><div class="cr-label">升仓策略</div></div>
+        <div class="compare-row"><div class="cr-label">⛔ 禁忌动作</div></div>
+      </div>
+    </div>
+
+    <div class="compare-col">
+      <div class="compare-col-header" style="background:var(--a)">A 类 · 价值共创</div>
+      <div class="compare-col-body">
+        <div class="compare-row"><div class="cr-val">需求真实 × 支付充足 × 预期合理</div></div>
+        <div class="compare-row"><div class="cr-val">iPhone 14+ / 华为 Mate 50/60 Pro</div></div>
+        <div class="compare-row"><div class="cr-val">一线 / 强二线</div></div>
+        <div class="compare-row"><div class="cr-val">&gt; 7 天</div></div>
+        <div class="compare-row"><div class="cr-val">全款 / 无逾期信用卡</div></div>
+        <div class="compare-row"><div class="cr-val">「课程怎么上 / 老师资质」</div></div>
+        <div class="compare-row"><div class="cr-val" style="color:var(--a);font-size:15px;font-weight:800">15–20%</div></div>
+        <div class="compare-row"><div class="cr-val">¥7,380+</div></div>
+        <div class="compare-row"><div class="cr-val" style="color:var(--b)">&lt; 5%</div></div>
+        <div class="compare-row"><div class="cr-val" style="color:var(--a);font-weight:800">¥25,000</div></div>
+        <div class="compare-row"><div class="cr-val">资深班主任（最强）</div></div>
+        <div class="compare-row"><div class="cr-val">首课完成后推完整路径</div></div>
+        <div class="compare-row"><div class="cr-val" style="color:var(--d)">❌ 标准话术 · 变现承诺</div></div>
+      </div>
+    </div>
+
+    <div class="compare-col">
+      <div class="compare-col-header" style="background:var(--b)">B 类 · 成长投资</div>
+      <div class="compare-col-body">
+        <div class="compare-row"><div class="cr-val">需求真实 × 支付有限 × 预期偏高需校正</div></div>
+        <div class="compare-row"><div class="cr-val">华为 nova / 荣耀中端 / iPhone 11-12</div></div>
+        <div class="compare-row"><div class="cr-val">三四线 / 一二线边缘</div></div>
+        <div class="compare-row"><div class="cr-val">1–3 天</div></div>
+        <div class="compare-row"><div class="cr-val">花呗 / 合理范围分期</div></div>
+        <div class="compare-row"><div class="cr-val">「别人能做到什么水平？」</div></div>
+        <div class="compare-row"><div class="cr-val" style="color:var(--b);font-size:15px;font-weight:800">8–12%</div></div>
+        <div class="compare-row"><div class="cr-val">¥1,280–¥3,980</div></div>
+        <div class="compare-row"><div class="cr-val" style="color:var(--b)">&lt; 12%</div></div>
+        <div class="compare-row"><div class="cr-val" style="color:var(--b);font-weight:800">¥8,000</div></div>
+        <div class="compare-row"><div class="cr-val">中级班主任（主动跟进）</div></div>
+        <div class="compare-row"><div class="cr-val">完成度达标后再升仓</div></div>
+        <div class="compare-row"><div class="cr-val" style="color:var(--d)">❌ 第一节课就升仓</div></div>
+      </div>
+    </div>
+
+    <div class="compare-col">
+      <div class="compare-col-header" style="background:var(--c1)">C1 类 · 情绪消费</div>
+      <div class="compare-col-body">
+        <div class="compare-row"><div class="cr-val">有钱有闲 × 需求模糊 × 买归属感</div></div>
+        <div class="compare-row"><div class="cr-val">旗舰机 + 中老年用户居多</div></div>
+        <div class="compare-row"><div class="cr-val">弱二线 / 退休人群</div></div>
+        <div class="compare-row"><div class="cr-val">不定（主动询问高阶课）</div></div>
+        <div class="compare-row"><div class="cr-val">对价格无明显抵触</div></div>
+        <div class="compare-row"><div class="cr-val">「无聊找事做 / 交个朋友」</div></div>
+        <div class="compare-row"><div class="cr-val" style="color:var(--c1);font-size:15px;font-weight:800">30–40%</div></div>
+        <div class="compare-row"><div class="cr-val">¥98–¥398</div></div>
+        <div class="compare-row"><div class="cr-val" style="color:var(--b)">&lt; 3%</div></div>
+        <div class="compare-row"><div class="cr-val" style="color:var(--c1);font-weight:800">¥2,000</div></div>
+        <div class="compare-row"><div class="cr-val">社群运营（不需强班主任）</div></div>
+        <div class="compare-row"><div class="cr-val">推「体验升级类」非变现类</div></div>
+        <div class="compare-row"><div class="cr-val" style="color:var(--d)">❌ 变现话术 · 收益承诺</div></div>
+      </div>
+    </div>
+
+    <div class="compare-col">
+      <div class="compare-col-header" style="background:var(--d)">C2/D · 风险处置</div>
+      <div class="compare-col-body">
+        <div class="compare-row"><div class="cr-val">C2: 低底座高冲动<br>D: 触碰合规红线</div></div>
+        <div class="compare-row"><div class="cr-val">荣耀 Play / vivo Y / 红米 Note</div></div>
+        <div class="compare-row"><div class="cr-val">四五线县城 / 低收入务工</div></div>
+        <div class="compare-row"><div class="cr-val">C2: &lt; 2小时 · D: 极速</div></div>
+        <div class="compare-row"><div class="cr-val">花呗透支 / 借贷 / 套现</div></div>
+        <div class="compare-row"><div class="cr-val">「能保证赚钱吗？不赚退款吗？」</div></div>
+        <div class="compare-row"><div class="cr-val" style="color:var(--d);font-size:15px;font-weight:800">D: 0% · C2: 有条件</div></div>
+        <div class="compare-row"><div class="cr-val">C2: 仅 ¥98 · D: 拒绝</div></div>
+        <div class="compare-row"><div class="cr-val" style="color:var(--d)">D: N/A · C2: 快速退费</div></div>
+        <div class="compare-row"><div class="cr-val" style="color:var(--d);font-weight:800">负值（风险成本）</div></div>
+        <div class="compare-row"><div class="cr-val">C2: 客服型（防退费）</div></div>
+        <div class="compare-row"><div class="cr-val">C2: 严禁升仓</div></div>
+        <div class="compare-row"><div class="cr-val" style="color:var(--d)">❌ 一切大额成单</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SKU Matrix -->
+  <div style="background:var(--card);border-radius:16px;box-shadow:0 2px 16px rgba(0,0,0,.08);padding:28px;margin-top:20px">
+    <div style="font-size:17px;font-weight:700;color:var(--header);margin-bottom:6px">产品 SKU 矩阵 × 用户分层匹配</div>
+    <div style="color:var(--muted);font-size:13px;margin-bottom:20px">每类用户的推荐产品层级 · 绿色为主推 · 黄色为 Down-sell 兜底</div>
+    <div class="mermaid">
+%%{init: {"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","fontSize":"13px"}}}%%
+quadrantChart
+    title 产品价格带 × 用户分层适配矩阵
+    x-axis 价格从低到高
+    y-axis 客单价承受力从低到高
+    quadrant-1 旗舰区（A类主场）
+    quadrant-2 高潜区（B类进阶）
+    quadrant-3 入门区（B类/C2兜底）
+    quadrant-4 兴趣区（C1主场）
+    ¥98兴趣轻课: [0.08, 0.20]
+    ¥398单模块: [0.22, 0.35]
+    ¥1280精选入门: [0.42, 0.48]
+    ¥3980标准正价: [0.62, 0.65]
+    ¥7380全能进阶: [0.82, 0.82]
+    </div>
+  </div>
+
+</div>
+
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  theme: 'base',
+  flowchart: { curve: 'basis', padding: 20, nodeSpacing: 50, rankSpacing: 60 },
+  themeVariables: {
+    fontFamily: '"PingFang SC","Microsoft YaHei",sans-serif',
+    fontSize: '14px',
+  }
+});
+
+function showTab(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>
