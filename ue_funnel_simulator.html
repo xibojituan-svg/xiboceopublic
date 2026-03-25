@@ -216,21 +216,65 @@
             background: rgba(249, 115, 22, 0.06);
         }
     </style>
+
+  <!-- 引入统一样式基础 -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f8fafc; --surface: #ffffff; --border: #e2e8f0;
+      --text: #0f172a; --text-dim: #64748b; --text-light: #94a3b8;
+      --brand: #f97316; --dark: #1e293b;
+    }
+    body {
+      font-family: 'Inter', -apple-system, 'PingFang SC', sans-serif !important;
+    }
+    /* Nav */
+    .site-nav {
+      position: sticky; top: 0; z-index: 9999;
+      background: rgba(30,41,59,0.95); backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding: 0 clamp(12px, 4vw, 32px);
+    }
+    .site-nav-inner {
+      max-width: 1280px; margin: 0 auto;
+      display: flex; align-items: center; height: 50px;
+      gap: 4px; overflow-x: auto; scrollbar-width: none;
+    }
+    .site-nav-inner::-webkit-scrollbar { display: none; }
+    .nav-logo { font-size: 13px; font-weight: 800; color: var(--brand); white-space: nowrap; margin-right: 10px; text-decoration: none; }
+    .nav-divider { width: 1px; height: 18px; background: rgba(255,255,255,0.18); margin: 0 6px; flex-shrink: 0; }
+    .nav-link {
+      display: flex; align-items: center; gap: 4px;
+      padding: 4px 11px; border-radius: 20px;
+      font-size: 12px; font-weight: 600; color: #94a3b8;
+      text-decoration: none; white-space: nowrap; transition: all 0.2s; flex-shrink: 0;
+    }
+    .nav-link:hover { color: #fff; background: rgba(249,115,22,0.15); }
+    .nav-link.active { color: #fff; background: rgba(249,115,22,0.2); border: 1px solid rgba(249,115,22,0.4); }
+  </style>
+
 </head>
 
 <body class="p-6">
 
+<!-- 全局统一导航栏 -->
+<nav class="site-nav">
+  <div class="site-nav-inner">
+    <a href="index.html" class="nav-logo">喜播集团 ⚡</a>
+    <div class="nav-divider"></div>
+    <a href="index.html" class="nav-link">🏠 战略导航台</a>
+    <a href="abcd_process_cfo_cho.html" class="nav-link">⚙️ ABCD重构</a>
+    <a href="new_business_process_infographic.html" class="nav-link">🗺️ 业务全景</a>
+    <a href="abcd_ai_bootcamp_poster.html" class="nav-link">🤖 AI分层</a>
+    <a href="ue_model_comparison.html" class="nav-link">💰 UE财务对照</a>
+    <a href="d_user_optimization.html" class="nav-link">🛑 拦截D类</a>
+    <a href="class_manager_analysis.html" class="nav-link">🏫 班主任重塑</a>
+  </div>
+</nav>
+
+
     <!-- 顶部导航栏 -->
-    <nav class="site-nav" aria-label="喜播集团内部文件导航">
-        <div class="site-nav-inner">
-            <a href="index.html" class="nav-logo">喜播集团 ⚡</a>
-            <div class="nav-divider"></div>
-            <a href="index.html" class="nav-link">🏠 战略总纲</a>
-            <a href="segmentation_radarmap.html" class="nav-link">📊 用户分层雷达图</a>
-            <a href="d_user_optimization.html" class="nav-link">🔬 D类用户风控复盘</a>
-            <a href="ue_funnel_simulator.html" class="nav-link active">📈 漏斗UE诊断器</a>
-        </div>
-    </nav>
+    
 
     <div id="app" class="max-w-7xl mx-auto">
         <!-- Header -->
@@ -477,11 +521,7 @@
         <!-- 底部 Footer -->
         <footer class="site-footer">
             <p>喜播集团 · 战略决策支持体系 · 2026年3月</p>
-            <nav class="footer-links" aria-label="相关页面">
-                <a href="index.html">🏠 战略总纲</a>
-                <a href="segmentation_radarmap.html">📊 用户分层雷达图</a>
-                <a href="d_user_optimization.html">🔬 D类用户风控复盘</a>
-            </nav>
+            
         </footer>
 
     </div>

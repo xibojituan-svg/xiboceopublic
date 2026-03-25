@@ -1,10 +1,10 @@
-<!doctype html>
-<html lang="zh-CN">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>喜播集团 2026 战略导航台</title>
-  
+import os
+import glob
+import re
+
+SITE_DIR = "."
+
+generic_css = """
   <!-- 引入统一样式基础 -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
@@ -40,62 +40,9 @@
     .nav-link:hover { color: #fff; background: rgba(249,115,22,0.15); }
     .nav-link.active { color: #fff; background: rgba(249,115,22,0.2); border: 1px solid rgba(249,115,22,0.4); }
   </style>
+"""
 
-  <style>
-    body { background: #f1f5f9; }
-    .page-container {
-      max-width: 900px;
-      margin: 40px auto;
-      padding: 30px;
-      background: #fff;
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-    }
-    .header-banner {
-      background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-      color: white;
-      padding: 40px;
-      border-radius: 16px;
-      margin-bottom: 40px;
-      position: relative;
-      overflow: hidden;
-    }
-    .header-banner::after {
-      content: '2026'; position: absolute; right: -20px; bottom: -40px;
-      font-size: 150px; font-weight: 900; opacity: 0.05;
-    }
-    h1 { font-size: 32px; margin-bottom: 12px; font-weight: 800; letter-spacing: -0.5px; }
-    .subtitle { font-size: 16px; color: #cbd5e1; font-weight: 500; }
-    
-    .category { margin-bottom: 40px; }
-    .cat-title { 
-      font-size: 20px; color: var(--dark); 
-      border-left: 4px solid var(--brand); 
-      padding-left: 12px; margin-bottom: 20px; font-weight: 800; 
-    }
-    .link-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; }
-    .doc-link {
-      display: block; padding: 20px;
-      background: var(--bg); border: 1px solid var(--border);
-      border-radius: 12px; color: var(--text);
-      text-decoration: none; transition: all 0.2s;
-    }
-    .doc-link:hover { 
-      border-color: var(--brand); background: #ffffff;
-      transform: translateY(-3px); box-shadow: 0 8px 20px rgba(249,115,22,0.1); 
-    }
-    .doc-title { font-weight: 700; font-size: 16px; margin-bottom: 8px; color: var(--dark); display: flex; align-items: center; gap: 6px; }
-    .doc-desc { font-size: 13px; color: var(--text-dim); line-height: 1.5; }
-    
-    @media (max-width: 600px) {
-      .page-container { margin: 15px; padding: 20px; }
-      .header-banner { padding: 25px; }
-      h1 { font-size: 24px; }
-    }
-  </style>
-</head>
-<body>
-
+global_nav = """
 <!-- 全局统一导航栏 -->
 <nav class="site-nav">
   <div class="site-nav-inner">
@@ -110,7 +57,70 @@
     <a href="class_manager_analysis.html" class="nav-link">🏫 班主任重塑</a>
   </div>
 </nav>
+"""
 
+index_html = f"""<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>喜播集团 2026 战略导航台</title>
+  {generic_css}
+  <style>
+    body {{ background: #f1f5f9; }}
+    .page-container {{
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 30px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    }}
+    .header-banner {{
+      background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+      color: white;
+      padding: 40px;
+      border-radius: 16px;
+      margin-bottom: 40px;
+      position: relative;
+      overflow: hidden;
+    }}
+    .header-banner::after {{
+      content: '2026'; position: absolute; right: -20px; bottom: -40px;
+      font-size: 150px; font-weight: 900; opacity: 0.05;
+    }}
+    h1 {{ font-size: 32px; margin-bottom: 12px; font-weight: 800; letter-spacing: -0.5px; }}
+    .subtitle {{ font-size: 16px; color: #cbd5e1; font-weight: 500; }}
+    
+    .category {{ margin-bottom: 40px; }}
+    .cat-title {{ 
+      font-size: 20px; color: var(--dark); 
+      border-left: 4px solid var(--brand); 
+      padding-left: 12px; margin-bottom: 20px; font-weight: 800; 
+    }}
+    .link-grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; }}
+    .doc-link {{
+      display: block; padding: 20px;
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 12px; color: var(--text);
+      text-decoration: none; transition: all 0.2s;
+    }}
+    .doc-link:hover {{ 
+      border-color: var(--brand); background: #ffffff;
+      transform: translateY(-3px); box-shadow: 0 8px 20px rgba(249,115,22,0.1); 
+    }}
+    .doc-title {{ font-weight: 700; font-size: 16px; margin-bottom: 8px; color: var(--dark); display: flex; align-items: center; gap: 6px; }}
+    .doc-desc {{ font-size: 13px; color: var(--text-dim); line-height: 1.5; }}
+    
+    @media (max-width: 600px) {{
+      .page-container {{ margin: 15px; padding: 20px; }}
+      .header-banner {{ padding: 25px; }}
+      h1 {{ font-size: 24px; }}
+    }}
+  </style>
+</head>
+<body>
+{global_nav}
 <div class="page-container">
   <div class="header-banner">
     <h1>CEO 战略导航作战台</h1>
@@ -196,3 +206,30 @@
 </div>
 </body>
 </html>
+"""
+
+with open(os.path.join(SITE_DIR, "index.html"), "w", encoding="utf-8") as f:
+    f.write(index_html)
+
+# Update sub-pages
+for filepath in glob.glob(os.path.join(SITE_DIR, "*.html")):
+    if filepath.endswith("index.html"): continue
+    
+    with open(filepath, 'r', encoding='utf-8') as f:
+        content = f.read()
+
+    # remove old nav variations
+    content = re.sub(r'<nav[^>]*>.*?</nav>', '', content, flags=re.DOTALL)
+    
+    # insert generic css
+    if '<!-- 引入统一样式基础 -->' not in content:
+        content = re.sub(r'</head>', generic_css + '\n</head>', content, flags=re.IGNORECASE)
+    
+    # insert global nav after <body>
+    if '<!-- 全局统一导航栏 -->' not in content:
+        content = re.sub(r'<body[^>]*>', lambda m: m.group(0) + '\n' + global_nav, content, flags=re.IGNORECASE|re.DOTALL)
+
+    with open(filepath, 'w', encoding='utf-8') as f:
+        f.write(content)
+
+print("Site built successfully.")
