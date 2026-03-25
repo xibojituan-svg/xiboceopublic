@@ -75,16 +75,23 @@ DARK_CSS = """
     .nav-link:hover { color: var(--text); background: rgba(255,255,255,0.1); }
     .nav-link.active { color: #fff; background: var(--brand-primary); box-shadow: 0 0 20px var(--brand-glow); }
 
-    /* Override hardcoded specific containers and FORCE high-contrast text */
+    /* GLOBAL OVERRIDES */
     body, p, div, span, li, td, article, main, section {
         color: rgba(255, 255, 255, 0.85) !important;
     }
-    .report-container, .page-container, .dashboard-container, .process-container, .map-container, .container, .card, .tree-section, .node-content, .branch-item, .panel, .box {
+    h1, h2, h3, h4, .title, strong, b, .card-title, .node-q, .branch-label { color: #ffffff !important; }
+    
+    /* COMPREHENSIVE SUBSTRING MATCHING FOR CONTAINER BACKGROUNDS */
+    .report-container, .page-container, .dashboard-container, .process-container, .map-container, 
+    .container, .tree-section, .node-content, .branch-item, .panel, table, .table-wrapper,
+    [class*="card"]:not(.card-d), [class*="-box"]:not(.action-box), [class*="-wrap"], 
+    [class*="bg-gray-"], [class*="bg-blue-"], [class*="bg-red-"], [class*="bg-orange-"], [class*="bg-white"] {
        background-color: var(--bg-surface) !important;
-       border: 1px solid var(--border) !important;
-       box-shadow: 0 10px 40px rgba(0,0,0,0.5) !important;
-       /* remove border radius override to keep custom card curves */
+       border-color: var(--border) !important;
+       box-shadow: 0 4px 20px rgba(0,0,0,0.5) !important;
     }
+
+    /* EXCEPTIONS & SPECIAL HIGHLIGHTS */
     .logic-banner {
        background: linear-gradient(135deg, #1e1e24, #09090b) !important;
        box-shadow: 0 10px 40px rgba(0,0,0,0.5) !important;
@@ -92,16 +99,21 @@ DARK_CSS = """
     .branch-item { background-color: #27272a !important; }
     .card-d { background-color: #2e1010 !important; border-color: #ef4444 !important;}
     .formula { background: rgba(255,255,255,0.05) !important; color: #facc15 !important; }
-    h1, h2, h3, h4, .title, strong, b, .card-title, .node-q, .branch-label { color: #ffffff !important; }
+    
+    /* TABLE STYLES */
     td, .text-content, p { border-color: var(--border) !important;}
     th { background: #18181b !important; border-color: var(--border) !important; color: #ffffff !important;}
     table { border-collapse: collapse; }
+    
+    /* INSIGHT METRICS & DEFAULTS */
     .insight-cell, .insight-cell p, .insight-cell div, .insight-cell span { 
         color: #e9d5ff !important; 
         background-color: rgba(155, 81, 224, 0.05) !important;
     }
     .insight-tag { color: #ffffff !important; }
-    .note, .meta-info, .desc, .text-muted, .text-light, .text-dim, .definition { color: #a1a1aa !important; }
+    .note, .meta-info, .desc, .text-muted, .text-light, .text-dim, .definition, [class*="text-gray-"], [class*="text-secondary"] { 
+        color: #a1a1aa !important; 
+    }
     a { color: #60a5fa !important; }
 
     .main-container {
