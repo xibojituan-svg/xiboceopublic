@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户分层分析可视化图表预览</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', 'Segoe UI', sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .chart-container {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+        }
+        
+        .chart-container:hover {
+            transform: translateY(-5px);
+        }
+        
+        .chart-title {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid;
+            font-weight: 600;
+        }
+        
+        .chart-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .chart-image {
+            flex: 1;
+            min-width: 300px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .chart-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+        
+        .chart-image:hover img {
+            transform: scale(1.02);
+        }
+        
+        .chart-description {
+            flex: 1;
+            min-width: 300px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .insights {
+            background: #fff8e1;
+            border-left: 5px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .insights h3 {
+            color: #e65100;
+            margin-bottom: 10px;
+        }
+        
+        .data-points {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .data-point {
+            background: #f0f8ff;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #3a86ff;
+        }
+        
+        .data-point h4 {
+            color: #1565c0;
+            margin-bottom: 5px;
+        }
+        
+        .download-section {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            background: #e3f2fd;
+            border-radius: 10px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #3a86ff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 600;
+            margin: 10px;
+            transition: background 0.3s ease;
+        }
+        
+        .btn:hover {
+            background: #2667cc;
+        }
+        
+        @media (max-width: 768px) {
+            .chart-content {
+                flex-direction: column;
+            }
+            
+            .chart-image, .chart-description {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎯 用户分层分析可视化图表</h1>
+        <div class="subtitle">基于用户画像数据的深度洞察与可视化呈现</div>
+        <div style="margin-top: 10px; font-size: 0.9rem; opacity: 0.8;">
+            生成时间: 2026年3月25日 | 数据来源: 三大业务用户画像分析
+        </div>
+    </div>
+    
+    <div class="chart-container">
+        <div class="chart-title" style="border-color: #3a86ff;">📊 用户分层分析核心仪表板</div>
+        <div class="chart-content">
+            <div class="chart-image">
+                <img src="user_segmentation_dashboard.png" alt="用户分层分析仪表板">
+            </div>
+            <div class="chart-description">
+                <h3>图表说明</h3>
+                <p>此图表整合了用户分层分析的核心数据，包含四个关键维度：</p>
+                
+                <div class="data-points">
+                    <div class="data-point">
+                        <h4>各业务用户规模</h4>
+                        <p>展示了有声书、AI写作、AI短视频及加微信未转化用户的规模对比。</p>
+                    </div>
+                    
+                    <div class="data-point">
+                        <h4>转化率对比</h4>
+                        <p>揭示了三大业务的转化效率差异，有声书转化率最高(100%)，AI业务较低(5-6%)。</p>
+                    </div>
+                    
+                    <div class="data-point">
+                        <h4>性别分布</h4>
+                        <p>显示各业务的性别比例，有声书用户以女性为主(71%)，AI业务男性比例较高。</p>
+                    </div>
+                    
+                    <div class="data-point">
+                        <h4>ABCD分层模型</h4>
+                        <p>基于能力×意愿×风险的评估模型，将用户分为四类进行精细化运营。</p>
+                    </div>
+                </div>
+                
+                <div class="insights">
+                    <h3>💡 核心洞察</h3>
+                    <p>• <strong>规模最大群体</strong>: 73,174名"加微信未转化"用户(B类)是最大的待激活群体</p>
+                    <p>• <strong>转化瓶颈</strong>: AI业务在B站渠道流量大(68-75%)但转化率低(5-6%)</p>
+                    <p>• <strong>分层分布</strong>: B类用户占比最高(45.8%)，是运营重点</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="chart-container">
+        <div class="chart-title" style="border-color: #06d6a0;">📈 用户分层总结图表</div>
+        <div class="chart-content">
+            <div class="chart-image">
+                <img src="user_segmentation_summary.png" alt="用户分层总结图表">
+            </div>
+            <div class="chart-description">
+                <h3>图表说明</h3>
+                <p>此图表通过饼图形式直观展示用户分层和业务分布的比例关系。</p>
+                
+                <div class="data-points">
+                    <div class="data-point" style="border-left-color: #3a86ff;">
+                        <h4>ABCD分层比例</h4>
+                        <p><strong>A类(高价值潜力)</strong>: 8.1% (3,888人)</p>
+                        <p><strong>B类(潜力型)</strong>: 45.8% (21,952人)</p>
+                        <p><strong>C类(观察培育)</strong>: 36.9% (17,656人)</p>
+                        <p><strong>D类(风险/低价值)</strong>: 9.2% (4,414人)</p>
+                    </div>
+                    
+                    <div class="data-point" style="border-left-color: #8338ec;">
+                        <h4>业务用户分布</h4>
+                        <p><strong>有声书</strong>: 5.2% (2,592人)</p>
+                        <p><strong>AI写作</strong>: 40.6% (20,181人)</p>
+                        <p><strong>AI短视频</strong>: 54.2% (26,840人)</p>
+                    </div>
+                </div>
+                
+                <div class="insights" style="background: #e8f5e9; border-left-color: #4caf50;">
+                    <h3>🎯 运营建议</h3>
+                    <p><strong>P0 (最高优先级)</strong>: 重点激活B类用户(73,174人)，通过定向直播提升转化</p>
+                    <p><strong>P1 (重要)</strong>: 优化B站渠道转化链路，提升AI业务转化率2-3个百分点</p>
+                    <p><strong>P2 (持续)</strong>: 深化A类用户服务，培育C类用户向高价值转化</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="download-section">
+        <h3>📥 下载图表文件</h3>
+        <p>点击下方链接下载高清图表文件，可用于报告、演示或进一步分析。</p>
+        
+        <a href="user_segmentation_dashboard.png" class="btn" download>下载仪表板图表 (PNG)</a>
+        <a href="user_segmentation_summary.png" class="btn" download>下载总结图表 (PNG)</a>
+        
+        <div style="margin-top: 20px; font-size: 0.9rem; color: #666;">
+            <p>图表由Python自动生成，使用Matplotlib数据可视化库</p>
+            <p>文件保存路径: D:\xibo2026public\</p>
+        </div>
+    </div>
+    
+    <div style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; color: #666; font-size: 0.9rem;">
+        <p>© 2026 用户分层分析项目 | 数据分析工具: Python + Matplotlib | 版本: 1.0</p>
+        <p>基于《用户分层数据驱动方法论》及三大业务用户画像数据生成</p>
+    </div>
+</body>
+</html>
