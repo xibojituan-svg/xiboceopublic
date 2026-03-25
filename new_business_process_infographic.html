@@ -154,6 +154,9 @@
   
 
 
+  
+
+
   <!-- 引入统一样式基础(DARK MODE OVERRIDE) -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
@@ -224,22 +227,29 @@
     .nav-link:hover { color: var(--text); background: rgba(255,255,255,0.1); }
     .nav-link.active { color: #fff; background: var(--brand-primary); box-shadow: 0 0 20px var(--brand-glow); }
 
-    /* Override hardcoded specific containers */
+    /* Override hardcoded specific containers and FORCE high-contrast text */
+    body, p, div, span, li, td, article, main, section {
+        color: rgba(255, 255, 255, 0.85) !important;
+    }
     .report-container, .page-container, .dashboard-container, .process-container, .map-container {
        background-color: var(--bg-surface) !important;
        border: 1px solid var(--border) !important;
        box-shadow: 0 10px 40px rgba(0,0,0,0.5) !important;
-       color: var(--text) !important;
        border-radius: 16px;
        margin-top: 40px;
        margin-bottom: 40px;
     }
-    h1, h2, h3, h4, .title { color: #fff !important; }
-    td, .text-content, p { color: var(--text-dim) !important; border-color: var(--border) !important;}
-    th { background: #18181b !important; border-color: var(--border) !important; color: #fff !important;}
+    h1, h2, h3, h4, .title, strong, b { color: #ffffff !important; }
+    td, .text-content, p { border-color: var(--border) !important;}
+    th { background: #18181b !important; border-color: var(--border) !important; color: #ffffff !important;}
     table { border-collapse: collapse; }
-    .insight-cell { color: #d8b4fe !important; background-color: rgba(155, 81, 224, 0.05) !important;}
-    .note, .meta-info, .desc { color: var(--text-muted) !important; }
+    .insight-cell, .insight-cell p, .insight-cell div, .insight-cell span { 
+        color: #e9d5ff !important; 
+        background-color: rgba(155, 81, 224, 0.05) !important;
+    }
+    .insight-tag { color: #ffffff !important; }
+    .note, .meta-info, .desc, .text-muted, .text-light, .text-dim { color: #a1a1aa !important; }
+    a { color: #60a5fa !important; }
 
     .main-container {
       max-width: 1400px;
@@ -262,6 +272,11 @@
     <a href="ue_model_comparison.html" class="nav-link">财务UE底线</a>
   </div>
 </nav>
+
+
+
+
+
 
 
 
