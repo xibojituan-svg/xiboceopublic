@@ -128,19 +128,7 @@ DARK_CSS = """
   </style>
 """
 
-DARK_NAV = """
-<!-- 全局统一导航栏(DARK) -->
-<div class="bg-glow"></div>
-<nav class="site-nav">
-  <div class="site-nav-inner">
-    <a href="index.html" class="nav-logo">XIBO <span>NEXUS</span></a>
-    <a href="index.html" class="nav-link">SP 2026-2028</a>
-    <a href="user-segmentation-infographic.html" class="nav-link">ABCD客群边界</a>
-    <a href="new_business_process_infographic.html" class="nav-link">S2B2C链条</a>
-    <a href="ue_model_comparison.html" class="nav-link">财务UE底线</a>
-  </div>
-</nav>
-"""
+DARK_NAV = '<script src="navbar.js"></script>'
 
 for filepath in glob.glob(os.path.join(SITE_DIR, "*.html")):
     if filepath.endswith("index.html"): continue

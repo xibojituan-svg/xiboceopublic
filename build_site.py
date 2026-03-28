@@ -42,22 +42,7 @@ generic_css = """
   </style>
 """
 
-global_nav = """
-<!-- 全局统一导航栏 -->
-<nav class="site-nav">
-  <div class="site-nav-inner">
-    <a href="index.html" class="nav-logo">喜播集团 ⚡</a>
-    <div class="nav-divider"></div>
-    <a href="index.html" class="nav-link">🏠 战略导航台</a>
-    <a href="user_segmentation_infographic.html" class="nav-link">📊 ABCD分层基准</a>
-    <a href="student_psychology_map.html" class="nav-link">🧠 心理洞察</a>
-    <a href="new_business_process_infographic.html" class="nav-link">🗺️ 新业务全景</a>
-    <a href="ue_model_comparison.html" class="nav-link">💰 UE财务核算</a>
-    <a href="d_user_optimization.html" class="nav-link">🛑 拦截高危D类</a>
-    <a href="class_manager_analysis.html" class="nav-link">🏫 班主任重塑</a>
-  </div>
-</nav>
-"""
+global_nav = '<script src="navbar.js"></script>'
 
 index_html = f"""<!doctype html>
 <html lang="zh-CN">
@@ -126,20 +111,10 @@ index_html = f"""<!doctype html>
   </style>
 </head>
 <body>
+  <script src="navbar.js"></script>
+
 <!-- 全局统一导航栏 -->
-<nav class="site-nav">
-  <div class="site-nav-inner">
-    <a href="index.html" class="nav-logo">喜播集团 ⚡</a>
-    <div class="nav-divider"></div>
-    <a href="index.html" class="nav-link active">🏠 战略导航台</a>
-    <a href="user_segmentation_infographic.html" class="nav-link">📊 ABCD分层基准</a>
-    <a href="student_psychology_map.html" class="nav-link">🧠 心理洞察</a>
-    <a href="new_business_process_infographic.html" class="nav-link">🗺️ 新业务全景</a>
-    <a href="ue_model_comparison.html" class="nav-link">💰 UE财务核算</a>
-    <a href="d_user_optimization.html" class="nav-link">🛑 拦截高危D类</a>
-    <a href="class_manager_analysis.html" class="nav-link">🏫 班主任重塑</a>
-  </div>
-</nav>
+
 
 <div class="page-container">
   <div class="header-banner">
@@ -265,8 +240,12 @@ for filepath in glob.glob(os.path.join(SITE_DIR, "*.html")):
         content = re.sub(r'</head>', generic_css + '\n</head>', content, flags=re.IGNORECASE)
     
     # insert global nav after <body>
+  <script src="navbar.js"></script>
+
     if '<!-- 全局统一导航栏 -->' not in content:
-        content = re.sub(r'<body[^>]*>', lambda m: m.group(0) + '\n' + global_nav, content, flags=re.IGNORECASE|re.DOTALL)
+        content = re.sub(r'<body[^>
+  <script src="navbar.js"></script>
+]*>', lambda m: m.group(0) + '\n' + global_nav, content, flags=re.IGNORECASE|re.DOTALL)
 
     with open(filepath, 'w', encoding='utf-8') as f:
         f.write(content)
