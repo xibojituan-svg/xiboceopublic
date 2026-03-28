@@ -217,159 +217,305 @@
         }
     </style>
 
-  
 
 
-  
 
 
-  
 
 
-  
 
 
-  
 
 
-  
 
 
-  
 
 
-  <!-- 引入统一样式基础(DARK MODE OVERRIDE) -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #09090b;
-      --bg-surface: #18181b;
-      --bg-surface-hover: #27272a;
-      --border: #3f3f46;
-      --text: #f4f4f5;
-      --text-dim: #a1a1aa;
-      --text-muted: #71717a;
-      
-      --brand-primary: #ef4444; 
-      --brand-secondary: #f97316; 
-      --brand-accent: #10b981; 
-      --brand-glow: rgba(239, 68, 68, 0.2);
 
-      /* PAGE SPECIFIC OVERRIDES */
-      --text-main: var(--text) !important;
-      --text-light: var(--text-dim) !important;
-      --border-line: var(--border) !important;
-      --bg-body: var(--bg) !important;
-      --bg-card: var(--bg-surface) !important;
-      --table-header: #1e1e24 !important;
-      --insight-bg: rgba(155, 81, 224, 0.05) !important; 
-      --insight-border: #9b51e0 !important;
-      --primary-blue: #60a5fa !important;
-    }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    
-    body {
-      font-family: 'Inter', -apple-system, 'PingFang SC', sans-serif !important;
-      background-color: var(--bg) !important;
-      color: var(--text) !important;
-      line-height: 1.6;
-    }
 
-    /* Background FX */
-    .bg-glow {
-      position: fixed; top: -20vh; left: 50%; transform: translateX(-50%);
-      width: 100vw; height: 60vh;
-      background: radial-gradient(ellipse at bottom, rgba(249, 115, 22, 0.15) 0%, rgba(9, 9, 11, 0) 70%);
-      z-index: -1; pointer-events: none;
-    }
 
-    /* Nav */
-    .site-nav {
-      position: sticky; top: 0; z-index: 9999;
-      background: rgba(9, 9, 11, 0.8); backdrop-filter: blur(16px);
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-      padding: 0 clamp(16px, 4vw, 32px);
-    }
-    .site-nav-inner {
-      max-width: 1400px; margin: 0 auto;
-      display: flex; align-items: center; height: 60px;
-      gap: 12px; overflow-x: auto; scrollbar-width: none;
-    }
-    .site-nav-inner::-webkit-scrollbar { display: none; }
-    .nav-logo { font-size: 16px; font-weight: 900; color: var(--text); white-space: nowrap; text-decoration: none; margin-right: 20px; display: flex; align-items: center; gap: 8px;}
-    .nav-logo span { color: var(--brand-secondary); }
-    .nav-link {
-      display: flex; align-items: center; gap: 6px;
-      padding: 6px 14px; border-radius: 100px;
-      font-size: 13px; font-weight: 600; color: var(--text-dim);
-      text-decoration: none; white-space: nowrap; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .nav-link:hover { color: var(--text); background: rgba(255,255,255,0.1); }
-    .nav-link.active { color: #fff; background: var(--brand-primary); box-shadow: 0 0 20px var(--brand-glow); }
 
-    /* GLOBAL OVERRIDES */
-    body, p, div, span, li, td, article, main, section {
-        color: rgba(255, 255, 255, 0.85) !important;
-    }
-    h1, h2, h3, h4, .title, strong, b, .card-title, .node-q, .branch-label { color: #ffffff !important; }
-    
-    /* COMPREHENSIVE SUBSTRING MATCHING FOR CONTAINER BACKGROUNDS */
-    .report-container, .page-container, .dashboard-container, .process-container, .map-container, 
-    .container, .tree-section, .node-content, .branch-item, .panel, table, .table-wrapper, .page,
-    [class*="card"]:not(.card-d), [class*="-box"]:not(.action-box), [class*="-wrap"], 
-    [class*="bg-gray-"], [class*="bg-blue-"], [class*="bg-red-"], [class*="bg-orange-"], [class*="bg-white"],
-    [class*="lane"], [class*="-step"], [class*="-track"], [class*="tag"], [class*="badge"],
-    [class*="alert"], [class*="-block"], [class*="banner"], [class*="reasoning"], [class*="insight"],
-    [class*="greeting"], [class*="recalibrate"], [class*="hook-"], input, select, textarea, button,
-    div[style*="background:#FFF"], div[style*="background-color: #FFF"] {
-       background-color: var(--bg-surface) !important;
-       border-color: var(--border) !important;
-       box-shadow: 0 4px 20px rgba(0,0,0,0.5) !important;
-    }
 
-    /* EXCEPTIONS & SPECIAL HIGHLIGHTS */
-    .logic-banner {
-       background: linear-gradient(135deg, #1e1e24, #09090b) !important;
-       box-shadow: 0 10px 40px rgba(0,0,0,0.5) !important;
-    }
-    .branch-item { background-color: #27272a !important; }
-    .card-d { background-color: #2e1010 !important; border-color: #ef4444 !important;}
-    .formula { background: rgba(255,255,255,0.05) !important; color: #facc15 !important; }
-    
-    /* TABLE STYLES */
-    td, .text-content, p { border-color: var(--border) !important;}
-    th { background: #18181b !important; border-color: var(--border) !important; color: #ffffff !important;}
-    table { border-collapse: collapse; }
-    
-    /* INSIGHT METRICS & DEFAULTS */
-    .insight-cell, .insight-cell p, .insight-cell div, .insight-cell span { 
-        color: #e9d5ff !important; 
-        background-color: rgba(155, 81, 224, 0.05) !important;
-    }
-    .insight-tag { color: #ffffff !important; }
-    .note, .meta-info, .desc, .text-muted, .text-light, .text-dim, .definition, [class*="text-gray-"], [class*="text-secondary"] { 
-        color: #a1a1aa !important; 
-    }
-    a { color: #60a5fa !important; }
 
-    .main-container {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 40px 24px;
-    }
-  </style>
+    <!-- 引入统一样式基础(DARK MODE OVERRIDE) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #09090b;
+            --bg-surface: #18181b;
+            --bg-surface-hover: #27272a;
+            --border: #3f3f46;
+            --text: #f4f4f5;
+            --text-dim: #a1a1aa;
+            --text-muted: #71717a;
+
+            --brand-primary: #ef4444;
+            --brand-secondary: #f97316;
+            --brand-accent: #10b981;
+            --brand-glow: rgba(239, 68, 68, 0.2);
+
+            /* PAGE SPECIFIC OVERRIDES */
+            --text-main: var(--text) !important;
+            --text-light: var(--text-dim) !important;
+            --border-line: var(--border) !important;
+            --bg-body: var(--bg) !important;
+            --bg-card: var(--bg-surface) !important;
+            --table-header: #1e1e24 !important;
+            --insight-bg: rgba(155, 81, 224, 0.05) !important;
+            --insight-border: #9b51e0 !important;
+            --primary-blue: #60a5fa !important;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, 'PingFang SC', sans-serif !important;
+            background-color: var(--bg) !important;
+            color: var(--text) !important;
+            line-height: 1.6;
+        }
+
+        /* Background FX */
+        .bg-glow {
+            position: fixed;
+            top: -20vh;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100vw;
+            height: 60vh;
+            background: radial-gradient(ellipse at bottom, rgba(249, 115, 22, 0.15) 0%, rgba(9, 9, 11, 0) 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Nav */
+        .site-nav {
+            position: sticky;
+            top: 0;
+            z-index: 9999;
+            background: rgba(9, 9, 11, 0.8);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 0 clamp(16px, 4vw, 32px);
+        }
+
+        .site-nav-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            height: 60px;
+            gap: 12px;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .site-nav-inner::-webkit-scrollbar {
+            display: none;
+        }
+
+        .nav-logo {
+            font-size: 16px;
+            font-weight: 900;
+            color: var(--text);
+            white-space: nowrap;
+            text-decoration: none;
+            margin-right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-logo span {
+            color: var(--brand-secondary);
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-dim);
+            text-decoration: none;
+            white-space: nowrap;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .nav-link:hover {
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-link.active {
+            color: #fff;
+            background: var(--brand-primary);
+            box-shadow: 0 0 20px var(--brand-glow);
+        }
+
+        /* GLOBAL OVERRIDES */
+        body,
+        p,
+        div,
+        span,
+        li,
+        td,
+        article,
+        main,
+        section {
+            color: rgba(255, 255, 255, 0.85) !important;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        .title,
+        strong,
+        b,
+        .card-title,
+        .node-q,
+        .branch-label {
+            color: #ffffff !important;
+        }
+
+        /* COMPREHENSIVE SUBSTRING MATCHING FOR CONTAINER BACKGROUNDS */
+        .report-container,
+        .page-container,
+        .dashboard-container,
+        .process-container,
+        .map-container,
+        .container,
+        .tree-section,
+        .node-content,
+        .branch-item,
+        .panel,
+        table,
+        .table-wrapper,
+        .page,
+        [class*="card"]:not(.card-d),
+        [class*="-box"]:not(.action-box),
+        [class*="-wrap"],
+        [class*="bg-gray-"],
+        [class*="bg-blue-"],
+        [class*="bg-red-"],
+        [class*="bg-orange-"],
+        [class*="bg-white"],
+        [class*="lane"],
+        [class*="-step"],
+        [class*="-track"],
+        [class*="tag"],
+        [class*="badge"],
+        [class*="alert"],
+        [class*="-block"],
+        [class*="banner"],
+        [class*="reasoning"],
+        [class*="insight"],
+        [class*="greeting"],
+        [class*="recalibrate"],
+        [class*="hook-"],
+        input,
+        select,
+        textarea,
+        button,
+        div[style*="background:#FFF"],
+        div[style*="background-color: #FFF"] {
+            background-color: var(--bg-surface) !important;
+            border-color: var(--border) !important;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+        }
+
+        /* EXCEPTIONS & SPECIAL HIGHLIGHTS */
+        .logic-banner {
+            background: linear-gradient(135deg, #1e1e24, #09090b) !important;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5) !important;
+        }
+
+        .branch-item {
+            background-color: #27272a !important;
+        }
+
+        .card-d {
+            background-color: #2e1010 !important;
+            border-color: #ef4444 !important;
+        }
+
+        .formula {
+            background: rgba(255, 255, 255, 0.05) !important;
+            color: #facc15 !important;
+        }
+
+        /* TABLE STYLES */
+        td,
+        .text-content,
+        p {
+            border-color: var(--border) !important;
+        }
+
+        th {
+            background: #18181b !important;
+            border-color: var(--border) !important;
+            color: #ffffff !important;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+
+        /* INSIGHT METRICS & DEFAULTS */
+        .insight-cell,
+        .insight-cell p,
+        .insight-cell div,
+        .insight-cell span {
+            color: #e9d5ff !important;
+            background-color: rgba(155, 81, 224, 0.05) !important;
+        }
+
+        .insight-tag {
+            color: #ffffff !important;
+        }
+
+        .note,
+        .meta-info,
+        .desc,
+        .text-muted,
+        .text-light,
+        .text-dim,
+        .definition,
+        [class*="text-gray-"],
+        [class*="text-secondary"] {
+            color: #a1a1aa !important;
+        }
+
+        a {
+            color: #60a5fa !important;
+        }
+
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+    </style>
 
 </head>
 
 <body class="p-6">
-<script src="navbar.js?v=20260328"></script>
+    <script src="navbar.js?v=20260328"></script>
 
 
-<!-- 顶部导航栏 -->
-    
+    <!-- 顶部导航栏 -->
 
-    <div id="app" class="max-w-7xl mx-auto">
+
+    <div id="app" class="max-w-7xl mx-auto" style="padding-top: 32px; padding-bottom: 48px;">
         <!-- Header -->
         <div class="mb-8 text-center flex flex-col items-center">
             <h1 class="text-3xl font-bold text-dark mb-2">喜播教育 S2B2C 商业漏斗(UE)诊断器</h1>
@@ -597,9 +743,11 @@
         </div>
 
         <!-- AI Conclusion Area -->
-        <div class="mt-8 glass-card p-6 bg-gradient-to-r from-orange-50 to-orange-100 border-orange-200">
-            <h3 class="text-lg font-bold text-orange-800 mb-2"><i class="fas fa-robot mr-2"></i>AI 财务 BP 诊断结论</h3>
-            <p class="text-orange-900 leading-relaxed">
+        <div class="mt-8 glass-card p-6"
+            style="background: linear-gradient(135deg, rgba(249,115,22,0.12), rgba(239,68,68,0.08)) !important; border: 1px solid rgba(249,115,22,0.3) !important;">
+            <h3 class="text-lg font-bold mb-2" style="color: #fb923c !important;"><i class="fas fa-robot mr-2"></i>AI 财务
+                BP 诊断结论</h3>
+            <p style="color: #f4f4f5 !important; line-height: 1.7;">
                 根据当前输入的转化数据：模型一由于退费极高（{{m1.refund}}%），实际上大部分收入将被冲抵，属于做一单赔一单的毒性资产。
                 <br>
                 <span v-if="bestModel === 'M2'">
@@ -614,7 +762,7 @@
         <!-- 底部 Footer -->
         <footer class="site-footer">
             <p>喜播集团 · 战略决策支持体系 · 2026年3月</p>
-            
+
         </footer>
 
     </div>
