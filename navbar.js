@@ -6,7 +6,62 @@
         return href === currentPath ? ' active' : '';
     }
 
-    var navHtml = `
+    // 注入全局导航样式（!important 防止子页面本地 CSS 覆盖）
+    var styleHtml = `<style id="navbar-global-style">
+      .bg-glow {
+        position: fixed; top: -20vh; left: 50%; transform: translateX(-50%);
+        width: 100vw; height: 60vh;
+        background: radial-gradient(ellipse at bottom, rgba(239,68,68,0.06) 0%, rgba(9,9,11,0) 70%);
+        z-index: -1; pointer-events: none;
+      }
+      .site-nav {
+        position: sticky !important; top: 0 !important; z-index: 9999 !important;
+        background: rgba(9,9,11,0.92) !important;
+        backdrop-filter: blur(16px) !important;
+        border-bottom: 1px solid rgba(255,255,255,0.07) !important;
+        padding: 0 clamp(16px,4vw,32px) !important;
+        font-family: 'Inter', -apple-system, 'PingFang SC', sans-serif !important;
+      }
+      .site-nav-inner {
+        max-width: 1400px !important; margin: 0 auto !important;
+        display: flex !important; align-items: center !important;
+        height: 60px !important; gap: 6px !important;
+        overflow-x: auto !important; scrollbar-width: none !important;
+      }
+      .site-nav-inner::-webkit-scrollbar { display: none !important; }
+      .nav-logo {
+        font-size: 16px !important; font-weight: 900 !important;
+        color: #f4f4f5 !important; white-space: nowrap !important;
+        text-decoration: none !important; margin-right: 16px !important;
+        display: flex !important; align-items: center !important; gap: 6px !important;
+        flex-shrink: 0 !important;
+      }
+      .nav-logo span { color: #f97316 !important; }
+      .nav-link {
+        display: flex !important; align-items: center !important;
+        padding: 6px 13px !important; border-radius: 100px !important;
+        font-size: 13px !important; font-weight: 500 !important;
+        color: #a1a1aa !important; text-decoration: none !important;
+        white-space: nowrap !important; transition: all 0.2s !important;
+        background: transparent !important;
+      }
+      .nav-link:hover {
+        color: #f4f4f5 !important;
+        background: rgba(255,255,255,0.08) !important;
+      }
+      /* 当前页高亮：红色底色 + 白色加粗文字 */
+      .nav-link.active {
+        background: #ef4444 !important;
+        color: #ffffff !important;
+        font-weight: 700 !important;
+      }
+      .nav-link.active:hover {
+        background: #dc2626 !important;
+        color: #ffffff !important;
+      }
+    </style>`;
+
+    var navHtml = styleHtml + `
     <!-- 全局统一导航栏(DARK) -->
     <div class="bg-glow"></div>
     <nav class="site-nav">
@@ -23,3 +78,4 @@
     `;
     document.write(navHtml);
 })();
+
