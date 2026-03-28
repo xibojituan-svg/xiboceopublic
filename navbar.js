@@ -1,5 +1,5 @@
 (function () {
-    var currentPath = window.location.pathname.split('/').pop() || 'index.html';
+    var currentPath = decodeURIComponent(window.location.pathname.split('/').pop() || 'index.html');
     if (currentPath === '' || currentPath === '/') currentPath = 'index.html';
 
     function isActive(href) {
