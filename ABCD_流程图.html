@@ -7,357 +7,180 @@
   <title>喜播 ABCD 用户分层流程图</title>
   <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
   <style>
-    :root {
-      --a: #1565C0;
-      --a-light: #E3F2FD;
-      --a-mid: #90CAF9;
-      --b: #2E7D32;
-      --b-light: #E8F5E9;
-      --b-mid: #A5D6A7;
-      --c1: #E65100;
-      --c1-light: #FFF3E0;
-      --c1-mid: #FFCC80;
-      --c2: #AD1457;
-      --c2-light: #FCE4EC;
-      --c2-mid: #F48FB1;
-      --d: #B71C1C;
-      --d-light: #FFEBEE;
-      --d-mid: #EF9A9A;
-      --gray: #546E7A;
-      --bg: #F0F4F8;
-      --card: #FFFFFF;
-      --header: #1E3A5F;
-      --text: #263238;
-      --muted: #78909C;
-    }
+  :root {
+    --a: #3b82f6; --a-light: rgba(59,130,246,0.15); --a-mid: rgba(59,130,246,0.5);
+    --b: #10b981; --b-light: rgba(16,185,129,0.15); --b-mid: rgba(16,185,129,0.5);
+    --c1: #f97316; --c1-light: rgba(249,115,22,0.15); --c1-mid: rgba(249,115,22,0.5);
+    --c2: #ec4899; --c2-light: rgba(236,72,153,0.15); --c2-mid: rgba(236,72,153,0.5);
+    --d: #ef4444; --d-light: rgba(239,68,68,0.15); --d-mid: rgba(239,68,68,0.5);
+    --gray: #3f3f46; --bg: #09090b; --card: #18181b;
+    --header: rgba(24, 24, 27, 0.85); --text: #f4f4f5; --muted: #a1a1aa;
+    --border: #3f3f46;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Inter", "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.5;
+  }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
 
-    body {
-      font-family: "PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.5;
-    }
+  :root {
+    --orange: #f97316;
+    --green: #10b981;
+  }
+  
+  /* BG FX */
+  .bg-glow {
+    position: fixed; top: -20vh; left: 50%; transform: translateX(-50%);
+    width: 100vw; height: 60vh;
+    background: radial-gradient(ellipse at bottom, rgba(16,185,129,0.08) 0%, rgba(9,9,11,0) 70%);
+    z-index: -1; pointer-events: none;
+  }
 
-    /* ── NAV ── */
-    .nav {
-      position: sticky;
-      top: 61px;
-      z-index: 100;
-      background: var(--header);
-      display: flex;
-      align-items: center;
-      padding: 0 32px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, .3);
-    }
+  /* NAV */
+  .site-nav {
+    position: sticky; top: 0; z-index: 9999;
+    background: rgba(9,9,11,0.85); backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    padding: 0 clamp(16px,4vw,32px);
+  }
+  .site-nav-inner {
+    max-width: 1400px; margin: 0 auto;
+    display: flex; align-items: center; height: 60px; gap: 12px; overflow-x: auto; scrollbar-width: none;
+  }
+  .site-nav-inner::-webkit-scrollbar { display: none; }
+  .nav-logo { font-size: 16px; font-weight: 900; color: var(--text); white-space: nowrap; text-decoration: none; margin-right: 20px; display: flex; align-items: center; gap: 8px; }
+  .nav-logo span { color: var(--orange); }
+  .nav-link {
+    display: flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 100px;
+    font-size: 13px; font-weight: 600; color: var(--text-dim); text-decoration: none; white-space: nowrap; transition: all 0.3s;
+  }
+  .nav-link:hover { color: var(--text); background: rgba(255,255,255,0.08); }
+  .nav-link.active { color: #fff; background: var(--green); }
 
-    .nav-brand {
-      color: #fff;
-      font-size: 16px;
-      font-weight: 700;
-      padding: 14px 0;
-      margin-right: 40px;
-    }
+  /* ── NAV ── */
+  .nav {
+    position: sticky; top: 61px; z-index: 100;
+    background: var(--header); display: flex; align-items: center;
+    padding: 0 32px; border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(12px);
+  }
+  .nav-brand { color: #fff; font-size: 16px; font-weight: 700; padding: 14px 0; margin-right: 40px; }
+  .nav-brand span { opacity: .6; font-weight: 400; color: var(--c1); }
+  .tab-btn {
+    color: rgba(255,255,255,.65); font-size: 14px; padding: 16px 20px;
+    border: none; background: none; cursor: pointer; border-bottom: 3px solid transparent;
+    transition: all .2s;
+  }
+  .tab-btn.active { color: #fff; border-bottom-color: var(--a); }
+  .tab-btn:hover { color: #fff; }
 
-    .nav-brand span {
-      opacity: .6;
-      font-weight: 400;
-    }
+  /* ── SECTIONS ── */
+  .section { display: none; padding: 32px; max-width: 1400px; margin: 0 auto; }
+  .section.active { display: block; animation: fadeUp 0.6s ease-out; }
 
-    .tab-btn {
-      color: rgba(255, 255, 255, .65);
-      font-size: 14px;
-      padding: 16px 20px;
-      border: none;
-      background: none;
-      cursor: pointer;
-      border-bottom: 3px solid transparent;
-      transition: all .2s;
-    }
+  .page-title { font-size: 28px; font-weight: 800; color: #fff; margin-bottom: 6px; }
+  .page-sub { color: var(--muted); font-size: 14px; margin-bottom: 28px; }
 
-    .tab-btn.active {
-      color: #fff;
-      border-bottom-color: #64B5F6;
-    }
+  /* ── LEGEND ── */
+  .legend { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 28px; }
+  .legend-item {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--card); border-radius: 20px; border: 1px solid var(--border);
+    padding: 6px 14px; font-size: 13px; font-weight: 500;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  }
+  .legend-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
 
-    .tab-btn:hover {
-      color: #fff;
-    }
+  /* ── DIAGRAM 1: CONVERSION FUNNEL ── */
+  .funnel-wrap {
+    background: var(--card); border-radius: 16px; border: 1px solid var(--border);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    padding: 32px; overflow-x: auto;
+  }
+  .mermaid { min-width: 700px; }
 
-    /* ── SECTIONS ── */
-    .section {
-      display: none;
-      padding: 32px;
-      max-width: 1400px;
-      margin: 0 auto;
-    }
+  /* ── DIAGRAM 2: SERVICE JOURNEY ── */
+  .journey-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  @media (max-width: 900px) { .journey-grid { grid-template-columns: 1fr; } }
 
-    .section.active {
-      display: block;
-    }
+  .journey-card {
+    background: var(--card); border-radius: 16px; border: 1px solid var(--border);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5); overflow: hidden;
+  }
+  .journey-header {
+    padding: 16px 24px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .journey-header h2 { color: #fff; font-size: 17px; font-weight: 700; }
+  .journey-header .badge {
+    background: rgba(255,255,255,.1); color: #fff; border: 1px solid rgba(255,255,255,0.2);
+    font-size: 11px; padding: 3px 10px; border-radius: 12px;
+  }
+  .journey-body { padding: 20px 24px 24px; }
 
-    .page-title {
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--header);
-      margin-bottom: 6px;
-    }
+  /* Timeline */
+  .timeline { position: relative; padding-left: 32px; }
+  .timeline::before {
+    content: ""; position: absolute; left: 10px; top: 12px; bottom: 12px;
+    width: 2px; background: linear-gradient(180deg, var(--line-color) 0%, rgba(255,255,255,0.05) 100%);
+  }
+  .tl-item { position: relative; margin-bottom: 16px; }
+  .tl-item:last-child { margin-bottom: 0; }
+  .tl-dot {
+    position: absolute; left: -28px; top: 10px;
+    width: 18px; height: 18px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 700; color: #fff; flex-shrink: 0;
+    box-shadow: 0 0 0 3px var(--card);
+  }
+  .tl-box {
+    border-radius: 10px; padding: 10px 14px;
+    border-left: 3px solid var(--line-color);
+  }
+  .tl-box .tl-head {
+    font-size: 13px; font-weight: 700; margin-bottom: 4px; color: #fff;
+  }
+  .tl-box .tl-detail {
+    font-size: 12px; color: var(--muted); line-height: 1.6;
+  }
+  .tl-box .tl-kpi {
+    margin-top: 6px; display: inline-block;
+    font-size: 11px; font-weight: 600; padding: 2px 10px;
+    border-radius: 10px; background: var(--line-color);
+    color: #fff;
+  }
 
-    .page-sub {
-      color: var(--muted);
-      font-size: 14px;
-      margin-bottom: 28px;
-    }
+  /* ── RISK BOX ── */
+  .risk-box {
+    background: rgba(249,115,22,0.1); border: 1.5px dashed var(--c1);
+    border-radius: 10px; padding: 12px 16px; margin-bottom: 20px;
+    font-size: 13px; color: var(--text);
+  }
+  .risk-box strong { color: var(--c1); }
 
-    /* ── LEGEND ── */
-    .legend {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-bottom: 28px;
-    }
+  /* ── METRIC CARDS ── */
+  .metrics { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
+  .metric-card {
+    flex: 1; min-width: 120px; border-radius: 12px; border: 1px solid var(--border);
+    padding: 12px 16px; text-align: center;
+  }
+  .metric-card .m-val { font-size: 22px; font-weight: 800; }
+  .metric-card .m-label { font-size: 11px; color: var(--muted); margin-top: 2px; }
 
-    .legend-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--card);
-      border-radius: 20px;
-      padding: 6px 14px;
-      font-size: 13px;
-      font-weight: 500;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, .08);
-    }
-
-    .legend-dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-
-    /* ── DIAGRAM 1: CONVERSION FUNNEL ── */
-    .funnel-wrap {
-      background: var(--card);
-      border-radius: 16px;
-      box-shadow: 0 2px 16px rgba(0, 0, 0, .08);
-      padding: 32px;
-      overflow-x: auto;
-    }
-
-    .mermaid {
-      min-width: 700px;
-    }
-
-    /* ── DIAGRAM 2: SERVICE JOURNEY ── */
-    .journey-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-    }
-
-    @media (max-width: 900px) {
-      .journey-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .journey-card {
-      background: var(--card);
-      border-radius: 16px;
-      box-shadow: 0 2px 16px rgba(0, 0, 0, .08);
-      overflow: hidden;
-    }
-
-    .journey-header {
-      padding: 16px 24px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .journey-header h2 {
-      color: #fff;
-      font-size: 17px;
-      font-weight: 700;
-    }
-
-    .journey-header .badge {
-      background: rgba(255, 255, 255, .2);
-      color: #fff;
-      font-size: 11px;
-      padding: 3px 10px;
-      border-radius: 12px;
-    }
-
-    .journey-body {
-      padding: 20px 24px 24px;
-    }
-
-    /* Timeline */
-    .timeline {
-      position: relative;
-      padding-left: 32px;
-    }
-
-    .timeline::before {
-      content: "";
-      position: absolute;
-      left: 10px;
-      top: 12px;
-      bottom: 12px;
-      width: 2px;
-      background: linear-gradient(180deg, var(--line-color) 0%, #e0e0e0 100%);
-    }
-
-    .tl-item {
-      position: relative;
-      margin-bottom: 16px;
-    }
-
-    .tl-item:last-child {
-      margin-bottom: 0;
-    }
-
-    .tl-dot {
-      position: absolute;
-      left: -28px;
-      top: 10px;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 10px;
-      font-weight: 700;
-      color: #fff;
-      flex-shrink: 0;
-      box-shadow: 0 0 0 3px #fff;
-    }
-
-    .tl-box {
-      border-radius: 10px;
-      padding: 10px 14px;
-      border-left: 3px solid var(--line-color);
-    }
-
-    .tl-box .tl-head {
-      font-size: 13px;
-      font-weight: 700;
-      margin-bottom: 4px;
-    }
-
-    .tl-box .tl-detail {
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.6;
-    }
-
-    .tl-box .tl-kpi {
-      margin-top: 6px;
-      display: inline-block;
-      font-size: 11px;
-      font-weight: 600;
-      padding: 2px 10px;
-      border-radius: 10px;
-      background: var(--line-color);
-      color: #fff;
-    }
-
-    /* ── RISK BOX ── */
-    .risk-box {
-      background: #FFF3E0;
-      border: 1.5px solid #FF9800;
-      border-radius: 10px;
-      padding: 12px 16px;
-      margin-bottom: 20px;
-      font-size: 13px;
-    }
-
-    .risk-box strong {
-      color: #E65100;
-    }
-
-    /* ── METRIC CARDS ── */
-    .metrics {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 20px;
-    }
-
-    .metric-card {
-      flex: 1;
-      min-width: 120px;
-      border-radius: 12px;
-      padding: 12px 16px;
-      text-align: center;
-    }
-
-    .metric-card .m-val {
-      font-size: 22px;
-      font-weight: 800;
-    }
-
-    .metric-card .m-label {
-      font-size: 11px;
-      color: var(--muted);
-      margin-top: 2px;
-    }
-
-    /* ── SECTION 3: COMPARISON ── */
-    .compare-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 16px;
-      margin-bottom: 24px;
-    }
-
-    .compare-col {
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, .08);
-    }
-
-    .compare-col-header {
-      padding: 14px 12px;
-      text-align: center;
-      color: #fff;
-      font-weight: 700;
-      font-size: 14px;
-    }
-
-    .compare-col-body {
-      background: #fff;
-    }
-
-    .compare-row {
-      padding: 10px 12px;
-      border-bottom: 1px solid #F5F5F5;
-      font-size: 12px;
-    }
-
-    .compare-row:last-child {
-      border-bottom: none;
-    }
-
-    .compare-row .cr-label {
-      color: var(--muted);
-      font-size: 11px;
-      margin-bottom: 3px;
-    }
-
-    .compare-row .cr-val {
-      font-weight: 600;
-      color: var(--text);
-    }
-  </style>
+  /* ── SECTION 3: COMPARISON ── */
+  .compare-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 16px; margin-bottom: 24px; }
+  .compare-col { border-radius: 12px; overflow: hidden; border: 1px solid var(--border); box-shadow: 0 4px 16px rgba(0,0,0,0.5); }
+  .compare-col-header { padding: 14px 12px; text-align: center; color: #fff; font-weight: 700; font-size: 14px; }
+  .compare-col-body { background: var(--card); }
+  .compare-row { padding: 10px 12px; border-bottom: 1px solid var(--border); font-size: 12px; }
+  .compare-row:last-child { border-bottom: none; }
+  .compare-row .cr-label { color: var(--muted); font-size: 11px; margin-bottom: 3px; }
+  .compare-row .cr-val { font-weight: 600; color: var(--text); }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+</style>
 </head>
 
 <body>
@@ -398,19 +221,19 @@
         %%{init:
         {"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#1a1a1a","primaryBorderColor":"#90CAF9","lineColor":"#90A4AE","secondaryColor":"#F5F5F5","tertiaryColor":"#fff","fontSize":"14px"}}}%%
         flowchart TD
-        classDef entry fill:#E8EAF6,stroke:#3F51B5,color:#1a237e,font-weight:bold
-        classDef process fill:#F3E5F5,stroke:#9C27B0,color:#4A148C,font-weight:bold
-        classDef decision fill:#FFFDE7,stroke:#F9A825,color:#5D4037,font-weight:bold
-        classDef aClass fill:#1565C0,stroke:#0D47A1,color:#fff,font-weight:bold
-        classDef bClass fill:#2E7D32,stroke:#1B5E20,color:#fff,font-weight:bold
-        classDef c1Class fill:#E65100,stroke:#BF360C,color:#fff,font-weight:bold
-        classDef c2Class fill:#AD1457,stroke:#880E4F,color:#fff,font-weight:bold
-        classDef dClass fill:#B71C1C,stroke:#7F0000,color:#fff,font-weight:bold
-        classDef aResult fill:#E3F2FD,stroke:#1565C0,color:#1565C0,font-weight:bold
-        classDef bResult fill:#E8F5E9,stroke:#2E7D32,color:#2E7D32,font-weight:bold
-        classDef c1Result fill:#FFF3E0,stroke:#E65100,color:#E65100,font-weight:bold
-        classDef c2Result fill:#FCE4EC,stroke:#AD1457,color:#AD1457,font-weight:bold
-        classDef dResult fill:#FFEBEE,stroke:#B71C1C,color:#B71C1C,font-weight:bold
+        classDef entry    fill:#27272a,stroke:#3b82f6,color:#f4f4f5,font-weight:bold
+    classDef process  fill:#18181b,stroke:#8b5cf6,color:#f4f4f5,font-weight:bold
+    classDef decision fill:#27272a,stroke:#f97316,color:#f4f4f5,font-weight:bold
+    classDef aClass   fill:#18181b,stroke:#3b82f6,color:#3b82f6,font-weight:bold
+    classDef bClass   fill:#18181b,stroke:#10b981,color:#10b981,font-weight:bold
+    classDef c1Class  fill:#18181b,stroke:#f97316,color:#f97316,font-weight:bold
+    classDef c2Class  fill:#18181b,stroke:#ec4899,color:#ec4899,font-weight:bold
+    classDef dClass   fill:#18181b,stroke:#ef4444,color:#ef4444,font-weight:bold
+    classDef aResult  fill:rgba(59,130,246,0.1),stroke:#3b82f6,color:#60a5fa,font-weight:bold
+    classDef bResult  fill:rgba(16,185,129,0.1),stroke:#10b981,color:#34d399,font-weight:bold
+    classDef c1Result fill:rgba(249,115,22,0.1),stroke:#f97316,color:#fb923c,font-weight:bold
+    classDef c2Result fill:rgba(236,72,153,0.1),stroke:#ec4899,color:#f472b6,font-weight:bold
+    classDef dResult  fill:rgba(239,68,68,0.1),stroke:#ef4444,color:#f87171,font-weight:bold
 
         IN1["📱 付费信息流/直播投放"] & IN2["🎬 IP矩阵自然流量"] & IN3["👥 口碑/学员裂变"] & IN4["📺 直播间/短视频"] --> JOIN
 
@@ -1036,7 +859,7 @@
 
     <!-- SKU Matrix -->
     <div
-      style="background:var(--card);border-radius:16px;box-shadow:0 2px 16px rgba(0,0,0,.08);padding:28px;margin-top:20px">
+      style="background:var(--card);border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.5); border: 1px solid var(--border);padding:28px;margin-top:20px">
       <div style="font-size:17px;font-weight:700;color:var(--header);margin-bottom:6px">产品 SKU 矩阵 &times; 用户分层匹配</div>
       <div style="color:var(--muted);font-size:13px;margin-bottom:24px">每类用户的推荐产品层级 · 绿色主推 · 灰色兜底 · 红色禁止</div>
 
@@ -1044,57 +867,57 @@
       <div style="display:flex;flex-direction:column;gap:14px;">
 
         <div style="display:grid;grid-template-columns:140px 1fr;align-items:center;gap:16px;">
-          <div style="text-align:right;font-size:13px;font-weight:700;color:#555;">¥98 兴趣轻课</div>
+          <div style="text-align:right;font-size:13px;font-weight:700;color:var(--text);">¥98 兴趣轻课</div>
           <div style="display:flex;gap:6px;align-items:center;">
             <div
               style="background:var(--c1);border-radius:6px;padding:5px 14px;font-size:12px;font-weight:700;color:#fff;">
               C1 主推</div>
-            <div style="background:#e0e0e0;border-radius:6px;padding:5px 14px;font-size:12px;color:#888;">C2 兜底</div>
+            <div style="background:rgba(255,255,255,0.1); border: 1px solid var(--border);border-radius:6px;padding:5px 14px;font-size:12px;color:var(--text-dim);">C2 兜底</div>
             <div style="margin-left:8px;font-size:12px;color:var(--muted);">毛利率 70%+ · 零客诉</div>
           </div>
         </div>
 
         <div style="display:grid;grid-template-columns:140px 1fr;align-items:center;gap:16px;">
-          <div style="text-align:right;font-size:13px;font-weight:700;color:#555;">¥398 单模块</div>
+          <div style="text-align:right;font-size:13px;font-weight:700;color:var(--text);">¥398 单模块</div>
           <div style="display:flex;gap:6px;align-items:center;">
             <div
               style="background:var(--c1);border-radius:6px;padding:5px 14px;font-size:12px;font-weight:700;color:#fff;">
               C1 主推</div>
-            <div style="background:#e0e0e0;border-radius:6px;padding:5px 14px;font-size:12px;color:#888;">B 兜底</div>
+            <div style="background:rgba(255,255,255,0.1); border: 1px solid var(--border);border-radius:6px;padding:5px 14px;font-size:12px;color:var(--text-dim);">B 兜底</div>
             <div style="margin-left:8px;font-size:12px;color:var(--muted);">Down-sell 最后防线</div>
           </div>
         </div>
 
         <div style="display:grid;grid-template-columns:140px 1fr;align-items:center;gap:16px;">
-          <div style="text-align:right;font-size:13px;font-weight:700;color:#555;">¥1,280 精选入门</div>
+          <div style="text-align:right;font-size:13px;font-weight:700;color:var(--text);">¥1,280 精选入门</div>
           <div style="display:flex;gap:6px;align-items:center;">
             <div
               style="background:var(--b);border-radius:6px;padding:5px 14px;font-size:12px;font-weight:700;color:#fff;">
               B 主推</div>
-            <div style="background:#e0e0e0;border-radius:6px;padding:5px 14px;font-size:12px;color:#888;">B Down-sell
+            <div style="background:rgba(255,255,255,0.1); border: 1px solid var(--border);border-radius:6px;padding:5px 14px;font-size:12px;color:var(--text-dim);">B Down-sell
             </div>
             <div style="margin-left:8px;font-size:12px;color:var(--muted);">预算有限但态度认真</div>
           </div>
         </div>
 
         <div style="display:grid;grid-template-columns:140px 1fr;align-items:center;gap:16px;">
-          <div style="text-align:right;font-size:13px;font-weight:700;color:#555;">¥3,980 标准正价</div>
+          <div style="text-align:right;font-size:13px;font-weight:700;color:var(--text);">¥3,980 标准正价</div>
           <div style="display:flex;gap:6px;align-items:center;">
             <div
               style="background:var(--b);border-radius:6px;padding:5px 14px;font-size:12px;font-weight:700;color:#fff;">
               B 主推</div>
-            <div style="background:#e0e0e0;border-radius:6px;padding:5px 14px;font-size:12px;color:#888;">A 起点</div>
+            <div style="background:rgba(255,255,255,0.1); border: 1px solid var(--border);border-radius:6px;padding:5px 14px;font-size:12px;color:var(--text-dim);">A 起点</div>
             <div style="margin-left:8px;font-size:12px;color:var(--muted);">喜播基本盘核心 SKU</div>
           </div>
         </div>
 
         <div style="display:grid;grid-template-columns:140px 1fr;align-items:center;gap:16px;">
-          <div style="text-align:right;font-size:13px;font-weight:700;color:#555;">¥7,380 全能旗舰</div>
+          <div style="text-align:right;font-size:13px;font-weight:700;color:var(--text);">¥7,380 全能旗舰</div>
           <div style="display:flex;gap:6px;align-items:center;">
             <div
               style="background:var(--a);border-radius:6px;padding:5px 14px;font-size:12px;font-weight:700;color:#fff;">
               A 主推</div>
-            <div style="background:#e0e0e0;border-radius:6px;padding:5px 14px;font-size:12px;color:#888;">B 高意愿</div>
+            <div style="background:rgba(255,255,255,0.1); border: 1px solid var(--border);border-radius:6px;padding:5px 14px;font-size:12px;color:var(--text-dim);">B 高意愿</div>
             <div
               style="background:#ffebee;border:1px solid #ef9a9a;border-radius:6px;padding:5px 14px;font-size:12px;color:#c62828;">
               C2/D 禁止</div>
@@ -1105,7 +928,7 @@
       </div>
 
       <!-- 分层说明条 -->
-      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;padding-top:16px;border-top:1px solid #eee;">
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;padding-top:16px;border-top:1px solid var(--border);">
         <div style="display:flex;align-items:center;gap:6px;font-size:12px;">
           <div style="width:12px;height:12px;border-radius:3px;background:var(--a)"></div>A类专属
         </div>
@@ -1116,7 +939,7 @@
           <div style="width:12px;height:12px;border-radius:3px;background:var(--c1)"></div>C1类主推
         </div>
         <div style="display:flex;align-items:center;gap:6px;font-size:12px;">
-          <div style="width:12px;height:12px;border-radius:3px;background:#e0e0e0"></div>兜底/Down-sell
+          <div style="width:12px;height:12px;border-radius:3px;background:rgba(255,255,255,0.1); border: 1px solid var(--border)"></div>兜底/Down-sell
         </div>
         <div style="display:flex;align-items:center;gap:6px;font-size:12px;">
           <div style="width:12px;height:12px;border-radius:3px;background:#ffebee;border:1px solid #ef9a9a"></div>禁止推荐
@@ -1129,10 +952,16 @@
   <script>
     mermaid.initialize({
       startOnLoad: true,
-      theme: 'base',
+      theme: 'dark',
       flowchart: { curve: 'basis', padding: 20, nodeSpacing: 50, rankSpacing: 60 },
       themeVariables: {
         fontFamily: '"PingFang SC","Microsoft YaHei",sans-serif',
+        primaryColor: '#18181b',
+        primaryTextColor: '#f4f4f5',
+        primaryBorderColor: '#3f3f46',
+        lineColor: '#a1a1aa',
+        secondaryColor: '#27272a',
+        tertiaryColor: '#09090b',
         fontSize: '14px',
       }
     });
