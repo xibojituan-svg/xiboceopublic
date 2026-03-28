@@ -7,190 +7,484 @@
   <title>喜播 ABCD 用户分层流程图</title>
   <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
   <style>
-  :root {
-    --a: #3b82f6; --a-light: rgba(59,130,246,0.15); --a-mid: rgba(59,130,246,0.5);
-    --b: #10b981; --b-light: rgba(16,185,129,0.15); --b-mid: rgba(16,185,129,0.5);
-    --c1: #f97316; --c1-light: rgba(249,115,22,0.15); --c1-mid: rgba(249,115,22,0.5);
-    --c2: #ec4899; --c2-light: rgba(236,72,153,0.15); --c2-mid: rgba(236,72,153,0.5);
-    --d: #ef4444; --d-light: rgba(239,68,68,0.15); --d-mid: rgba(239,68,68,0.5);
-    --gray: #3f3f46; --bg: #09090b; --card: #18181b;
-    --header: rgba(24, 24, 27, 0.85); --text: #f4f4f5; --muted: #a1a1aa;
-    --border: #3f3f46;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: "Inter", "PingFang SC", "Microsoft YaHei", sans-serif;
-    background: var(--bg); color: var(--text); line-height: 1.5;
-  }
+    :root {
+      --a: #3b82f6;
+      --a-light: rgba(59, 130, 246, 0.15);
+      --a-mid: rgba(59, 130, 246, 0.5);
+      --b: #10b981;
+      --b-light: rgba(16, 185, 129, 0.15);
+      --b-mid: rgba(16, 185, 129, 0.5);
+      --c1: #f97316;
+      --c1-light: rgba(249, 115, 22, 0.15);
+      --c1-mid: rgba(249, 115, 22, 0.5);
+      --c2: #ec4899;
+      --c2-light: rgba(236, 72, 153, 0.15);
+      --c2-mid: rgba(236, 72, 153, 0.5);
+      --d: #ef4444;
+      --d-light: rgba(239, 68, 68, 0.15);
+      --d-mid: rgba(239, 68, 68, 0.5);
+      --gray: #3f3f46;
+      --bg: #09090b;
+      --card: #18181b;
+      --header: rgba(24, 24, 27, 0.85);
+      --text: #f4f4f5;
+      --muted: #a1a1aa;
+      --border: #3f3f46;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Inter", "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
 
 
-  :root {
-    --orange: #f97316;
-    --green: #10b981;
-  }
-  
-  /* BG FX */
-  .bg-glow {
-    position: fixed; top: -20vh; left: 50%; transform: translateX(-50%);
-    width: 100vw; height: 60vh;
-    background: radial-gradient(ellipse at bottom, rgba(16,185,129,0.08) 0%, rgba(9,9,11,0) 70%);
-    z-index: -1; pointer-events: none;
-  }
+    :root {
+      --orange: #f97316;
+      --green: #10b981;
+    }
 
-  /* NAV */
-  .site-nav {
-    position: sticky; top: 0; z-index: 9999;
-    background: rgba(9,9,11,0.85); backdrop-filter: blur(16px);
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-    padding: 0 clamp(16px,4vw,32px);
-  }
-  .site-nav-inner {
-    max-width: 1400px; margin: 0 auto;
-    display: flex; align-items: center; height: 60px; gap: 12px; overflow-x: auto; scrollbar-width: none;
-  }
-  .site-nav-inner::-webkit-scrollbar { display: none; }
-  .nav-logo { font-size: 16px; font-weight: 900; color: var(--text); white-space: nowrap; text-decoration: none; margin-right: 20px; display: flex; align-items: center; gap: 8px; }
-  .nav-logo span { color: var(--orange); }
-  .nav-link {
-    display: flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 100px;
-    font-size: 13px; font-weight: 600; color: var(--text-dim); text-decoration: none; white-space: nowrap; transition: all 0.3s;
-  }
-  .nav-link:hover { color: var(--text); background: rgba(255,255,255,0.08); }
-  .nav-link.active { color: #fff; background: var(--green); }
+    /* BG FX */
+    .bg-glow {
+      position: fixed;
+      top: -20vh;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100vw;
+      height: 60vh;
+      background: radial-gradient(ellipse at bottom, rgba(16, 185, 129, 0.08) 0%, rgba(9, 9, 11, 0) 70%);
+      z-index: -1;
+      pointer-events: none;
+    }
 
-  /* ── NAV ── */
-  .nav {
-    position: sticky; top: 61px; z-index: 100;
-    background: var(--header); display: flex; align-items: center;
-    padding: 0 32px; border-bottom: 1px solid var(--border);
-    backdrop-filter: blur(12px);
-  }
-  .nav-brand { color: #fff; font-size: 16px; font-weight: 700; padding: 14px 0; margin-right: 40px; }
-  .nav-brand span { opacity: .6; font-weight: 400; color: var(--c1); }
-  .tab-btn {
-    color: rgba(255,255,255,.65); font-size: 14px; padding: 16px 20px;
-    border: none; background: none; cursor: pointer; border-bottom: 3px solid transparent;
-    transition: all .2s;
-  }
-  .tab-btn.active { color: #fff; border-bottom-color: var(--a); }
-  .tab-btn:hover { color: #fff; }
+    /* NAV */
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 9999;
+      background: rgba(9, 9, 11, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 0 clamp(16px, 4vw, 32px);
+    }
 
-  /* ── SECTIONS ── */
-  .section { display: none; padding: 32px; max-width: 1400px; margin: 0 auto; }
-  .section.active { display: block; animation: fadeUp 0.6s ease-out; }
+    .site-nav-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      height: 60px;
+      gap: 12px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
 
-  .page-title { font-size: 28px; font-weight: 800; color: #fff; margin-bottom: 6px; }
-  .page-sub { color: var(--muted); font-size: 14px; margin-bottom: 28px; }
+    .site-nav-inner::-webkit-scrollbar {
+      display: none;
+    }
 
-  /* ── LEGEND ── */
-  .legend { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 28px; }
-  .legend-item {
-    display: flex; align-items: center; gap: 8px;
-    background: var(--card); border-radius: 20px; border: 1px solid var(--border);
-    padding: 6px 14px; font-size: 13px; font-weight: 500;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-  }
-  .legend-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+    .nav-logo {
+      font-size: 16px;
+      font-weight: 900;
+      color: var(--text);
+      white-space: nowrap;
+      text-decoration: none;
+      margin-right: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
 
-  /* ── DIAGRAM 1: CONVERSION FUNNEL ── */
-  .funnel-wrap {
-    background: var(--card); border-radius: 16px; border: 1px solid var(--border);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    padding: 32px; overflow-x: auto;
-  }
-  .mermaid { min-width: 700px; }
+    .nav-logo span {
+      color: var(--orange);
+    }
 
-  /* ── DIAGRAM 2: SERVICE JOURNEY ── */
-  .journey-grid {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 20px;
-  }
-  @media (max-width: 900px) { .journey-grid { grid-template-columns: 1fr; } }
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-dim);
+      text-decoration: none;
+      white-space: nowrap;
+      transition: all 0.3s;
+    }
 
-  .journey-card {
-    background: var(--card); border-radius: 16px; border: 1px solid var(--border);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5); overflow: hidden;
-  }
-  .journey-header {
-    padding: 16px 24px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid rgba(255,255,255,0.05);
-  }
-  .journey-header h2 { color: #fff; font-size: 17px; font-weight: 700; }
-  .journey-header .badge {
-    background: rgba(255,255,255,.1); color: #fff; border: 1px solid rgba(255,255,255,0.2);
-    font-size: 11px; padding: 3px 10px; border-radius: 12px;
-  }
-  .journey-body { padding: 20px 24px 24px; }
+    .nav-link:hover {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.08);
+    }
 
-  /* Timeline */
-  .timeline { position: relative; padding-left: 32px; }
-  .timeline::before {
-    content: ""; position: absolute; left: 10px; top: 12px; bottom: 12px;
-    width: 2px; background: linear-gradient(180deg, var(--line-color) 0%, rgba(255,255,255,0.05) 100%);
-  }
-  .tl-item { position: relative; margin-bottom: 16px; }
-  .tl-item:last-child { margin-bottom: 0; }
-  .tl-dot {
-    position: absolute; left: -28px; top: 10px;
-    width: 18px; height: 18px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 10px; font-weight: 700; color: #fff; flex-shrink: 0;
-    box-shadow: 0 0 0 3px var(--card);
-  }
-  .tl-box {
-    border-radius: 10px; padding: 10px 14px;
-    border-left: 3px solid var(--line-color);
-  }
-  .tl-box .tl-head {
-    font-size: 13px; font-weight: 700; margin-bottom: 4px; color: #fff;
-  }
-  .tl-box .tl-detail {
-    font-size: 12px; color: var(--muted); line-height: 1.6;
-  }
-  .tl-box .tl-kpi {
-    margin-top: 6px; display: inline-block;
-    font-size: 11px; font-weight: 600; padding: 2px 10px;
-    border-radius: 10px; background: var(--line-color);
-    color: #fff;
-  }
+    .nav-link.active {
+      color: #fff;
+      background: var(--green);
+    }
 
-  /* ── RISK BOX ── */
-  .risk-box {
-    background: rgba(249,115,22,0.1); border: 1.5px dashed var(--c1);
-    border-radius: 10px; padding: 12px 16px; margin-bottom: 20px;
-    font-size: 13px; color: var(--text);
-  }
-  .risk-box strong { color: var(--c1); }
+    /* ── NAV ── */
+    .nav {
+      position: sticky;
+      top: 61px;
+      z-index: 100;
+      background: var(--header);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+      padding: 0 clamp(16px, 4vw, 32px);
+    }
 
-  /* ── METRIC CARDS ── */
-  .metrics { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
-  .metric-card {
-    flex: 1; min-width: 120px; border-radius: 12px; border: 1px solid var(--border);
-    padding: 12px 16px; text-align: center;
-  }
-  .metric-card .m-val { font-size: 22px; font-weight: 800; }
-  .metric-card .m-label { font-size: 11px; color: var(--muted); margin-top: 2px; }
+    .nav-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+    }
 
-  /* ── SECTION 3: COMPARISON ── */
-  .compare-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 16px; margin-bottom: 24px; }
-  .compare-col { border-radius: 12px; overflow: hidden; border: 1px solid var(--border); box-shadow: 0 4px 16px rgba(0,0,0,0.5); }
-  .compare-col-header { padding: 14px 12px; text-align: center; color: #fff; font-weight: 700; font-size: 14px; }
-  .compare-col-body { background: var(--card); }
-  .compare-row { padding: 10px 12px; border-bottom: 1px solid var(--border); font-size: 12px; }
-  .compare-row:last-child { border-bottom: none; }
-  .compare-row .cr-label { color: var(--muted); font-size: 11px; margin-bottom: 3px; }
-  .compare-row .cr-val { font-weight: 600; color: var(--text); }
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-</style>
+    .nav-brand {
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      padding: 14px 0;
+      margin-right: 40px;
+    }
+
+    .nav-brand span {
+      opacity: .6;
+      font-weight: 400;
+      color: var(--c1);
+    }
+
+    .tab-btn {
+      color: rgba(255, 255, 255, .65);
+      font-size: 14px;
+      padding: 16px 20px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: all .2s;
+    }
+
+    .tab-btn.active {
+      color: #fff;
+      border-bottom-color: var(--a);
+    }
+
+    .tab-btn:hover {
+      color: #fff;
+    }
+
+    /* ── SECTIONS ── */
+    .section {
+      display: none;
+      padding: 32px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .section.active {
+      display: block;
+      animation: fadeUp 0.6s ease-out;
+    }
+
+    .page-title {
+      font-size: 28px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .page-sub {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 28px;
+    }
+
+    /* ── LEGEND ── */
+    .legend {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--card);
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      padding: 6px 14px;
+      font-size: 13px;
+      font-weight: 500;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    }
+
+    .legend-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* ── DIAGRAM 1: CONVERSION FUNNEL ── */
+    .funnel-wrap {
+      background: var(--card);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      padding: 32px;
+      overflow-x: auto;
+    }
+
+    .mermaid {
+      min-width: 700px;
+    }
+
+    /* ── DIAGRAM 2: SERVICE JOURNEY ── */
+    .journey-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 900px) {
+      .journey-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .journey-card {
+      background: var(--card);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+    }
+
+    .journey-header {
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .journey-header h2 {
+      color: #fff;
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .journey-header .badge {
+      background: rgba(255, 255, 255, .1);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 12px;
+    }
+
+    .journey-body {
+      padding: 20px 24px 24px;
+    }
+
+    /* Timeline */
+    .timeline {
+      position: relative;
+      padding-left: 32px;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 10px;
+      top: 12px;
+      bottom: 12px;
+      width: 2px;
+      background: linear-gradient(180deg, var(--line-color) 0%, rgba(255, 255, 255, 0.05) 100%);
+    }
+
+    .tl-item {
+      position: relative;
+      margin-bottom: 16px;
+    }
+
+    .tl-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .tl-dot {
+      position: absolute;
+      left: -28px;
+      top: 10px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+      box-shadow: 0 0 0 3px var(--card);
+    }
+
+    .tl-box {
+      border-radius: 10px;
+      padding: 10px 14px;
+      border-left: 3px solid var(--line-color);
+    }
+
+    .tl-box .tl-head {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: #fff;
+    }
+
+    .tl-box .tl-detail {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .tl-box .tl-kpi {
+      margin-top: 6px;
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 10px;
+      border-radius: 10px;
+      background: var(--line-color);
+      color: #fff;
+    }
+
+    /* ── RISK BOX ── */
+    .risk-box {
+      background: rgba(249, 115, 22, 0.1);
+      border: 1.5px dashed var(--c1);
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      font-size: 13px;
+      color: var(--text);
+    }
+
+    .risk-box strong {
+      color: var(--c1);
+    }
+
+    /* ── METRIC CARDS ── */
+    .metrics {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .metric-card {
+      flex: 1;
+      min-width: 120px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      padding: 12px 16px;
+      text-align: center;
+    }
+
+    .metric-card .m-val {
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .metric-card .m-label {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    /* ── SECTION 3: COMPARISON ── */
+    .compare-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .compare-col {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+    }
+
+    .compare-col-header {
+      padding: 14px 12px;
+      text-align: center;
+      color: #fff;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .compare-col-body {
+      background: var(--card);
+    }
+
+    .compare-row {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      font-size: 12px;
+    }
+
+    .compare-row:last-child {
+      border-bottom: none;
+    }
+
+    .compare-row .cr-label {
+      color: var(--muted);
+      font-size: 11px;
+      margin-bottom: 3px;
+    }
+
+    .compare-row .cr-val {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
 </head>
 
 <body>
   <script src="navbar.js"></script>
 
   <nav class="nav">
-    <div class="nav-brand">喜播教育 <span>ABCD 用户分层系统</span></div>
-    <button class="tab-btn active" onclick="showTab('tab1',this)">① 转化路径流程图</button>
-    <button class="tab-btn" onclick="showTab('tab2',this)">② 产品服务路径</button>
-    <button class="tab-btn" onclick="showTab('tab3',this)">③ 四类用户对比</button>
+    <div class="nav-inner">
+      <div class="nav-brand">喜播教育 <span>ABCD 用户分层系统</span></div>
+      <button class="tab-btn active" onclick="showTab('tab1',this)">① 转化路径流程图</button>
+      <button class="tab-btn" onclick="showTab('tab2',this)">② 产品服务路径</button>
+      <button class="tab-btn" onclick="showTab('tab3',this)">③ 四类用户对比</button>
+    </div>
   </nav>
 
   <!-- ════════════════════════════════════════════ TAB 1 ════ -->
@@ -218,22 +512,21 @@
 
     <div class="funnel-wrap">
       <div class="mermaid">
-        %%{init:
-        {"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#1a1a1a","primaryBorderColor":"#90CAF9","lineColor":"#90A4AE","secondaryColor":"#F5F5F5","tertiaryColor":"#fff","fontSize":"14px"}}}%%
+        %%{init:{"theme":"dark","themeVariables":{"primaryColor":"#18181b","primaryTextColor":"#f4f4f5","primaryBorderColor":"#3f3f46","lineColor":"#a1a1aa","secondaryColor":"#27272a","tertiaryColor":"#09090b","fontSize":"14px"}}}%%
         flowchart TD
-        classDef entry    fill:#27272a,stroke:#3b82f6,color:#f4f4f5,font-weight:bold
-    classDef process  fill:#18181b,stroke:#8b5cf6,color:#f4f4f5,font-weight:bold
-    classDef decision fill:#27272a,stroke:#f97316,color:#f4f4f5,font-weight:bold
-    classDef aClass   fill:#18181b,stroke:#3b82f6,color:#3b82f6,font-weight:bold
-    classDef bClass   fill:#18181b,stroke:#10b981,color:#10b981,font-weight:bold
-    classDef c1Class  fill:#18181b,stroke:#f97316,color:#f97316,font-weight:bold
-    classDef c2Class  fill:#18181b,stroke:#ec4899,color:#ec4899,font-weight:bold
-    classDef dClass   fill:#18181b,stroke:#ef4444,color:#ef4444,font-weight:bold
-    classDef aResult  fill:rgba(59,130,246,0.1),stroke:#3b82f6,color:#60a5fa,font-weight:bold
-    classDef bResult  fill:rgba(16,185,129,0.1),stroke:#10b981,color:#34d399,font-weight:bold
-    classDef c1Result fill:rgba(249,115,22,0.1),stroke:#f97316,color:#fb923c,font-weight:bold
-    classDef c2Result fill:rgba(236,72,153,0.1),stroke:#ec4899,color:#f472b6,font-weight:bold
-    classDef dResult  fill:rgba(239,68,68,0.1),stroke:#ef4444,color:#f87171,font-weight:bold
+        classDef entry fill:#27272a,stroke:#3b82f6,color:#f4f4f5,font-weight:bold
+        classDef process fill:#18181b,stroke:#8b5cf6,color:#f4f4f5,font-weight:bold
+        classDef decision fill:#27272a,stroke:#f97316,color:#f4f4f5,font-weight:bold
+        classDef aClass fill:#18181b,stroke:#3b82f6,color:#3b82f6,font-weight:bold
+        classDef bClass fill:#18181b,stroke:#10b981,color:#10b981,font-weight:bold
+        classDef c1Class fill:#18181b,stroke:#f97316,color:#f97316,font-weight:bold
+        classDef c2Class fill:#18181b,stroke:#ec4899,color:#ec4899,font-weight:bold
+        classDef dClass fill:#18181b,stroke:#ef4444,color:#ef4444,font-weight:bold
+        classDef aResult fill:#1e293b,stroke:#3b82f6,color:#60a5fa,font-weight:bold
+        classDef bResult fill:#1e293b,stroke:#10b981,color:#34d399,font-weight:bold
+        classDef c1Result fill:#1e293b,stroke:#f97316,color:#fb923c,font-weight:bold
+        classDef c2Result fill:#1e293b,stroke:#ec4899,color:#f472b6,font-weight:bold
+        classDef dResult fill:#1e293b,stroke:#ef4444,color:#f87171,font-weight:bold
 
         IN1["📱 付费信息流/直播投放"] & IN2["🎬 IP矩阵自然流量"] & IN3["👥 口碑/学员裂变"] & IN4["📺 直播间/短视频"] --> JOIN
 
@@ -243,28 +536,28 @@
 
         ENTRY --> D0["Day 0 — 破冰问卷 + 基础画像采集\n设备型号 · 城市层级 · 预算意向 · 来源渠道"]:::process
 
-        D0 --> DQ1{"触发 D 类关键词？\n借钱 / 救命钱 / 未成年 / 信用卡套现…"}:::decision
+        D0 --> DQ1{"触发 D 类关键词？\n借钱 / 救命钱 / 未成年 / 信用卡套现"}:::decision
 
-        DQ1 -- "🚨 是" --> DOUT["D类 熔断\n系统锁定支付通道\n合规审查 → 友好劝退"]:::dClass
+        DQ1 -- "是" --> DOUT["D类 熔断\n系统锁定支付通道\n合规审查 友好劝退"]:::dClass
 
-        DQ1 -- "✅ 否" --> D12["Day 1-2 — 体验营行为数据采集\n到课率 · 完播率 · 作业提交 · 群发言内容 · 主动咨询次数"]:::process
+        DQ1 -- "否" --> D12["Day 1-2 体验营行为数据采集\n到课率 完播率 作业提交\n群发言内容 主动咨询次数"]:::process
 
-        D12 --> D2Q{"Day 2 — AI 评分分层\n设备(2分) + 城市(2分) + 行为(3分) + 咨询(2分) + 预算(1分)"}:::decision
+        D12 --> D2Q{"Day 2 AI 评分分层\n设备2分 城市2分 行为3分\n咨询2分 预算1分"}:::decision
 
-        D2Q -- "≥ 7分" --> AC["A 类通道\n价值共创型"]:::aClass
-        D2Q -- "4 - 6 分" --> BC["B 类通道\n成长投资型"]:::bClass
-        D2Q -- "2-3分\n高底座低需求" --> C1C["C1 类通道\n情绪消费型"]:::c1Class
-        D2Q -- "2-3分\n低底座高冲动" --> C2C["C2 类通道\n冲动风险型"]:::c2Class
+        D2Q -- "7分以上" --> AC["A 类通道\n价值共创型"]:::aClass
+        D2Q -- "4到6分" --> BC["B 类通道\n成长投资型"]:::bClass
+        D2Q -- "2到3分 高底座" --> C1C["C1 类通道\n情绪消费型"]:::c1Class
+        D2Q -- "2到3分 高冲动" --> C2C["C2 类通道\n冲动风险型"]:::c2Class
 
-        AC --> AR["顾问伙伴式转化\n1v1 电话深度需求诊断\n定制非标学习方案\n推旗舰课 ¥7380+\n🎯 目标转化率：15–20%"]:::aResult
-        BC --> BR["阶梯引导式转化\n展示真实学员案例\n三档价：¥3980 / ¥1280 / ¥398\n🎯 目标转化率：8–12%"]:::bResult
-        C1C --> C1R["社群兴趣式转化\n引导进兴趣社群\n仅推 ¥98–398 轻课\n不逼单 · 不制造焦虑\n🎯 目标转化率：30–40%"]:::c1Result
-        C2C --> C2R["风险防御式处理\n仅推 ¥98 体验包\n坚持购买 → 预期声明\n🎯 严禁升仓话术"]:::c2Result
+        AC --> AR["顾问伙伴式转化\n1v1电话深度需求诊断\n定制非标学习方案\n推旗舰课7380+"]:::aResult
+        BC --> BR["阶梯引导式转化\n展示真实学员案例\n三档价3980/1280/398"]:::bResult
+        C1C --> C1R["社群兴趣式转化\n引导进兴趣社群\n仅推98到398轻课"]:::c1Result
+        C2C --> C2R["风险防御式处理\n仅推98体验包\n坚持购买则预期声明"]:::c2Result
 
-        AR --> ADONE["✅ 成交\n分配资深班主任\n进入 A 类服务旅程"]:::aClass
-        BR --> BDONE["✅ 成交\n分配中级班主任\n入学第一周预期校正"]:::bClass
-        C1R --> C1DONE["✅ 低价成交\n毛利 70%+\n长期社群陪伴留存"]:::c1Class
-        C2R --> C2DONE["⚠️ 有条件成交\n签署预期声明\n配客服型班主任"]:::c2Class
+        AR --> ADONE["成交\n分配资深班主任\n进入A类服务旅程"]:::aClass
+        BR --> BDONE["成交\n分配中级班主任\n入学第一周预期校正"]:::bClass
+        C1R --> C1DONE["低价成交\n毛利70%+\n长期社群陪伴留存"]:::c1Class
+        C2R --> C2DONE["有条件成交\n签署预期声明\n配客服型班主任"]:::c2Class
       </div>
     </div>
   </div>
@@ -872,7 +1165,9 @@
             <div
               style="background:var(--c1);border-radius:6px;padding:5px 14px;font-size:12px;font-weight:700;color:#fff;">
               C1 主推</div>
-            <div style="background:rgba(255,255,255,0.1); border: 1px solid var(--border);border-radius:6px;padding:5px 14px;font-size:12px;color:var(--text-dim);">C2 兜底</div>
+            <div
+              style="background:rgba(255,255,255,0.1); border: 1px solid var(--border);border-radius:6px;padding:5px 14px;font-size:12px;color:var(--text-dim);">
+              C2 兜底</div>
             <div style="margin-left:8px;font-size:12px;color:var(--muted);">毛利率 70%+ · 零客诉</div>
           </div>
         </div>
@@ -883,7 +1178,9 @@
             <div
               style="background:var(--c1);border-radius:6px;padding:5px 14px;font-size:12px;font-weight:700;color:#fff;">
               C1 主推</div>
-            <div style="background:rgba(255,255,255,0.1); border: 1px solid var(--border);border-radius:6px;padding:5px 14px;font-size:12px;color:var(--text-dim);">B 兜底</div>
+            <div
+              style="background:rgba(255,255,255,0.1); border: 1px solid var(--border);border-radius:6px;padding:5px 14px;font-size:12px;color:var(--text-dim);">
+              B 兜底</div>
             <div style="margin-left:8px;font-size:12px;color:var(--muted);">Down-sell 最后防线</div>
           </div>
         </div>
@@ -894,7 +1191,9 @@
             <div
               style="background:var(--b);border-radius:6px;padding:5px 14px;font-size:12px;font-weight:700;color:#fff;">
               B 主推</div>
-            <div style="background:rgba(255,255,255,0.1); border: 1px solid var(--border);border-radius:6px;padding:5px 14px;font-size:12px;color:var(--text-dim);">B Down-sell
+            <div
+              style="background:rgba(255,255,255,0.1); border: 1px solid var(--border);border-radius:6px;padding:5px 14px;font-size:12px;color:var(--text-dim);">
+              B Down-sell
             </div>
             <div style="margin-left:8px;font-size:12px;color:var(--muted);">预算有限但态度认真</div>
           </div>
@@ -906,7 +1205,9 @@
             <div
               style="background:var(--b);border-radius:6px;padding:5px 14px;font-size:12px;font-weight:700;color:#fff;">
               B 主推</div>
-            <div style="background:rgba(255,255,255,0.1); border: 1px solid var(--border);border-radius:6px;padding:5px 14px;font-size:12px;color:var(--text-dim);">A 起点</div>
+            <div
+              style="background:rgba(255,255,255,0.1); border: 1px solid var(--border);border-radius:6px;padding:5px 14px;font-size:12px;color:var(--text-dim);">
+              A 起点</div>
             <div style="margin-left:8px;font-size:12px;color:var(--muted);">喜播基本盘核心 SKU</div>
           </div>
         </div>
@@ -917,7 +1218,9 @@
             <div
               style="background:var(--a);border-radius:6px;padding:5px 14px;font-size:12px;font-weight:700;color:#fff;">
               A 主推</div>
-            <div style="background:rgba(255,255,255,0.1); border: 1px solid var(--border);border-radius:6px;padding:5px 14px;font-size:12px;color:var(--text-dim);">B 高意愿</div>
+            <div
+              style="background:rgba(255,255,255,0.1); border: 1px solid var(--border);border-radius:6px;padding:5px 14px;font-size:12px;color:var(--text-dim);">
+              B 高意愿</div>
             <div
               style="background:#ffebee;border:1px solid #ef9a9a;border-radius:6px;padding:5px 14px;font-size:12px;color:#c62828;">
               C2/D 禁止</div>
@@ -928,7 +1231,8 @@
       </div>
 
       <!-- 分层说明条 -->
-      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;padding-top:16px;border-top:1px solid var(--border);">
+      <div
+        style="display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;padding-top:16px;border-top:1px solid var(--border);">
         <div style="display:flex;align-items:center;gap:6px;font-size:12px;">
           <div style="width:12px;height:12px;border-radius:3px;background:var(--a)"></div>A类专属
         </div>
@@ -939,7 +1243,9 @@
           <div style="width:12px;height:12px;border-radius:3px;background:var(--c1)"></div>C1类主推
         </div>
         <div style="display:flex;align-items:center;gap:6px;font-size:12px;">
-          <div style="width:12px;height:12px;border-radius:3px;background:rgba(255,255,255,0.1); border: 1px solid var(--border)"></div>兜底/Down-sell
+          <div
+            style="width:12px;height:12px;border-radius:3px;background:rgba(255,255,255,0.1); border: 1px solid var(--border)">
+          </div>兜底/Down-sell
         </div>
         <div style="display:flex;align-items:center;gap:6px;font-size:12px;">
           <div style="width:12px;height:12px;border-radius:3px;background:#ffebee;border:1px solid #ef9a9a"></div>禁止推荐
@@ -953,14 +1259,14 @@
     mermaid.initialize({
       startOnLoad: true,
       theme: 'dark',
-      flowchart: { curve: 'basis', padding: 20, nodeSpacing: 50, rankSpacing: 60 },
+      flowchart: { curve: 'basis', padding: 20, node    Spacing: 50, rankSpacing: 60      ,
       themeVariables: {
-        fontFamily: '"PingFang SC","Microsoft YaHei",sans-serif',
+        fontFamily: '"PingFang SC","Microsoft YaHei",san      serif',
         primaryColor: '#18181b',
         primaryTextColor: '#f4f4f5',
-        primaryBorderColor: '#3f3f46',
-        lineColor: '#a1a1aa',
-        secondaryColor: '#27272a',
+            primaryBorderColor: '#3f3f46',
+        lineColor: '      1a1aa',
+        secondaryColo    r: '#,
         tertiaryColor: '#09090b',
         fontSize: '14px',
       }
