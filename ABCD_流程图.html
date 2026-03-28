@@ -512,53 +512,54 @@
 
     <div class="funnel-wrap">
       <div class="mermaid">
-        %%{init:{"theme":"dark","themeVariables":{"primaryColor":"#18181b","primaryTextColor":"#f4f4f5","primaryBorderColor":"#3f3f46","lineColor":"#a1a1aa","secondaryColor":"#27272a","tertiaryColor":"#09090b","fontSize":"14px"}}}%%
-        flowchart TD
-        classDef entry fill:#27272a,stroke:#3b82f6,color:#f4f4f5,font-weight:bold
-        classDef process fill:#18181b,stroke:#8b5cf6,color:#f4f4f5,font-weight:bold
-        classDef decision fill:#27272a,stroke:#f97316,color:#f4f4f5,font-weight:bold
-        classDef aClass fill:#18181b,stroke:#3b82f6,color:#3b82f6,font-weight:bold
-        classDef bClass fill:#18181b,stroke:#10b981,color:#10b981,font-weight:bold
-        classDef c1Class fill:#18181b,stroke:#f97316,color:#f97316,font-weight:bold
-        classDef c2Class fill:#18181b,stroke:#ec4899,color:#ec4899,font-weight:bold
-        classDef dClass fill:#18181b,stroke:#ef4444,color:#ef4444,font-weight:bold
-        classDef aResult fill:#1e293b,stroke:#3b82f6,color:#60a5fa,font-weight:bold
-        classDef bResult fill:#1e293b,stroke:#10b981,color:#34d399,font-weight:bold
-        classDef c1Result fill:#1e293b,stroke:#f97316,color:#fb923c,font-weight:bold
-        classDef c2Result fill:#1e293b,stroke:#ec4899,color:#f472b6,font-weight:bold
-        classDef dResult fill:#1e293b,stroke:#ef4444,color:#f87171,font-weight:bold
+%%{init:{"theme":"dark","themeVariables":{"primaryColor":"#18181b","primaryTextColor":"#f4f4f5","primaryBorderColor":"#3f3f46","lineColor":"#a1a1aa","secondaryColor":"#27272a","tertiaryColor":"#09090b","fontSize":"14px"}}}%%
+flowchart TD
+    classDef entry fill:#27272a,stroke:#3b82f6,color:#f4f4f5,font-weight:bold
+    classDef process fill:#18181b,stroke:#8b5cf6,color:#f4f4f5,font-weight:bold
+    classDef decision fill:#27272a,stroke:#f97316,color:#f4f4f5,font-weight:bold
+    classDef aClass fill:#18181b,stroke:#3b82f6,color:#3b82f6,font-weight:bold
+    classDef bClass fill:#18181b,stroke:#10b981,color:#10b981,font-weight:bold
+    classDef c1Class fill:#18181b,stroke:#f97316,color:#f97316,font-weight:bold
+    classDef c2Class fill:#18181b,stroke:#ec4899,color:#ec4899,font-weight:bold
+    classDef dClass fill:#18181b,stroke:#ef4444,color:#ef4444,font-weight:bold
+    classDef aResult fill:#1e293b,stroke:#3b82f6,color:#60a5fa,font-weight:bold
+    classDef bResult fill:#1e293b,stroke:#10b981,color:#34d399,font-weight:bold
+    classDef c1Result fill:#1e293b,stroke:#f97316,color:#fb923c,font-weight:bold
+    classDef c2Result fill:#1e293b,stroke:#ec4899,color:#f472b6,font-weight:bold
+    classDef dResult fill:#1e293b,stroke:#ef4444,color:#f87171,font-weight:bold
 
-        IN1["付费信息流投放"] & IN2["IP矩阵自然流量"] & IN3["口碑学员裂变"] & IN4["直播间短视频"] --> JOIN
+    IN1["付费信息流投放"] & IN2["IP矩阵自然流量"] & IN3["口碑学员裂变"] & IN4["直播间短视频"] --> JOIN
 
-        JOIN(["用户首次接触"]):::entry
+    JOIN(["用户首次接触"]):::entry
 
-        JOIN --> ENTRY["0元1元体验课入口\n加微信进体验营"]:::entry
+    JOIN --> ENTRY["0元1元体验课入口\n加微信进体验营"]:::entry
 
-        ENTRY --> D0["Day0 破冰问卷+基础画像采集\n设备型号 城市层级\n预算意向 来源渠道"]:::process
+    ENTRY --> D0["Day0 破冰问卷+基础画像采集\n设备型号 城市层级\n预算意向 来源渠道"]:::process
 
-        D0 --> DQ1{"触发D类关键词\n借钱 救命钱\n未成年 信用卡套现"}:::decision
+    D0 --> DQ1{"触发D类关键词\n借钱 救命钱\n未成年 信用卡套现"}:::decision
 
-        DQ1 -- "是" --> DOUT["D类熔断\n系统锁定支付通道\n合规审查友好劝退"]:::dClass
+    DQ1 -- "是" --> DOUT["D类熔断\n系统锁定支付通道\n合规审查友好劝退"]:::dClass
 
-        DQ1 -- "否" --> D12["Day1-2 体验营行为数据采集\n到课率 完播率 作业提交\n群发言 主动咨询次数"]:::process
+    DQ1 -- "否" --> D12["Day1-2 体验营行为数据采集\n到课率 完播率 作业提交\n群发言 主动咨询次数"]:::process
 
-        D12 --> D2Q{"Day2 AI评分分层\n设备2分 城市2分 行为3分\n咨询2分 预算1分"}:::decision
+    D12 --> D2Q{"Day2 AI评分分层\n设备2分 城市2分 行为3分\n咨询2分 预算1分"}:::decision
 
-        D2Q -- "7分以上" --> AC["A类通道\n价值共创型"]:::aClass
-        D2Q -- "4到6分" --> BC["B类通道\n成长投资型"]:::bClass
-        D2Q -- "2-3分高底座" --> C1C["C1类通道\n情绪消费型"]:::c1Class
-        D2Q -- "2-3分高冲动" --> C2C["C2类通道\n冲动风险型"]:::c2Class
+    D2Q -- "7分以上" --> AC["A类通道\n价值共创型"]:::aClass
+    D2Q -- "4到6分" --> BC["B类通道\n成长投资型"]:::bClass
+    D2Q -- "2-3分高底座" --> C1C["C1类通道\n情绪消费型"]:::c1Class
+    D2Q -- "2-3分高冲动" --> C2C["C2类通道\n冲动风险型"]:::c2Class
 
-        AC --> AR["顾问伙伴式转化\n1v1电话深度需求诊断\n定制非标学习方案\n推旗舰课7380+"]:::aResult
-        BC --> BR["阶梯引导式转化\n展示真实学员案例\n三档价3980/1280/398"]:::bResult
-        C1C --> C1R["社群兴趣式转化\n引导进兴趣社群\n仅推98-398轻课"]:::c1Result
-        C2C --> C2R["风险防御式处理\n仅推98体验包\n坚持购买则预期声明"]:::c2Result
+    AC --> AR["顾问伙伴式转化\n1v1电话深度需求诊断\n定制非标学习方案\n推旗舰课7380+"]:::aResult
+    BC --> BR["阶梯引导式转化\n展示真实学员案例\n三档价3980/1280/398"]:::bResult
+    C1C --> C1R["社群兴趣式转化\n引导进兴趣社群\n仅推98-398轻课"]:::c1Result
+    C2C --> C2R["风险防御式处理\n仅推98体验包\n坚持购买则预期声明"]:::c2Result
 
-        AR --> ADONE["成交\n分配资深班主任\n进入A类服务旅程"]:::aClass
-        BR --> BDONE["成交\n分配中级班主任\n入学第一周预期校正"]:::bClass
-        C1R --> C1DONE["低价成交\n毛利70%+\n长期社群陪伴留存"]:::c1Class
-        C2R --> C2DONE["有条件成交\n签署预期声明\n配客服型班主任"]:::c2Class
-      </div>
+    AR --> ADONE["成交\n分配资深班主任\n进入A类服务旅程"]:::aClass
+    BR --> BDONE["成交\n分配中级班主任\n入学第一周预期校正"]:::bClass
+    C1R --> C1DONE["低价成交\n毛利70%+\n长期社群陪伴留存"]:::c1Class
+    C2R --> C2DONE["有条件成交\n签署预期声明\n配客服型班主任"]:::c2Class
+
+</div>
     </div>
   </div>
 
