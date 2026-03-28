@@ -1260,19 +1260,18 @@
     mermaid.initialize({
       startOnLoad: true,
       theme: 'dark',
-      flowchart: {
-        curve: 'basis', padding: 20, node    Spacing: 50, rankSpacing: 60,
-        themeVariables: {
-          fontFamily: '"PingFang SC","Microsoft YaHei",san      serif',
-          primaryColor: '#18181b',
-          primaryTextColor: '#f4f4f5',
-          primaryBorderColor: '#3f3f46',
-          lineColor: '      1a1aa',
-          secondaryColo    r: '#,
+      flowchart: { curve: 'basis', padding: 20, nodeSpacing: 50, rankSpacing: 60 },
+      themeVariables: {
+        fontFamily: '"PingFang SC","Microsoft YaHei",sans-serif',
+        primaryColor: '#18181b',
+        primaryTextColor: '#f4f4f5',
+        primaryBorderColor: '#3f3f46',
+        lineColor: '#a1a1aa',
+        secondaryColor: '#27272a',
         tertiaryColor: '#09090b',
-          fontSize: '14px',
-        }
-      });
+        fontSize: '14px'
+      }
+    });
 
     function showTab(id, btn) {
       document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
