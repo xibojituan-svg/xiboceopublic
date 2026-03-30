@@ -54,7 +54,8 @@ for filepath in glob.glob(os.path.join(SITE_DIR, "*.html")):
     content = re.sub(r'<nav[^>]*>.*?</nav>', '', content, flags=re.DOTALL)
     
     # insert generic css
-    if '<!-- 引入统一样式基础 -->' not in content and not (filepath.endswith("index.html") or filepath.endswith("presentation_2026.html")):
+    skip_inject = filepath.endswith(("index.html", "presentation_2026.html", "course_product_review.html"))
+    if '<!-- 引入统一样式基础 -->' not in content and not skip_inject:
         content = re.sub(r'</head>', generic_css + '\n</head>', content, flags=re.IGNORECASE)
 
     # insert robots noindex tag globally
@@ -62,7 +63,7 @@ for filepath in glob.glob(os.path.join(SITE_DIR, "*.html")):
         content = re.sub(r'</head>', '  <meta name="robots" content="noindex, nofollow" />\n</head>', content, flags=re.IGNORECASE)
     
     # insert global nav after <body>
-    if '<script src="navbar.js"></script>' not in content and not filepath.endswith("presentation_2026.html"):
+    if '<script src="navbar.js"></script>' not in content and not skip_inject:
         content = re.sub(r'<body[^>]*>', lambda m: m.group(0) + '\n' + global_nav, content, flags=re.IGNORECASE|re.DOTALL)
 
     with open(filepath, 'w', encoding='utf-8') as f:
