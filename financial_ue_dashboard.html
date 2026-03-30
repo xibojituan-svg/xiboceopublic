@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>动态战略财务沙盘：5000万净利基准 UE 导航器</title>
+    <meta name="description" content="基于第一曲线5000万净利润目标，进行业务实际UE与理想UE对比诊断的动态仪表盘">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#f97316',
+                        secondary: '#475569',
+                        dark: '#1e293b',
+                        light: '#f8fafc',
+                        success: '#10b981',
+                        danger: '#ef4444',
+                        amber: '#f59e0b',
+                        blue: '#3b82f6'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :root {
+            --bg: #09090b;
+            --bg-surface: #18181b;
+            --bg-surface-hover: #27272a;
+            --border: #3f3f46;
+            --text: #f4f4f5;
+            --text-dim: #a1a1aa;
+            --text-muted: #71717a;
+
+            --brand-primary: #ef4444;
+            --brand-secondary: #f97316;
+            --brand-accent: #10b981;
+            --brand-glow: rgba(239, 68, 68, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, 'PingFang SC', sans-serif !important;
+            background-color: var(--bg) !important;
+            color: var(--text) !important;
+            line-height: 1.6;
+        }
+
+        .glass-card {
+            background: rgba(24, 24, 27, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .input-group label {
+            font-size: 0.875rem;
+            color: var(--text-dim);
+            font-weight: 600;
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+
+        input[type="number"],
+        input[type="range"] {
+            width: 100%;
+            border-radius: 6px;
+        }
+
+        input[type="number"] {
+            background: #27272a;
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 0.5rem 0.75rem;
+            outline: none;
+            transition: border-color 0.2s;
+            font-size: 0.875rem;
+        }
+
+        input[type="number"]:focus {
+            border-color: #f97316;
+            box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2);
+        }
+
+        .dashboard-header {
+            text-align: center;
+            padding: 3rem 1rem 2rem;
+            animation: fadeUp 0.8s ease-out;
+        }
+
+        .dashboard-header h1 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 12px;
+            letter-spacing: -0.03em;
+            background: linear-gradient(135deg, #f4f4f5 30%, #a1a1aa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .target-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 16px;
+            border-radius: 100px;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: var(--brand-accent);
+            font-size: 13px;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        .metric-group {
+            background: #27272a;
+            padding: 16px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        .compare-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .compare-row:last-child {
+            border-bottom: none;
+        }
+
+        .value-actual {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .value-target {
+            color: var(--brand-accent);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .gap-alert {
+            font-size: 0.8rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 700;
+        }
+
+        .gap-bad {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .gap-good {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .alert-box {
+            background: rgba(239, 68, 68, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            margin: 1.5rem 0;
+        }
+
+        .alert-box h4 {
+            color: #ef4444;
+            font-size: 1.1rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Vue Transition Setup */
+        .fade-enter-active, .fade-leave-active {
+            transition: opacity 0.5s ease;
+        }
+        .fade-enter-from, .fade-leave-to {
+            opacity: 0;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Fix layout for grid items */
+        .grid-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        @media (max-width: 1024px) {
+            .grid-layout { grid-template-columns: 1fr; }
+        }
+
+    </style>
+</head>
+
+<body class="p-6 pb-20">
+    <script src="navbar.js?v=20260330"></script>
+
+    <div id="app" class="max-w-7xl mx-auto" style="padding-top: 32px;" v-cloak>
+        <div class="dashboard-header">
+            <div class="target-tag">
+                <i class="fas fa-bullseye"></i> 战略锚点：5000万净利润 / 10% 净利红线
+            </div>
+            <h1>第一曲线生死线 · UE自动导航沙盘</h1>
+            <p class="text-text-dim max-w-2xl mx-auto mt-4 font-medium text-lg">
+                这不是一张死板的营收测算表，而是CEO、业务一号位与财务BP的决断场。<br>一切不以“健康净利”为终局的指标优化都是自欺欺人。用真实验证目标，看清失血口并按下熔断按钮。
+            </p>
+        </div>
+
+        <div class="grid-layout items-start">
+            <!-- Left Side: Actual Input Dynamics (Simulating real-time inputs based on operations) -->
+            <div class="glass-card p-6">
+                <div class="flex items-center gap-3 mb-6 border-b border-border pb-4">
+                    <div class="w-10 h-10 rounded bg-[#27272a] flex items-center justify-center text-primary text-xl relative border border-border">
+                        <i class="fas fa-sliders-h"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold text-white">当前业务前线实况池</h2>
+                        <p class="text-xs text-text-dim">输入你当下的实际转化、开支和退费情况</p>
+                    </div>
+                </div>
+
+                <div class="space-y-5">
+                    <div class="input-group">
+                        <label>合同总签单额 / 流水 (万元)</label>
+                        <input type="number" v-model.number="actuals.signed_revenue">
+                        <p class="text-xs text-text-muted mt-1">你的前端冲了多少流水进来？</p>
+                    </div>
+
+                    <div class="input-group">
+                        <label>整体退费率 (%) <span class="text-danger font-bold text-xs ml-2" v-if="actuals.refund_rate > 10">⚠️ 远超10%安全线</span></label>
+                        <input type="range" v-model.number="actuals.refund_rate" max="100" step="0.5">
+                        <div class="flex justify-between mt-1"><span class="text-xs text-text-muted">高质量交付</span><span class="text-xs font-bold text-white">{{actuals.refund_rate}}%</span></div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>年度固定成本盘 (万元)</label>
+                        <input type="number" v-model.number="actuals.fixed_cost">
+                        <p class="text-xs text-text-muted mt-1">包含总部、后勤、房租及基础行政薪酬</p>
+                    </div>
+
+                    <div class="input-group">
+                        <label>单客综合获客成本 CAC (元)</label>
+                        <input type="number" v-model.number="actuals.cac_per_user">
+                        <p class="text-xs text-text-muted mt-1">加权后每买一个有效报名学员需要花多少</p>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>年新增付费学员总数 (人)</label>
+                        <input type="number" v-model.number="actuals.new_students">
+                    </div>
+
+                    <div class="input-group">
+                        <label>履约与授课变动成本 VC (万元)</label>
+                        <input type="number" v-model.number="actuals.variable_cost">
+                        <p class="text-xs text-text-muted mt-1">老师课酬、助教提成等跟学员数量直接相关的成本</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side: The Gap vs The 50M Reality Check -->
+            <div class="glass-card p-6 bg-gradient-to-br from-[#18181b] to-[#1e1e24]">
+                <div class="flex items-center gap-3 mb-6 border-b border-border pb-4">
+                    <div class="w-10 h-10 rounded bg-[#27272a] flex items-center justify-center text-[#10b981] text-xl border border-border">
+                        <i class="fas fa-balance-scale-right"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold text-white">5000万净利润目标 倒推镜</h2>
+                        <p class="text-xs text-text-dim">不要看虚高的过程，看离“必须活下去”的结果有多远</p>
+                    </div>
+                </div>
+
+                <div class="metric-group space-y-2">
+                    <div class="compare-row">
+                        <div>
+                            <span class="text-sm font-semibold text-text-dim block mb-1">退费拦截损耗</span>
+                            <span class="text-xs text-text-muted">退了多少钱出去？</span>
+                        </div>
+                        <div class="text-right flex flex-col items-end">
+                            <div class="value-actual text-[#ef4444]" v-if="actualRefundAmount > targetRefundAmount">-{{actualRefundAmount.toFixed(0)}} 万</div>
+                            <div class="value-actual text-[#10b981]" v-else>-{{actualRefundAmount.toFixed(0)}} 万</div>
+                            <div class="text-xs mt-1 text-[#f59e0b]">必须控制在: -{{targetRefundAmount.toFixed(0)}}万以内</div>
+                        </div>
+                    </div>
+
+                    <div class="compare-row">
+                        <div>
+                            <span class="text-sm font-semibold text-text-dim block mb-1">真正落口袋的确认收入</span>
+                            <span class="text-xs text-text-muted">签单流水 减去 退费</span>
+                        </div>
+                        <div class="text-right flex flex-col items-end">
+                            <div class="value-actual" :class="actualConfirmedRevenue >= targetConfirmedRevenue ? 'text-[#10b981]' : 'text-white'">{{actualConfirmedRevenue.toFixed(0)}} 万</div>
+                            <div class="text-xs mt-1">目标极值需达到: <span class="text-[#3b82f6] font-bold">{{targetConfirmedRevenue.toFixed(0)}}万</span></div>
+                        </div>
+                    </div>
+
+                    <div class="compare-row">
+                        <div>
+                            <span class="text-sm font-semibold text-text-dim block mb-1">获客费用总额血条 (CAC池)</span>
+                            <span class="text-xs text-text-muted">买了多少流量</span>
+                        </div>
+                        <div class="text-right flex flex-col items-end">
+                            <div class="value-actual text-[#f97316]">{{actualTotalCac.toFixed(0)}} 万</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Final Calculation -->
+                <div class="mt-6 border-2 border-[#3f3f46] rounded-xl overflow-hidden shadow-2xl">
+                    <div class="p-4 bg-[#1e293b] flex justify-between items-center">
+                        <div class="font-bold text-lg">实际预估算净利润</div>
+                        <div class="text-2xl font-black tracking-tight" :class="actualNetProfit >= 5000 ? 'text-[#10b981]' : (actualNetProfit > 0 ? 'text-[#f59e0b]' : 'text-[#ef4444]')">
+                            {{actualNetProfit >= 0 ? '+' : ''}}{{actualNetProfit.toFixed(0)}} 万元
+                        </div>
+                    </div>
+                    <div class="bg-[#0f172a] p-3 flex justify-between text-sm px-6">
+                        <span>真实净利率: <span class="font-bold" :class="actualNetMargin >= 10 ? 'text-[#10b981]' : 'text-[#ef4444]'">{{actualNetMargin.toFixed(1)}}%</span> (目标 10%)</span>
+                        <span>UE毛利率(不含固本): <span class="font-bold" :class="actualUeMargin >= 34 ? 'text-[#10b981]' : 'text-[#f97316]'">{{actualUeMargin.toFixed(1)}}%</span></span>
+                    </div>
+                </div>
+                
+                <div class="mt-4 text-center">
+                    <span v-if="actualNetProfit >= 5000" class="inline-block py-1 px-4 rounded-full bg-[rgba(16,185,129,0.2)] text-[#10b981] text-sm font-bold border border-[#10b981]">
+                        🟢 财务指标健康，第一曲线可为第二曲线输血
+                    </span>
+                    <span v-else-if="actualNetProfit > 0" class="inline-block py-1 px-4 rounded-full bg-[rgba(245,158,11,0.2)] text-[#f59e0b] text-sm font-bold border border-[#f59e0b]">
+                        🟠 仅有微薄利润，不足以撑起公司第二曲线战略，业务随时重返亏损
+                    </span>
+                    <span v-else class="inline-block py-1 px-4 rounded-full bg-[rgba(239,68,68,0.2)] text-[#ef4444] text-sm font-bold border border-[#ef4444]">
+                        🔴 严重失血中！必须立即拉下业务熔断手闸！见下方BP诊断！
+                    </span>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Finance BP Diagnostics Area -->
+        <div class="mt-10">
+            <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                <i class="fas fa-stethoscope text-[#60a5fa] text-3xl"></i>
+                <span class="bg-gradient-to-r from-[#60a5fa] to-[#8b5cf6] text-transparent bg-clip-text">财务 BP 顶尖干预研判报告</span>
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Diagnosic Card 1: Refund -->
+                <transition name="fade" mode="out-in">
+                    <div v-if="actuals.refund_rate > 10" class="glass-card p-6" style="border-top: 4px solid #ef4444;">
+                        <div class="flex items-center gap-3 mb-3">
+                            <span class="w-8 h-8 rounded-full bg-[rgba(239,68,68,0.2)] flex items-center justify-center text-[#ef4444]"><i class="fas fa-exclamation-triangle"></i></span>
+                            <h3 class="font-bold text-[#ef4444] text-lg">致命失血：高毒性退单红线</h3>
+                        </div>
+                        <p class="text-sm text-text-dim mb-4 leading-relaxed">
+                            <strong class="text-white">发现黑洞：</strong> 退费率高达 {{actuals.refund_rate}}%！这吃掉了约 <strong class="text-[#ef4444]">{{actualRefundAmount.toFixed(0)}}万</strong> 的签单流水。不仅浪费了已投入的前置流量（约等于白烧了这部分的获客成本），更带来大量隐形的公关和客诉人力重负。
+                        </p>
+                        <div class="bg-[rgba(249,115,22,0.1)] p-4 rounded-lg border border-[rgba(249,115,22,0.3)]">
+                            <span class="text-xs uppercase tracking-wider text-[#f97316] font-bold block mb-1">执行熔断动作</span>
+                            <p class="text-sm text-white font-medium">立刻切断向那些易产生客诉的高危渠道（如过度下沉市场）投流。必须强化前链路 ABCD 用户分层拦截，D 类强制劝退。</p>
+                        </div>
+                    </div>
+                </transition>
+
+                <!-- Diagnosic Card 2: CAC Efficiency -->
+                <transition name="fade" mode="out-in">
+                    <div v-if="actualTotalCac > (targetConfirmedRevenue * 0.28)" class="glass-card p-6" style="border-top: 4px solid #f97316;">
+                        <div class="flex items-center gap-3 mb-3">
+                            <span class="w-8 h-8 rounded-full bg-[rgba(249,115,22,0.2)] flex items-center justify-center text-[#f97316]"><i class="fas fa-money-bill-wave"></i></span>
+                            <h3 class="font-bold text-[#f97316] text-lg">获客畸高：ROI低于警戒</h3>
+                        </div>
+                        <p class="text-sm text-text-dim mb-4 leading-relaxed">
+                            <strong class="text-white">发现黑洞：</strong> 流量采购费用达 {{actualTotalCac.toFixed(0)}} 万，超过了健康经营模型允许的顶棚（目标确认收入的约28%），说明要么无效线索太多，要么单客转化链路失效。
+                        </p>
+                        <div class="bg-[rgba(249,115,22,0.1)] p-4 rounded-lg border border-[rgba(249,115,22,0.3)]">
+                            <span class="text-xs uppercase tracking-wider text-[#f97316] font-bold block mb-1">执行熔断动作</span>
+                            <p class="text-sm text-white font-medium">重构 S2B2C 阶梯获客链，必须通过后端 199/398 等低门槛陪伴产品（C1类）扩编自然流和私域流，摊薄大盘综合单人 CAC 至 70 元以内。</p>
+                        </div>
+                    </div>
+                </transition>
+
+                <!-- Diagnosic Card 3: Fixed Costs Limit -->
+                <transition name="fade" mode="out-in">
+                    <div v-if="actualNetProfit < 0" class="glass-card p-6" style="border-top: 4px solid #8b5cf6;">
+                        <div class="flex items-center gap-3 mb-3">
+                            <span class="w-8 h-8 rounded-full bg-[rgba(139,92,246,0.2)] flex items-center justify-center text-[#8b5cf6]"><i class="fas fa-users-slash"></i></span>
+                            <h3 class="font-bold text-[#8b5cf6] text-lg">造血枯竭：被固本拖死</h3>
+                        </div>
+                        <p class="text-sm text-text-dim mb-4 leading-relaxed">
+                            <strong class="text-white">发现黑洞：</strong> 你的UE毛利 {{actualUeProfit.toFixed(0)}} 万 甚至无法覆盖 {{actuals.fixed_cost}} 万 的刚性固定成本（薪酬和房租）。你不仅白忙活，每个月还要自己掏腰包倒贴钱。
+                        </p>
+                        <div class="bg-[rgba(139,92,246,0.1)] p-4 rounded-lg border border-[rgba(139,92,246,0.3)]">
+                            <span class="text-xs uppercase tracking-wider text-[#8b5cf6] font-bold block mb-1">强力护城河建议</span>
+                            <p class="text-sm text-white font-medium">严禁任何未绑定后端实际产出利润基数的头部扩招；开启班主任到合伙人的转化引擎，用分成取代底薪刚性支持。</p>
+                        </div>
+                    </div>
+                    
+                    <div v-else-if="actualNetProfit >= 5000" class="glass-card p-6" style="border-top: 4px solid #10b981; background: linear-gradient(135deg, rgba(24,24,27,0.95), rgba(16,185,129,0.05));">
+                        <div class="flex items-center gap-3 mb-3">
+                            <span class="w-8 h-8 rounded-full bg-[rgba(16,185,129,0.2)] flex items-center justify-center text-[#10b981]"><i class="fas fa-check-circle"></i></span>
+                            <h3 class="font-bold text-[#10b981] text-lg">大盘稳固：战略资金库建立</h3>
+                        </div>
+                        <p class="text-sm text-text-dim mb-4 leading-relaxed">
+                            <strong class="text-white">财务护航通过：</strong> 退费（{{actuals.refund_rate}}%）得到严控，流量效率达到临界点之上，实现了预定 5000万 的正向现金流造血。
+                        </p>
+                        <div class="bg-[rgba(16,185,129,0.1)] p-4 rounded-lg border border-[rgba(16,185,129,0.3)]">
+                            <span class="text-xs uppercase tracking-wider text-[#10b981] font-bold block mb-1">进击动作</span>
+                            <p class="text-sm text-white font-medium">此时可以果断将首曲线产生利润的20%转移作为独立弹药库，加速进攻“大健康”与 S2B2C 新域扩张的第二曲线。</p>
+                        </div>
+                    </div>
+                </transition>
+            </div>
+        </div>
+        
+        <!-- Summary Insights Panel -->
+        <div class="mt-8 glass-card p-8" style="background: linear-gradient(145deg, #18181b, #0f172a); border-left: 5px solid #3b82f6;">
+            <h3 class="text-xl font-black text-white mb-4"><i class="fas fa-lightbulb text-[#f59e0b] mr-2"></i> 核心认知升级：为什么要这么算帐？</h3>
+            <div class="grid md:grid-cols-2 gap-8 text-sm text-text-dim">
+                <div class="space-y-3">
+                    <p><strong class="text-white block">1. 不是“卖得更多”，而是“漏得更少”</strong>
+                    签单流水做多很容易，只要过度承诺即可，但这会极大推高 <strong>“退费率”</strong>。每退掉1万块钱，公司要倒贴的不止是这1万块的授课成本（VC），还有已经支付出去买这个客户的流量费（CAC），隐损比预想的高1.4倍。</p>
+                </div>
+                <div class="space-y-3">
+                    <p><strong class="text-white block">2. 要规模化，必须降低 CAC 并依赖自然流</strong>
+                    单纯跑效果广告会撞上“内卷墙”，这是为什么目标 CAC 锚定在不可思议的 69 元极低水平。这实际上是在逼迫业务层从“纯流量买卖模式”转为 <strong>IP + C类社群养粉发酵的生态运营模式</strong>。</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        const { createApp } = Vue;
+
+        createApp({
+            data() {
+                return {
+                    // Default baseline reflecting the problematic "old world" UE scenario 
+                    // which shows why we need the 50M target structure
+                    actuals: {
+                        signed_revenue: 51000, // 万元 
+                        refund_rate: 24, // 24% (historical bad)
+                        fixed_cost: 12000, // 万元
+                        cac_per_user: 370, // 元
+                        new_students: 14000, // 人
+                        variable_cost: 13800 // 万元
+                    },
+                    // Theoretical Target Anchors based on 50M profit definition
+                    targets: {
+                        net_profit: 5000, 
+                        net_margin: 10,
+                        refund_ceiling: 10
+                    }
+                };
+            },
+            computed: {
+                // Actual computations
+                actualRefundAmount() {
+                    return this.actuals.signed_revenue * (this.actuals.refund_rate / 100);
+                },
+                actualConfirmedRevenue() {
+                    return this.actuals.signed_revenue - this.actualRefundAmount;
+                },
+                actualTotalCac() {
+                    return (this.actuals.cac_per_user * this.actuals.new_students) / 10000;
+                },
+                actualUeProfit() {
+                    // Confirmed Rev - CAC - Variable Costs
+                    return this.actualConfirmedRevenue - this.actualTotalCac - this.actuals.variable_cost;
+                },
+                actualUeMargin() {
+                    return this.actualConfirmedRevenue > 0 ? (this.actualUeProfit / this.actualConfirmedRevenue) * 100 : 0;
+                },
+                actualNetProfit() {
+                    return this.actualUeProfit - this.actuals.fixed_cost;
+                },
+                actualNetMargin() {
+                    return this.actualConfirmedRevenue > 0 ? (this.actualNetProfit / this.actualConfirmedRevenue) * 100 : 0;
+                },
+
+                // Derived Ideal Targets based on 50M goal
+                // We know that NetProfit = Confirmed - Fixed - CAC - VC
+                // And we want 10% NetProfitMargin => Confirmed = NetProfit * 10 = 50000 万
+                targetConfirmedRevenue() {
+                    return this.targets.net_profit / (this.targets.net_margin / 100); // 50000
+                },
+                // If refund is kept at strictly max 10%
+                targetSignedRevenue() {
+                    return this.targetConfirmedRevenue / (1 - (this.targets.refund_ceiling / 100)); // ~55555
+                },
+                targetRefundAmount() {
+                    return this.targetSignedRevenue - this.targetConfirmedRevenue; // ~5555
+                }
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>
