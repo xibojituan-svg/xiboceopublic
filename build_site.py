@@ -61,6 +61,10 @@ for filepath in glob.glob(os.path.join(SITE_DIR, "*.html")):
     # insert robots noindex tag globally
     if '<meta name="robots" content="noindex, nofollow" />' not in content:
         content = re.sub(r'</head>', '  <meta name="robots" content="noindex, nofollow" />\n</head>', content, flags=re.IGNORECASE)
+
+    # insert favicon
+    if '<link rel="icon" href="favicon.ico">' not in content:
+        content = re.sub(r'</head>', '  <link rel="icon" href="favicon.ico">\n</head>', content, flags=re.IGNORECASE)
     
     # insert global nav after <body>
     if '<script src="navbar.js"></script>' not in content and not skip_inject:
