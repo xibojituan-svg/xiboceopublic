@@ -199,13 +199,9 @@ index_html = f"""<!doctype html>
     <div class="cat-title">第四层：财务模型基石与竞争防线</div>
     <div class="cat-desc">商业本质是算账。必须建立 ROI 和退费的强监控，防范组织陷入虚假繁荣的同质化竞争陷阱。</div>
     <div class="link-grid">
-      <a href="ue_model_comparison.html" class="doc-link">
-        <div class="doc-title">💰 核心财务：新旧UE模型对照</div>
-        <div class="doc-desc">算清前端获客与后端交付损耗，挤出水分，让真实净利润浮出水面。</div>
-      </a>
-      <a href="ue_funnel_simulator.html" class="doc-link">
-        <div class="doc-title">📈 运营财务工具：UE漏斗模拟器</div>
-        <div class="doc-desc">在线推盘！输入转化率、客单价推算从流量进线到留存结转的盈亏节点。</div>
+      <a href="financial_ue_dashboard.html" class="doc-link">
+        <div class="doc-title">💰 财务 UE 数据大盘</div>
+        <div class="doc-desc">算清前端投放和后端交付的每一笔账。</div>
       </a>
       <a href="channel_roi_cutoff_report.html" class="doc-link">
         <div class="doc-title">📉 流量风控：渠道ROI动态熔断</div>
@@ -240,12 +236,8 @@ for filepath in glob.glob(os.path.join(SITE_DIR, "*.html")):
         content = re.sub(r'</head>', generic_css + '\n</head>', content, flags=re.IGNORECASE)
     
     # insert global nav after <body>
-  <script src="navbar.js"></script>
-
-    if '<!-- 全局统一导航栏 -->' not in content:
-        content = re.sub(r'<body[^>
-  <script src="navbar.js"></script>
-]*>', lambda m: m.group(0) + '\n' + global_nav, content, flags=re.IGNORECASE|re.DOTALL)
+    if '<script src="navbar.js"></script>' not in content:
+        content = re.sub(r'<body[^>]*>', lambda m: m.group(0) + '\n' + global_nav, content, flags=re.IGNORECASE|re.DOTALL)
 
     with open(filepath, 'w', encoding='utf-8') as f:
         f.write(content)

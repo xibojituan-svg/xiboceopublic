@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>2026 战略平衡计分卡 (BSC) 与关键战役</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #09090b;
+      --bg-surface: #18181b;
+      --bg-surface-hover: #27272a;
+      --border: #3f3f46;
+      --text: #f4f4f5;
+      --text-dim: #a1a1aa;
+      --text-muted: #71717a;
+      --brand-primary: #ef4444;
+      --brand-secondary: #f97316;
+      --brand-accent: #10b981;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, 'PingFang SC', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    .bg-glow {
+      position: fixed; top: -20vh; left: 50%; transform: translateX(-50%);
+      width: 100vw; height: 60vh;
+      background: radial-gradient(ellipse at bottom, rgba(249, 115, 22, 0.15) 0%, rgba(9, 9, 11, 0) 70%);
+      z-index: -1; pointer-events: none;
+    }
+    .main-container { max-width: 1400px; margin: 0 auto; padding: 100px 24px 40px; }
+    
+    .page-header { text-align: center; margin-bottom: 60px; animation: fadeUp 0.8s ease-out; }
+    .page-title { font-size: clamp(32px, 5vw, 48px); font-weight: 900; letter-spacing: -1px; margin-bottom: 16px; background: linear-gradient(180deg, #fff 0%, #a1a1aa 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .page-desc { font-size: 18px; color: var(--text-dim); font-weight: 500; }
+
+    .section-title { font-size: 24px; font-weight: 800; color: #fff; margin-bottom: 32px; display: flex; align-items: center; gap: 12px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+    
+    /* BSC Grid */
+    .bsc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-bottom: 80px; }
+    .bsc-card { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 16px; padding: 24px; transition: all 0.3s; }
+    .bsc-card:hover { border-color: var(--brand-secondary); transform: translateY(-5px); }
+    .bsc-dim-title { font-size: 18px; font-weight: 800; color: var(--brand-secondary); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+    .bsc-metric { background: rgba(255,255,255,0.03); border-radius: 8px; padding: 16px; margin-bottom: 12px; }
+    .bsc-metric-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; gap: 12px; }
+    .bsc-metric-name { font-weight: 700; color: #fff; font-size: 15px; }
+    .bsc-metric-target { font-weight: 900; color: var(--brand-accent); font-size: 15px; background: rgba(16,185,129,0.1); padding: 4px 10px; border-radius: 6px; white-space: nowrap; }
+    .bsc-metric-def { font-size: 13px; color: var(--text-dim); margin-bottom: 8px; }
+    .bsc-owner { font-size: 12px; color: #d4d4d8; display: inline-block; background: rgba(255,255,255,0.08); padding: 3px 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1);}
+
+    /* Campaign List */
+    .campaign-list { display: flex; flex-direction: column; gap: 20px; margin-bottom: 80px; }
+    .campaign-item { background: var(--bg-surface); border: 1px solid var(--border); border-left: 4px solid var(--brand-primary); border-radius: 0 16px 16px 0; padding: 24px 32px; transition: all 0.3s; }
+    .campaign-item:hover { background: var(--bg-surface-hover); }
+    .camp-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 16px; flex-wrap: wrap; gap: 16px; }
+    .camp-title { font-size: 20px; font-weight: 800; color: #fff; }
+    .camp-subtitle { font-size: 14px; color: var(--brand-secondary); font-weight: 600; margin-top: 4px; }
+    .camp-owner { font-size: 14px; color: var(--text-dim); font-weight: 600; display: flex; align-items: center; gap: 6px; }
+    .camp-goal { display: inline-block; background: rgba(239, 68, 68, 0.1); color: var(--brand-primary); padding: 6px 12px; border-radius: 6px; font-weight: 700; font-size: 14px; margin-bottom: 20px; border: 1px solid rgba(239, 68, 68, 0.2); }
+    
+    .camp-strategies { font-size: 14px; color: var(--text-dim); line-height: 1.8; }
+    .camp-strategies strong { color: #fff; }
+    .camp-strategies ul { margin-left: 20px; margin-top: 8px; }
+    .camp-strategies li { margin-bottom: 8px; }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    
+    @media (max-width: 768px) {
+      .main-container { padding: 80px 16px 20px; }
+      .bsc-metric-header { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-glow"></div>
+  <script src="navbar.js?v=20260330"></script>
+
+  <div class="main-container">
+    <header class="page-header">
+      <h1 class="page-title">2026 战略平衡计分卡 (BSC) <br/>& 关键战役导航</h1>
+      <p class="page-desc">将战略原点解码为精细的衡量指标与 5 大必胜攻坚战</p>
+    </header>
+
+    <h2 class="section-title">📊 2026 第一曲线 BSC 指标 (教育基本盘)</h2>
+    <div class="bsc-grid">
+      <!-- 财务 -->
+      <div class="bsc-card">
+        <div class="bsc-dim-title">💰 财务 (权重 30%)</div>
+        
+        <div class="bsc-metric">
+          <div class="bsc-metric-header">
+            <span class="bsc-metric-name">净营收</span>
+            <span class="bsc-metric-target">5亿</span>
+          </div>
+          <div class="bsc-metric-def">营收扣除退款及预提（按历史退费率对未到期订单计提）</div>
+          <div class="bsc-owner">第一责任：马长久</div>
+        </div>
+        
+        <div class="bsc-metric">
+          <div class="bsc-metric-header">
+            <span class="bsc-metric-name">净利润率</span>
+            <span class="bsc-metric-target">≥ 10%</span>
+          </div>
+          <div class="bsc-metric-def">收入扣减站内外流量成本、服务成本、人力及管理分摊</div>
+        </div>
+      </div>
+
+      <!-- 客户 -->
+      <div class="bsc-card">
+        <div class="bsc-dim-title">👥 客户 (权重 30%)</div>
+        
+        <div class="bsc-metric">
+          <div class="bsc-metric-header">
+            <span class="bsc-metric-name">百万元投诉率</span>
+            <span class="bsc-metric-target">降低 15%</span>
+          </div>
+          <div class="bsc-metric-def">每百万元现金流收入中分级加全因引发投诉的毒性订单金额计算</div>
+          <div class="bsc-owner">第一责任：杜康杰</div>
+        </div>
+        
+        <div class="bsc-metric">
+          <div class="bsc-metric-header">
+            <span class="bsc-metric-name">大黑用户拦截率</span>
+            <span class="bsc-metric-target">≥ 98%</span>
+          </div>
+          <div class="bsc-metric-def">系统识别高风险群体并在前端转化环节实行物理封堵机制</div>
+          <div class="bsc-owner">第一责任：杜康杰</div>
+        </div>
+
+        <div class="bsc-metric">
+          <div class="bsc-metric-header">
+            <span class="bsc-metric-name">服务满意度 (NPS)</span>
+            <span class="bsc-metric-target">≥ 85分</span>
+          </div>
+          <div class="bsc-metric-def">正价课学员基于后端交付体验的综合净推荐值或评分</div>
+          <div class="bsc-owner">第一责任：马长久</div>
+        </div>
+      </div>
+
+      <!-- 内部运营 -->
+      <div class="bsc-card">
+        <div class="bsc-dim-title">⚙️ 内部运营 (权重 30%)</div>
+        
+        <div class="bsc-metric">
+          <div class="bsc-metric-header">
+            <span class="bsc-metric-name">单 SKU 产能密度</span>
+            <span class="bsc-metric-target">≥ 4个</span>
+          </div>
+          <div class="bsc-metric-def">达标级产品产出能力：一年诞生150万体量项目或300-500万中等项目</div>
+          <div class="bsc-owner">第一责任：苏秦</div>
+        </div>
+        
+        <div class="bsc-metric">
+          <div class="bsc-metric-header">
+            <span class="bsc-metric-name">兼职人效同比</span>
+            <span class="bsc-metric-target">提升 15%</span>
+          </div>
+          <div class="bsc-metric-def">助教、班主任、点评官三维度人均创造（或挽回）的退后GMV</div>
+          <div class="bsc-owner">第一责任：姚涣</div>
+        </div>
+        
+        <div class="bsc-metric">
+          <div class="bsc-metric-header">
+            <span class="bsc-metric-name">学员考评合格率</span>
+            <span class="bsc-metric-target">75%</span>
+          </div>
+          <div class="bsc-metric-def">结课学员通过SKU评估考试的绝对比例 (前置条件要求 80% 参考率)</div>
+          <div class="bsc-owner">第一责任：苏秦</div>
+        </div>
+      </div>
+
+      <!-- 学习与成长 -->
+      <div class="bsc-card">
+        <div class="bsc-dim-title">🌱 学习与成长 (权重 10%)</div>
+        <div class="bsc-metric">
+          <div class="bsc-metric-header">
+            <span class="bsc-metric-name">关键岗位 AI 重构率</span>
+            <span class="bsc-metric-target">80%</span>
+          </div>
+          <div class="bsc-metric-def">被识别的关键重构岗位完成 Agent 自动化改造的标准占比</div>
+          <div class="bsc-owner">第一责任：王俊</div>
+        </div>
+      </div>
+    </div>
+
+
+    <h2 class="section-title">🚀 2026 第二曲线 BSC 指标 (大健康转型)</h2>
+    <div class="bsc-grid" style="grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));">
+      <div class="bsc-card" style="border-top: 4px solid var(--brand-accent);">
+        <div class="bsc-dim-title" style="color: var(--brand-accent);">💰 财务 (权重 40%)</div>
+        <div class="bsc-metric">
+          <div class="bsc-metric-header">
+            <span class="bsc-metric-name">健康系统全量会员数</span>
+            <span class="bsc-metric-target" style="background: rgba(16,185,129,0.2);">5万</span>
+          </div>
+          <div class="bsc-metric-def">成功转化为月度或年度循环付费的健康会员有效存量</div>
+        </div>
+      </div>
+      <div class="bsc-card" style="border-top: 4px solid #3b82f6;">
+        <div class="bsc-dim-title" style="color: #3b82f6;">👥 客户 (权重 60%)</div>
+        <div class="bsc-metric">
+          <div class="bsc-metric-header">
+            <span class="bsc-metric-name">首月核心续费率</span>
+            <span class="bsc-metric-target" style="background: rgba(59,130,246,0.2); color: #60a5fa;">50%</span>
+          </div>
+          <div class="bsc-metric-def">第一个月周期结束后续费的用户数 / 首月付费用户总体池</div>
+        </div>
+        <div class="bsc-metric">
+          <div class="bsc-metric-header">
+            <span class="bsc-metric-name">第 7 天 / 第 21 天留存率</span>
+            <span class="bsc-metric-target" style="background: rgba(59,130,246,0.2); color: #60a5fa;">90% / 60%</span>
+          </div>
+          <div class="bsc-metric-def">新增干预体系中日活跃或有行为触发的数据跟踪基线</div>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="section-title">⚔️ 2026 五大关键战役解码 (GSA)</h2>
+    <div class="campaign-list">
+      
+      <!-- 战役 1 -->
+      <div class="campaign-item">
+        <div class="camp-header">
+          <div>
+            <div class="camp-title">1. 第一曲线生存之战：“延安保卫战”</div>
+            <div class="camp-subtitle">挂钩指标：百万元投诉率 / 大黑用户拦截率</div>
+          </div>
+          <div class="camp-owner">👨‍✈️ 指挥官：杜康杰</div>
+        </div>
+        <div class="camp-goal">🎯 必胜结果：投诉率降 15% | 拦截率 ≥ 98% | 国家级负面舆情为 0</div>
+        <div class="camp-strategies">
+          <ul>
+            <li><strong>减源与事前拦截：</strong>建立全链路前端特殊关怀（大黑）用户名单库，部署 Antigravity AI 全量扫描企微、电话流，并在 CRM 转化前夕执行强制打标阻断，拒绝高危用户进入利润分母。</li>
+            <li><strong>过程熔断与强问责：</strong>支付侧上线阻拦限制机制阻止黑名单交投；设立“交易管理官”行使投诉定性裁判权；HR 执行“追溯回扣”(Clawback) 机制，违规拉客造成 D60 内高危客诉者，全额追回初始提成。</li>
+            <li><strong>防外溢与舆情对冲：</strong>优先根除内部隐患；“媒体关系专项配置预算”直连3家国家核心媒体；每周压强配置 200 篇正面宣发以反制全网舆论污名化。</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 战役 2 -->
+      <div class="campaign-item">
+        <div class="camp-header">
+          <div>
+            <div class="camp-title">2. 健康利润之战：“挺进大别山战役”</div>
+            <div class="camp-subtitle">挂钩指标：净营收 / 大健康利润率</div>
+          </div>
+          <div class="camp-owner">👨‍✈️ 指挥官：马长久 / 苏秦</div>
+        </div>
+        <div class="camp-goal">🎯 必胜结果：净利润率提升至 10%+ 且兴趣培训达 10% / 个性化训练营 15%+</div>
+        <div class="camp-strategies">
+          <ul>
+            <li><strong>基本盘回血重组：</strong>恢复合规范围内的极高转化素材；推行复购周期中重点爆发（如在用户有作品产出或中期干预节点）调动头部班主任介入升单；新增漫剧方向迭代。</li>
+            <li><strong>中老年兴趣孵化 MVP：</strong>组建“兴趣 SKU 突击队”，利用原有声受众私域快速做 0 到 0.1 转化率测试，进而推进至快手社群冷启验证全网打法。</li>
+            <li><strong>食疗养生（第二曲线）MVP：</strong>同样圈选高相关受众，使用“真人班主任 + AI伴学”的服务架构铺设；借 AI 轻负载实现单人覆盖 200-300 客群的成本摊薄并探索器材绑定变现。</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 战役 3 -->
+      <div class="campaign-item">
+        <div class="camp-header">
+          <div>
+            <div class="camp-title">3. 产品高地攻坚战：“星火燎原”</div>
+            <div class="camp-subtitle">挂钩指标：单 SKU 产能密度 / 新课程成功上线数</div>
+          </div>
+          <div class="camp-owner">👨‍✈️ 指挥官：苏秦</div>
+        </div>
+        <div class="camp-goal">🎯 必胜结果：年落地月GMV150万项目3个 + 月GMV500万项目1个</div>
+        <div class="camp-strategies">
+          <ul>
+            <li>重塑孵化漏斗机制，强制每月滚动跑通1个新项目模型验证并按数归因，拒绝拖沓。</li>
+            <li>实施绝对硬考核：保障利润及 UE 漏斗不断崖的前提下做爆。</li>
+            <li><strong>组织结构变革：</strong>强制将新课程开发的 80% 基础流程移交“硅基员工”（AI 工具流）完成，极力压缩前期死耗用工成本。</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 战役 4 -->
+      <div class="campaign-item">
+        <div class="camp-header">
+          <div>
+            <div class="camp-title">4. 降本增效战：硅基员工“登陆日”</div>
+            <div class="camp-subtitle">挂钩指标：兼职人效</div>
+          </div>
+          <div class="camp-owner">👨‍✈️ 指挥官：姚涣</div>
+        </div>
+        <div class="camp-goal">🎯 必胜结果：兼职系统整体人效提升 15%</div>
+        <div class="camp-strategies">
+          <ul>
+            <li>执行底层替换：系统性用 AI 助教代替人工金字塔底座的后 40% 低端助理负载。</li>
+            <li>清理人效黑洞：用 AI 班主任置换长期亏本产出的后 30% 人类班主任序列。</li>
+            <li>赋能杠杆最大化：AI 释放后 30% 点评体系负载，全系资源集中输血最头部的 70% 精英班主任/点评官矩阵，拓展其单体管理半径上限。</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 战役 5 -->
+      <div class="campaign-item" style="border-left-color: var(--brand-accent);">
+        <div class="camp-header">
+          <div>
+            <div class="camp-title">5. AI Native 组织重塑战：“换芯行动”</div>
+            <div class="camp-subtitle">挂钩指标：关键岗位 AI 重构率</div>
+          </div>
+          <div class="camp-owner">👨‍✈️ 指挥官：王俊</div>
+        </div>
+        <div class="camp-goal" style="background: rgba(16,185,129,0.1); color: var(--brand-accent); border-color: rgba(16,185,129,0.2);">🎯 必胜结果：全组织AI化重构验证进度达 80%</div>
+        <div class="camp-strategies">
+          <ul>
+            <li><strong>盘点过滤：</strong>以“高频、高价值、高风险”三大标签识别业务系统中的致命关节，拉出被开刀岗位的改造清单。</li>
+            <li><strong>发布新标、废旧立新：</strong>全部重塑 SOP 和 JD（岗位说明书）。强行规定这些岗位过半的操作全盘抛给 Agent 管控，逼迫人工层回归策略“审核和调优”。</li>
+            <li><strong>人员上岗验证：</strong>全面执行在岗能力重评，通过率红线设为 80%。工作系统更迭，人必然洗牌换代。</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</body>
+</html>
