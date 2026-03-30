@@ -54,7 +54,7 @@ for filepath in glob.glob(os.path.join(SITE_DIR, "*.html")):
     content = re.sub(r'<nav[^>]*>.*?</nav>', '', content, flags=re.DOTALL)
     
     # insert generic css
-    skip_inject = filepath.endswith(("index.html", "presentation_2026.html", "course_product_review.html"))
+    skip_inject = filepath.endswith(("index.html", "presentation_2026.html", "course_product_review.html", "product_portfolio_proposal.html"))
     if '<!-- 引入统一样式基础 -->' not in content and not skip_inject:
         content = re.sub(r'</head>', generic_css + '\n</head>', content, flags=re.IGNORECASE)
 
