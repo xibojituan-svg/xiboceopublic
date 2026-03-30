@@ -70,6 +70,10 @@
         background: #dc2626 !important;
         color: #ffffff !important;
       }
+      .nav-logo img {
+        height: 36px !important; width: auto !important;
+        object-fit: contain !important; display: block !important;
+      }
     </style>`;
 
     var navHtml = styleHtml + `
@@ -77,7 +81,7 @@
     <div class="bg-glow"></div>
     <nav class="site-nav">
       <div class="site-nav-inner">
-        <a href="index.html" class="nav-logo">XIBO <span>NEXUS</span></a>
+        <a href="index.html" class="nav-logo"><img src="logo.png" alt="XIBO CEO Logo" /></a>
         <a href="index.html" class="nav-link` + isActive('index.html') + `">SP 2026-2028</a>
         <a href="user-segmentation-infographic.html" class="nav-link` + isActive('user-segmentation-infographic.html') + `">ABCD客群边界</a>
         <a href="ABCD_流程图.html" class="nav-link` + isActive('ABCD_流程图.html') + `">ABCD转化流程图</a>
