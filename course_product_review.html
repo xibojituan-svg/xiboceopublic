@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>攀登计划课程产品评审：用户视角诊断报告</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #09090b; --surface: #18181b; --surface-2: #27272a;
+      --border: #3f3f46; --text: #f4f4f5; --dim: #a1a1aa; --muted: #71717a;
+      --red: #ef4444; --red-dim: rgba(239,68,68,0.12);
+      --green: #10b981; --green-dim: rgba(16,185,129,0.12);
+      --amber: #f59e0b; --amber-dim: rgba(245,158,11,0.12);
+      --blue: #3b82f6; --blue-dim: rgba(59,130,246,0.12);
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, 'PingFang SC', 'Noto Sans SC', sans-serif;
+      background: var(--bg); color: var(--text); line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+    }
+    .container { max-width: 820px; margin: 0 auto; padding: 40px 24px 80px; }
+
+    /* Header */
+    .header { margin-bottom: 48px; text-align: center; }
+    .header-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 16px; border-radius: 99px;
+      background: var(--red-dim); border: 1px solid rgba(239,68,68,0.3);
+      color: var(--red); font-size: 11px; font-weight: 800;
+      letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 20px;
+    }
+    .header-badge::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--red); box-shadow: 0 0 8px var(--red);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(239,68,68,0.5); }
+      70% { box-shadow: 0 0 0 8px rgba(239,68,68,0); }
+    }
+    h1 {
+      font-size: clamp(28px, 5vw, 42px); font-weight: 900; line-height: 1.2;
+      letter-spacing: -1.5px; margin-bottom: 16px;
+      background: linear-gradient(180deg, #fff, #a1a1aa); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .header p { color: var(--dim); font-size: 15px; max-width: 600px; margin: 0 auto; }
+    .meta { margin-top: 20px; color: var(--muted); font-size: 12px; font-weight: 600; }
+
+    /* Section */
+    .section { margin-bottom: 48px; }
+    h2 {
+      font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 20px;
+      display: flex; align-items: center; gap: 10px;
+      padding-bottom: 12px; border-bottom: 1px solid var(--border);
+    }
+    h2 .num {
+      font-size: 12px; padding: 3px 10px; border-radius: 6px;
+      background: rgba(255,255,255,0.08); color: var(--dim);
+    }
+    h3 { font-size: 17px; font-weight: 700; color: #fff; margin: 24px 0 12px; }
+    p, li { color: var(--dim); font-size: 15px; }
+    p { margin-bottom: 14px; }
+    ul { padding-left: 20px; margin-bottom: 16px; }
+    li { margin-bottom: 6px; }
+    strong { color: #fff; }
+    .text-red { color: var(--red); }
+    .text-green { color: var(--green); }
+    .text-amber { color: var(--amber); }
+
+    /* Alert Boxes */
+    .alert {
+      padding: 20px 24px; border-radius: 12px; margin: 20px 0;
+      border: 1px solid var(--border);
+    }
+    .alert-red { background: var(--red-dim); border-color: rgba(239,68,68,0.25); }
+    .alert-green { background: var(--green-dim); border-color: rgba(16,185,129,0.25); }
+    .alert-amber { background: var(--amber-dim); border-color: rgba(245,158,11,0.25); }
+    .alert-blue { background: var(--blue-dim); border-color: rgba(59,130,246,0.25); }
+    .alert-title { font-weight: 800; font-size: 15px; color: #fff; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+    .alert p { margin-bottom: 0; font-size: 14px; }
+
+    /* Table */
+    .table-wrap { overflow-x: auto; margin: 20px 0; border-radius: 12px; border: 1px solid var(--border); }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th { background: var(--surface-2); color: #fff; font-weight: 700; text-align: left; padding: 12px 16px; white-space: nowrap; }
+    td { padding: 12px 16px; border-top: 1px solid var(--border); color: var(--dim); vertical-align: top; }
+    tr:hover td { background: rgba(255,255,255,0.02); }
+    .tag-yes { color: var(--green); font-weight: 700; }
+    .tag-no { color: var(--red); font-weight: 700; }
+    .tag-same { color: var(--amber); font-weight: 600; }
+
+    /* Quote */
+    blockquote {
+      border-left: 4px solid var(--red); padding: 16px 20px; margin: 20px 0;
+      background: rgba(255,255,255,0.02); border-radius: 0 12px 12px 0;
+      font-size: 15px; color: var(--text); font-style: italic;
+    }
+
+    /* Verdict */
+    .verdict {
+      background: linear-gradient(135deg, rgba(239,68,68,0.08), rgba(245,158,11,0.05));
+      border: 1px solid rgba(239,68,68,0.2); border-radius: 16px;
+      padding: 32px; margin: 40px 0; text-align: center;
+    }
+    .verdict h2 { justify-content: center; border: none; padding-bottom: 0; }
+    .verdict-text { font-size: 18px; font-weight: 700; color: #fff; line-height: 1.6; max-width: 680px; margin: 0 auto; }
+
+    /* Footer */
+    .footer { text-align: center; padding: 40px 0; border-top: 1px solid var(--border); color: var(--muted); font-size: 12px; }
+
+    @media (max-width: 600px) {
+      .container { padding: 24px 16px 60px; }
+      h2 { font-size: 19px; }
+      table { font-size: 13px; }
+      th, td { padding: 10px 12px; }
+    }
+  </style>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png">
+  <link rel="apple-touch-icon" sizes="64x64" href="favicon-64.png">
+</head>
+<body>
+  <div class="container">
+
+    <div class="header">
+      <div class="header-badge">内部评审 · 产品诊断</div>
+      <h1>攀登计划课程产品评审<br/>用户视角诊断报告</h1>
+      <p>基于「攀登计划标准版」与「攀登计划实战版」课程设计文档，从付费用户的真实心理出发，评估方案对降低退费率的实际效果。</p>
+      <div class="meta">评审日期：2026年3月30日 · 喜播集团战略办公室</div>
+    </div>
+
+    <!-- Section 1 -->
+    <div class="section">
+      <h2><span class="num">01</span> 两个产品到底是什么？</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>维度</th><th>标准版</th><th>实战版</th><th>差异判定</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>售价</strong></td><td>3,980元</td><td>4,980元</td><td>差价 1,000 元</td></tr>
+            <tr><td><strong>课程大纲</strong></td><td>8周录播（引入→第八周）</td><td>8周录播（引入→第八周）</td><td class="tag-same">⚠️ 完全一样</td></tr>
+            <tr><td><strong>每周课时</strong></td><td>4节 × 15-25分钟</td><td>4节 × 15-25分钟</td><td class="tag-same">⚠️ 完全一样</td></tr>
+            <tr><td><strong>选修课</strong></td><td>文本分析、云剪辑等</td><td>相同 + 棚录演练 ×3</td><td>实战版多3节棚录</td></tr>
+            <tr><td><strong>实战剧组</strong></td><td class="tag-no">❌ 无</td><td class="tag-yes">✅ 第8-10周 · 3周</td><td>核心差异点</td></tr>
+            <tr><td><strong>服务团队</strong></td><td>点评官 + 班主任</td><td>实战导演 + 班主任</td><td>名称升级</td></tr>
+            <tr><td><strong>1V1试音</strong></td><td class="tag-no">❌ 无</td><td class="tag-yes">✅ 有</td><td>实战版独有</td></tr>
+            <tr><td><strong>作品上架</strong></td><td class="tag-no">❌ 无</td><td class="tag-yes">✅ 保证出成品</td><td>实战版独有</td></tr>
+            <tr><td><strong>交付中心</strong></td><td>入门区 + 喜马专区 + 免试音专区</td><td>相同 + 毕业即 Level3 + 进阶区</td><td>实战版等级更高</td></tr>
+            <tr><td><strong>MCN机会</strong></td><td class="tag-no">❌ 无</td><td>优秀学员"有机会"</td><td>门槛极高，见下文</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Section 2 -->
+    <div class="section">
+      <h2><span class="num">02</span> 三个致命问题</h2>
+
+      <h3>问题①：课程内容完全相同，差价 1000 元买的只是"实战机会"</h3>
+      <p>两个产品的<strong>录播课大纲逐字逐句克隆</strong>——从"击穿演播壁垒"到"趣味运营入门"，八大模块完全对齐。用户多花1000块，获得的仅仅是第8-10周3周的"剧组录制"实操训练。</p>
+      <div class="alert alert-red">
+        <div class="alert-title">🔴 用户的内心算账</div>
+        <p>"同样的课，凭什么多收我1000？就因为多了个3周实习？那个实习是不是你本来就该给我的？"——这正是过去L2退费的<strong>核心心理根源</strong>。用户觉得被"拆包"收了两次钱。新方案只是把L1+L2换了个名字，用户的底层感受并没有被解决。</p>
+      </div>
+
+      <h3>问题②：标准版是"半截子工程"，天然制造退费压力</h3>
+      <p>标准版用户学完8周后，拿到了录播知识、交付中心入驻权和一张证书。但真实情况是：<strong>一个零基础小白，仅凭8周录播和群运营，几乎不可能达到能接商业单的水平。</strong></p>
+      <p>标准版用户大概率面临两个选择：</p>
+      <ul>
+        <li>再花1000块升级到实战版（公司的如意算盘）</li>
+        <li>觉得被骗了，申请退费（<strong>真实发生的高频结果</strong>）</li>
+      </ul>
+      <div class="alert alert-amber">
+        <div class="alert-title">⚠️ 本质判断</div>
+        <p>这是一个<strong>故意制造能力缺口来逼二次消费</strong>的产品设计。用户能闻到这个味道。退费压力不会消失，只会从L2转移到标准版。</p>
+      </div>
+
+      <h3>问题③：实战版的"出口承诺"依然模糊且门槛不现实</h3>
+      <p>实战版宣称"优秀学员有机会进入MCN"。但MCN准入门槛是：</p>
+      <ul>
+        <li>粉丝数 <strong>≥ 1万</strong></li>
+        <li>累计播放量 <strong>≥ 500万</strong></li>
+        <li>付费专辑上架 <strong>≥ 1张</strong></li>
+        <li>A+等级 <strong>L5以上</strong></li>
+      </ul>
+      <div class="alert alert-red">
+        <div class="alert-title">🔴 现实检验</div>
+        <p>一个刚学了10周的新手，如何达到"粉丝1万、播放500万"？这是需要至少1-2年运营积累才可能触及的门槛。对99%用户来说等同于废话，但它在销售环节会被<strong>前端无限放大</strong>成"保你进MCN"——这就是那98条违规话术的温床。</p>
+      </div>
+    </div>
+
+    <!-- Section 3 -->
+    <div class="section">
+      <h2><span class="num">03</span> 对"降低L2退费率"目标的有效性评估</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>原来的问题</th><th>新方案是否解决</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>L2课程用户觉得"学了也没用"</td><td class="tag-no">❌ 标准版依然没有实战闭环，感受完全一样</td></tr>
+            <tr><td>L2退费率高</td><td class="tag-no">❌ 退费压力只会转移到标准版</td></tr>
+            <tr><td>前端过度承诺</td><td class="tag-no">❌ MCN门槛不现实，反而给了前端新的画饼素材</td></tr>
+            <tr><td>用户感觉被分批收割</td><td class="tag-no">❌ 两版课程内容完全一样，只差实战，更像拆包卖</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <blockquote>结论：治标不治本，甚至可能恶化。把"L1+L2"的标签换成"标准版+实战版"，本质没有变化——用户退费的根源从来不是产品怎么打包，而是<strong>"学完了发现自己干不了活"</strong>。</blockquote>
+    </div>
+
+    <!-- Section 4 -->
+    <div class="section">
+      <h2><span class="num">04</span> 用户模拟：两类人的真实感受</h2>
+      <div class="alert alert-blue" style="margin-bottom: 16px;">
+        <div class="alert-title">👤 场景A：有真正兴趣的用户（B/C类人群）</div>
+        <p>"3980的标准版，学完了发现自己啥也不会，接不到单。然后你告诉我再加1000就能参加实战？那你一开始为什么不直接给我完整的？这不就是先卖半成品再逼我加价吗？不如一开始就卖我4980完整版，我反而心里舒坦。"</p>
+      </div>
+      <div class="alert alert-red">
+        <div class="alert-title">👤 场景B：被前端话术吸引的用户（C/D类人群）</div>
+        <p>"说好的'包接单、月入过万'呢？学了10周之后还要粉丝1万才能进MCN？那我花的这几千块算什么？退费！"</p>
+      </div>
+    </div>
+
+    <!-- Section 5 -->
+    <div class="section">
+      <h2><span class="num">05</span> 改进建议：真正从用户视角出发</h2>
+      <p>如果真心想降低退费率，不应该在<strong>产品定价和包装</strong>上做文章，而应该在<strong>交付确定性</strong>上做文章：</p>
+
+      <div class="alert alert-green" style="margin-bottom: 16px;">
+        <div class="alert-title">✅ 建议一：砍掉标准版，只保留一个完整版</div>
+        <p>不要人为制造"半截子产品"逼用户升级。一口价明确告诉用户"4980元 = 8周课程 + 3周实战 + 作品上架"，交付闭环完整。</p>
+      </div>
+
+      <div class="alert alert-green" style="margin-bottom: 16px;">
+        <div class="alert-title">✅ 建议二：实战剧组应是毕业必修，而非加价项</div>
+        <p>实战出作品，才是用户唯一能拿得出手证明"我学了东西"的硬通货。如果把它当成增值服务，就是在告诉用户"基础版是残次品"。</p>
+      </div>
+
+      <div class="alert alert-green" style="margin-bottom: 16px;">
+        <div class="alert-title">✅ 建议三：砍掉不切实际的MCN承诺</div>
+        <p>不要承诺"进MCN"（门槛不现实），改为承诺<strong>"保证产出一部上架作品"</strong>。用户需要的是确定性的结果，不是虚无缥缈的"机会"。</p>
+      </div>
+
+      <div class="alert alert-green">
+        <div class="alert-title">✅ 建议四：如果一定要做两个价位</div>
+        <p>差异化应该在<strong>服务密度</strong>上而非<strong>课程完整度</strong>上。比如标准版是"大班制群运营"，高级版是"每周额外2次1V1点评"。课程内容和出口承诺必须完全一致。</p>
+      </div>
+    </div>
+
+    <!-- Verdict -->
+    <div class="verdict">
+      <h2>📌 一句话总结</h2>
+      <div class="verdict-text">
+        这两个产品试图用"拆包装"来解决"交付不达预期"的问题。<br/>
+        但用户退费的根源从来不是产品怎么打包，<br/>
+        而是<span class="text-red">「学完了发现自己干不了活」</span>。<br/><br/>
+        如果交付端的能力缺口不补上，<br/>
+        换再多种包装都只是把退费从L2挪到标准版。
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>喜播集团 · 战略产品评审 © 2026<br/>本文件仅供内部决策参考，请勿外传</p>
+    </div>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>攀登计划产品组合重构方案：三阶火箭模型</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #09090b; --surface: #18181b; --surface-2: #27272a;
+      --border: #3f3f46; --text: #f4f4f5; --dim: #a1a1aa; --muted: #71717a;
+      --red: #ef4444; --red-dim: rgba(239,68,68,0.1);
+      --green: #10b981; --green-dim: rgba(16,185,129,0.1);
+      --amber: #f59e0b; --amber-dim: rgba(245,158,11,0.1);
+      --blue: #3b82f6; --blue-dim: rgba(59,130,246,0.1);
+      --purple: #a855f7; --purple-dim: rgba(168,85,247,0.1);
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, 'PingFang SC', 'Noto Sans SC', sans-serif;
+      background: var(--bg); color: var(--text); line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+    }
+    .container { max-width: 860px; margin: 0 auto; padding: 40px 24px 80px; }
+
+    /* Header */
+    .header { margin-bottom: 48px; text-align: center; }
+    .header-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 16px; border-radius: 99px;
+      background: var(--blue-dim); border: 1px solid rgba(59,130,246,0.3);
+      color: var(--blue); font-size: 11px; font-weight: 800;
+      letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 20px;
+    }
+    .header-badge::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--blue); box-shadow: 0 0 8px var(--blue);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(59,130,246,0.5); }
+      70% { box-shadow: 0 0 0 8px rgba(59,130,246,0); }
+    }
+    h1 {
+      font-size: clamp(26px, 5vw, 40px); font-weight: 900; line-height: 1.2;
+      letter-spacing: -1.5px; margin-bottom: 16px;
+      background: linear-gradient(180deg, #fff, #a1a1aa);
+      -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .header p { color: var(--dim); font-size: 15px; max-width: 640px; margin: 0 auto; }
+    .meta { margin-top: 20px; color: var(--muted); font-size: 12px; font-weight: 600; }
+
+    /* Section */
+    .section { margin-bottom: 52px; }
+    h2 {
+      font-size: 21px; font-weight: 800; color: #fff; margin-bottom: 20px;
+      display: flex; align-items: center; gap: 10px;
+      padding-bottom: 12px; border-bottom: 1px solid var(--border);
+    }
+    h2 .num {
+      font-size: 11px; padding: 3px 10px; border-radius: 6px;
+      background: rgba(255,255,255,0.08); color: var(--dim); font-weight: 800;
+    }
+    h3 { font-size: 16px; font-weight: 700; color: #fff; margin: 24px 0 12px; }
+    p, li { color: var(--dim); font-size: 14.5px; }
+    p { margin-bottom: 14px; }
+    ul { padding-left: 20px; margin-bottom: 16px; }
+    li { margin-bottom: 6px; }
+    strong { color: #fff; }
+    .text-red { color: var(--red); font-weight: 700; }
+    .text-green { color: var(--green); font-weight: 700; }
+    .text-amber { color: var(--amber); font-weight: 700; }
+    .text-blue { color: var(--blue); font-weight: 700; }
+
+    /* Constraint Bar */
+    .constraint-bar {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px; margin-bottom: 48px;
+    }
+    .constraint-item {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 20px; text-align: center;
+    }
+    .constraint-icon { font-size: 28px; margin-bottom: 8px; }
+    .constraint-label { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+    .constraint-desc { font-size: 12px; color: var(--muted); }
+
+    /* Rocket Cards */
+    .rocket-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 16px; padding: 28px; margin-bottom: 20px;
+      position: relative; overflow: hidden;
+    }
+    .rocket-card::before {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 100%; height: 4px;
+    }
+    .rocket-1::before { background: linear-gradient(90deg, var(--green), #34d399); }
+    .rocket-2::before { background: linear-gradient(90deg, var(--blue), #60a5fa); }
+    .rocket-3::before { background: linear-gradient(90deg, var(--purple), #c084fc); }
+    .rocket-header {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      margin-bottom: 16px; flex-wrap: wrap; gap: 12px;
+    }
+    .rocket-name { font-size: 19px; font-weight: 800; color: #fff; }
+    .rocket-price {
+      font-size: 28px; font-weight: 900; letter-spacing: -1px;
+    }
+    .rocket-price-1 { color: var(--green); }
+    .rocket-price-2 { color: var(--blue); }
+    .rocket-price-3 { color: var(--purple); }
+    .rocket-tag {
+      display: inline-block; padding: 3px 10px; border-radius: 6px;
+      font-size: 11px; font-weight: 800; margin-bottom: 12px;
+    }
+    .tag-green { background: var(--green-dim); color: var(--green); }
+    .tag-blue { background: var(--blue-dim); color: var(--blue); }
+    .tag-purple { background: var(--purple-dim); color: var(--purple); }
+    .rocket-detail { font-size: 14px; color: var(--dim); }
+    .rocket-detail strong { color: #fff; }
+    .rocket-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px;
+    }
+    .rocket-grid-item {
+      background: rgba(255,255,255,0.03); border-radius: 10px; padding: 14px;
+    }
+    .rgi-label { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .rgi-value { font-size: 14px; font-weight: 600; color: #fff; }
+
+    /* Flow diagram */
+    .flow {
+      display: flex; align-items: center; justify-content: center;
+      gap: 8px; margin: 32px 0; flex-wrap: wrap;
+    }
+    .flow-node {
+      padding: 12px 20px; border-radius: 12px; font-size: 14px; font-weight: 700;
+      text-align: center; min-width: 140px;
+    }
+    .flow-arrow { color: var(--muted); font-size: 20px; font-weight: 900; }
+    .fn-1 { background: var(--green-dim); border: 1px solid rgba(16,185,129,0.3); color: var(--green); }
+    .fn-2 { background: var(--blue-dim); border: 1px solid rgba(59,130,246,0.3); color: var(--blue); }
+    .fn-3 { background: var(--purple-dim); border: 1px solid rgba(168,85,247,0.3); color: var(--purple); }
+
+    /* Alert */
+    .alert {
+      padding: 20px 24px; border-radius: 12px; margin: 20px 0;
+      border: 1px solid var(--border);
+    }
+    .alert-red { background: var(--red-dim); border-color: rgba(239,68,68,0.25); }
+    .alert-green { background: var(--green-dim); border-color: rgba(16,185,129,0.25); }
+    .alert-amber { background: var(--amber-dim); border-color: rgba(245,158,11,0.25); }
+    .alert-blue { background: var(--blue-dim); border-color: rgba(59,130,246,0.25); }
+    .alert-title { font-weight: 800; font-size: 14px; color: #fff; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+    .alert p { margin-bottom: 0; font-size: 14px; }
+
+    /* Tables */
+    .table-wrap { overflow-x: auto; margin: 20px 0; border-radius: 12px; border: 1px solid var(--border); }
+    table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+    th { background: var(--surface-2); color: #fff; font-weight: 700; text-align: left; padding: 12px 16px; white-space: nowrap; }
+    td { padding: 12px 16px; border-top: 1px solid var(--border); color: var(--dim); vertical-align: top; }
+    tr:hover td { background: rgba(255,255,255,0.02); }
+
+    /* Verdict */
+    .verdict {
+      background: linear-gradient(135deg, rgba(59,130,246,0.08), rgba(168,85,247,0.05));
+      border: 1px solid rgba(59,130,246,0.2); border-radius: 16px;
+      padding: 36px; margin: 48px 0 0; text-align: center;
+    }
+    .verdict h2 { justify-content: center; border: none; padding-bottom: 0; }
+    .verdict-text { font-size: 17px; font-weight: 700; color: #fff; line-height: 1.7; max-width: 680px; margin: 0 auto; }
+
+    blockquote {
+      border-left: 4px solid var(--blue); padding: 16px 20px; margin: 20px 0;
+      background: rgba(255,255,255,0.02); border-radius: 0 12px 12px 0;
+      font-size: 14.5px; color: var(--text); font-style: italic;
+    }
+
+    .footer { text-align: center; padding: 40px 0; border-top: 1px solid var(--border); color: var(--muted); font-size: 12px; }
+
+    @media (max-width: 600px) {
+      .container { padding: 24px 16px 60px; }
+      .rocket-grid { grid-template-columns: 1fr; }
+      .flow { flex-direction: column; }
+      .flow-arrow { transform: rotate(90deg); }
+      th, td { padding: 10px 12px; font-size: 13px; }
+    }
+  </style>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png">
+  <link rel="apple-touch-icon" sizes="64x64" href="favicon-64.png">
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="header-badge">产品战略 · 架构重组</div>
+    <h1>攀登计划产品组合重构<br/>「三阶火箭」模型</h1>
+    <p>在不改变团队销售惯性的前提下，通过产品架构的工程重组，同时实现降低退费风险、消灭过度承诺温床、锁死10%确定性利润三大目标。</p>
+    <div class="meta">方案日期：2026年3月30日 · 喜播集团战略产品办公室</div>
+  </div>
+
+  <!-- 约束条件 -->
+  <div class="constraint-bar">
+    <div class="constraint-item">
+      <div class="constraint-icon">⚡</div>
+      <div class="constraint-label">约束一</div>
+      <div class="constraint-desc">不能马上改变团队经营惯性</div>
+    </div>
+    <div class="constraint-item">
+      <div class="constraint-icon">🛡️</div>
+      <div class="constraint-label">约束二</div>
+      <div class="constraint-desc">必须降低退费风险和投诉</div>
+    </div>
+    <div class="constraint-item">
+      <div class="constraint-icon">📊</div>
+      <div class="constraint-label">约束三</div>
+      <div class="constraint-desc">财务上锁死10%确定性利润</div>
+    </div>
+  </div>
+
+  <!-- 核心思路 -->
+  <div class="section">
+    <h2><span class="num">核心</span> 设计原理：用产品结构代替管理纪律</h2>
+    <div class="alert alert-blue">
+      <div class="alert-title">💡 三个字：先消费</div>
+      <p>用户在掏大钱之前，先花小钱消费掉一段"已交付的确定性价值"。这段价值一旦被消费，就不再是退费纠纷的标的。同时，¥399的付费门槛天然过滤了D类用户——连399都不愿花的人，绝对不是你的目标客户。</p>
+    </div>
+
+    <div class="flow">
+      <div class="flow-node fn-1">🟢 诊断营 ¥399<br/><small>3天 · 过滤+消费</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node fn-2">🔵 完整版 ¥4,580<br/><small>11周 · 学+练+出品</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node fn-3">🟣 季卡 ¥1,280<br/><small>毕业后 · 纯自愿</small></div>
+    </div>
+  </div>
+
+  <!-- 第一级火箭 -->
+  <div class="section">
+    <h2><span class="num">01</span> 三阶产品详细设计</h2>
+
+    <div class="rocket-card rocket-1">
+      <div class="rocket-header">
+        <div>
+          <div class="rocket-tag tag-green">第一级火箭 · 防火墙</div>
+          <div class="rocket-name">声音潜力诊断营</div>
+        </div>
+        <div class="rocket-price rocket-price-1">¥399</div>
+      </div>
+      <div class="rocket-detail">
+        <p><strong>周期：3天</strong> — 快速消费、快速出结果、快速决策。</p>
+        <div class="rocket-grid">
+          <div class="rocket-grid-item">
+            <div class="rgi-label">交付物①</div>
+            <div class="rgi-value">1场直播大课（兼容现有体验营流程）</div>
+          </div>
+          <div class="rocket-grid-item">
+            <div class="rgi-label">交付物②</div>
+            <div class="rgi-value">AI声音诊断报告（个性化，专属感极强）</div>
+          </div>
+          <div class="rocket-grid-item">
+            <div class="rgi-label">交付物③</div>
+            <div class="rgi-value">1次点评官语音点评（5分钟录音，成本极低感知极高）</div>
+          </div>
+          <div class="rocket-grid-item">
+            <div class="rgi-label">退费风险</div>
+            <div class="rgi-value" style="color:var(--green)">极低（诊断+点评已交付，属"已消费服务"）</div>
+          </div>
+        </div>
+        <div class="alert alert-green" style="margin-top:16px; margin-bottom:0;">
+          <div class="alert-title">🎯 战略意义</div>
+          <p>① D类用户被自然过滤（连¥399都不愿花）<br/>② 3天内消费完毕，形成沉没成本锚点<br/>③ 销售话术几乎不用改，只是把"免费体验营"变成"付费诊断营"，反而提升线索质量</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="rocket-card rocket-2">
+      <div class="rocket-header">
+        <div>
+          <div class="rocket-tag tag-blue">第二级火箭 · 主阵地</div>
+          <div class="rocket-name">攀登计划 · 完整版</div>
+        </div>
+        <div class="rocket-price rocket-price-2">¥4,580</div>
+      </div>
+      <div class="rocket-detail">
+        <p><strong>周期：11周</strong>（8周录播课 + 3周实战剧组）。<span class="text-blue">抵扣已付¥399，实际补缴¥4,181。</span></p>
+        <p>这是<strong>唯一的正式课程产品</strong>。不搞什么标准版/实战版的拆分，只有一个交付闭环完整的版本。</p>
+        <div class="rocket-grid">
+          <div class="rocket-grid-item">
+            <div class="rgi-label">核心交付</div>
+            <div class="rgi-value">8周专业录播课 + 选修课 + AI练功房</div>
+          </div>
+          <div class="rocket-grid-item">
+            <div class="rgi-label">实战闭环</div>
+            <div class="rgi-value">3周剧组实录，保证产出1部上架作品</div>
+          </div>
+          <div class="rocket-grid-item">
+            <div class="rgi-label">服务配置</div>
+            <div class="rgi-value">大咖导师 + 实战导演/点评官 + 专属班主任</div>
+          </div>
+          <div class="rocket-grid-item">
+            <div class="rgi-label">出口权益</div>
+            <div class="rgi-value">交付中心全层级解锁 + 录音师协会证书</div>
+          </div>
+        </div>
+        <div class="alert alert-blue" style="margin-top:16px; margin-bottom:0;">
+          <div class="alert-title">🔑 为什么必须合并为一个产品</div>
+          <p>"标准版"没有实战剧组，用户学完发现"干不了活" → 退费。把实战剧组作为必修而非加价项，用户毕业时手里有1部上架作品，这是他能拿出手证明"我学了东西"的<strong>唯一的硬通货</strong>。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="rocket-card rocket-3">
+      <div class="rocket-header">
+        <div>
+          <div class="rocket-tag tag-purple">第三级火箭 · 复购引擎</div>
+          <div class="rocket-name">主播成长季卡</div>
+        </div>
+        <div class="rocket-price rocket-price-3">¥1,280<span style="font-size:14px;color:var(--muted);font-weight:600">/季</span></div>
+      </div>
+      <div class="rocket-detail">
+        <p><strong>时机：仅在学员毕业后才开放购买，绝不在前端销售。</strong></p>
+        <div class="rocket-grid">
+          <div class="rocket-grid-item">
+            <div class="rgi-label">服务内容</div>
+            <div class="rgi-value">每周1次群内大咖点评 + 作品数据复盘</div>
+          </div>
+          <div class="rocket-grid-item">
+            <div class="rgi-label">进阶权益</div>
+            <div class="rgi-value">交付中心优先派单通道 + MCN面试内推</div>
+          </div>
+          <div class="rocket-grid-item">
+            <div class="rgi-label">退费风险</div>
+            <div class="rgi-value" style="color:var(--green)">趋近于零（自愿续费，按季交付）</div>
+          </div>
+          <div class="rocket-grid-item">
+            <div class="rgi-label">财务特征</div>
+            <div class="rgi-value" style="color:var(--purple)">订阅制、高毛利、零退费 = 纯利润</div>
+          </div>
+        </div>
+        <div class="alert alert-green" style="margin-top:16px; margin-bottom:0;">
+          <div class="alert-title">🔒 釜底抽薪</div>
+          <p>把最容易被前端过度承诺的"MCN机会"从销售话术中<strong>彻底剥离</strong>，放到毕业后自愿购买的季卡里。用户是基于自己的真实能力主动选择进阶，而非被画饼诱导。从源头斩断违规话术的温床。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 财务模型 -->
+  <div class="section">
+    <h2><span class="num">02</span> 财务模型：锁死10%底线利润</h2>
+    <p>以每<strong>100个诊断营付费用户</strong>为一个计算单元：</p>
+
+    <h3>📥 收入端</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>产品</th><th>人数</th><th>单价</th><th>退费率</th><th>净收入</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong style="color:var(--green)">诊断营</strong></td>
+            <td>100人</td><td>¥399</td>
+            <td style="color:var(--green)">3%（已消费）</td>
+            <td><strong>¥38,703</strong></td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--blue)">完整版</strong></td>
+            <td>20人（20%升级）</td><td>¥4,181</td>
+            <td style="color:var(--green)">15%（↓ 比当前25%）</td>
+            <td><strong>¥71,077</strong></td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--purple)">季卡</strong></td>
+            <td>3人（毕业生15%）</td><td>¥1,280</td>
+            <td style="color:var(--green)">0%</td>
+            <td><strong>¥3,840</strong></td>
+          </tr>
+          <tr style="background:rgba(255,255,255,0.03);">
+            <td colspan="4"><strong>总净收入</strong></td>
+            <td><strong style="color:#fff;font-size:16px;">¥113,620</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>📤 成本端</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>科目</th><th>金额</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>前端获客（CAC）</td><td>¥40,000</td><td>¥400/人×100人（付费用户CAC远低于免费引流）</td></tr>
+          <tr><td>诊断营交付</td><td>¥5,000</td><td>¥50/人（AI报告自动化 + 直播大课边际成本极低）</td></tr>
+          <tr><td>销售提成</td><td>¥15,140</td><td>诊断营10%（¥3,990）+ 完整版15%（¥11,150）</td></tr>
+          <tr><td>完整版教学交付</td><td>¥20,400</td><td>¥1,200/人×17人（扣除退费3人）</td></tr>
+          <tr><td>季卡运营</td><td>¥600</td><td>¥200/人×3人</td></tr>
+          <tr><td>管理与运营分摊</td><td>¥15,000</td><td>平台、技术、行政</td></tr>
+          <tr style="background:rgba(255,255,255,0.03);">
+            <td><strong>总成本</strong></td>
+            <td colspan="2"><strong style="color:#fff;font-size:16px;">¥96,140</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>📊 损益结果</h3>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0;">
+      <div style="background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:24px; text-align:center;">
+        <div style="font-size:12px; color:var(--muted); font-weight:700; margin-bottom:8px;">净利润</div>
+        <div style="font-size:32px; font-weight:900; color:var(--green);">¥17,480</div>
+      </div>
+      <div style="background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:24px; text-align:center;">
+        <div style="font-size:12px; color:var(--muted); font-weight:700; margin-bottom:8px;">利润率</div>
+        <div style="font-size:32px; font-weight:900; color:var(--green);">15.4%</div>
+      </div>
+    </div>
+
+    <h3>🔥 压力测试：最悲观剧本</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>恶化场景</th><th>利润率</th><th>判定</th></tr></thead>
+        <tbody>
+          <tr><td>基准情境（升级率20%，退费率15%）</td><td><strong style="color:var(--green)">15.4%</strong></td><td style="color:var(--green)">✅ 安全</td></tr>
+          <tr><td>升级率跌到15%，退费率升到20%</td><td><strong style="color:var(--green)">11.2%</strong></td><td style="color:var(--green)">✅ 安全</td></tr>
+          <tr><td>升级率跌到12%，退费率升到20%</td><td><strong style="color:var(--amber)">8.3%</strong></td><td style="color:var(--amber)">⚠️ 预警</td></tr>
+          <tr style="background:var(--red-dim)"><td><strong>熔断红线</strong></td><td colspan="2"><strong style="color:var(--red)">升级率 &lt; 13% 时触发预算收缩</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="alert alert-green">
+      <div class="alert-title">🛡️ 安全底座</div>
+      <p>即使在悲观情境下，诊断营本身就是一个<strong>独立盈利单元（85%毛利）</strong>，它为整体利润提供稳定底座。完整版退再多，诊断营的利润依然在。这就是"三阶火箭"的核心防御逻辑。</p>
+    </div>
+  </div>
+
+  <!-- 降退费机制 -->
+  <div class="section">
+    <h2><span class="num">03</span> 为什么"不改人也能降退费"</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>内置机制</th><th>为什么有效</th></tr></thead>
+        <tbody>
+          <tr><td><strong>¥399付费门槛</strong></td><td>D类用户（白嫖、多疑、无消费力）被自然过滤。前端只需要筛"愿不愿花399"，比筛心智简单100倍</td></tr>
+          <tr><td><strong>价值先消费</strong></td><td>3天内把诊断报告和点评都给了，用户拿到了实在的东西。即使不升级，他也没理由投诉"被骗"</td></tr>
+          <tr><td><strong>¥399抵扣锚定</strong></td><td>"399直接抵扣全程费用"让用户觉得占了便宜，升级自然延续，销售不需要二次破冰</td></tr>
+          <tr><td><strong>完整交付闭环</strong></td><td>唯一的正式产品 = 学+练+出作品全包。不存在"学完了啥也不会"的空洞感</td></tr>
+          <tr><td><strong>MCN不在前端卖</strong></td><td>最容易过度承诺的东西从销售话术中<strong>彻底剥离</strong>，放到毕业后季卡里。釜底抽薪</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 团队兼容性 -->
+  <div class="section">
+    <h2><span class="num">04</span> 对团队现有惯性的兼容性</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>团队现有动作</th><th>新模型下的对接</th><th>改动幅度</th></tr></thead>
+        <tbody>
+          <tr><td>体验营引流</td><td>改为付费诊断营，流程几乎一样，只是收¥399</td><td style="color:var(--green)">极小</td></tr>
+          <tr><td>3天群运营转化</td><td>完全保留，终点从"卖课"变为"卖诊断"</td><td style="color:var(--green)">极小</td></tr>
+          <tr><td>1V1跟单逼单</td><td>保留，但标的变了：建议"把399升级为全程"</td><td style="color:var(--green)">极小</td></tr>
+          <tr><td>高客单追求</td><td>完整版¥4,580客单不低，提成15%，和原来差不多</td><td style="color:var(--green)">不变</td></tr>
+          <tr><td>班主任后端服务</td><td>实际交付更完整（含实战），减少"啥也不会"客诉</td><td style="color:var(--blue)">改善</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 对比 -->
+  <div class="section">
+    <h2><span class="num">05</span> 新旧方案对比</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>维度</th><th style="color:var(--red)">原方案（标准版+实战版）</th><th style="color:var(--green)">新方案（三阶火箭）</th></tr></thead>
+        <tbody>
+          <tr><td><strong>产品数量</strong></td><td>2个（课程内容完全一样，只差实战）</td><td>3级阶梯（各自独立定位，交付内容递进）</td></tr>
+          <tr><td><strong>用户感受</strong></td><td>"先卖半成品，再逼我加价"</td><td>"先小试，觉得好再加入全程"</td></tr>
+          <tr><td><strong>D类过滤</strong></td><td>无（免费体验营不设门槛）</td><td>¥399自然过滤</td></tr>
+          <tr><td><strong>退费风险</strong></td><td>高（交付不完整 → 标准版退费率可能≥25%）</td><td>低（诊断营已消费 + 完整版有作品产出）</td></tr>
+          <tr><td><strong>MCN承诺</strong></td><td>前端销售可随意画饼</td><td>从前端剥离，放入毕业后季卡</td></tr>
+          <tr><td><strong>利润确定性</strong></td><td>退费率一高，全线亏损</td><td>诊断营独立盈利兜底，底线利润≥10%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 结论 -->
+  <div class="verdict">
+    <h2>📌 一句话总结</h2>
+    <div class="verdict-text">
+      用 <span class="text-green">¥399诊断营</span> 当防火墙，<br/>
+      用 <span class="text-blue">完整闭环课程</span> 当主阵地，<br/>
+      用 <span style="color:var(--purple);font-weight:700;">毕业后季卡</span> 收复购。<br/><br/>
+      销售团队不需要改变打法，<br/>
+      只需要换一个卖的产品，<br/>
+      就能把退费率从25%压到15%以下，<br/>
+      同时<span class="text-green">锁死10%+的确定性利润</span>。
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>喜播集团 · 战略产品架构组 © 2026<br/>本文件仅供内部决策参考，请勿外传</p>
+  </div>
+
+</div>
+</body>
+</html>
