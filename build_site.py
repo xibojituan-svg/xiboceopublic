@@ -63,8 +63,10 @@ for filepath in glob.glob(os.path.join(SITE_DIR, "*.html")):
         content = re.sub(r'</head>', '  <meta name="robots" content="noindex, nofollow" />\n</head>', content, flags=re.IGNORECASE)
 
     # insert favicon
-    if '<link rel="icon" href="favicon.ico">' not in content:
-        content = re.sub(r'</head>', '  <link rel="icon" href="favicon.ico">\n</head>', content, flags=re.IGNORECASE)
+    favicon_code = '<link rel="icon" type="image/x-icon" href="favicon.ico">\n  <link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png">\n  <link rel="apple-touch-icon" sizes="64x64" href="favicon-64.png">'
+    if '<link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png">' not in content:
+        content = content.replace('  <link rel="icon" href="favicon.ico">\n', '')
+        content = re.sub(r'</head>', f'  {favicon_code}\n</head>', content, flags=re.IGNORECASE)
     
     # insert global nav after <body>
     if '<script src="navbar.js"></script>' not in content and not skip_inject:
