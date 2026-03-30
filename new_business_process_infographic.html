@@ -1,558 +1,893 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>喜播新业务流程全景图：ABCD分层驱动</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
-        :root {
-            --a: #10b981; --a-bg: #ecfdf5; --a-border: #a7f3d0;
-            --b: #f59e0b; --b-bg: #fffbeb; --b-border: #fde68a;
-            --c1: #8b5cf6; --c1-bg: #f5f3ff; --c1-border: #ddd6fe;
-            --c2: #f43f5e; --c2-bg: #fff1f2; --c2-border: #fecdd3;
-            --d: #dc2626; --d-bg: #fef2f2; --d-border: #fecaca;
-            --dark: #0f172a; --muted: #64748b; --light: #f8fafc;
-            --card: #ffffff; --line: #e2e8f0;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', -apple-system, sans-serif; background: var(--light); color: var(--dark); }
-
-        .page { max-width: 1200px; margin: 0 auto; padding: 2rem; }
-
-        /* Header */
-        .hero { text-align: center; padding: 3rem 1rem; margin-bottom: 2rem; }
-        .hero h1 { font-size: 2.5rem; font-weight: 900; letter-spacing: -0.03em; margin-bottom: 0.75rem; background: linear-gradient(135deg, #1e293b, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .hero p { font-size: 1.15rem; color: var(--muted); max-width: 700px; margin: 0 auto; }
-        .hero .tag { display: inline-block; background: #dbeafe; color: #1d4ed8; padding: 0.3rem 1rem; border-radius: 99px; font-size: 0.85rem; font-weight: 600; margin-bottom: 1rem; }
-
-        /* Section Titles */
-        .section-title { font-size: 1.6rem; font-weight: 800; margin-bottom: 1.5rem; padding-left: 1rem; border-left: 5px solid #3b82f6; }
-
-        /* Comparison Banner */
-        .compare-banner { display: grid; grid-template-columns: 1fr auto 1fr; gap: 1.5rem; align-items: stretch; margin-bottom: 3rem; }
-        .compare-card { background: var(--card); border-radius: 1rem; padding: 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
-        .compare-old { border: 2px solid var(--c2-border); }
-        .compare-new { border: 2px solid var(--a-border); }
-        .compare-card h3 { font-size: 1.2rem; margin-bottom: 1rem; }
-        .compare-old h3 { color: var(--c2); }
-        .compare-new h3 { color: var(--a); }
-        .compare-arrow { display: flex; align-items: center; justify-content: center; font-size: 2.5rem; color: #3b82f6; font-weight: 900; }
-        .compare-card ul { list-style: none; padding: 0; }
-        .compare-card li { padding: 0.5rem 0; border-bottom: 1px solid var(--line); font-size: 0.95rem; display: flex; align-items: center; gap: 0.5rem; }
-        .compare-card li:last-child { border: none; }
-        .icon-bad { color: var(--d); font-weight: bold; }
-        .icon-good { color: var(--a); font-weight: bold; }
-
-        /* Flow Pipeline */
-        .pipeline { display: flex; gap: 0; margin-bottom: 3rem; position: relative; }
-        .pipe-stage { flex: 1; text-align: center; position: relative; }
-        .pipe-box { background: var(--card); border-radius: 1rem; padding: 1.5rem 1rem; margin: 0 0.25rem; box-shadow: 0 4px 12px rgba(0,0,0,0.04); border-top: 5px solid; min-height: 200px; transition: transform 0.3s; }
-        .pipe-box:hover { transform: translateY(-5px); }
-        .pipe-box h4 { font-size: 1.1rem; margin-bottom: 0.5rem; font-weight: 700; }
-        .pipe-box p { font-size: 0.85rem; color: var(--muted); line-height: 1.5; }
-        .pipe-num { width: 36px; height: 36px; background: #3b82f6; color: white; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1rem; margin-bottom: 0.75rem; }
-        .pipe-arrow { position: absolute; right: -14px; top: 50%; transform: translateY(-50%); z-index: 10; font-size: 1.5rem; color: #94a3b8; }
-        .pipe-stage:last-child .pipe-arrow { display: none; }
-        .s1 .pipe-box { border-color: #3b82f6; }
-        .s2 .pipe-box { border-color: #6366f1; }
-        .s3 .pipe-box { border-color: #8b5cf6; }
-        .s4 .pipe-box { border-color: #10b981; }
-        .s5 .pipe-box { border-color: #f59e0b; }
-
-        /* ABCD Lanes */
-        .lanes { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 3rem; }
-        .lane { border-radius: 1rem; padding: 1.5rem; position: relative; overflow: hidden; }
-        .lane::after { content: ''; position: absolute; top: 0; right: 0; width: 80px; height: 80px; border-radius: 50%; opacity: 0.08; transform: translate(30%, -30%); }
-        .lane-a { background: var(--a-bg); border: 1px solid var(--a-border); }
-        .lane-a::after { background: var(--a); }
-        .lane-b { background: var(--b-bg); border: 1px solid var(--b-border); }
-        .lane-b::after { background: var(--b); }
-        .lane-c1 { background: var(--c1-bg); border: 1px solid var(--c1-border); }
-        .lane-c1::after { background: var(--c1); }
-        .lane-cd { background: var(--c2-bg); border: 1px solid var(--c2-border); }
-        .lane-cd::after { background: var(--c2); }
-        .lane h4 { font-size: 1.15rem; font-weight: 800; margin-bottom: 0.75rem; }
-        .lane-a h4 { color: var(--a); }
-        .lane-b h4 { color: var(--b); }
-        .lane-c1 h4 { color: var(--c1); }
-        .lane-cd h4 { color: var(--c2); }
-        .lane-step { background: rgba(255,255,255,0.7); border-radius: 0.5rem; padding: 0.6rem 0.8rem; margin-bottom: 0.5rem; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; }
-        .lane-step .step-icon { font-size: 1rem; }
-        .lane-tag { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 700; margin-top: 0.25rem; }
-        .tag-price { background: #dbeafe; color: #1d4ed8; }
-        .tag-conv { background: #d1fae5; color: #065f46; }
-        .tag-risk { background: #fee2e2; color: #991b1b; }
-
-        /* SKU Ladder */
-        .sku-section { margin-bottom: 3rem; }
-        .sku-ladder { display: flex; align-items: flex-end; gap: 1rem; justify-content: center; padding: 2rem 0; }
-        .sku-bar { text-align: center; border-radius: 0.75rem 0.75rem 0 0; color: white; display: flex; flex-direction: column; justify-content: flex-end; padding: 1rem; min-width: 140px; transition: transform 0.3s; cursor: default; }
-        .sku-bar:hover { transform: scale(1.05); }
-        .sku-bar .sku-price { font-size: 1.5rem; font-weight: 900; }
-        .sku-bar .sku-name { font-size: 0.85rem; margin-top: 0.25rem; opacity: 0.9; }
-        .sku-bar .sku-target { font-size: 0.75rem; margin-top: 0.5rem; background: rgba(255,255,255,0.2); padding: 0.2rem 0.5rem; border-radius: 4px; }
-        .sku1 { background: linear-gradient(135deg, #6366f1, #818cf8); height: 100px; }
-        .sku2 { background: linear-gradient(135deg, #8b5cf6, #a78bfa); height: 150px; }
-        .sku3 { background: linear-gradient(135deg, #3b82f6, #60a5fa); height: 220px; }
-        .sku4 { background: linear-gradient(135deg, #10b981, #34d399); height: 300px; }
-
-        /* VIP Levels */
-        .vip-section { margin-bottom: 3rem; }
-        .vip-track { display: flex; align-items: center; gap: 0; background: var(--card); border-radius: 1rem; padding: 1.5rem 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.04); overflow-x: auto; }
-        .vip-node { text-align: center; flex: 1; position: relative; min-width: 120px; }
-        .vip-dot { width: 48px; height: 48px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: 800; color: white; font-size: 0.85rem; margin-bottom: 0.5rem; }
-        .vip-node .vip-label { font-size: 0.8rem; font-weight: 600; color: var(--dark); }
-        .vip-node .vip-price { font-size: 0.7rem; color: var(--muted); margin-top: 0.15rem; }
-        .vip-connector { flex: 0 0 40px; height: 3px; background: linear-gradient(90deg, #e2e8f0, #94a3b8); border-radius: 2px; }
-        .v1 .vip-dot { background: #94a3b8; }
-        .v3 .vip-dot { background: #6366f1; }
-        .v5 .vip-dot { background: #3b82f6; }
-        .v7 .vip-dot { background: #10b981; }
-        .v10 .vip-dot { background: linear-gradient(135deg, #f59e0b, #f97316); }
-
-        /* KPI Grid */
-        .kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 3rem; }
-        .kpi-card { background: var(--card); border-radius: 1rem; padding: 1.5rem; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.04); transition: transform 0.3s; }
-        .kpi-card:hover { transform: translateY(-3px); }
-        .kpi-old { font-size: 1.8rem; font-weight: 900; color: var(--c2); text-decoration: line-through; opacity: 0.5; }
-        .kpi-new { font-size: 2.2rem; font-weight: 900; color: var(--a); }
-        .kpi-label { font-size: 0.9rem; color: var(--muted); margin-top: 0.5rem; font-weight: 500; }
-        .kpi-arrow { font-size: 1.2rem; color: var(--a); margin: 0.25rem 0; }
-
-        /* Priority List */
-        .priority-section { margin-bottom: 3rem; }
-        .priority-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
-        .priority-card { background: var(--card); border-radius: 1rem; padding: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.04); border-left: 5px solid; }
-        .p0 { border-color: var(--d); }
-        .p1 { border-color: var(--b); }
-        .p2 { border-color: #3b82f6; }
-        .priority-card h4 { font-size: 1rem; font-weight: 700; margin-bottom: 0.75rem; }
-        .p0 h4 { color: var(--d); }
-        .p1 h4 { color: var(--b); }
-        .p2 h4 { color: #3b82f6; }
-        .priority-card ol { padding-left: 1.25rem; font-size: 0.9rem; }
-        .priority-card li { margin-bottom: 0.5rem; line-height: 1.4; }
-
-        /* Footer */
-        .footer { text-align: center; padding: 2rem; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--line); margin-top: 2rem; }
-
-        @media (max-width: 768px) {
-            .compare-banner { grid-template-columns: 1fr; }
-            .compare-arrow { transform: rotate(90deg); padding: 0.5rem; }
-            .pipeline { flex-direction: column; }
-            .pipe-arrow { display: none !important; }
-            .lanes { grid-template-columns: 1fr; }
-            .sku-ladder { flex-direction: column; align-items: center; }
-            .sku-bar { min-width: 80%; height: auto !important; }
-            .kpi-grid, .priority-list { grid-template-columns: 1fr; }
-            .vip-track { flex-wrap: wrap; gap: 0.5rem; }
-            .vip-connector { display: none; }
-        }
-    </style>
-
-  
-
-
-  
-
-
-  
-
-
-  
-
-
-  
-
-
-  
-
-
-  
-
-
-  <!-- 引入统一样式基础(DARK MODE OVERRIDE) -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>喜播 S2B2C 商业模式全景图</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #09090b;
       --bg-surface: #18181b;
-      --bg-surface-hover: #27272a;
+      --bg-surface-2: #1e1e24;
+      --bg-hover: #27272a;
       --border: #3f3f46;
+      --border-light: rgba(255,255,255,0.06);
       --text: #f4f4f5;
       --text-dim: #a1a1aa;
       --text-muted: #71717a;
-      
-      --brand-primary: #ef4444; 
-      --brand-secondary: #f97316; 
-      --brand-accent: #10b981; 
-      --brand-glow: rgba(239, 68, 68, 0.2);
 
-      /* PAGE SPECIFIC OVERRIDES */
-      --text-main: var(--text) !important;
-      --text-light: var(--text-dim) !important;
-      --border-line: var(--border) !important;
-      --bg-body: var(--bg) !important;
-      --bg-card: var(--bg-surface) !important;
-      --table-header: #1e1e24 !important;
-      --insight-bg: rgba(155, 81, 224, 0.05) !important; 
-      --insight-border: #9b51e0 !important;
-      --primary-blue: #60a5fa !important;
+      --s-color: #f97316;
+      --s-glow: rgba(249,115,22,0.2);
+      --s-bg: rgba(249,115,22,0.08);
+
+      --b-color: #3b82f6;
+      --b-glow: rgba(59,130,246,0.2);
+      --b-bg: rgba(59,130,246,0.08);
+
+      --c-color: #10b981;
+      --c-glow: rgba(16,185,129,0.2);
+      --c-bg: rgba(16,185,129,0.08);
+
+      --red: #ef4444;
+      --purple: #8b5cf6;
+      --yellow: #f59e0b;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    
+
     body {
-      font-family: 'Inter', -apple-system, 'PingFang SC', sans-serif !important;
-      background-color: var(--bg) !important;
-      color: var(--text) !important;
+      font-family: 'Inter', -apple-system, 'PingFang SC', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
       line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* Background FX */
     .bg-glow {
       position: fixed; top: -20vh; left: 50%; transform: translateX(-50%);
       width: 100vw; height: 60vh;
-      background: radial-gradient(ellipse at bottom, rgba(249, 115, 22, 0.15) 0%, rgba(9, 9, 11, 0) 70%);
+      background: radial-gradient(ellipse at bottom, rgba(249,115,22,0.12) 0%, transparent 70%);
       z-index: -1; pointer-events: none;
     }
 
-    /* Nav */
+    /* ─── Nav ─── */
     .site-nav {
       position: sticky; top: 0; z-index: 9999;
-      background: rgba(9, 9, 11, 0.8); backdrop-filter: blur(16px);
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-      padding: 0 clamp(16px, 4vw, 32px);
+      background: rgba(9,9,11,0.85); backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-light);
+      padding: 0 clamp(16px,4vw,32px);
     }
     .site-nav-inner {
       max-width: 1400px; margin: 0 auto;
       display: flex; align-items: center; height: 60px;
-      gap: 12px; overflow-x: auto; scrollbar-width: none;
+      gap: 8px; overflow-x: auto; scrollbar-width: none;
     }
     .site-nav-inner::-webkit-scrollbar { display: none; }
-    .nav-logo { font-size: 16px; font-weight: 900; color: var(--text); white-space: nowrap; text-decoration: none; margin-right: 20px; display: flex; align-items: center; gap: 8px;}
-    .nav-logo span { color: var(--brand-secondary); }
+    .nav-logo { font-size: 16px; font-weight: 900; color: var(--text); white-space: nowrap; text-decoration: none; margin-right: 20px; }
+    .nav-logo span { color: var(--s-color); }
     .nav-link {
       display: flex; align-items: center; gap: 6px;
       padding: 6px 14px; border-radius: 100px;
       font-size: 13px; font-weight: 600; color: var(--text-dim);
-      text-decoration: none; white-space: nowrap; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      text-decoration: none; white-space: nowrap; transition: all 0.3s;
     }
-    .nav-link:hover { color: var(--text); background: rgba(255,255,255,0.1); }
-    .nav-link.active { color: #fff; background: var(--brand-primary); box-shadow: 0 0 20px var(--brand-glow); }
+    .nav-link:hover { color: var(--text); background: rgba(255,255,255,0.08); }
+    .nav-link.active { color: #fff; background: var(--s-color); }
 
-    /* GLOBAL OVERRIDES */
-    body, p, div, span, li, td, article, main, section {
-        color: rgba(255, 255, 255, 0.85) !important;
+    /* ─── Layout ─── */
+    .wrap { max-width: 1280px; margin: 0 auto; padding: 60px 24px 100px; }
+
+    /* ─── Section Spacing ─── */
+    .section { margin-bottom: 80px; }
+
+    /* ─── Hero ─── */
+    .hero { text-align: center; padding: 20px 0 60px; animation: fadeUp 0.7s ease-out; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 18px; border-radius: 100px;
+      background: var(--s-bg); border: 1px solid rgba(249,115,22,0.3);
+      color: var(--s-color); font-size: 12px; font-weight: 800;
+      letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 28px;
     }
-    h1, h2, h3, h4, .title, strong, b, .card-title, .node-q, .branch-label { color: #ffffff !important; }
-    
-    /* COMPREHENSIVE SUBSTRING MATCHING FOR CONTAINER BACKGROUNDS */
-    .report-container, .page-container, .dashboard-container, .process-container, .map-container, 
-    .container, .tree-section, .node-content, .branch-item, .panel, table, .table-wrapper, .page,
-    [class*="card"]:not(.card-d), [class*="-box"]:not(.action-box), [class*="-wrap"], 
-    [class*="bg-gray-"], [class*="bg-blue-"], [class*="bg-red-"], [class*="bg-orange-"], [class*="bg-white"],
-    [class*="lane"], [class*="-step"], [class*="-track"], [class*="tag"], [class*="badge"],
-    [class*="alert"], [class*="-block"], [class*="banner"], [class*="reasoning"], [class*="insight"],
-    [class*="greeting"], [class*="recalibrate"], [class*="hook-"], input, select, textarea, button,
-    div[style*="background:#FFF"], div[style*="background-color: #FFF"] {
-       background-color: var(--bg-surface) !important;
-       border-color: var(--border) !important;
-       box-shadow: 0 4px 20px rgba(0,0,0,0.5) !important;
+    .pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--s-color); box-shadow: 0 0 8px var(--s-color); animation: pulse 2s infinite; }
+    .hero h1 {
+      font-size: clamp(40px,6vw,72px); font-weight: 900;
+      letter-spacing: -2px; line-height: 1.05; margin-bottom: 20px;
+      background: linear-gradient(160deg, #fff 0%, #a1a1aa 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero h1 em { font-style: normal; -webkit-text-fill-color: var(--s-color); }
+    .hero-sub { font-size: 18px; color: var(--text-dim); max-width: 680px; margin: 0 auto 36px; font-weight: 500; }
+    .hero-thesis {
+      display: inline-block; max-width: 760px;
+      background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.25);
+      border-radius: 12px; padding: 16px 24px;
+      font-size: 14px; color: var(--text-dim); line-height: 1.7;
+    }
+    .hero-thesis strong { color: var(--red); }
+
+    /* ─── Section Header ─── */
+    .sh { margin-bottom: 32px; }
+    .sh h2 { font-size: 26px; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 12px; }
+    .sh-badge { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 6px; background: rgba(255,255,255,0.07); color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+    .sh p { font-size: 14px; color: var(--text-muted); margin-top: 8px; }
+    .sh-line { height: 1px; background: var(--border); margin-top: 16px; }
+
+    /* ─── S2B2C Main Diagram ─── */
+    .s2b2c-diagram {
+      display: grid;
+      grid-template-columns: 1fr 60px 1fr 60px 1fr;
+      gap: 0;
+      align-items: stretch;
+      margin-bottom: 60px;
     }
 
-    /* EXCEPTIONS & SPECIAL HIGHLIGHTS */
-    .logic-banner {
-       background: linear-gradient(135deg, #1e1e24, #09090b) !important;
-       box-shadow: 0 10px 40px rgba(0,0,0,0.5) !important;
+    .role-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 32px 28px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
     }
-    .branch-item { background-color: #27272a !important; }
-    .card-d { background-color: #2e1010 !important; border-color: #ef4444 !important;}
-    .formula { background: rgba(255,255,255,0.05) !important; color: #facc15 !important; }
-    
-    /* TABLE STYLES */
-    td, .text-content, p { border-color: var(--border) !important;}
-    th { background: #18181b !important; border-color: var(--border) !important; color: #ffffff !important;}
-    table { border-collapse: collapse; }
-    
-    /* INSIGHT METRICS & DEFAULTS */
-    .insight-cell, .insight-cell p, .insight-cell div, .insight-cell span { 
-        color: #e9d5ff !important; 
-        background-color: rgba(155, 81, 224, 0.05) !important;
+    .role-card:hover { transform: translateY(-4px); }
+    .role-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 4px;
     }
-    .insight-tag { color: #ffffff !important; }
-    .note, .meta-info, .desc, .text-muted, .text-light, .text-dim, .definition, [class*="text-gray-"], [class*="text-secondary"] { 
-        color: #a1a1aa !important; 
-    }
-    a { color: #60a5fa !important; }
+    .role-s { border-color: rgba(249,115,22,0.3); }
+    .role-s:hover { box-shadow: 0 12px 40px rgba(249,115,22,0.15); }
+    .role-s::before { background: var(--s-color); }
+    .role-b { border-color: rgba(59,130,246,0.3); }
+    .role-b:hover { box-shadow: 0 12px 40px rgba(59,130,246,0.15); }
+    .role-b::before { background: var(--b-color); }
+    .role-c { border-color: rgba(16,185,129,0.3); }
+    .role-c:hover { box-shadow: 0 12px 40px rgba(16,185,129,0.15); }
+    .role-c::before { background: var(--c-color); }
 
-    .main-container {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 40px 24px;
+    .role-glyph {
+      font-size: 48px; font-weight: 900; margin-bottom: 8px; line-height: 1;
+    }
+    .role-s .role-glyph { color: var(--s-color); }
+    .role-b .role-glyph { color: var(--b-color); }
+    .role-c .role-glyph { color: var(--c-color); }
+
+    .role-who { font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+    .role-s .role-who { color: var(--s-color); }
+    .role-b .role-who { color: var(--b-color); }
+    .role-c .role-who { color: var(--c-color); }
+
+    .role-name { font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 6px; }
+    .role-desc { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.6; }
+
+    .role-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
+    .rtag {
+      font-size: 11px; font-weight: 700; padding: 4px 10px;
+      border-radius: 6px; white-space: nowrap;
+    }
+    .rtag-s { background: var(--s-bg); color: var(--s-color); border: 1px solid rgba(249,115,22,0.2); }
+    .rtag-b { background: var(--b-bg); color: var(--b-color); border: 1px solid rgba(59,130,246,0.2); }
+    .rtag-c { background: var(--c-bg); color: var(--c-color); border: 1px solid rgba(16,185,129,0.2); }
+
+    .role-value-title { font-size: 11px; font-weight: 700; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; }
+    .role-value-list { list-style: none; }
+    .role-value-list li {
+      font-size: 13px; color: var(--text-dim); padding: 8px 0;
+      border-bottom: 1px solid var(--border-light);
+      display: flex; align-items: flex-start; gap: 8px; line-height: 1.5;
+    }
+    .role-value-list li:last-child { border: none; }
+    .li-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+    .dot-s { background: var(--s-color); }
+    .dot-b { background: var(--b-color); }
+    .dot-c { background: var(--c-color); }
+
+    /* Connector Arrows */
+    .arrow-col {
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 8px;
+      padding: 0 4px;
+    }
+    .arrow-line {
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      width: 100%;
+    }
+    .arrow-label { font-size: 10px; font-weight: 700; color: var(--text-muted); text-align: center; letter-spacing: 0.5px; line-height: 1.4; }
+    .arrow-track {
+      width: 100%; height: 2px; background: var(--border);
+      position: relative; overflow: visible;
+    }
+    .arrow-track::after {
+      content: '▶';
+      position: absolute; right: -8px; top: 50%; transform: translateY(-50%);
+      font-size: 10px; color: var(--text-muted);
+    }
+    .arrow-track-rev {
+      width: 100%; height: 2px; position: relative;
+    }
+    .arrow-track-rev::before {
+      content: '◀';
+      position: absolute; left: -8px; top: 50%; transform: translateY(-50%);
+      font-size: 10px; color: var(--text-muted);
+    }
+    .at-orange { background: rgba(249,115,22,0.5); }
+    .at-orange::after { color: var(--s-color); }
+    .at-blue { background: rgba(59,130,246,0.5); }
+    .at-blue::after { color: var(--b-color); }
+    .at-green-rev { background: rgba(16,185,129,0.4); }
+    .at-green-rev::before { color: var(--c-color); }
+
+    /* ─── Value Flow Strip ─── */
+    .flow-strip {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 60px;
+    }
+    .flow-node {
+      padding: 24px 20px;
+      text-align: center;
+      border-right: 1px solid var(--border);
+      position: relative;
+    }
+    .flow-node:last-child { border-right: none; }
+    .flow-node::after {
+      content: '→';
+      position: absolute; right: -14px; top: 50%; transform: translateY(-50%);
+      font-size: 18px; color: var(--text-muted); z-index: 2;
+    }
+    .flow-node:last-child::after { display: none; }
+    .fn-icon { font-size: 28px; margin-bottom: 8px; }
+    .fn-label { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+    .fn-sub { font-size: 11px; color: var(--text-muted); line-height: 1.4; }
+
+    /* ─── Empowerment Grid ─── */
+    .empower-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 60px; }
+    .empower-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px 20px;
+      transition: transform 0.3s;
+    }
+    .empower-card:hover { transform: translateY(-3px); border-color: rgba(249,115,22,0.3); }
+    .ec-icon { font-size: 28px; margin-bottom: 12px; }
+    .ec-label { font-size: 11px; font-weight: 700; color: var(--s-color); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
+    .ec-title { font-size: 16px; font-weight: 800; color: #fff; margin-bottom: 10px; }
+    .ec-problem { font-size: 11px; font-weight: 700; color: var(--text-muted); margin-bottom: 8px; }
+    .ec-items { list-style: none; }
+    .ec-items li { font-size: 12px; color: var(--text-dim); padding: 5px 0; border-bottom: 1px solid var(--border-light); display: flex; gap: 6px; }
+    .ec-items li:last-child { border: none; }
+    .ec-items li::before { content: '→'; color: var(--s-color); flex-shrink: 0; }
+
+    /* ─── B Dual Track ─── */
+    .b-dual { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 60px; }
+    .b-track {
+      background: var(--bg-surface);
+      border-radius: 20px;
+      padding: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .b-track-1 { border: 1px solid rgba(59,130,246,0.25); }
+    .b-track-1::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--b-color); }
+    .b-track-2 { border: 1px solid rgba(139,92,246,0.25); }
+    .b-track-2::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--purple); }
+    .bt-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 8px; }
+    .bt-eyebrow-1 { color: var(--b-color); }
+    .bt-eyebrow-2 { color: var(--purple); }
+    .bt-title { font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 6px; }
+    .bt-desc { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; line-height: 1.6; }
+    .bt-kpi-row { display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
+    .bt-kpi {
+      flex: 1; min-width: 100px;
+      background: var(--bg-surface-2); border-radius: 10px; padding: 12px 14px; text-align: center;
+    }
+    .bt-kpi .kv { font-size: 20px; font-weight: 900; }
+    .kv-1 { color: var(--b-color); }
+    .kv-2 { color: var(--purple); }
+    .bt-kpi .kl { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+    .bt-actions { list-style: none; }
+    .bt-actions li { font-size: 13px; color: var(--text-dim); padding: 8px 0; border-bottom: 1px solid var(--border-light); display: flex; gap: 8px; }
+    .bt-actions li:last-child { border: none; }
+    .bt-actions li::before { content: '●'; font-size: 8px; flex-shrink: 0; margin-top: 5px; }
+    .ba-1 li::before { color: var(--b-color); }
+    .ba-2 li::before { color: var(--purple); }
+
+    /* ─── C Portrait ─── */
+    .c-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 60px; }
+    .c-card {
+      background: var(--bg-surface);
+      border-radius: 20px; padding: 28px;
+      border: 1px solid rgba(16,185,129,0.2);
+    }
+    .c-eyebrow { font-size: 11px; font-weight: 700; color: var(--c-color); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 8px; }
+    .c-title { font-size: 20px; font-weight: 800; color: #fff; margin-bottom: 6px; }
+    .c-persona { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.6; }
+    .c-pain {
+      background: rgba(16,185,129,0.06); border: 1px solid rgba(16,185,129,0.15);
+      border-radius: 10px; padding: 14px 16px; margin-bottom: 16px;
+    }
+    .c-pain .cp-label { font-size: 11px; font-weight: 700; color: var(--c-color); margin-bottom: 6px; letter-spacing: 1px; }
+    .c-pain .cp-text { font-size: 13px; color: var(--text-dim); line-height: 1.6; }
+    .c-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .cm { background: var(--bg-surface-2); border-radius: 8px; padding: 10px 12px; text-align: center; }
+    .cm .cv { font-size: 18px; font-weight: 900; color: var(--c-color); }
+    .cm .cl { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+    /* ─── Flywheel ─── */
+    .flywheel-wrap {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 40px;
+      text-align: center;
+      margin-bottom: 60px;
+    }
+    .fw-title { font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 8px; }
+    .fw-sub { font-size: 14px; color: var(--text-muted); margin-bottom: 40px; }
+    .flywheel {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0;
+      flex-wrap: wrap;
+      position: relative;
+    }
+    .fw-node {
+      display: flex; flex-direction: column; align-items: center;
+      width: 160px; padding: 16px 12px;
+      border-radius: 14px;
+      background: var(--bg-surface-2);
+      border: 1px solid var(--border);
+      transition: transform 0.3s, border-color 0.3s;
+    }
+    .fw-node:hover { transform: scale(1.05); }
+    .fn-num { font-size: 11px; font-weight: 800; color: var(--text-muted); margin-bottom: 6px; letter-spacing: 1px; }
+    .fn-icon-fw { font-size: 24px; margin-bottom: 6px; }
+    .fn-text { font-size: 12px; font-weight: 600; color: #fff; text-align: center; line-height: 1.4; }
+    .fn-desc-fw { font-size: 11px; color: var(--text-muted); margin-top: 4px; text-align: center; }
+    .fw-arrow {
+      font-size: 20px; color: var(--text-muted);
+      display: flex; align-items: center; padding: 0 6px;
+      animation: arrowFade 2s infinite;
+    }
+    .fw-node:nth-child(1) { border-color: rgba(249,115,22,0.4); }
+    .fw-node:nth-child(3) { border-color: rgba(59,130,246,0.4); }
+    .fw-node:nth-child(5) { border-color: rgba(16,185,129,0.4); }
+    .fw-node:nth-child(7) { border-color: rgba(139,92,246,0.4); }
+    .fw-node:nth-child(9) { border-color: rgba(249,115,22,0.4); }
+
+    /* ─── KPI Bar ─── */
+    .kpi-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 60px;
+    }
+    .kpi-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px 20px;
+      text-align: center;
+      transition: transform 0.3s;
+    }
+    .kpi-card:hover { transform: translateY(-3px); }
+    .kpi-num { font-size: 36px; font-weight: 900; line-height: 1; margin-bottom: 6px; }
+    .kpi-num-s { color: var(--s-color); }
+    .kpi-num-b { color: var(--b-color); }
+    .kpi-num-c { color: var(--c-color); }
+    .kpi-num-p { color: var(--yellow); }
+    .kpi-label { font-size: 13px; color: var(--text-dim); font-weight: 500; }
+    .kpi-note { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+
+    /* ─── Differentiation vs 瘦吧 ─── */
+    .diff-table {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 60px;
+    }
+    .dt-row {
+      display: grid;
+      grid-template-columns: 180px 1fr 1fr;
+      border-bottom: 1px solid var(--border);
+    }
+    .dt-row:last-child { border: none; }
+    .dt-cell { padding: 16px 20px; font-size: 13px; }
+    .dt-header { background: var(--bg-surface-2); }
+    .dt-header .dt-cell { font-size: 12px; font-weight: 700; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+    .dt-dim { color: var(--text-dim); font-weight: 600; }
+    .dt-comp { color: var(--text-muted); }
+    .dt-xibo { color: var(--s-color); font-weight: 600; }
+    .dt-tag-win {
+      display: inline-block; background: rgba(16,185,129,0.1);
+      border: 1px solid rgba(16,185,129,0.2); color: var(--c-color);
+      font-size: 10px; font-weight: 700; padding: 2px 8px;
+      border-radius: 4px; margin-left: 8px; letter-spacing: 0.5px;
+    }
+
+    /* ─── Footer ─── */
+    footer { text-align: center; padding: 60px 0; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 13px; }
+
+    /* ─── Animations ─── */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(249,115,22,0.4); } 70% { box-shadow: 0 0 0 8px rgba(249,115,22,0); } 100% { box-shadow: 0 0 0 0 rgba(249,115,22,0); } }
+    @keyframes arrowFade { 0%,100% { opacity: 0.4; } 50% { opacity: 1; } }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 1024px) {
+      .s2b2c-diagram { grid-template-columns: 1fr; }
+      .arrow-col { flex-direction: row; padding: 8px 0; }
+      .arrow-track::after { content: '▼'; right: 50%; top: auto; bottom: -12px; transform: translateX(50%); }
+      .empower-grid { grid-template-columns: 1fr 1fr; }
+      .kpi-bar { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .s2b2c-diagram { grid-template-columns: 1fr; }
+      .b-dual, .c-grid { grid-template-columns: 1fr; }
+      .empower-grid { grid-template-columns: 1fr; }
+      .kpi-bar { grid-template-columns: 1fr 1fr; }
+      .flywheel { gap: 4px; }
+      .fw-node { width: 130px; }
+      .flow-strip { grid-template-columns: 1fr; }
+      .flow-node::after { display: none; }
+      .dt-row { grid-template-columns: 1fr; }
     }
   </style>
-
 </head>
 <body>
+<div class="bg-glow"></div>
+
 <script src="navbar.js?v=20260328"></script>
 
+<div class="wrap">
 
-<div class="page">
+  <!-- ═══ HERO ═══ -->
+  <header class="hero">
+    <div class="hero-badge"><div class="pulse"></div>喜播 2026 · 新商业底座</div>
+    <h1>S<em>2</em>B<em>2</em>C<br>商业模式全景图</h1>
+    <p class="hero-sub">喜播不是教育公司，也不是健康公司。<br>喜播是一家<strong style="color:#fff">赋能型平台公司</strong>——用 AI + 内容 + 工具，把合伙人变成专家，让专家服务好用户。</p>
+    <div class="hero-thesis">
+      核心逻辑转变：从<strong>「喜播直接猎取用户」</strong>到<strong>「喜播赋能班主任/合伙人，让他们用信任关系服务用户」</strong>。<br>
+      喜播赚的是<strong>平台服务费 + 产品差价 + 数据资产增值</strong>，而非一锤子成交。
+    </div>
+  </header>
 
-    <!-- Hero -->
-    <div class="hero">
-        <div class="tag">方案设计 · 2026-03-24</div>
-        <h1>喜播新业务流程全景图</h1>
-        <p>从"一条流水线洗全量用户"到"前端分流、交叉复购、人效清理"——基于真实后端SKU与CHO人效底线的战略重构</p>
+  <!-- ═══ SECTION 1: 三角色定义 ═══ -->
+  <section class="section">
+    <div class="sh">
+      <h2>三角色核心定义 <span class="sh-badge">Role Definition</span></h2>
+      <p>每个角色的身份、核心独特价值、以及喜播在其中承担的功能</p>
+      <div class="sh-line"></div>
     </div>
 
-    <!-- Old vs New -->
-    <h2 class="section-title">新旧模式对比</h2>
-    <div class="compare-banner">
-        <div class="compare-card compare-old">
-            <h3>❌ 旧模式（高风险）</h3>
-            <ul>
-                <li><span class="icon-bad">✗</span> 0元进来全量用户进同一直播间</li>
-                <li><span class="icon-bad">✗</span> 3天强销售逼单，成交极速</li>
-                <li><span class="icon-bad">✗</span> ¥7000 一刀切，不分用户类型</li>
-                <li><span class="icon-bad">✗</span> 班主任陷入私聊黑洞（平均每周被非核心学员消耗20-35h）</li>
-                <li><span class="icon-bad">✗</span> 复购单靠纵向洗脑升仓，无视用户真实能力底盘</li>
-                <li><span class="icon-bad">✗</span> 缺乏横向生态，一门课卖不出去线索就彻底作废</li>
-            </ul>
+    <div class="s2b2c-diagram">
+
+      <!-- S Card -->
+      <div class="role-card role-s">
+        <div class="role-glyph">S</div>
+        <div class="role-who">Super Platform · 超级中台</div>
+        <div class="role-name">喜播平台</div>
+        <div class="role-desc">喜播本身即是S层的唯一主体。S不是商品供应商，是<strong style="color:#fff">能力基础设施提供者</strong>——提供B端成为"专业服务者"所需的一切工具、内容和系统。</div>
+        <div class="role-tags">
+          <span class="rtag rtag-s">AI工具</span>
+          <span class="rtag rtag-s">内容体系</span>
+          <span class="rtag rtag-s">品牌授权</span>
+          <span class="rtag rtag-s">数据中台</span>
+          <span class="rtag rtag-s">风控系统</span>
+          <span class="rtag rtag-s">考证认证</span>
         </div>
-        <div class="compare-arrow">➜</div>
-        <div class="compare-card compare-new">
-            <h3>✅ 新模式（利润与人效双升）</h3>
-            <ul>
-                <li><span class="icon-good">✓</span> 3天体验期做AI自动分层评分，将D类/C2类提前隔离</li>
-                <li><span class="icon-good">✓</span> 彻底砍掉班主任在低净值客户上的无意义1v1私聊（释放人效）</li>
-                <li><span class="icon-good">✓</span> 盘活集团11个后端SKU，用 AI短视频/写作 承接有声流失客户</li>
-                <li><span class="icon-good">✓</span> 阶梯价格打通：¥1500 → ¥2880 → ¥3980 → ¥15800</li>
-                <li><span class="icon-good">✓</span> 每类用户都有匹配的SKU承接</li>
-                <li><span class="icon-good">✓</span> 退费率目标 <10%，D类拦截 ≥90%</li>
-            </ul>
+        <div class="role-value-title">S层核心独特价值</div>
+        <ul class="role-value-list">
+          <li><span class="li-dot dot-s"></span><span><strong style="color:#fff">技术壁垒：</strong>AI学习助手 + HealthMind AI诊断系统，普通人用不了、竞对抄不走</span></li>
+          <li><span class="li-dot dot-s"></span><span><strong style="color:#fff">内容资产：</strong>结构化课程体系 + 营养健康内容库，是B端服务C端的弹药库</span></li>
+          <li><span class="li-dot dot-s"></span><span><strong style="color:#fff">数据护城河：</strong>ABCD风控路由系统，精准识别用户质量，降低B端服务风险</span></li>
+          <li><span class="li-dot dot-s"></span><span><strong style="color:#fff">认证体系：</strong>喜播合格班主任认证 + HealthMind健康管理师考证，给B端身份背书</span></li>
+          <li><span class="li-dot dot-s"></span><span><strong style="color:#fff">监控介入权：</strong>通过后台实时看到所有B端的C端数据，B端服务懈怠可直接介入</span></li>
+        </ul>
+      </div>
+
+      <!-- Arrow S→B -->
+      <div class="arrow-col">
+        <div class="arrow-line">
+          <div class="arrow-label">赋能输出<br>工具/内容/认证</div>
+          <div class="arrow-track at-orange"></div>
         </div>
+        <div style="height:20px"></div>
+        <div class="arrow-line">
+          <div class="arrow-track-rev at-green-rev"></div>
+          <div class="arrow-label">数据回流<br>收入分成</div>
+        </div>
+      </div>
+
+      <!-- B Card -->
+      <div class="role-card role-b">
+        <div class="role-glyph">B</div>
+        <div class="role-who">Business Partner · 服务节点</div>
+        <div class="role-name">喜播认证合伙人</div>
+        <div class="role-desc">B层是<strong style="color:#fff">信任关系的拥有者</strong>。平台无法批量制造人际信任——但B端天然拥有。喜播给B端武装能力，B端用已有信任关系变现。</div>
+        <div class="role-tags">
+          <span class="rtag rtag-b">班主任</span>
+          <span class="rtag rtag-b">健康管理师</span>
+          <span class="rtag rtag-b">考证班毕业生</span>
+          <span class="rtag rtag-b">社群运营者</span>
+        </div>
+        <div class="role-value-title">B层核心独特价值</div>
+        <ul class="role-value-list">
+          <li><span class="li-dot dot-b"></span><span><strong style="color:#fff">信任触达：</strong>朋友圈/社群/熟人网络，平台0成本无法复制的获客来源</span></li>
+          <li><span class="li-dot dot-b"></span><span><strong style="color:#fff">本地化服务：</strong>1v1或小群高黏性陪伴，提升完课率和续费意愿</span></li>
+          <li><span class="li-dot dot-b"></span><span><strong style="color:#fff">持证专业背书：</strong>通过喜播认证后，面对C端有底气收高客单价服务费</span></li>
+          <li><span class="li-dot dot-b"></span><span><strong style="color:#fff">预期校正能力：</strong>早期识别C2用户并降级，降低退费风险（这是B端的核心KPI）</span></li>
+          <li><span class="li-dot dot-b"></span><span><strong style="color:#fff">裂变节点：</strong>满意的C端经B端介绍进入，获客成本几乎为0</span></li>
+        </ul>
+      </div>
+
+      <!-- Arrow B→C -->
+      <div class="arrow-col">
+        <div class="arrow-line">
+          <div class="arrow-label">专业服务<br>陪伴交付</div>
+          <div class="arrow-track at-blue"></div>
+        </div>
+        <div style="height:20px"></div>
+        <div class="arrow-line">
+          <div class="arrow-track-rev at-green-rev"></div>
+          <div class="arrow-label">服务费<br>口碑转介绍</div>
+        </div>
+      </div>
+
+      <!-- C Card -->
+      <div class="role-card role-c">
+        <div class="role-glyph">C</div>
+        <div class="role-who">Consumer · 终端用户</div>
+        <div class="role-name">喜播用户</div>
+        <div class="role-desc">C层是<strong style="color:#fff">价值来源和增长飞轮的起点</strong>。C端的真实效果产生口碑，口碑引入新C端，优质C端还能转化为新的B端合伙人。</div>
+        <div class="role-tags">
+          <span class="rtag rtag-c">35-40岁女性</span>
+          <span class="rtag rtag-c">B类用户基本盘</span>
+          <span class="rtag rtag-c">代谢慢病管理者</span>
+          <span class="rtag rtag-c">A类高净值用户</span>
+        </div>
+        <div class="role-value-title">C层核心独特价值</div>
+        <ul class="role-value-list">
+          <li><span class="li-dot dot-c"></span><span><strong style="color:#fff">真实需求变现：</strong>B类用户需求真实×支付有限×预期可校正，是最健康的LTV来源</span></li>
+          <li><span class="li-dot dot-c"></span><span><strong style="color:#fff">效果产生口碑：</strong>真实改变结果→主动分享→新C进入，零成本增长来源</span></li>
+          <li><span class="li-dot dot-c"></span><span><strong style="color:#fff">高价值复购：</strong>教育续班 + HealthMind复购，LTV远高于一次性成交</span></li>
+          <li><span class="li-dot dot-c"></span><span><strong style="color:#fff">C→B转化通道：</strong>学有所成的C端报名考证班→转化为新B端，飞轮自我驱动</span></li>
+          <li><span class="li-dot dot-c"></span><span><strong style="color:#fff">数据产生资产：</strong>真实的使用数据训练AI模型，让S端的技术能力持续进化</span></li>
+        </ul>
+      </div>
+
+    </div><!-- /s2b2c-diagram -->
+  </section>
+
+  <!-- ═══ SECTION 2: 价值循环流 ═══ -->
+  <section class="section">
+    <div class="sh">
+      <h2>完整价值循环 <span class="sh-badge">Value Flow</span></h2>
+      <p>从用户进入到飞轮自我驱动的完整路径</p>
+      <div class="sh-line"></div>
     </div>
 
-    <!-- 5-Stage Pipeline -->
-    <h2 class="section-title">五层业务流程架构</h2>
-    <div class="pipeline">
-        <div class="pipe-stage s1">
-            <div class="pipe-box">
-                <div class="pipe-num">1</div>
-                <h4>前端获客</h4>
-                <p>付费投放分三类素材（技能型/兴趣型/体验型）+ IP矩阵自然流 + 口碑裂变</p>
-            </div>
-            <div class="pipe-arrow">▸</div>
-        </div>
-        <div class="pipe-stage s2">
-            <div class="pipe-box">
-                <div class="pipe-num">2</div>
-                <h4>3天体验期</h4>
-                <p>Day0破冰画像 → Day1行为采集 → Day2 AI评分出分层结果</p>
-            </div>
-            <div class="pipe-arrow">▸</div>
-        </div>
-        <div class="pipe-stage s3">
-            <div class="pipe-box">
-                <div class="pipe-num">3</div>
-                <h4>分层转化</h4>
-                <p>A类顾问通道 / B类阶梯通道 / C1社群通道 / C2&D拦截通道</p>
-            </div>
-            <div class="pipe-arrow">▸</div>
-        </div>
-        <div class="pipe-stage s4">
-            <div class="pipe-box">
-                <div class="pipe-num">4</div>
-                <h4>分层交付</h4>
-                <p>A类三师定制 / B类标准+预期校正 / C1社群陪伴式交付</p>
-            </div>
-            <div class="pipe-arrow">▸</div>
-        </div>
-        <div class="pipe-stage s5">
-            <div class="pipe-box">
-                <div class="pipe-num">5</div>
-                <h4>复购增长</h4>
-                <p>横向扩品 + 累计VIP等级体系（V1→V10），替代纵向逼升仓</p>
-            </div>
-        </div>
+    <div class="flow-strip">
+      <div class="flow-node">
+        <div class="fn-icon">🎯</div>
+        <div class="fn-label">S 赋能 B</div>
+        <div class="fn-sub">AI工具+认证+内容库装备B端，让普通人成为专家</div>
+      </div>
+      <div class="flow-node">
+        <div class="fn-icon">🤝</div>
+        <div class="fn-label">B 触达 C</div>
+        <div class="fn-sub">B端用信任关系&人脉网络带来低成本精准用户</div>
+      </div>
+      <div class="flow-node">
+        <div class="fn-icon">✅</div>
+        <div class="fn-label">C 产生效果</div>
+        <div class="fn-sub">真实成果校正预期，减少退费，增加复购意愿</div>
+      </div>
+      <div class="flow-node">
+        <div class="fn-icon">📣</div>
+        <div class="fn-label">效果→口碑</div>
+        <div class="fn-sub">满意C端口碑转介绍新C端，部分优质C→考证→新B</div>
+      </div>
+      <div class="flow-node">
+        <div class="fn-icon">📈</div>
+        <div class="fn-label">数据回流 S</div>
+        <div class="fn-sub">用户行为数据训练AI模型，S端工具进化，赋能更强</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SECTION 3: S层赋能体系（四大武器库） ═══ -->
+  <section class="section">
+    <div class="sh">
+      <h2>S层：喜播赋能体系 <span class="sh-badge">Empowerment System</span></h2>
+      <p>喜播给B端提供的4类核心武器，解决B端服务C端过程中的4大痛点</p>
+      <div class="sh-line"></div>
     </div>
 
-    <!-- ABCD Lanes -->
-    <h2 class="section-title">四条专属用户旅程</h2>
-    <div class="lanes">
-        <!-- A Lane -->
-        <div class="lane lane-a">
-            <h4>A类：价值共创</h4>
-            <div class="lane-step"><span class="step-icon">🎯</span> 专业IP内容/口碑推荐引入</div>
-            <div class="lane-step"><span class="step-icon">👮</span> 切断系统群发，高阶顾问1对1承接</div>
-            <div class="lane-step"><span class="step-icon">👑</span> 倾注全公司最优质名师与服务工时</div>
-            <div class="lane-step"><span class="step-icon">💎</span> 推荐高研班(15800) / 张震IP课(6380)</div>
-            <div class="lane-step"><span class="step-icon">🔄</span> 横向跨越：打通AI全能视听矩阵</div>
-            <span class="lane-tag tag-price">¥6,380 - 15,800</span>
-            <span class="lane-tag tag-conv">利润绝对核心</span>
-        </div>
+    <div class="empower-grid">
+      <div class="empower-card">
+        <div class="ec-icon">🤖</div>
+        <div class="ec-label">武器 01 · 技术赋能</div>
+        <div class="ec-title">AI 工具武装</div>
+        <div class="ec-problem">解决 B 端"服务效率低"问题</div>
+        <ul class="ec-items">
+          <li>AI学习助手：自动生成个性化学习计划</li>
+          <li>HealthMind AI：读取体检单 → 自动输出干预方案</li>
+          <li>ABCD风控路由：进线即分流，阻断C2用户</li>
+          <li>数据看板：B端实时查看名下C端依从性</li>
+        </ul>
+      </div>
+      <div class="empower-card">
+        <div class="ec-icon">🎓</div>
+        <div class="ec-label">武器 02 · 资质赋能</div>
+        <div class="ec-title">认证体系</div>
+        <div class="ec-problem">解决 B 端"没有信任背书"问题</div>
+        <ul class="ec-items">
+          <li>喜播认证班主任（教育序列）</li>
+          <li>HealthMind健康管理师考证（健康序列）</li>
+          <li>分级认证：初级→高级，越高佣金越高</li>
+          <li>考证班本身即B端招募漏斗（零获客成本）</li>
+        </ul>
+      </div>
+      <div class="empower-card">
+        <div class="ec-icon">📢</div>
+        <div class="ec-label">武器 03 · 品牌赋能</div>
+        <div class="ec-title">品牌与流量输出</div>
+        <div class="ec-problem">解决 B 端"获客门槛高"问题</div>
+        <ul class="ec-items">
+          <li>喜播主IP直播引流 → 分发给B端线索</li>
+          <li>AI短视频内容模板包，B端直接发布</li>
+          <li>HealthMind科学背书素材库（TLC/代谢逻辑）</li>
+          <li>"用户成果"案例体系，B端发朋友圈有据可依</li>
+        </ul>
+      </div>
+      <div class="empower-card">
+        <div class="ec-icon">📊</div>
+        <div class="ec-label">武器 04 · 数据赋能</div>
+        <div class="ec-title">风控与监控</div>
+        <div class="ec-problem">解决 B 端"被C2烫手用户拖累"问题</div>
+        <ul class="ec-items">
+          <li>付款速度&花呗期数自动检测 → C2降级</li>
+          <li>第1-30天依从性预警（完课率/作业提交）</li>
+          <li>B端KPI与退费率挂钩，倒逼筛选动作</li>
+          <li>高风险账号平台可直接介入重新分配</li>
+        </ul>
+      </div>
+    </div>
+  </section>
 
-        <!-- B Lane -->
-        <div class="lane lane-b">
-            <h4>B类：成长投资</h4>
-            <div class="lane-step"><span class="step-icon">📱</span> 信息流广告/直播间引入</div>
-            <div class="lane-step"><span class="step-icon">✂️</span> 严格SOP跟进，砍掉无效1v1私聊废话</div>
-            <div class="lane-step"><span class="step-icon">📋</span> 提供阶梯报价，不用1万的课逼单</div>
-            <div class="lane-step"><span class="step-icon">🔥</span> 入学第一周强制【预期校正】控退费</div>
-            <div class="lane-step"><span class="step-icon">🔄</span> 推 AI写作(2880) / 有声课(3980) 交叉复购</div>
-            <span class="lane-tag tag-price">¥2,880 - 3,980</span>
-            <span class="lane-tag tag-conv">流水基本盘</span>
-        </div>
-
-        <!-- C1 Lane -->
-        <div class="lane lane-c1">
-            <h4>C1类：兴趣陪伴</h4>
-            <div class="lane-step"><span class="step-icon">❤️</span> 陪伴型IP内容/朋友推荐</div>
-            <div class="lane-step"><span class="step-icon">🤖</span> 全面撤出高薪人工，由兼职/AI全托管</div>
-            <div class="lane-step"><span class="step-icon">👥</span> 引导进入兴趣社群（严禁逼单话术）</div>
-            <div class="lane-step"><span class="step-icon">🎨</span> 推 AI短剧写作L2(1500) / 体验轻课</div>
-            <div class="lane-step"><span class="step-icon">🔄</span> 主打陪伴防寂寞，拉长生命周期复购</div>
-            <span class="lane-tag tag-price">¥398 - 1,500</span>
-            <span class="lane-tag tag-conv">零客诉 / 摊成本</span>
-        </div>
-
-        <!-- C2/D Lane -->
-        <div class="lane lane-cd">
-            <h4>C2/D类：风控拦截</h4>
-            <div class="lane-step"><span class="step-icon">⚡</span> 冲动型广告/极短视频引入</div>
-            <div class="lane-step"><span class="step-icon">🚨</span> 触发风控关键词/行为预警</div>
-            <div class="lane-step"><span class="step-icon">🔒</span> C2：仅推¥98体验包+风险告知书</div>
-            <div class="lane-step"><span class="step-icon">🛑</span> D类：系统冻结支付+合规劝退</div>
-            <div class="lane-step"><span class="step-icon">💬</span> "等您准备好了，我们随时欢迎"</div>
-            <span class="lane-tag tag-risk">拦截率 ≥90%</span>
-        </div>
+  <!-- ═══ SECTION 4: B端双轨形态 ═══ -->
+  <section class="section">
+    <div class="sh">
+      <h2>B层：双轨合伙人形态 <span class="sh-badge">B-End Dual Track</span></h2>
+      <p>喜播的B端不是一种人，是两条并行轨道——对应两条业务曲线</p>
+      <div class="sh-line"></div>
     </div>
 
-    <!-- SKU Ladder -->
-    <h2 class="section-title">真实全矩阵大盘 SKU 补强体系（替代极度单薄的有声逼仓）</h2>
-    <div class="sku-section">
-        <div class="sku-ladder">
-            <div class="sku-bar sku1">
-                <div class="sku-name">AI短故事/轻体验</div>
-                <div class="sku-price">¥1,500</div>
-                <div class="sku-target">C1兴趣 / B类Down-sell</div>
-            </div>
-            <div class="sku-bar sku2">
-                <div class="sku-name">有声剪辑 / AI写作L1</div>
-                <div class="sku-price">¥2,399+</div>
-                <div class="sku-target">B类横向扩品副业</div>
-            </div>
-            <div class="sku-bar sku3">
-                <div class="sku-name">有声精英 / AI视频L1</div>
-                <div class="sku-price">¥3,980</div>
-                <div class="sku-target">主力现金牛（严控退费）</div>
-            </div>
-            <div class="sku-bar sku4">
-                <div class="sku-name">张震IP课 / 有声高研</div>
-                <div class="sku-price">¥6,380+</div>
-                <div class="sku-target">A类顶尖大哥专属</div>
-            </div>
+    <div class="b-dual">
+      <!-- Track 1: 班主任 -->
+      <div class="b-track b-track-1">
+        <div class="bt-eyebrow bt-eyebrow-1">第一曲线 · 教育序列</div>
+        <div class="bt-title">喜播认证班主任</div>
+        <div class="bt-desc">从"客服"升级为"伴学诊疗合伙人"。核心职能不是管群，而是通过AI工具+专业知识完成预期校正，将B类用户安全服务至完课续班。</div>
+        <div class="bt-kpi-row">
+          <div class="bt-kpi"><div class="kv kv-1">≥80%</div><div class="kl">完课率目标</div></div>
+          <div class="bt-kpi"><div class="kv kv-1">≤10%</div><div class="kl">退费率红线</div></div>
+          <div class="bt-kpi"><div class="kv kv-1">+35%</div><div class="kl">续班率目标</div></div>
         </div>
-        <p style="text-align:center; color:var(--muted); font-size:0.9rem; margin-top:1rem;">核心逻辑：11个真实后端SKU互相补底，把在“有声线”失利的用户，平行转移到“AI写作/短视频”变现阵地，死死锁住每一滴CAC流量。</p>
+        <ul class="bt-actions ba-1">
+          <li>使用ABCD路由系统对进线用户做二次分流，C2不接单</li>
+          <li>第7天完成"小成果打卡"，建立B类用户早期信心锚点</li>
+          <li>首课完成率≥80%+作业提交+主动追问 → 推升仓</li>
+          <li>佣金结构：首班基础提成 + 退费对赌（超10%暂扣）+ 续班奖金</li>
+          <li>优秀班主任路径：积累服务案例 → 报考HealthMind健康管理师</li>
+        </ul>
+      </div>
+
+      <!-- Track 2: HealthMind -->
+      <div class="b-track b-track-2">
+        <div class="bt-eyebrow bt-eyebrow-2">第二曲线 · HealthMind序列</div>
+        <div class="bt-title">HealthMind 健康管理师</div>
+        <div class="bt-desc">面向代谢性慢病用户（Persona B管理者）的高客单价服务者。持有喜播认证+HealthMind AI工具，服务费而非产品差价为主要收入来源，规避传销合规风险。</div>
+        <div class="bt-kpi-row">
+          <div class="bt-kpi"><div class="kv kv-2">¥9800+</div><div class="kl">90天服务包</div></div>
+          <div class="bt-kpi"><div class="kv kv-2">≥60%</div><div class="kl">用户复购率</div></div>
+          <div class="bt-kpi"><div class="kv kv-2">TLC</div><div class="kl">六维干预体系</div></div>
+        </div>
+        <ul class="bt-actions ba-2">
+          <li>考证班毕业生直接转化为B端（考证班=招募漏斗）</li>
+          <li>每个新用户接入HealthMind AI：输入体检单→自动生成干预方案</li>
+          <li>收取"管理服务费"而非产品差价，合规性高，定价权强</li>
+          <li>核心考核：用户代谢指标改善率（BMI/血糖/体脂率）</li>
+          <li>大成标志对标：蒋德铭本人将中度脂肪肝摘除之日即MVP验证</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SECTION 5: C端用户画像 ═══ -->
+  <section class="section">
+    <div class="sh">
+      <h2>C层：终端用户画像 <span class="sh-badge">Consumer Profile</span></h2>
+      <p>两条曲线各有核心C端人群，用户质量决定B端生存质量</p>
+      <div class="sh-line"></div>
     </div>
 
-    <!-- VIP Track -->
-    <h2 class="section-title">累计会员等级体系（替代纵向逼升仓）</h2>
-    <div class="vip-section">
-        <div class="vip-track">
-            <div class="vip-node v1">
-                <div class="vip-dot">V1</div>
-                <div class="vip-label">体验会员</div>
-                <div class="vip-price">¥0-398</div>
-            </div>
-            <div class="vip-connector"></div>
-            <div class="vip-node v3">
-                <div class="vip-dot">V3</div>
-                <div class="vip-label">成长会员</div>
-                <div class="vip-price">¥399-3980</div>
-            </div>
-            <div class="vip-connector"></div>
-            <div class="vip-node v5">
-                <div class="vip-dot">V5</div>
-                <div class="vip-label">进阶会员</div>
-                <div class="vip-price">¥3981-9800</div>
-            </div>
-            <div class="vip-connector"></div>
-            <div class="vip-node v7">
-                <div class="vip-dot">V7</div>
-                <div class="vip-label">精英会员</div>
-                <div class="vip-price">¥9801-20000</div>
-            </div>
-            <div class="vip-connector"></div>
-            <div class="vip-node v10">
-                <div class="vip-dot">V10</div>
-                <div class="vip-label">合伙人</div>
-                <div class="vip-price">¥20001+</div>
-            </div>
+    <div class="c-grid">
+      <!-- 教育C端 -->
+      <div class="c-card">
+        <div class="c-eyebrow">第一曲线 · 教育C端</div>
+        <div class="c-title">35-40岁全职女性（B类基本盘）</div>
+        <div class="c-persona">需求真实 × 支付有限 × 预期偏高但可校正。不换渠道，聚焦现有漏斗效率——增长来自入学后第1-30天，不来自获客。</div>
+        <div class="c-pain">
+          <div class="cp-label">核心痛点</div>
+          <div class="cp-text">有强烈的职业焦虑和技能升级需求，但预算有限（花呗分期），容易因预期过高在第15-30天出现退费冲动。校正窗口=入学第1-7天。</div>
         </div>
-        <p style="text-align:center; color:var(--muted); font-size:0.9rem; margin-top:1rem;">用户心理从"又要我花钱"变成"我在攒等级"——累计制而非一次性大额，降低每次决策压力。</p>
+        <div class="c-metrics">
+          <div class="cm"><div class="cv">P0</div><div class="cl">B类用户优先级</div></div>
+          <div class="cm"><div class="cv">24%</div><div class="cl">当前退费率（目标≤10%）</div></div>
+          <div class="cm"><div class="cv">1-30天</div><div class="cl">LTV关键窗口</div></div>
+          <div class="cm"><div class="cv">C2拦截</div><div class="cl">付款&lt;12h+花呗≥6期</div></div>
+        </div>
+      </div>
+
+      <!-- HealthMind C端 -->
+      <div class="c-card">
+        <div class="c-eyebrow">第二曲线 · HealthMind C端</div>
+        <div class="c-title">代谢性慢病管理者（Persona B）</div>
+        <div class="c-persona">成功且高自律的管理者，最大痛点是"无效自律"——明明做了很多，但体重/血糖/体脂没有改善。他们有钱有时间，缺的是科学的系统方法。</div>
+        <div class="c-pain">
+          <div class="cp-label">核心痛点</div>
+          <div class="cp-text">不缺执行力，缺科学干预逻辑。需要AI+专业方案"告诉我该怎么做"，而不是"你要努力"的情绪激励。蒋德铭本人即Persona B活体样本。</div>
+        </div>
+        <div class="c-metrics">
+          <div class="cm"><div class="cv">¥9800+</div><div class="cl">90天管理服务包</div></div>
+          <div class="cm"><div class="cv">肥胖/三高</div><div class="cl">核心代谢疾病</div></div>
+          <div class="cm"><div class="cv">TLC六维</div><div class="cl">营养/运动/睡眠等</div></div>
+          <div class="cm"><div class="cv">脂肪肝消除</div><div class="cl">MVP大成标志</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SECTION 6: 飞轮逻辑 ═══ -->
+  <section class="section">
+    <div class="flywheel-wrap">
+      <div class="fw-title">自我强化飞轮</div>
+      <div class="fw-sub">S赋能B越强 → B服务C越好 → C效果越真实 → 口碑带来新C+新B → S数据越丰富 → 循环加速</div>
+      <div class="flywheel">
+        <div class="fw-node">
+          <div class="fn-num">STEP 01</div>
+          <div class="fn-icon-fw">🏗️</div>
+          <div class="fn-text">S 持续进化<br>AI工具</div>
+          <div class="fn-desc-fw">数据回流训练<br>模型越来越准</div>
+        </div>
+        <div class="fw-arrow">→</div>
+        <div class="fw-node">
+          <div class="fn-num">STEP 02</div>
+          <div class="fn-icon-fw">💪</div>
+          <div class="fn-text">B 端能力<br>被武装</div>
+          <div class="fn-desc-fw">工具降低准入门槛<br>更多人敢做B端</div>
+        </div>
+        <div class="fw-arrow">→</div>
+        <div class="fw-node">
+          <div class="fn-num">STEP 03</div>
+          <div class="fn-icon-fw">🎯</div>
+          <div class="fn-text">C 端获得<br>真实改变</div>
+          <div class="fn-desc-fw">完课率高<br>退费率低</div>
+        </div>
+        <div class="fw-arrow">→</div>
+        <div class="fw-node">
+          <div class="fn-num">STEP 04</div>
+          <div class="fn-icon-fw">📣</div>
+          <div class="fn-text">效果产生<br>口碑裂变</div>
+          <div class="fn-desc-fw">新C低成本进入<br>部分C→新B</div>
+        </div>
+        <div class="fw-arrow">→</div>
+        <div class="fw-node">
+          <div class="fn-num">STEP 05</div>
+          <div class="fn-icon-fw">🔄</div>
+          <div class="fn-text">规模扩大<br>数据沉淀</div>
+          <div class="fn-desc-fw">平台价值提升<br>护城河加深</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SECTION 7: 关键指标 ═══ -->
+  <section class="section">
+    <div class="sh">
+      <h2>S2B2C 关键指标体系 <span class="sh-badge">KPI Framework</span></h2>
+      <p>三个角色各有核心健康指标，S层通过这些指标判断整个系统是否在健康运转</p>
+      <div class="sh-line"></div>
     </div>
 
-    <!-- KPI Grid -->
-    <h2 class="section-title">核心指标：旧→新</h2>
-    <div class="kpi-grid">
-        <div class="kpi-card">
-            <div class="kpi-old">3%</div>
-            <div class="kpi-arrow">▼</div>
-            <div class="kpi-new">8-10%</div>
-            <div class="kpi-label">综合转化率</div>
-        </div>
-        <div class="kpi-card">
-            <div class="kpi-old">24%</div>
-            <div class="kpi-arrow">▼</div>
-            <div class="kpi-new">&lt;10%</div>
-            <div class="kpi-label">退费率</div>
-        </div>
-        <div class="kpi-card">
-            <div class="kpi-old">&lt;50%</div>
-            <div class="kpi-arrow">▼</div>
-            <div class="kpi-new">≥90%</div>
-            <div class="kpi-label">D类拦截率</div>
-        </div>
+    <div class="kpi-bar">
+      <div class="kpi-card">
+        <div class="kpi-num kpi-num-s">≥30%</div>
+        <div class="kpi-label">B端年增长率</div>
+        <div class="kpi-note">考证班毕业→B端转化率目标</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-num kpi-num-b">≤10%</div>
+        <div class="kpi-label">B端名下退费率红线</div>
+        <div class="kpi-note">超线暂扣佣金，触发强制培训</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-num kpi-num-c">≥80%</div>
+        <div class="kpi-label">C端首月完课率</div>
+        <div class="kpi-note">第1-30天窗口是LTV核心杠杆</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-num kpi-num-p">15%+</div>
+        <div class="kpi-label">健康净利率目标</div>
+        <div class="kpi-note">以此为底线的全链路UE校验</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SECTION 8: 与瘦吧对比 ═══ -->
+  <section class="section">
+    <div class="sh">
+      <h2>喜播 vs 瘦吧：差异化壁垒 <span class="sh-badge">Differentiation</span></h2>
+      <p>学习瘦吧模式的同时，必须建立喜播自己的不可复制优势</p>
+      <div class="sh-line"></div>
     </div>
 
-    <!-- Priority -->
-    <h2 class="section-title">落地优先级</h2>
-    <div class="priority-list">
-        <div class="priority-card p0">
-            <h4>🔴 P0 - 挥刀裁切：本月启动</h4>
-            <ol>
-                <li>强制盘点班主任效能，砍掉其每周20-30h的无意义私聊黑洞</li>
-                <li>冻结中低效编制HC，下放兼职或AI托管低价值C线群</li>
-                <li>CRM上线ABCD评分预警与D类物理隔离锁</li>
-            </ol>
-        </div>
-        <div class="priority-card p1">
-            <h4>🟠 P1 - 资源重组：下月完成</h4>
-            <ol>
-                <li>把挤出来的精尖人工运力，100%砸进A类客户池中</li>
-                <li>跑通交叉互洗矩阵（如有声书拒单客推AI写作1500）</li>
-                <li>死锁B类学员转化后第1周的【降预期】合规话术，防退费</li>
-            </ol>
-        </div>
-        <div class="priority-card p2">
-            <h4>🔵 P2 - 季度内完成</h4>
-            <ol>
-                <li>累计会员等级体系上线</li>
-                <li>横向扩品推荐引擎开发</li>
-                <li>首场A类线下圈层活动策划</li>
-            </ol>
-        </div>
+    <div class="diff-table">
+      <div class="dt-row dt-header">
+        <div class="dt-cell">对比维度</div>
+        <div class="dt-cell">瘦吧（对标参照）</div>
+        <div class="dt-cell">喜播（差异化定位）</div>
+      </div>
+      <div class="dt-row">
+        <div class="dt-cell dt-dim">S层核心能力</div>
+        <div class="dt-cell dt-comp">产品（减脂饼干）+ AI体脂分析APP</div>
+        <div class="dt-cell dt-xibo">教育内容体系 + HealthMind AI代谢干预 + ABCD风控中台 <span class="dt-tag-win">更深</span></div>
+      </div>
+      <div class="dt-row">
+        <div class="dt-cell dt-dim">B端角色</div>
+        <div class="dt-cell dt-comp">体脂管理师（单一健康序列）</div>
+        <div class="dt-cell dt-xibo">班主任（教育序列）+ 健康管理师（健康序列），双轨并行 <span class="dt-tag-win">双曲线</span></div>
+      </div>
+      <div class="dt-row">
+        <div class="dt-cell dt-dim">C端质量控制</div>
+        <div class="dt-cell dt-comp">成交后靠服务质量驱动复购</div>
+        <div class="dt-cell dt-xibo">进线即ABCD分流，C2前端拦截，退费风险前置化 <span class="dt-tag-win">前置防守</span></div>
+      </div>
+      <div class="dt-row">
+        <div class="dt-cell dt-dim">B端招募来源</div>
+        <div class="dt-cell dt-comp">主要靠老代理裂变</div>
+        <div class="dt-cell dt-xibo">考证班毕业生直接转B端，C→B转化漏斗内生 <span class="dt-tag-win">自产B端</span></div>
+      </div>
+      <div class="dt-row">
+        <div class="dt-cell dt-dim">利润模型</div>
+        <div class="dt-cell dt-comp">产品差价为主，服务费为辅</div>
+        <div class="dt-cell dt-xibo">服务费（课程+健康管理）为主，产品为辅，定价权更强 <span class="dt-tag-win">更高利润</span></div>
+      </div>
+      <div class="dt-row">
+        <div class="dt-cell dt-dim">数据资产</div>
+        <div class="dt-cell dt-comp">用户体脂数据（单一健康维度）</div>
+        <div class="dt-cell dt-xibo">学习行为+代谢健康+消费行为三维交叉数据，训练更全面的AI模型 <span class="dt-tag-win">复合护城河</span></div>
+      </div>
     </div>
-
-    <div class="footer">
-        <p>大卫AI助手 · 基于兴趣岛模型与ABCD分层体系综合设计 · 2026-03-24</p>
-        <p style="margin-top:0.25rem;">非最终业务决策建议，落地前请结合实际运营数据验证可行性</p>
-    </div>
+  </section>
 
 </div>
+
+<footer>
+  <p>喜播集团 XIBO Executive Dashboard © 2026<br>S2B2C 商业模式设计 · 基于瘦吧对标研究重构</p>
+</footer>
+
 </body>
 </html>
