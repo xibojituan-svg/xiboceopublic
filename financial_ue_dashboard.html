@@ -222,7 +222,7 @@
     <div id="app" class="max-w-7xl mx-auto" style="padding-top: 32px;" v-cloak>
         <div class="dashboard-header">
             <div class="target-tag">
-                <i class="fas fa-bullseye"></i> 战略锚点：5000万净利润 / 10% 净利红线
+                <i class="fas fa-bullseye"></i> 战略锚点：本月目标基准线 (年度5000万折算) / 10% 净利红线
             </div>
             <h1>第一曲线生死线 · UE自动导航沙盘</h1>
             <p class="text-text-dim max-w-2xl mx-auto mt-4 font-medium text-lg">
@@ -257,19 +257,19 @@
                     </div>
 
                     <div class="input-group">
-                        <label>年度固定成本盘 (万元)</label>
+                        <label>当月固定成本盘 (万元)</label>
                         <input type="number" v-model.number="actuals.fixed_cost">
                         <p class="text-xs text-text-muted mt-1">包含总部、后勤、房租及基础行政薪酬</p>
                     </div>
 
                     <div class="input-group">
-                        <label>单客综合获客成本 CAC (元)</label>
+                        <label>有效加微获客单价 CPL (元)</label>
                         <input type="number" v-model.number="actuals.cac_per_user">
-                        <p class="text-xs text-text-muted mt-1">加权后每买一个有效报名学员需要花多少</p>
+                        <p class="text-xs text-text-muted mt-1">均摊后每买一条有效加微线索需要花多少</p>
                     </div>
                     
                     <div class="input-group">
-                        <label>年新增付费学员总数 (人)</label>
+                        <label>当月有效加微总数 (线索数)</label>
                         <input type="number" v-model.number="actuals.new_students">
                     </div>
 
@@ -288,7 +288,7 @@
                         <i class="fas fa-balance-scale-right"></i>
                     </div>
                     <div>
-                        <h2 class="text-xl font-bold text-white">5000万净利润目标 倒推镜</h2>
+                        <h2 class="text-xl font-bold text-white">年度5000万净利润 倒推境 (当月标准)</h2>
                         <p class="text-xs text-text-dim">不要看虚高的过程，看离“必须活下去”的结果有多远</p>
                     </div>
                 </div>
@@ -328,11 +328,10 @@
                     </div>
                 </div>
 
-                <!-- Final Calculation -->
                 <div class="mt-6 border-2 border-[#3f3f46] rounded-xl overflow-hidden shadow-2xl">
                     <div class="p-4 bg-[#1e293b] flex justify-between items-center">
-                        <div class="font-bold text-lg">实际预估算净利润</div>
-                        <div class="text-2xl font-black tracking-tight" :class="actualNetProfit >= 5000 ? 'text-[#10b981]' : (actualNetProfit > 0 ? 'text-[#f59e0b]' : 'text-[#ef4444]')">
+                        <div class="font-bold text-lg">当期预估验证净利润</div>
+                        <div class="text-2xl font-black tracking-tight" :class="actualNetProfit >= targets.net_profit ? 'text-[#10b981]' : (actualNetProfit > 0 ? 'text-[#f59e0b]' : 'text-[#ef4444]')">
                             {{actualNetProfit >= 0 ? '+' : ''}}{{actualNetProfit.toFixed(0)}} 万元
                         </div>
                     </div>
@@ -343,7 +342,7 @@
                 </div>
                 
                 <div class="mt-4 text-center">
-                    <span v-if="actualNetProfit >= 5000" class="inline-block py-1 px-4 rounded-full bg-[rgba(16,185,129,0.2)] text-[#10b981] text-sm font-bold border border-[#10b981]">
+                    <span v-if="actualNetProfit >= targets.net_profit" class="inline-block py-1 px-4 rounded-full bg-[rgba(16,185,129,0.2)] text-[#10b981] text-sm font-bold border border-[#10b981]">
                         🟢 财务指标健康，第一曲线可为第二曲线输血
                     </span>
                     <span v-else-if="actualNetProfit > 0" class="inline-block py-1 px-4 rounded-full bg-[rgba(245,158,11,0.2)] text-[#f59e0b] text-sm font-bold border border-[#f59e0b]">
@@ -415,13 +414,13 @@
                         </div>
                     </div>
                     
-                    <div v-else-if="actualNetProfit >= 5000" class="glass-card p-6" style="border-top: 4px solid #10b981; background: linear-gradient(135deg, rgba(24,24,27,0.95), rgba(16,185,129,0.05));">
+                    <div v-else-if="actualNetProfit >= targets.net_profit" class="glass-card p-6" style="border-top: 4px solid #10b981; background: linear-gradient(135deg, rgba(24,24,27,0.95), rgba(16,185,129,0.05));">
                         <div class="flex items-center gap-3 mb-3">
                             <span class="w-8 h-8 rounded-full bg-[rgba(16,185,129,0.2)] flex items-center justify-center text-[#10b981]"><i class="fas fa-check-circle"></i></span>
                             <h3 class="font-bold text-[#10b981] text-lg">大盘稳固：战略资金库建立</h3>
                         </div>
                         <p class="text-sm text-text-dim mb-4 leading-relaxed">
-                            <strong class="text-white">财务护航通过：</strong> 退费（{{actuals.refund_rate}}%）得到严控，流量效率达到临界点之上，实现了预定 5000万 的正向现金流造血。
+                            <strong class="text-white">财务护航通过：</strong> 退费（{{actuals.refund_rate}}%）得到严控，流量效率达到临界点之上，实现了预定单期 {{targets.net_profit}}万 的正向现金流造血。
                         </p>
                         <div class="bg-[rgba(16,185,129,0.1)] p-4 rounded-lg border border-[rgba(16,185,129,0.3)]">
                             <span class="text-xs uppercase tracking-wider text-[#10b981] font-bold block mb-1">进击动作</span>
@@ -456,19 +455,19 @@
         createApp({
             data() {
                 return {
-                    // Default baseline reflecting the problematic "old world" UE scenario 
-                    // which shows why we need the 50M target structure
+                    // Default baseline reflecting the 2602 monthly actuals 
+                    // which shows a heavily bleeding UE scenario
                     actuals: {
-                        signed_revenue: 51000, // 万元 
-                        refund_rate: 24, // 24% (historical bad)
-                        fixed_cost: 12000, // 万元
-                        cac_per_user: 370, // 元
-                        new_students: 14000, // 人
-                        variable_cost: 13800 // 万元
+                        signed_revenue: 2756, // 万元 
+                        refund_rate: 24.6, // %
+                        fixed_cost: 917, // 万元
+                        cac_per_user: 97, // 元 (CPL actually based on 加微)
+                        new_students: 71441, // 人 (表示有效加微数)
+                        variable_cost: 1170 // 万元
                     },
                     // Theoretical Target Anchors based on 50M profit definition
                     targets: {
-                        net_profit: 5000, 
+                        net_profit: 417,  // 对应年度5000万的单月目标基准
                         net_margin: 10,
                         refund_ceiling: 10
                     }
