@@ -83,6 +83,7 @@
         <a href="ABCD_流程图.html" class="nav-link` + isActive('ABCD_流程图.html') + `">ABCD转化流程图</a>
         <a href="new_business_process_infographic.html" class="nav-link` + isActive('new_business_process_infographic.html') + `">S2B2C链条</a>
         <a href="financial_ue_dashboard.html" class="nav-link` + isActive('financial_ue_dashboard.html') + `">财务UE预演</a>
+        <a href="refund_analysis_dashboard.html" class="nav-link` + isActive('refund_analysis_dashboard.html') + `">退费熔断看板</a>
         <a href="dual_track_system.html" class="nav-link` + isActive('dual_track_system.html') + `">双轨制组织设计</a>
       </div>
     </nav>

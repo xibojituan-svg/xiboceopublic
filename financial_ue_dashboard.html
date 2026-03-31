@@ -1,624 +1,228 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>动态战略财务沙盘：年度1200万净利基准 UE 导航器</title>
-    <meta name="description" content="基于第一曲线1200万净利底线（进阶5000万）目标，进行的动态仪表盘">
+    <title>单客 UE 商业漏斗模型 (CEO 战略罗盘)</title>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
-        rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#f97316',
-                        secondary: '#475569',
-                        dark: '#1e293b',
-                        light: '#f8fafc',
-                        success: '#10b981',
-                        danger: '#ef4444',
-                        amber: '#f59e0b',
-                        blue: '#3b82f6'
-                    }
-                }
-            }
-        }
-    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg: #09090b;
-            --bg-surface: #18181b;
-            --bg-surface-hover: #27272a;
-            --border: #3f3f46;
-            --text: #f4f4f5;
-            --text-dim: #a1a1aa;
-            --text-muted: #71717a;
-
-            --brand-primary: #ef4444;
-            --brand-secondary: #f97316;
-            --brand-accent: #10b981;
-            --brand-glow: rgba(239, 68, 68, 0.2);
+        :root { --bg: #09090b; --text: #f4f4f5; }
+        body { font-family: 'Inter', -apple-system, 'PingFang SC', sans-serif; background-color: var(--bg); color: var(--text); line-height: 1.6; padding-top: 2rem; padding-bottom: 5rem; }
+        .glass-card { background: rgba(24, 24, 27, 0.85); backdrop-filter: blur(16px); border: 1px solid #3f3f46; box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5); }
+        .accordion-transition { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .data-value { font-family: 'Inter', monospace; font-variant-numeric: tabular-nums; }
+        /* Pathway styles */
+        .path-node { position: relative; }
+        .path-node:not(:last-child)::after {
+            content: ''; position: absolute; right: -20px; top: 50%; transform: translateY(-50%);
+            width: 16px; height: 2px; background: #52525b; z-index: 1;
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        .path-node:not(:last-child)::before {
+            content: ''; position: absolute; right: -24px; top: 50%; transform: translateY(-50%) rotate(45deg);
+            width: 8px; height: 8px; border-top: 2px solid #52525b; border-right: 2px solid #52525b; z-index: 1;
         }
-
-        body {
-            font-family: 'Inter', -apple-system, 'PingFang SC', sans-serif !important;
-            background-color: var(--bg) !important;
-            color: var(--text) !important;
-            line-height: 1.6;
-        }
-
-        .glass-card {
-            background: rgba(24, 24, 27, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-        }
-
-        .input-group label {
-            font-size: 0.875rem;
-            color: var(--text-dim);
-            font-weight: 600;
-            display: block;
-            margin-bottom: 0.3rem;
-        }
-
-        input[type="number"],
-        input[type="range"] {
-            width: 100%;
-            border-radius: 6px;
-        }
-
-        input[type="number"] {
-            background: #27272a;
-            border: 1px solid var(--border);
-            color: var(--text);
-            padding: 0.5rem 0.75rem;
-            outline: none;
-            transition: border-color 0.2s;
-            font-size: 0.875rem;
-        }
-
-        input[type="number"]:focus {
-            border-color: #f97316;
-            box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2);
-        }
-
-        .dashboard-header {
-            text-align: center;
-            padding: 3rem 1rem 2rem;
-            animation: fadeUp 0.8s ease-out;
-        }
-
-        .dashboard-header h1 {
-            font-size: 2.5rem;
-            font-weight: 900;
-            margin-bottom: 12px;
-            letter-spacing: -0.03em;
-            background: linear-gradient(135deg, #f4f4f5 30%, #a1a1aa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .target-tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 16px;
-            border-radius: 100px;
-            background: rgba(16, 185, 129, 0.1);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            color: var(--brand-accent);
-            font-size: 13px;
-            font-weight: 800;
-            margin-bottom: 16px;
-        }
-
-        .metric-group {
-            background: #27272a;
-            padding: 16px;
-            border-radius: 8px;
-            margin-top: 10px;
-        }
-
-        .compare-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 0;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .compare-row:last-child {
-            border-bottom: none;
-        }
-
-        .value-actual {
-            font-weight: 700;
-            font-size: 1.1rem;
-        }
-
-        .value-target {
-            color: var(--brand-accent);
-            font-weight: 700;
-            font-size: 1.1rem;
-        }
-
-        .gap-alert {
-            font-size: 0.8rem;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-weight: 700;
-        }
-
-        .gap-bad {
-            background: rgba(239, 68, 68, 0.2);
-            color: #ef4444;
-        }
-
-        .gap-good {
-            background: rgba(16, 185, 129, 0.2);
-            color: #10b981;
-        }
-
-        .alert-box {
-            background: rgba(239, 68, 68, 0.1);
-            border-radius: 12px;
-            padding: 20px;
-            border: 1px solid rgba(239, 68, 68, 0.4);
-            margin: 1.5rem 0;
-        }
-
-        .alert-box h4 {
-            color: #ef4444;
-            font-size: 1.1rem;
-            font-weight: 800;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        /* Vue Transition Setup */
-        .fade-enter-active, .fade-leave-active {
-            transition: opacity 0.5s ease;
-        }
-        .fade-enter-from, .fade-leave-to {
-            opacity: 0;
-        }
-
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Fix layout for grid items */
-        .grid-layout {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-        }
-        @media (max-width: 1024px) {
-            .grid-layout { grid-template-columns: 1fr; }
-        }
-
     </style>
-  <link rel="icon" type="image/x-icon" href="/favicon.ico">
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 </head>
-
-
-<body class="p-6 pb-20">
-    <script src="navbar.js?v=20260328"></script>
-
-    <div id="app" class="max-w-6xl mx-auto" style="padding-top: 32px;" v-cloak>
-
-        <!-- 顶部标题 -->
-        <div class="dashboard-header">
-            <div class="target-tag">
-                <i class="fas fa-table"></i> F26预算基线 · 马长久财务团队提交 / 净利目标￥1200万
-            </div>
-            <h1>UE 财务模拟计算器</h1>
-            <p class="text-text-dim max-w-2xl mx-auto mt-4 font-medium" style="font-size:15px; line-height:1.8;">
-                Q1实际到账 <strong style="color:#f97316;">{{actualsSignedRevenue.toFixed(0)}}万</strong>，F26全年预算目标 59,836万，当前完成率仅 <strong style="color:#ef4444;">{{completionRate.toFixed(1)}}%</strong>。
-                拖动下方参数，推演年化走势能否实现年度净利 <strong style="color:#10b981;">1,200万以上</strong> 的底线目标。
+<body class="px-6">
+    <script src="navbar.js"></script>
+    
+    <div id="app" class="max-w-[1200px] mx-auto mt-10" v-cloak>
+        <div class="mb-10 text-center">
+            <h1 class="text-4xl font-black mb-3 bg-gradient-to-r from-blue-400 via-purple-400 to-rose-400 bg-clip-text text-transparent">战略单客 UE 罗盘 (流量归因版)</h1>
+            <p class="text-gray-400 text-sm max-w-3xl mx-auto leading-relaxed">
+                放弃传统糊涂账，采用顶级大厂“基于引流入口计算终身单客价值”的第一性法则。将全盘复购、跨线搭售以及巨额退费彻底穿透归因到【首购钩子产品】，精准识别哪条护城河在印钞，哪条护城河在疯狂流血！
             </p>
         </div>
 
-        <!-- Q1实际 vs F26预算对比面板 -->
-        <div class="glass-card p-6 mb-8" style="border-left: 4px solid #f97316;">
-            <div class="flex items-center gap-2 mb-4">
-                <i class="fas fa-chart-line" style="color:#f97316;"></i>
-                <span class="font-bold text-white">Q1实际到账 vs F26全年预算（马长久财务团队·2026-03-31）</span>
-            </div>
-            <!-- 进度条 -->
-            <div style="margin-bottom:16px;">
-                <div style="display:flex; justify-content:space-between; font-size:12px; color:#a1a1aa; margin-bottom:6px;">
-                    <span>全年预算完成率</span>
-                    <span style="color:#f97316; font-weight:700;">{{actualsSignedRevenue.toFixed(0)}} / 59,836万 = {{completionRate.toFixed(1)}}%</span>
-                </div>
-                <div style="height:8px; background:#27272a; border-radius:999px; overflow:hidden;">
-                    <div :style="'height:100%; width:' + Math.min(completionRate, 100) + '%; background:linear-gradient(90deg,#f97316,#ef4444); border-radius:999px;'"></div>
-                </div>
-                <div style="font-size:11px; color:#71717a; margin-top:4px;">Q1结束应完成25%，目前落后10个百分点</div>
-            </div>
-            <div style="display:grid; grid-template-columns: repeat(3,1fr); gap: 12px;">
-                <div style="background:#27272a; padding:12px; border-radius:8px; text-align:center;">
-                    <div style="font-size:11px; color:#71717a; margin-bottom:4px;">Q1实际总收入</div>
-                    <div style="font-size:20px; font-weight:900; color:#f97316;">{{actualsSignedRevenue.toFixed(0)}} <span style="font-size:12px;">万</span></div>
-                    <div style="font-size:11px; color:#a1a1aa;">按分量动态汇总</div>
-                </div>
-                <div style="background:#27272a; padding:12px; border-radius:8px; text-align:center;">
-                    <div style="font-size:11px; color:#71717a; margin-bottom:4px;">F26全年预算</div>
-                    <div style="font-size:20px; font-weight:900; color:#fff;">59,836 <span style="font-size:12px;">万</span></div>
-                    <div style="font-size:11px; color:#ef4444;">YOY -38%</div>
-                </div>
-                <div style="background:#27272a; padding:12px; border-radius:8px; text-align:center;">
-                    <div style="font-size:11px; color:#71717a; margin-bottom:4px;">Q1年化投射</div>
-                    <div style="font-size:20px; font-weight:900; color:#f59e0b;">{{annualizedRevenue.toFixed(0)}} <span style="font-size:12px;">万</span></div>
-                    <div style="font-size:11px; color:#ef4444;">缺口{{(59836 - annualizedRevenue).toFixed(0)}}万</div>
-                </div>
-                <div style="background:#27272a; padding:12px; border-radius:8px; text-align:center;">
-                    <div style="font-size:11px; color:#71717a; margin-bottom:4px;">F26 UE比率</div>
-                    <div style="font-size:20px; font-weight:900; color:#10b981;">22% <span style="font-size:12px;"></span></div>
-                    <div style="font-size:11px; color:#a1a1aa;">有声13抅3% · AI23% · IP IP17%</div>
-                </div>
-                <div style="background:#27272a; padding:12px; border-radius:8px; text-align:center;">
-                    <div style="font-size:11px; color:#71717a; margin-bottom:4px;">F26年度固定成本</div>
-                    <div style="font-size:20px; font-weight:900; color:#f97316;">12,007 <span style="font-size:12px;">万</span></div>
-                    <div style="font-size:11px; color:#ef4444;">YOY +30%</div>
-                </div>
-                <div style="background:#27272a; padding:12px; border-radius:8px; text-align:center;">
-                    <div style="font-size:11px; color:#71717a; margin-bottom:4px;">F26预算净利润</div>
-                    <div style="font-size:20px; font-weight:900; color:#f59e0b;">1,281 <span style="font-size:12px;">万</span></div>
-                    <div style="font-size:11px; color:#ef4444;">净利率2%</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 模拟计算器主体 -->
-        <div class="grid-layout items-start">
-            <!-- 左：输入区 -->
-            <div class="glass-card p-6">
-                <div class="flex items-center gap-3 mb-6 border-b border-border pb-4">
-                    <div class="w-10 h-10 rounded bg-[#27272a] flex items-center justify-center text-primary text-xl border border-border">
-                        <i class="fas fa-sliders-h"></i>
+        <div class="space-y-6">
+            <!-- Level 1: Domains -->
+            <div v-for="domain in domains" :key="domain.id" class="glass-card rounded-2xl overflow-hidden border border-gray-800">
+                <!-- Domain Header -->
+                <div @click="domain.expanded = !domain.expanded" 
+                     class="cursor-pointer p-6 flex justify-between items-center hover:bg-white/5 transition-colors relative overflow-hidden"
+                     :class="`bg-gradient-to-r ${domain.color} bg-opacity-20`">
+                    <div class="absolute inset-0 bg-black opacity-60"></div>
+                    <div class="relative z-10 flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-black/50 flex items-center justify-center border border-white/20">
+                            <i :class="[domain.icon, 'text-2xl text-white']"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-2xl font-bold tracking-tight text-white flex items-center gap-3">
+                                第 1 层：{{ domain.name }} 
+                                <span class="text-xs font-normal px-2 py-1 rounded bg-black/50 border border-gray-600 text-gray-300">大盘健康度: <span :class="domain.summary.health.includes('警报') || domain.summary.health.includes('亏损') || domain.summary.health.includes('危急') ? 'text-red-400 font-bold' : 'text-green-400'">{{ domain.summary.health }}</span></span>
+                            </h2>
+                            <p class="text-sm text-gray-400 mt-1">横剖该流量池下引进来的所有用户的终局价值。</p>
+                        </div>
                     </div>
-                    <div>
-                        <h2 class="text-xl font-bold text-white">参数模拟输入</h2>
-                        <p class="text-xs text-text-dim">调参看净利如何变化，找到生死临界点</p>
+                    <div class="relative z-10 text-gray-400 text-2xl">
+                        <i class="fas" :class="domain.expanded ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
                     </div>
                 </div>
 
-                <div class="space-y-5">
-                    <div class="input-group">
-                        <label style="display:flex; justify-content:space-between; align-items:center;">
-                            <span>年度签单流水（万元）</span>
-                            <span style="font-size:10px; padding:2px 8px; border-radius:20px; background:rgba(249,115,22,0.2); color:#f97316; font-weight:700;">合计: {{actualsSignedRevenue.toFixed(0)}}万</span>
-                        </label>
-                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:5px;">
+                <!-- Level 2: Hooks -->
+                <div v-show="domain.expanded" class="accordion-transition bg-[#0f0f13] p-6 space-y-4">
+                    <div v-for="hook in domain.hooks" :key="hook.id" class="rounded-xl border border-gray-800 bg-black overflow-hidden shadow-lg">
+                        
+                        <!-- Hook Header -->
+                        <div @click="hook.expanded = !hook.expanded" class="cursor-pointer p-5 flex justify-between items-center hover:bg-gray-900 transition-colors border-b border-gray-800">
                             <div>
-                                <span style="font-size:11px; color:#a1a1aa;">🎙️ 有声线收入</span>
-                                <input type="number" v-model.number="actuals.signed_revenue_audio" placeholder="6393" style="margin-top:4px;">
+                                <h3 class="text-lg font-bold text-gray-200">
+                                    <span class="text-gray-500 text-xs mr-2 border border-gray-700 rounded px-1.5 py-0.5">第 2 层·打单锚点</span> {{ hook.name }}
+                                </h3>
                             </div>
-                            <div>
-                                <span style="font-size:11px; color:#a1a1aa;">🤖 AI产品线(短视频+写作)</span>
-                                <input type="number" v-model.number="actuals.signed_revenue_ai" placeholder="2223" style="margin-top:4px;">
+                            <div class="text-gray-500">
+                                <span class="text-xs mr-4">点击钻取单客模型与心智漏斗</span>
+                                <i class="fas" :class="hook.expanded ? 'fa-minus text-blue-500' : 'fa-plus'"></i>
                             </div>
                         </div>
-                        <div style="display:flex; justify-content:space-between; font-size:11px; margin-top:8px;">
-                            <span style="color:#a1a1aa;">F26全年预算: 59,836万</span>
-                            <span :class="annualizedRevenue >= 59836 ? 'text-[#10b981]' : 'text-[#f59e0b]'" style="font-weight:700;">年化投射: {{annualizedRevenue.toFixed(0)}}万</span>
-                        </div>
-                    </div>
 
-                    <!-- 退费拆解 -->
-                    <div style="background:rgba(239,68,68,0.06); border:1px solid rgba(239,68,68,0.2); border-radius:10px; padding:14px;">
-                        <div style="font-size:13px; font-weight:700; color:#ef4444; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;">
-                            <span>💸 退费拆解（万元）</span>
-                            <span style="font-size:16px; color:#fff;">合计: <strong :class="totalRefund > 4045 ? 'text-[#ef4444]' : 'text-[#f59e0b]'">{{totalRefund.toFixed(0)}}</strong> 万</span>
-                        </div>
-                        <div style="display:grid; gap:10px;">
-                            <div class="input-group" style="margin:0;">
-                                <label style="display:flex; justify-content:space-between; align-items:center;">
-                                    <span>🔴 去年收入带来的退费</span>
-                                    <span style="color:#ef4444; font-size:11px;">F26实际: 2,810万</span>
-                                </label>
-                                <input type="number" v-model.number="actuals.refund_legacy">
-                                <p class="text-xs text-text-muted mt-1">去年收入带来的退费（遗留的历史包袱）</p>
+                        <!-- Level 3 & 4: UE & Path -->
+                        <div v-show="hook.expanded" class="p-6 bg-[#18181b] border-t border-gray-900 accordion-transition">
+                            
+                            <h4 class="text-sm font-bold text-gray-400 mb-4 border-l-2 border-blue-500 pl-2">第 3 层：该钩子引流下单客 UE (四大金刚)</h4>
+                            
+                            <!-- 4 UE Pillars -->
+                            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+                                <div class="bg-black/40 p-4 rounded-lg border border-gray-800 relative overflow-hidden">
+                                    <div class="text-xs text-blue-400 font-bold mb-1">CAC 获取单客成本</div>
+                                    <div class="text-2xl font-black text-white mb-2 data-value">¥{{ fmt(hook.ue.cac) }}</div>
+                                    <div class="text-[11px] text-gray-500 leading-tight border-t border-gray-800 pt-2">{{ hook.ue.cac_detail }}</div>
+                                </div>
+                                <div class="bg-black/40 p-4 rounded-lg border border-gray-800 relative overflow-hidden">
+                                    <div class="text-xs text-yellow-500 font-bold mb-1">LTV 单客终身净值</div>
+                                    <div class="text-2xl font-black text-white mb-2 data-value flex items-center justify-between">
+                                        ¥{{ fmt(hook.ue.ltv + hook.ue.refund_impact) }}
+                                        <span v-if="hook.ue.refund_impact < 0" class="text-xs bg-red-900/40 text-red-500 px-1.5 py-0.5 rounded border border-red-900"><i class="fas fa-tint"></i> 含退费折损</span>
+                                    </div>
+                                    <div class="text-[11px] text-gray-500 leading-tight border-t border-gray-800 pt-2">{{ hook.ue.ltv_detail }}</div>
+                                </div>
+                                <div class="bg-black/40 p-4 rounded-lg border border-gray-800 relative overflow-hidden">
+                                    <div class="text-xs text-purple-400 font-bold mb-1">COC 单客履约成本</div>
+                                    <div class="text-2xl font-black text-white mb-2 data-value">¥{{ fmt(hook.ue.coc) }}</div>
+                                    <div class="text-[11px] text-gray-500 leading-tight border-t border-gray-800 pt-2">{{ hook.ue.coc_detail }}</div>
+                                </div>
+                                <div class="p-4 rounded-lg border relative overflow-hidden flex flex-col justify-center" :class="hook.ue.margin > 0 ? 'bg-emerald-900/20 border-emerald-900/50' : 'bg-red-900/20 border-red-900/50'">
+                                    <div class="text-xs font-bold mb-1" :class="hook.ue.margin > 0 ? 'text-emerald-400' : 'text-red-400'">Unit Margin 单客边际净贡献</div>
+                                    <div class="text-3xl font-black mb-1 data-value" :class="hook.ue.margin > 0 ? 'text-emerald-500' : 'text-red-500'">¥{{ fmt(hook.ue.margin) }}</div>
+                                    <div class="text-[11px] text-gray-400 border-t border-gray-800 pt-2 opacity-80">= LTV - CAC - COC. <span v-if="hook.ue.margin < 0" class="text-red-400 font-bold block mt-1"><i class="fas fa-radiation"></i> 引来一个亏一个，必须熔断广告！</span></div>
+                                </div>
                             </div>
-                            <div class="input-group" style="margin:0;">
-                                <label style="display:flex; justify-content:space-between; align-items:center;">
-                                    <span>🟡 今年收入带来的退费</span>
-                                    <span style="color:#10b981; font-size:11px;">F26实际: 1,235万</span>
-                                </label>
-                                <input type="number" v-model.number="actuals.refund_current">
-                                <p class="text-xs text-text-muted mt-1">今年新签收入带来的退费（反映真实当期交付质量）</p>
-                            </div>
-                        </div>
-                        <!-- 今年新签退费率 -->
-                        <div style="margin-top:12px; padding:10px; background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.2); border-radius:8px;">
-                            <div style="font-size:12px; color:#a1a1aa; margin-bottom:4px;">✨ 今年当期真实退费率 = 今年收入带来的退费 ÷ 今年收入</div>
-                            <div style="font-size:22px; font-weight:900;" :class="currentYearRefundRate > 10 ? 'text-[#ef4444]' : 'text-[#10b981]'">
-                                {{currentYearRefundRate.toFixed(2)}}%
-                                <span style="font-size:12px; font-weight:400; color:#71717a;">（含去年遗留合计总退费率: {{totalRefundRate.toFixed(1)}}%）</span>
-                            </div>
-                            <div style="font-size:11px; color:#71717a; margin-top:4px;">
-                                去年收入带来的退费为历史包袱，不反映今年新产品真实交付能力
-                            </div>
-                        </div>
-                    </div>
 
+                            <!-- Level 4: Path Visualization -->
+                            <h4 class="text-sm font-bold text-gray-400 mb-4 border-l-2 border-purple-500 pl-2 mt-8">第 4 层：单客 LTV 演化地图 (复购与流血下钻)</h4>
+                            <div class="bg-[#09090b] border border-gray-800 rounded-xl p-6">
+                                <div class="flex flex-wrap gap-y-8 items-center">
+                                    <div v-for="(node, idx) in hook.path" :key="idx" class="path-node pr-10 flex-shrink-0">
+                                        
+                                        <!-- Node Box -->
+                                        <div class="rounded-lg border p-3 min-w-[140px] max-w-[180px]" 
+                                             :class="{
+                                                'bg-blue-900/20 border-blue-800/50 text-blue-200': node.type === 'in',
+                                                'bg-yellow-900/20 border-yellow-700/50 text-yellow-300': node.type === 'core',
+                                                'bg-red-950/40 border-red-800 text-red-400 shadow-[0_0_15px_rgba(239,68,68,0.2)]': node.type === 'alert',
+                                                'bg-emerald-900/20 border-emerald-800/50 text-emerald-300': node.type === 'up',
+                                                'bg-fuchsia-900/20 border-fuchsia-800/50 text-fuchsia-300': node.type === 'cross'
+                                             }">
+                                            <div class="text-[10px] uppercase font-black tracking-wider opacity-70 mb-1 flex items-center gap-1">
+                                                <i class="fas" :class="{
+                                                    'fa-filter': node.type === 'in', 'fa-anchor': node.type === 'core', 
+                                                    'fa-skull-crossbones': node.type === 'alert', 'fa-cart-plus': node.type === 'up',
+                                                    'fa-random': node.type === 'cross'
+                                                }"></i> {{ node.step }}
+                                            </div>
+                                            <div class="text-sm font-bold leading-tight">{{ node.item }}</div>
+                                        </div>
 
-                    <div class="input-group">
-                        <label>年度UE毛利率 (%)</label>
-                        <input type="range" v-model.number="actuals.ue_margin" max="60" step="0.5">
-                        <div class="flex justify-between mt-1"><span class="text-xs text-text-muted">低效</span><span class="text-xs font-bold text-white">{{actuals.ue_margin}}%</span><span class="text-xs text-text-muted">高效</span></div>
-                        <p class="text-xs text-text-muted mt-1">F26基线: 22%（有声线23%，AI线23%，IP孵化17%）</p>
-                    </div>
+                                    </div>
+                                    <!-- End flag -->
+                                    <div class="text-gray-600 ml-[-20px] flex items-center">
+                                        <i class="fas fa-flag-checkered text-xl"></i>
+                                    </div>
+                                </div>
+                                <div v-if="hook.path.some(n => n.type === 'alert')" class="mt-6 p-3 bg-red-900/10 border border-red-900/30 rounded text-xs text-red-300 leading-relaxed">
+                                    <i class="fas fa-lightbulb text-red-500 mr-1"></i> <strong class="text-white">业务挂扣指示：</strong> 此阵地爆发高额退款漏损。根据我们在【退费分析报告】中的核销，销售前端使用虚假话术强塞进来的客户在体验后发生崩盘，严重拉低了此漏斗的终局 LTV。不治理此漏损，前端投流等于给海底漏斗倒水。
+                                </div>
+                            </div>
 
-                    <!-- 固定成本拆解 -->
-                    <div style="background:rgba(249,115,22,0.06); border:1px solid rgba(249,115,22,0.2); border-radius:10px; padding:14px;">
-                        <div style="font-size:13px; font-weight:700; color:#f97316; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;">
-                            <span>📦 固定成本拆解（万元）</span>
-                            <span style="font-size:16px; color:#fff;">合计: <strong>{{totalFixedCost.toFixed(0)}}</strong> 万</span>
-                        </div>
-                        <div style="display:grid; gap:10px;">
-                            <div class="input-group" style="margin:0;">
-                                <label style="display:flex; justify-content:space-between;"><span>👥 人力成本</span><span style="color:#f59e0b;">F26: 8,982万</span></label>
-                                <input type="number" v-model.number="actuals.cost_headcount">
-                            </div>
-                            <div class="input-group" style="margin:0;">
-                                <label style="display:flex; justify-content:space-between;"><span>🏢 行政成本</span><span style="color:#f59e0b;">F26: 1,940万</span></label>
-                                <input type="number" v-model.number="actuals.cost_admin">
-                            </div>
-                            <div class="input-group" style="margin:0;">
-                                <label style="display:flex; justify-content:space-between;"><span>⚙️ 产研运维</span><span style="color:#f59e0b;">F26: 785万</span></label>
-                                <input type="number" v-model.number="actuals.cost_rd">
-                            </div>
-                            <div class="input-group" style="margin:0;">
-                                <label style="display:flex; justify-content:space-between;"><span>📢 内容/市场公关</span><span style="color:#f59e0b;">F26: 300万</span></label>
-                                <input type="number" v-model.number="actuals.cost_other">
-                            </div>
-                        </div>
-                        <div style="margin-top:10px; padding-top:10px; border-top:1px solid rgba(249,115,22,0.2); font-size:11px; color:#71717a;">
-                            ⚠ 核心矛盾：固定成本 YOY +30%，但主力有声线收入 YOY -54%
                         </div>
                     </div>
                 </div>
             </div>
-
-            <!-- 右：实时结果 -->
-            <div class="glass-card p-6 bg-gradient-to-br from-[#18181b] to-[#1e1e24]">
-                <div class="flex items-center gap-3 mb-6 border-b border-border pb-4">
-                    <div class="w-10 h-10 rounded bg-[#27272a] flex items-center justify-center text-[#10b981] text-xl border border-border">
-                        <i class="fas fa-calculator"></i>
-                    </div>
-                    <div>
-                        <h2 class="text-xl font-bold text-white">实时净利润推演</h2>
-                        <p class="text-xs text-text-dim">目标：年净利 ≥ 1,200万（月均≥100万）</p>
-                    </div>
-                </div>
-
-                <div class="metric-group space-y-2">
-                    <div class="compare-row">
-                        <div>
-                            <span class="text-sm font-semibold text-text-dim block mb-1">退费总损耗（合计）</span>
-                            <div style="font-size:11px; color:#71717a; line-height:1.7; margin-top:2px;">
-                                🔴 去年收入带来 {{actuals.refund_legacy}}万 | 🟡 今年收入带来 {{actuals.refund_current}}万
-                            </div>
-                            <div style="font-size:11px; margin-top:4px;" :class="currentYearRefundRate > 10 ? 'text-[#ef4444]' : 'text-[#10b981]'">
-                                ✨ 今年当期真实退费率: <strong>{{currentYearRefundRate.toFixed(2)}}%</strong>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <div class="value-actual" :class="totalRefund > 4045 ? 'text-[#ef4444]' : 'text-[#f59e0b]'">
-                                -{{totalRefund.toFixed(0)}} 万
-                            </div>
-                            <div class="text-xs mt-1 text-[#a1a1aa]">F26实际: -4,045万</div>
-                        </div>
-                    </div>
-
-                    <div class="compare-row">
-                        <div>
-                            <span class="text-sm font-semibold text-text-dim block mb-1">确认净收入</span>
-                            <span class="text-xs text-text-muted">流水 - 合计退费</span>
-                        </div>
-                        <div class="text-right">
-                            <div class="value-actual text-white">{{actualConfirmedRevenue.toFixed(0)}} 万</div>
-                        </div>
-                    </div>
-
-                    <div class="compare-row">
-                        <div>
-                            <span class="text-sm font-semibold text-text-dim block mb-1">UE毛利</span>
-                            <span class="text-xs text-text-muted">确认收入 × UE率</span>
-                        </div>
-                        <div class="text-right">
-                            <div class="value-actual" :class="actualUeProfit >= 13288 ? 'text-[#10b981]' : 'text-[#f97316]'">
-                                {{actualUeProfit.toFixed(0)}} 万
-                            </div>
-                            <div class="text-xs mt-1 text-[#a1a1aa]">F26基线: 13,288万</div>
-                        </div>
-                    </div>
-
-                    <div class="compare-row">
-                        <div>
-                            <span class="text-sm font-semibold text-text-dim block mb-1">固定成本合计</span>
-                            <div style="font-size:11px; color:#71717a; line-height:1.6; margin-top:2px;">
-                                人力 {{actuals.cost_headcount}}万 · 行政 {{actuals.cost_admin}}万<br>
-                                产研 {{actuals.cost_rd}}万 · 其他 {{actuals.cost_other}}万
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <div class="value-actual" :class="totalFixedCost > 12007 ? 'text-[#ef4444]' : 'text-[#10b981]'">
-                                -{{totalFixedCost.toFixed(0)}} 万
-                            </div>
-                            <div class="text-xs mt-1 text-[#a1a1aa]">F26基线: 12,007万</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 净利结果大卡 -->
-                <div class="mt-6 border-2 rounded-xl overflow-hidden shadow-2xl" :style="actualNetProfit >= 1200 ? 'border-color:#10b981' : (actualNetProfit > 0 ? 'border-color:#f59e0b' : 'border-color:#ef4444')">
-                    <div class="p-4 flex justify-between items-center" style="background:#1e293b;">
-                        <div>
-                            <div class="font-bold text-lg">年度预估净利润</div>
-                            <div class="text-xs text-text-muted mt-1">月均: {{(actualNetProfit/12).toFixed(0)}} 万 | Q1年化投射基准</div>
-                        </div>
-                        <div class="text-3xl font-black tracking-tight"
-                             :class="actualNetProfit >= 1200 ? 'text-[#10b981]' : (actualNetProfit > 0 ? 'text-[#f59e0b]' : 'text-[#ef4444]')">
-                            {{actualNetProfit >= 0 ? '+' : ''}}{{actualNetProfit.toFixed(0)}} <span style="font-size:16px;">万</span>
-                        </div>
-                    </div>
-                    <div style="background:#0f172a; padding:10px 24px; display:flex; justify-content:space-between; font-size:13px;">
-                        <span>净利率: <span class="font-bold" :class="actualNetMargin >= 10 ? 'text-[#10b981]' : 'text-[#ef4444]'">{{actualNetMargin.toFixed(1)}}%</span> (目标≥10%)</span>
-                        <span>UE毛利率: <span class="font-bold" :class="actuals.ue_margin >= 30 ? 'text-[#10b981]' : 'text-[#f97316]'">{{actuals.ue_margin}}%</span></span>
-                    </div>
-                </div>
-
-                <!-- 状态标签 -->
-                <div class="mt-4 text-center">
-                    <span v-if="actualNetProfit >= 1200"
-                          class="inline-block py-1 px-4 rounded-full text-sm font-bold"
-                          style="background:rgba(16,185,129,0.2); color:#10b981; border:1px solid #10b981;">
-                        ✅ 已达年度1200万底线目标
-                    </span>
-                    <span v-else-if="actualNetProfit > 0"
-                          class="inline-block py-1 px-4 rounded-full text-sm font-bold"
-                          style="background:rgba(245,158,11,0.2); color:#f59e0b; border:1px solid #f59e0b;">
-                        ⚠️ 微利润，距1200万目标还差 {{(1200-actualNetProfit).toFixed(0)}} 万
-                    </span>
-                    <span v-else
-                          class="inline-block py-1 px-4 rounded-full text-sm font-bold"
-                          style="background:rgba(239,68,68,0.2); color:#ef4444; border:1px solid #ef4444;">
-                        🔴 亏损状态！差距 {{Math.abs(actualNetProfit).toFixed(0)}} 万，需立即熔断
-                    </span>
-                </div>
-
-                <!-- 快捷重置按钮 -->
-                <div class="mt-4 flex gap-3">
-                    <button @click="resetToF26"
-                            style="flex:1; padding:8px; background:#27272a; border:1px solid #3f3f46; border-radius:8px; color:#a1a1aa; font-size:12px; cursor:pointer; transition: all 0.2s;"
-                            onmouseover="this.style.background='#3f3f46'; this.style.color='#fff'"
-                            onmouseout="this.style.background='#27272a'; this.style.color='#a1a1aa'">
-                        🔄 重置为F26基线
-                    </button>
-                    <button @click="resetToTarget"
-                            style="flex:1; padding:8px; background:rgba(16,185,129,0.1); border:1px solid rgba(16,185,129,0.3); border-radius:8px; color:#10b981; font-size:12px; cursor:pointer; transition: all 0.2s;"
-                            onmouseover="this.style.background='rgba(16,185,129,0.2)'"
-                            onmouseout="this.style.background='rgba(16,185,129,0.1)'">
-                        🎯 模拟目标达成
-                    </button>
-                </div>
-            </div>
+            
         </div>
-
+        
+        <!-- P&L Link -->
+        <div class="mt-8 text-center glass-card p-6 border-blue-900/30">
+            <p class="text-gray-400 text-sm mb-3">如果需要纵观全公司的月度和年度资金糊涂账（总流水、总毛利摊销），请跳转传统会计大盘表。</p>
+            <a href="traditional_pl_dashboard.html" class="inline-block px-6 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded shadow-[0_0_15px_rgba(37,99,235,0.4)] transition">
+                <i class="fas fa-file-invoice-dollar mr-2"></i> 切换至公司级全景利润表 (P&L) (开发中)
+            </a>
+        </div>
     </div>
 
-    <!-- Scripts -->
     <script>
-        const { createApp } = Vue;
-
-        // F26 budget baseline — Q1 YTD actual (annual, 万元)
-        const F26_BASELINE = {
-            signed_revenue_audio: 6393, // 有声线收入
-            signed_revenue_ai: 2223,    // AI产品线（短视频+写作）
-            refund_legacy: 2810,    // 去年L1+L2捆绑遊留退费
-            refund_current: 1235,   // 今年F26新签退费
-            ue_margin: 22,
-            months_elapsed: 3,      // Q1已日历月12月中的3个月
-            cost_headcount: 8982,   // 年度人力成本
-            cost_admin: 1940,
-            cost_rd: 785,
-            cost_other: 300
-        };
-
-        // Target scenario: Q1年化投射应达此水平
-        const TARGET_SCENARIO = {
-            signed_revenue_audio: 11100, // 为达14959目标按当前比例放大
-            signed_revenue_ai: 3859,
-            refund_legacy: 1000,
-            refund_current: 300,
-            ue_margin: 34,
-            months_elapsed: 3,
-            cost_headcount: 7500,
-            cost_admin: 1500,
-            cost_rd: 700,
-            cost_other: 300
-        };
+        const { createApp, ref } = Vue;
 
         createApp({
-            data() {
-                return {
-                    actuals: { ...F26_BASELINE }
-                };
-            },
-            computed: {
-                f26RefundBase() { return 4045; },
-                actualsSignedRevenue() {
-                    return (this.actuals.signed_revenue_audio || 0) + (this.actuals.signed_revenue_ai || 0);
-                },
-                completionRate() {
-                    return (this.actualsSignedRevenue / 59836) * 100;
-                },
-                annualizedRevenue() {
-                    const m = this.actuals.months_elapsed || 3;
-                    return m > 0 ? (this.actualsSignedRevenue / m) * 12 : 0;
-                },
-                totalRefund() {
-                    return (this.actuals.refund_legacy || 0) + (this.actuals.refund_current || 0);
-                },
-                totalRefundRate() {
-                    return this.actualsSignedRevenue > 0
-                        ? (this.totalRefund / this.actualsSignedRevenue) * 100 : 0;
-                },
-                currentYearRefundRate() {
-                    // 今年新签退费率 = 今年退费 / 年度签单流水
-                    return this.actualsSignedRevenue > 0
-                        ? ((this.actuals.refund_current || 0) / this.actualsSignedRevenue) * 100 : 0;
-                },
-                actualRefundAmount() {
-                    return this.totalRefund;
-                },
-                actualConfirmedRevenue() {
-                    return this.actualsSignedRevenue - this.totalRefund;
-                },
-                totalFixedCost() {
-                    return (this.actuals.cost_headcount || 0) +
-                           (this.actuals.cost_admin || 0) +
-                           (this.actuals.cost_rd || 0) +
-                           (this.actuals.cost_other || 0);
-                },
-                actualUeProfit() {
-                    return this.actualConfirmedRevenue * (this.actuals.ue_margin / 100);
-                },
-                actualNetProfit() {
-                    return this.actualUeProfit - this.totalFixedCost;
-                },
-                actualNetMargin() {
-                    return this.actualConfirmedRevenue > 0
-                        ? (this.actualNetProfit / this.actualConfirmedRevenue) * 100 : 0;
-                }
-            },
-            methods: {
-                resetToF26() {
-                    this.actuals = { ...F26_BASELINE };
-                },
-                resetToTarget() {
-                    this.actuals = { ...TARGET_SCENARIO };
-                }
+            setup() {
+                const domains = ref([
+                    {
+                        id: 'audio', name: '有声书引流大区', icon: 'fas fa-headphones', color: 'from-blue-600 to-indigo-900', expanded: true, summary: { health: '亚健康 (边际率被退款拉爆)' },
+                        hooks: [
+                            {
+                                id: 'audio_l1', name: '精英L1进门营 (核心营收钩子)', expanded: true,
+                                ue: { cac: 850, cac_detail: '短视频直投 CPL 85计算 × 10%首单转化', ltv: 6200, ltv_detail: '首单3980 + 30%复购研修班 + 15%加购声卡。', refund_impact: -350, coc: 2200, coc_detail: '课管提成 + 讲师课酬 + 寄送配套硬件成本', margin: 2800 },
+                                path: [
+                                    { step: '破冰门票', item: '9.9元声音诊断课', type: 'in' },
+                                    { step: '核心首单', item: '3980元 L1进阶营', type: 'core' },
+                                    { step: '退款漏损', item: '冲动报班大面积退费 (-350)', type: 'alert' },
+                                    { step: '生态内复购', item: '1500元 专业声卡硬件', type: 'up' },
+                                    { step: '跨界全家桶', item: '5980元 张震私教 (10%渗透)', type: 'cross' }
+                                ]
+                            },
+                            {
+                                id: 'audio_camp', name: '9.9元声音变现引流营', expanded: false,
+                                ue: { cac: 70, cac_detail: '自媒体矩阵低成本裂变', ltv: 9.9, ltv_detail: '仅作过滤网，纯引流无直接利润', refund_impact: 0, coc: 40, coc_detail: '全自动化社群，零星班主任精力', margin: -100.1 },
+                                path: [{ step: '引流', item: '9.9元入门课', type: 'in' }, { step: '终点', item: '未能转化 (停留此步)', type: 'core' }]
+                            }
+                        ]
+                    },
+                    {
+                        id: 'ai', name: 'AI产品引流大区', icon: 'fas fa-robot', color: 'from-emerald-600 to-teal-900', expanded: false, summary: { health: '危急 (亏损拉客)' },
+                        hooks: [
+                            {
+                                id: 'ai_video', name: 'AI短视频全能实战班', expanded: false,
+                                ue: { cac: 1500, cac_detail: '视频号投流极贵，转化率仅3%', ltv: 4980, ltv_detail: '单一部流课，尚无后续梯队课', refund_impact: -1200, coc: 2800, coc_detail: '高昂的AI代运营及版权代发分账', margin: -520 },
+                                path: [
+                                    { step: '福利引流', item: '1元带货爆库', type: 'in' },
+                                    { step: '极速逼单', item: '4980元 实战营', type: 'core' },
+                                    { step: '风暴级漏损', item: '交付难落地触发集体维权 (-1200)', type: 'alert' }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        id: 'ip', name: '张震IP超级战区', icon: 'fas fa-star', color: 'from-purple-600 to-fuchsia-900', expanded: false, summary: { health: '极优 (边际率 76%)' },
+                        hooks: [
+                            {
+                                id: 'ip_vip', name: '张震大师价值提升私门班', expanded: false,
+                                ue: { cac: 0, cac_detail: '纯靠有声全家桶自然溢出（0投流费）', ltv: 18000, ltv_detail: '年度闭门会+大师背书', refund_impact: -800, coc: 3500, coc_detail: '场地会务与大师排期时间对冲', margin: 13700 },
+                                path: [
+                                    { step: '内域沉淀', item: '有声高阶溢出高客群', type: 'in' },
+                                    { step: '顶奢首案', item: '12800元 私门大单', type: 'core' },
+                                    { step: '人脉带单', item: '+转介绍带来老板朋友 (+5200)', type: 'up' }
+                                ]
+                            }
+                        ]
+                    }
+                ]);
+
+                const fmt = (num) => Math.round(num).toLocaleString('en-US');
+
+                return { domains, fmt };
             }
         }).mount('#app');
     </script>
