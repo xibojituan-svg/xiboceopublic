@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>动态战略财务沙盘：5000万净利基准 UE 导航器</title>
-    <meta name="description" content="基于第一曲线5000万净利润目标，进行业务实际UE与理想UE对比诊断的动态仪表盘">
+    <title>动态战略财务沙盘：年度1200万净利基准 UE 导航器</title>
+    <meta name="description" content="基于第一曲线1200万净利底线（进阶5000万）目标，进行的动态仪表盘">
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -224,9 +224,9 @@
     <div id="app" class="max-w-7xl mx-auto" style="padding-top: 32px;" v-cloak>
         <div class="dashboard-header">
             <div class="target-tag">
-                <i class="fas fa-bullseye"></i> 战略锚点：本月目标基准线 (年度5000万折算) / 10% 净利红线
+                <i class="fas fa-bullseye"></i> 战略锚点：本月保底100万净利基准 (冲刺年度1200万) / 10% 净利红线
             </div>
-            <h1>第一曲线生死线 · UE自动导航沙盘</h1>
+            <h1>第一曲线保卫战 · UE自动导航沙盘</h1>
             <p class="text-text-dim max-w-2xl mx-auto mt-4 font-medium text-lg">
                 这不是一张死板的营收测算表，而是CEO、业务一号位与财务BP的决断场。<br>一切不以“健康净利”为终局的指标优化都是自欺欺人。用真实验证目标，看清失血口并按下熔断按钮。
             </p>
@@ -290,8 +290,8 @@
                         <i class="fas fa-balance-scale-right"></i>
                     </div>
                     <div>
-                        <h2 class="text-xl font-bold text-white">年度5000万净利润 倒推境 (当月标准)</h2>
-                        <p class="text-xs text-text-dim">不要看虚高的过程，看离“必须活下去”的结果有多远</p>
+                        <h2 class="text-xl font-bold text-white">年度1200万净利目标 倒推境 (本月必保底线)</h2>
+                        <p class="text-xs text-text-dim">放弃虚无的5000万幻想，先看清当前能不能稳住每个月净赚100万</p>
                     </div>
                 </div>
 
@@ -467,9 +467,9 @@
                         new_students: 71441, // 人 (表示有效加微数)
                         variable_cost: 1170 // 万元
                     },
-                    // Theoretical Target Anchors based on 50M profit definition
+                    // Theoretical Target Anchors based on 12M profit definition
                     targets: {
-                        net_profit: 417,  // 对应年度5000万的单月目标基准
+                        net_profit: 100,  // 对应今年保守1200万（即单月100万）保底目标
                         net_margin: 10,
                         refund_ceiling: 10
                     }
@@ -500,9 +500,9 @@
                     return this.actualConfirmedRevenue > 0 ? (this.actualNetProfit / this.actualConfirmedRevenue) * 100 : 0;
                 },
 
-                // Derived Ideal Targets based on 50M goal
+                // Derived Ideal Targets based on 12M goal
                 // We know that NetProfit = Confirmed - Fixed - CAC - VC
-                // And we want 10% NetProfitMargin => Confirmed = NetProfit * 10 = 50000 万
+                // And we want 10% NetProfitMargin => Confirmed = NetProfit * 10
                 targetConfirmedRevenue() {
                     return this.targets.net_profit / (this.targets.net_margin / 100); // 50000
                 },
