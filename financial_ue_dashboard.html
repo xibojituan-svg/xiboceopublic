@@ -231,7 +231,7 @@
             </div>
             <h1>UE 财务模拟计算器</h1>
             <p class="text-text-dim max-w-2xl mx-auto mt-4 font-medium" style="font-size:15px; line-height:1.8;">
-                Q1实际到账 <strong style="color:#f97316;">8,816万</strong>，F26全年预算目标 59,836万，当前完成率仅 <strong style="color:#ef4444;">14.7%</strong>。
+                Q1实际到账 <strong style="color:#f97316;">{{actualsSignedRevenue.toFixed(0)}}万</strong>，F26全年预算目标 59,836万，当前完成率仅 <strong style="color:#ef4444;">{{completionRate.toFixed(1)}}%</strong>。
                 拖动下方参数，推演年化走势能否实现年度净利 <strong style="color:#10b981;">1,200万以上</strong> 的底线目标。
             </p>
         </div>
@@ -246,18 +246,18 @@
             <div style="margin-bottom:16px;">
                 <div style="display:flex; justify-content:space-between; font-size:12px; color:#a1a1aa; margin-bottom:6px;">
                     <span>全年预算完成率</span>
-                    <span style="color:#f97316; font-weight:700;">8,816 / 59,836万 = 14.7%</span>
+                    <span style="color:#f97316; font-weight:700;">{{actualsSignedRevenue.toFixed(0)}} / 59,836万 = {{completionRate.toFixed(1)}}%</span>
                 </div>
                 <div style="height:8px; background:#27272a; border-radius:999px; overflow:hidden;">
-                    <div style="height:100%; width:14.7%; background:linear-gradient(90deg,#f97316,#ef4444); border-radius:999px;"></div>
+                    <div :style="'height:100%; width:' + Math.min(completionRate, 100) + '%; background:linear-gradient(90deg,#f97316,#ef4444); border-radius:999px;'"></div>
                 </div>
                 <div style="font-size:11px; color:#71717a; margin-top:4px;">Q1结束应完成25%，目前落后10个百分点</div>
             </div>
             <div style="display:grid; grid-template-columns: repeat(3,1fr); gap: 12px;">
                 <div style="background:#27272a; padding:12px; border-radius:8px; text-align:center;">
-                    <div style="font-size:11px; color:#71717a; margin-bottom:4px;">Q1实际签单流水</div>
-                    <div style="font-size:20px; font-weight:900; color:#f97316;">8,816 <span style="font-size:12px;">万</span></div>
-                    <div style="font-size:11px; color:#a1a1aa;">年刖1–年度3月实际</div>
+                    <div style="font-size:11px; color:#71717a; margin-bottom:4px;">Q1实际总收入</div>
+                    <div style="font-size:20px; font-weight:900; color:#f97316;">{{actualsSignedRevenue.toFixed(0)}} <span style="font-size:12px;">万</span></div>
+                    <div style="font-size:11px; color:#a1a1aa;">按分量动态汇总</div>
                 </div>
                 <div style="background:#27272a; padding:12px; border-radius:8px; text-align:center;">
                     <div style="font-size:11px; color:#71717a; margin-bottom:4px;">F26全年预算</div>
@@ -266,8 +266,8 @@
                 </div>
                 <div style="background:#27272a; padding:12px; border-radius:8px; text-align:center;">
                     <div style="font-size:11px; color:#71717a; margin-bottom:4px;">Q1年化投射</div>
-                    <div style="font-size:20px; font-weight:900; color:#f59e0b;">35,264 <span style="font-size:12px;">万</span></div>
-                    <div style="font-size:11px; color:#ef4444;">8816×4 ，缺口24,572万</div>
+                    <div style="font-size:20px; font-weight:900; color:#f59e0b;">{{annualizedRevenue.toFixed(0)}} <span style="font-size:12px;">万</span></div>
+                    <div style="font-size:11px; color:#ef4444;">缺口{{(59836 - annualizedRevenue).toFixed(0)}}万</div>
                 </div>
                 <div style="background:#27272a; padding:12px; border-radius:8px; text-align:center;">
                     <div style="font-size:11px; color:#71717a; margin-bottom:4px;">F26 UE比率</div>
@@ -283,12 +283,6 @@
                     <div style="font-size:11px; color:#71717a; margin-bottom:4px;">F26预算净利润</div>
                     <div style="font-size:20px; font-weight:900; color:#f59e0b;">1,281 <span style="font-size:12px;">万</span></div>
                     <div style="font-size:11px; color:#ef4444;">净利率2%</div>
-                </div>
-            </div>
-        </div>">
-                    <div style="font-size:11px; color:#71717a; margin-bottom:4px;">预算净利润</div>
-                    <div style="font-size:20px; font-weight:900; color:#f59e0b;">1,281 <span style="font-size:12px;">万</span></div>
-                    <div style="font-size:11px; color:#ef4444;">净利率仅 2%</div>
                 </div>
             </div>
         </div>
@@ -311,10 +305,19 @@
                     <div class="input-group">
                         <label style="display:flex; justify-content:space-between; align-items:center;">
                             <span>年度签单流水（万元）</span>
-                            <span style="font-size:10px; padding:2px 8px; border-radius:20px; background:rgba(249,115,22,0.2); color:#f97316; font-weight:700;">Q1实际到账</span>
+                            <span style="font-size:10px; padding:2px 8px; border-radius:20px; background:rgba(249,115,22,0.2); color:#f97316; font-weight:700;">合计: {{actualsSignedRevenue.toFixed(0)}}万</span>
                         </label>
-                        <input type="number" v-model.number="actuals.signed_revenue">
-                        <div style="display:flex; justify-content:space-between; font-size:11px; margin-top:5px;">
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:5px;">
+                            <div>
+                                <span style="font-size:11px; color:#a1a1aa;">🎙️ 有声线收入</span>
+                                <input type="number" v-model.number="actuals.signed_revenue_audio" placeholder="6393" style="margin-top:4px;">
+                            </div>
+                            <div>
+                                <span style="font-size:11px; color:#a1a1aa;">🤖 AI产品线(短视频+写作)</span>
+                                <input type="number" v-model.number="actuals.signed_revenue_ai" placeholder="2223" style="margin-top:4px;">
+                            </div>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; font-size:11px; margin-top:8px;">
                             <span style="color:#a1a1aa;">F26全年预算: 59,836万</span>
                             <span :class="annualizedRevenue >= 59836 ? 'text-[#10b981]' : 'text-[#f59e0b]'" style="font-weight:700;">年化投射: {{annualizedRevenue.toFixed(0)}}万</span>
                         </div>
@@ -329,30 +332,30 @@
                         <div style="display:grid; gap:10px;">
                             <div class="input-group" style="margin:0;">
                                 <label style="display:flex; justify-content:space-between; align-items:center;">
-                                    <span>🔴 去年遗留退费</span>
+                                    <span>🔴 去年收入带来的退费</span>
                                     <span style="color:#ef4444; font-size:11px;">F26实际: 2,810万</span>
                                 </label>
                                 <input type="number" v-model.number="actuals.refund_legacy">
-                                <p class="text-xs text-text-muted mt-1">去年L1+L2捆绑售卖遗留的历史包袱</p>
+                                <p class="text-xs text-text-muted mt-1">去年收入带来的退费（遗留的历史包袱）</p>
                             </div>
                             <div class="input-group" style="margin:0;">
                                 <label style="display:flex; justify-content:space-between; align-items:center;">
-                                    <span>🟡 今年新签退费</span>
+                                    <span>🟡 今年收入带来的退费</span>
                                     <span style="color:#10b981; font-size:11px;">F26实际: 1,235万</span>
                                 </label>
                                 <input type="number" v-model.number="actuals.refund_current">
-                                <p class="text-xs text-text-muted mt-1">今年F26新业务、反映真实当期交付质量</p>
+                                <p class="text-xs text-text-muted mt-1">今年新签收入带来的退费（反映真实当期交付质量）</p>
                             </div>
                         </div>
                         <!-- 今年新签退费率 -->
                         <div style="margin-top:12px; padding:10px; background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.2); border-radius:8px;">
-                            <div style="font-size:12px; color:#a1a1aa; margin-bottom:4px;">✨ 今年新签真实退费率 = 今年退费 ÷ 年度签单流水</div>
+                            <div style="font-size:12px; color:#a1a1aa; margin-bottom:4px;">✨ 今年当期真实退费率 = 今年收入带来的退费 ÷ 今年收入</div>
                             <div style="font-size:22px; font-weight:900;" :class="currentYearRefundRate > 10 ? 'text-[#ef4444]' : 'text-[#10b981]'">
                                 {{currentYearRefundRate.toFixed(2)}}%
-                                <span style="font-size:12px; font-weight:400; color:#71717a;">（含去年遗留合计比率: {{totalRefundRate.toFixed(1)}}%）</span>
+                                <span style="font-size:12px; font-weight:400; color:#71717a;">（含去年遗留合计总退费率: {{totalRefundRate.toFixed(1)}}%）</span>
                             </div>
                             <div style="font-size:11px; color:#71717a; margin-top:4px;">
-                                去年遗留退费为历史包袱，不反映今年新产品真实交付能力
+                                去年收入带来的退费为历史包袱，不反映今年新产品真实交付能力
                             </div>
                         </div>
                     </div>
@@ -411,12 +414,12 @@
                 <div class="metric-group space-y-2">
                     <div class="compare-row">
                         <div>
-                            <span class="text-sm font-semibold text-text-dim block mb-1">退费损耗（合计）</span>
+                            <span class="text-sm font-semibold text-text-dim block mb-1">退费总损耗（合计）</span>
                             <div style="font-size:11px; color:#71717a; line-height:1.7; margin-top:2px;">
-                                🔴 去年遊留 {{actuals.refund_legacy}}万 | 🟡 今年新签 {{actuals.refund_current}}万
+                                🔴 去年收入带来 {{actuals.refund_legacy}}万 | 🟡 今年收入带来 {{actuals.refund_current}}万
                             </div>
                             <div style="font-size:11px; margin-top:4px;" :class="currentYearRefundRate > 10 ? 'text-[#ef4444]' : 'text-[#10b981]'">
-                                ✨ 今年新签退费率: <strong>{{currentYearRefundRate.toFixed(2)}}%</strong>
+                                ✨ 今年当期真实退费率: <strong>{{currentYearRefundRate.toFixed(2)}}%</strong>
                             </div>
                         </div>
                         <div class="text-right">
@@ -530,7 +533,8 @@
 
         // F26 budget baseline — Q1 YTD actual (annual, 万元)
         const F26_BASELINE = {
-            signed_revenue: 8816,   // Q1实际到账
+            signed_revenue_audio: 6393, // 有声线收入
+            signed_revenue_ai: 2223,    // AI产品线（短视频+写作）
             refund_legacy: 2810,    // 去年L1+L2捆绑遊留退费
             refund_current: 1235,   // 今年F26新签退费
             ue_margin: 22,
@@ -543,7 +547,8 @@
 
         // Target scenario: Q1年化投射应达此水平
         const TARGET_SCENARIO = {
-            signed_revenue: 14959,  // 年化必须达刐59836，Q1应脄14,959万
+            signed_revenue_audio: 11100, // 为达14959目标按当前比例放大
+            signed_revenue_ai: 3859,
             refund_legacy: 1000,
             refund_current: 300,
             ue_margin: 34,
@@ -562,27 +567,33 @@
             },
             computed: {
                 f26RefundBase() { return 4045; },
+                actualsSignedRevenue() {
+                    return (this.actuals.signed_revenue_audio || 0) + (this.actuals.signed_revenue_ai || 0);
+                },
+                completionRate() {
+                    return (this.actualsSignedRevenue / 59836) * 100;
+                },
                 annualizedRevenue() {
                     const m = this.actuals.months_elapsed || 3;
-                    return m > 0 ? (this.actuals.signed_revenue / m) * 12 : 0;
+                    return m > 0 ? (this.actualsSignedRevenue / m) * 12 : 0;
                 },
                 totalRefund() {
                     return (this.actuals.refund_legacy || 0) + (this.actuals.refund_current || 0);
                 },
                 totalRefundRate() {
-                    return this.actuals.signed_revenue > 0
-                        ? (this.totalRefund / this.actuals.signed_revenue) * 100 : 0;
+                    return this.actualsSignedRevenue > 0
+                        ? (this.totalRefund / this.actualsSignedRevenue) * 100 : 0;
                 },
                 currentYearRefundRate() {
                     // 今年新签退费率 = 今年退费 / 年度签单流水
-                    return this.actuals.signed_revenue > 0
-                        ? ((this.actuals.refund_current || 0) / this.actuals.signed_revenue) * 100 : 0;
+                    return this.actualsSignedRevenue > 0
+                        ? ((this.actuals.refund_current || 0) / this.actualsSignedRevenue) * 100 : 0;
                 },
                 actualRefundAmount() {
                     return this.totalRefund;
                 },
                 actualConfirmedRevenue() {
-                    return this.actuals.signed_revenue - this.totalRefund;
+                    return this.actualsSignedRevenue - this.totalRefund;
                 },
                 totalFixedCost() {
                     return (this.actuals.cost_headcount || 0) +
