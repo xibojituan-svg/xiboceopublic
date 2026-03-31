@@ -309,15 +309,33 @@
                         <p class="text-xs text-text-muted mt-1">F26基线: 22%（有声线23%，AI线23%，IP孵化17%）</p>
                     </div>
 
-                    <div class="input-group">
-                        <label>年度固定成本（万元）</label>
-                        <input type="number" v-model.number="actuals.fixed_cost">
-                        <p class="text-xs text-text-muted mt-1">F26基线: 12,007万（人力8,982 + 行政1,940 + 产研785 + 其他300）</p>
-                    </div>
-
-                    <div style="padding: 10px; background: rgba(249,115,22,0.08); border-radius:8px; border: 1px solid rgba(249,115,22,0.2); font-size:12px; color:#a1a1aa; line-height:1.7;">
-                        <strong style="color:#f97316;">⚠ 核心矛盾：</strong>固定成本 YOY +30%，但主力有声线收入 YOY -54%。<br>
-                        固定成本增速远超造血能力，这是F26压力的根本原因。
+                    <!-- 固定成本拆解 -->
+                    <div style="background:rgba(249,115,22,0.06); border:1px solid rgba(249,115,22,0.2); border-radius:10px; padding:14px;">
+                        <div style="font-size:13px; font-weight:700; color:#f97316; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;">
+                            <span>📦 固定成本拆解（万元）</span>
+                            <span style="font-size:16px; color:#fff;">合计: <strong>{{totalFixedCost.toFixed(0)}}</strong> 万</span>
+                        </div>
+                        <div style="display:grid; gap:10px;">
+                            <div class="input-group" style="margin:0;">
+                                <label style="display:flex; justify-content:space-between;"><span>👥 人力成本</span><span style="color:#f59e0b;">F26: 8,982万</span></label>
+                                <input type="number" v-model.number="actuals.cost_headcount">
+                            </div>
+                            <div class="input-group" style="margin:0;">
+                                <label style="display:flex; justify-content:space-between;"><span>🏢 行政成本</span><span style="color:#f59e0b;">F26: 1,940万</span></label>
+                                <input type="number" v-model.number="actuals.cost_admin">
+                            </div>
+                            <div class="input-group" style="margin:0;">
+                                <label style="display:flex; justify-content:space-between;"><span>⚙️ 产研运维</span><span style="color:#f59e0b;">F26: 785万</span></label>
+                                <input type="number" v-model.number="actuals.cost_rd">
+                            </div>
+                            <div class="input-group" style="margin:0;">
+                                <label style="display:flex; justify-content:space-between;"><span>📢 内容/市场公关</span><span style="color:#f59e0b;">F26: 300万</span></label>
+                                <input type="number" v-model.number="actuals.cost_other">
+                            </div>
+                        </div>
+                        <div style="margin-top:10px; padding-top:10px; border-top:1px solid rgba(249,115,22,0.2); font-size:11px; color:#71717a;">
+                            ⚠ 核心矛盾：固定成本 YOY +30%，但主力有声线收入 YOY -54%
+                        </div>
                     </div>
                 </div>
             </div>
@@ -373,12 +391,15 @@
 
                     <div class="compare-row">
                         <div>
-                            <span class="text-sm font-semibold text-text-dim block mb-1">固定成本</span>
-                            <span class="text-xs text-text-muted">人力+行政+产研+其他</span>
+                            <span class="text-sm font-semibold text-text-dim block mb-1">固定成本合计</span>
+                            <div style="font-size:11px; color:#71717a; line-height:1.6; margin-top:2px;">
+                                人力 {{actuals.cost_headcount}}万 · 行政 {{actuals.cost_admin}}万<br>
+                                产研 {{actuals.cost_rd}}万 · 其他 {{actuals.cost_other}}万
+                            </div>
                         </div>
                         <div class="text-right">
-                            <div class="value-actual" :class="actuals.fixed_cost > 12007 ? 'text-[#ef4444]' : 'text-[#10b981]'">
-                                -{{actuals.fixed_cost.toFixed(0)}} 万
+                            <div class="value-actual" :class="totalFixedCost > 12007 ? 'text-[#ef4444]' : 'text-[#10b981]'">
+                                -{{totalFixedCost.toFixed(0)}} 万
                             </div>
                             <div class="text-xs mt-1 text-[#a1a1aa]">F26基线: 12,007万</div>
                         </div>
@@ -449,9 +470,12 @@
         // F26 budget baseline from finance team (annual, 万元)
         const F26_BASELINE = {
             signed_revenue: 59836,
-            refund_rate: 15,      // 估算退费率（F26含有声线高退费历史）
-            ue_margin: 22,        // 22% UE rate per budget
-            fixed_cost: 12007     // 年度固定成本
+            refund_rate: 15,
+            ue_margin: 22,
+            cost_headcount: 8982,   // 人力成本
+            cost_admin: 1940,       // 行政成本
+            cost_rd: 785,           // 产研运维
+            cost_other: 300         // 内容/市场公关
         };
 
         // Target scenario that hits 1200M net profit
@@ -459,7 +483,10 @@
             signed_revenue: 59836,
             refund_rate: 10,
             ue_margin: 34,
-            fixed_cost: 10000
+            cost_headcount: 7500,   // 降本10%
+            cost_admin: 1500,
+            cost_rd: 700,
+            cost_other: 300
         };
 
         createApp({
@@ -469,9 +496,14 @@
                 };
             },
             computed: {
-                // F26 baseline refund for comparison
                 f26RefundBase() {
                     return F26_BASELINE.signed_revenue * (F26_BASELINE.refund_rate / 100);
+                },
+                totalFixedCost() {
+                    return (this.actuals.cost_headcount || 0) +
+                           (this.actuals.cost_admin || 0) +
+                           (this.actuals.cost_rd || 0) +
+                           (this.actuals.cost_other || 0);
                 },
                 actualRefundAmount() {
                     return this.actuals.signed_revenue * (this.actuals.refund_rate / 100);
@@ -483,7 +515,7 @@
                     return this.actualConfirmedRevenue * (this.actuals.ue_margin / 100);
                 },
                 actualNetProfit() {
-                    return this.actualUeProfit - this.actuals.fixed_cost;
+                    return this.actualUeProfit - this.totalFixedCost;
                 },
                 actualNetMargin() {
                     return this.actualConfirmedRevenue > 0
