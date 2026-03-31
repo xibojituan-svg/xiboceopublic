@@ -218,232 +218,224 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 </head>
 
+
 <body class="p-6 pb-20">
     <script src="navbar.js?v=20260328"></script>
 
-    <div id="app" class="max-w-7xl mx-auto" style="padding-top: 32px;" v-cloak>
+    <div id="app" class="max-w-6xl mx-auto" style="padding-top: 32px;" v-cloak>
+
+        <!-- 顶部标题 -->
         <div class="dashboard-header">
             <div class="target-tag">
-                <i class="fas fa-bullseye"></i> 战略锚点：本月保底100万净利基准 (冲刺年度1200万) / 10% 净利红线
+                <i class="fas fa-table"></i> F26预算基线 · 马长久财务团队提交 / 净利目标￥1200万
             </div>
-            <h1>第一曲线保卫战 · UE自动导航沙盘</h1>
-            <p class="text-text-dim max-w-2xl mx-auto mt-4 font-medium text-lg">
-                这不是一张死板的营收测算表，而是CEO、业务一号位与财务BP的决断场。<br>一切不以“健康净利”为终局的指标优化都是自欺欺人。用真实验证目标，看清失血口并按下熔断按钮。
+            <h1>UE 财务模拟计算器</h1>
+            <p class="text-text-dim max-w-2xl mx-auto mt-4 font-medium" style="font-size:15px; line-height:1.8;">
+                F26预算初版净利润仅 <strong style="color:#ef4444;">1,281万</strong>（净利率2%）。拖动下方参数，看各指标变化是否能让净利达到 <strong style="color:#10b981;">年化1200万以上</strong> 的最低目标。
             </p>
         </div>
 
+        <!-- F26预算基线参考表 -->
+        <div class="glass-card p-6 mb-8" style="border-left: 4px solid #f97316;">
+            <div class="flex items-center gap-2 mb-4">
+                <i class="fas fa-file-invoice-dollar" style="color:#f97316;"></i>
+                <span class="font-bold text-white">F26预算基线（马长久财务团队·2026-03-31）</span>
+            </div>
+            <div style="display:grid; grid-template-columns: repeat(3,1fr); gap: 12px;">
+                <div style="background:#27272a; padding:12px; border-radius:8px; text-align:center;">
+                    <div style="font-size:11px; color:#71717a; margin-bottom:4px;">总签单收入</div>
+                    <div style="font-size:20px; font-weight:900; color:#fff;">59,836 <span style="font-size:12px;">万</span></div>
+                    <div style="font-size:11px; color:#ef4444;">YOY -38%</div>
+                </div>
+                <div style="background:#27272a; padding:12px; border-radius:8px; text-align:center;">
+                    <div style="font-size:11px; color:#71717a; margin-bottom:4px;">UE毛利</div>
+                    <div style="font-size:20px; font-weight:900; color:#10b981;">13,288 <span style="font-size:12px;">万</span></div>
+                    <div style="font-size:11px; color:#a1a1aa;">UE率 22%</div>
+                </div>
+                <div style="background:#27272a; padding:12px; border-radius:8px; text-align:center;">
+                    <div style="font-size:11px; color:#71717a; margin-bottom:4px;">固定成本</div>
+                    <div style="font-size:20px; font-weight:900; color:#f97316;">12,007 <span style="font-size:12px;">万</span></div>
+                    <div style="font-size:11px; color:#ef4444;">YOY +30%</div>
+                </div>
+                <div style="background:#27272a; padding:12px; border-radius:8px; text-align:center;">
+                    <div style="font-size:11px; color:#71717a; margin-bottom:4px;">有声线收入</div>
+                    <div style="font-size:18px; font-weight:800; color:#fff;">41,121 <span style="font-size:11px;">万</span></div>
+                    <div style="font-size:11px; color:#ef4444;">YOY -54%（主力大盘）</div>
+                </div>
+                <div style="background:#27272a; padding:12px; border-radius:8px; text-align:center;">
+                    <div style="font-size:11px; color:#71717a; margin-bottom:4px;">AI产品线收入</div>
+                    <div style="font-size:18px; font-weight:800; color:#fff;">13,566 <span style="font-size:11px;">万</span></div>
+                    <div style="font-size:11px; color:#10b981;">YOY +102%（增长极）</div>
+                </div>
+                <div style="background:#27272a; padding:12px; border-radius:8px; text-align:center;">
+                    <div style="font-size:11px; color:#71717a; margin-bottom:4px;">预算净利润</div>
+                    <div style="font-size:20px; font-weight:900; color:#f59e0b;">1,281 <span style="font-size:12px;">万</span></div>
+                    <div style="font-size:11px; color:#ef4444;">净利率仅 2%</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 模拟计算器主体 -->
         <div class="grid-layout items-start">
-            <!-- Left Side: Actual Input Dynamics (Simulating real-time inputs based on operations) -->
+            <!-- 左：输入区 -->
             <div class="glass-card p-6">
                 <div class="flex items-center gap-3 mb-6 border-b border-border pb-4">
-                    <div class="w-10 h-10 rounded bg-[#27272a] flex items-center justify-center text-primary text-xl relative border border-border">
+                    <div class="w-10 h-10 rounded bg-[#27272a] flex items-center justify-center text-primary text-xl border border-border">
                         <i class="fas fa-sliders-h"></i>
                     </div>
                     <div>
-                        <h2 class="text-xl font-bold text-white">当前业务前线实况池</h2>
-                        <p class="text-xs text-text-dim">输入你当下的实际转化、开支和退费情况</p>
+                        <h2 class="text-xl font-bold text-white">参数模拟输入</h2>
+                        <p class="text-xs text-text-dim">调参看净利如何变化，找到生死临界点</p>
                     </div>
                 </div>
 
                 <div class="space-y-5">
                     <div class="input-group">
-                        <label>合同总签单额 / 流水 (万元)</label>
+                        <label>年度签单流水（万元）</label>
                         <input type="number" v-model.number="actuals.signed_revenue">
-                        <p class="text-xs text-text-muted mt-1">你的前端冲了多少流水进来？</p>
+                        <p class="text-xs text-text-muted mt-1">F26基线: 59,836万（YOY -38%）</p>
                     </div>
 
                     <div class="input-group">
-                        <label>整体退费率 (%) <span class="text-danger font-bold text-xs ml-2" v-if="actuals.refund_rate > 10">⚠️ 远超10%安全线</span></label>
-                        <input type="range" v-model.number="actuals.refund_rate" max="100" step="0.5">
-                        <div class="flex justify-between mt-1"><span class="text-xs text-text-muted">高质量交付</span><span class="text-xs font-bold text-white">{{actuals.refund_rate}}%</span></div>
+                        <label>整体退费率 (%) <span class="text-danger font-bold text-xs ml-2" v-if="actuals.refund_rate > 10">⚠️ 超10%安全线</span></label>
+                        <input type="range" v-model.number="actuals.refund_rate" max="60" step="0.5">
+                        <div class="flex justify-between mt-1"><span class="text-xs text-text-muted">0%</span><span class="text-xs font-bold text-white">{{actuals.refund_rate}}%</span><span class="text-xs text-text-muted">60%</span></div>
                     </div>
 
                     <div class="input-group">
-                        <label>当月固定成本盘 (万元)</label>
+                        <label>年度UE毛利率 (%)</label>
+                        <input type="range" v-model.number="actuals.ue_margin" max="60" step="0.5">
+                        <div class="flex justify-between mt-1"><span class="text-xs text-text-muted">低效</span><span class="text-xs font-bold text-white">{{actuals.ue_margin}}%</span><span class="text-xs text-text-muted">高效</span></div>
+                        <p class="text-xs text-text-muted mt-1">F26基线: 22%（有声线23%，AI线23%，IP孵化17%）</p>
+                    </div>
+
+                    <div class="input-group">
+                        <label>年度固定成本（万元）</label>
                         <input type="number" v-model.number="actuals.fixed_cost">
-                        <p class="text-xs text-text-muted mt-1">包含总部、后勤、房租及基础行政薪酬</p>
+                        <p class="text-xs text-text-muted mt-1">F26基线: 12,007万（人力8,982 + 行政1,940 + 产研785 + 其他300）</p>
                     </div>
 
-                    <div class="input-group">
-                        <label>有效加微获客单价 CPL (元)</label>
-                        <input type="number" v-model.number="actuals.cac_per_user">
-                        <p class="text-xs text-text-muted mt-1">均摊后每买一条有效加微线索需要花多少</p>
-                    </div>
-                    
-                    <div class="input-group">
-                        <label>当月有效加微总数 (线索数)</label>
-                        <input type="number" v-model.number="actuals.new_students">
-                    </div>
-
-                    <div class="input-group">
-                        <label>履约与授课变动成本 VC (万元)</label>
-                        <input type="number" v-model.number="actuals.variable_cost">
-                        <p class="text-xs text-text-muted mt-1">老师课酬、助教提成等跟学员数量直接相关的成本</p>
+                    <div style="padding: 10px; background: rgba(249,115,22,0.08); border-radius:8px; border: 1px solid rgba(249,115,22,0.2); font-size:12px; color:#a1a1aa; line-height:1.7;">
+                        <strong style="color:#f97316;">⚠ 核心矛盾：</strong>固定成本 YOY +30%，但主力有声线收入 YOY -54%。<br>
+                        固定成本增速远超造血能力，这是F26压力的根本原因。
                     </div>
                 </div>
             </div>
 
-            <!-- Right Side: The Gap vs The 50M Reality Check -->
+            <!-- 右：实时结果 -->
             <div class="glass-card p-6 bg-gradient-to-br from-[#18181b] to-[#1e1e24]">
                 <div class="flex items-center gap-3 mb-6 border-b border-border pb-4">
                     <div class="w-10 h-10 rounded bg-[#27272a] flex items-center justify-center text-[#10b981] text-xl border border-border">
-                        <i class="fas fa-balance-scale-right"></i>
+                        <i class="fas fa-calculator"></i>
                     </div>
                     <div>
-                        <h2 class="text-xl font-bold text-white">年度1200万净利目标 倒推境 (本月必保底线)</h2>
-                        <p class="text-xs text-text-dim">放弃虚无的5000万幻想，先看清当前能不能稳住每个月净赚100万</p>
+                        <h2 class="text-xl font-bold text-white">实时净利润推演</h2>
+                        <p class="text-xs text-text-dim">目标：年净利 ≥ 1,200万（月均≥100万）</p>
                     </div>
                 </div>
 
                 <div class="metric-group space-y-2">
                     <div class="compare-row">
                         <div>
-                            <span class="text-sm font-semibold text-text-dim block mb-1">退费拦截损耗</span>
-                            <span class="text-xs text-text-muted">退了多少钱出去？</span>
+                            <span class="text-sm font-semibold text-text-dim block mb-1">退费损耗</span>
+                            <span class="text-xs text-text-muted">流水 × 退费率</span>
                         </div>
-                        <div class="text-right flex flex-col items-end">
-                            <div class="value-actual text-[#ef4444]" v-if="actualRefundAmount > targetRefundAmount">-{{actualRefundAmount.toFixed(0)}} 万</div>
-                            <div class="value-actual text-[#10b981]" v-else>-{{actualRefundAmount.toFixed(0)}} 万</div>
-                            <div class="text-xs mt-1 text-[#f59e0b]">必须控制在: -{{targetRefundAmount.toFixed(0)}}万以内</div>
-                        </div>
-                    </div>
-
-                    <div class="compare-row">
-                        <div>
-                            <span class="text-sm font-semibold text-text-dim block mb-1">真正落口袋的确认收入</span>
-                            <span class="text-xs text-text-muted">签单流水 减去 退费</span>
-                        </div>
-                        <div class="text-right flex flex-col items-end">
-                            <div class="value-actual" :class="actualConfirmedRevenue >= targetConfirmedRevenue ? 'text-[#10b981]' : 'text-white'">{{actualConfirmedRevenue.toFixed(0)}} 万</div>
-                            <div class="text-xs mt-1">目标极值需达到: <span class="text-[#3b82f6] font-bold">{{targetConfirmedRevenue.toFixed(0)}}万</span></div>
+                        <div class="text-right">
+                            <div class="value-actual" :class="actualRefundAmount > f26RefundBase ? 'text-[#ef4444]' : 'text-[#10b981]'">
+                                -{{actualRefundAmount.toFixed(0)}} 万
+                            </div>
+                            <div class="text-xs mt-1 text-[#f59e0b]">F26基线: -{{f26RefundBase.toFixed(0)}}万</div>
                         </div>
                     </div>
 
                     <div class="compare-row">
                         <div>
-                            <span class="text-sm font-semibold text-text-dim block mb-1">获客费用总额血条 (CAC池)</span>
-                            <span class="text-xs text-text-muted">买了多少流量</span>
+                            <span class="text-sm font-semibold text-text-dim block mb-1">确认净收入</span>
+                            <span class="text-xs text-text-muted">流水 - 退费</span>
                         </div>
-                        <div class="text-right flex flex-col items-end">
-                            <div class="value-actual text-[#f97316]">{{actualTotalCac.toFixed(0)}} 万</div>
+                        <div class="text-right">
+                            <div class="value-actual text-white">{{actualConfirmedRevenue.toFixed(0)}} 万</div>
+                        </div>
+                    </div>
+
+                    <div class="compare-row">
+                        <div>
+                            <span class="text-sm font-semibold text-text-dim block mb-1">UE毛利</span>
+                            <span class="text-xs text-text-muted">确认收入 × UE率</span>
+                        </div>
+                        <div class="text-right">
+                            <div class="value-actual" :class="actualUeProfit >= 13288 ? 'text-[#10b981]' : 'text-[#f97316]'">
+                                {{actualUeProfit.toFixed(0)}} 万
+                            </div>
+                            <div class="text-xs mt-1 text-[#a1a1aa]">F26基线: 13,288万</div>
+                        </div>
+                    </div>
+
+                    <div class="compare-row">
+                        <div>
+                            <span class="text-sm font-semibold text-text-dim block mb-1">固定成本</span>
+                            <span class="text-xs text-text-muted">人力+行政+产研+其他</span>
+                        </div>
+                        <div class="text-right">
+                            <div class="value-actual" :class="actuals.fixed_cost > 12007 ? 'text-[#ef4444]' : 'text-[#10b981]'">
+                                -{{actuals.fixed_cost.toFixed(0)}} 万
+                            </div>
+                            <div class="text-xs mt-1 text-[#a1a1aa]">F26基线: 12,007万</div>
                         </div>
                     </div>
                 </div>
 
-                <div class="mt-6 border-2 border-[#3f3f46] rounded-xl overflow-hidden shadow-2xl">
-                    <div class="p-4 bg-[#1e293b] flex justify-between items-center">
-                        <div class="font-bold text-lg">当期预估验证净利润</div>
-                        <div class="text-2xl font-black tracking-tight" :class="actualNetProfit >= targets.net_profit ? 'text-[#10b981]' : (actualNetProfit > 0 ? 'text-[#f59e0b]' : 'text-[#ef4444]')">
-                            {{actualNetProfit >= 0 ? '+' : ''}}{{actualNetProfit.toFixed(0)}} 万元
+                <!-- 净利结果大卡 -->
+                <div class="mt-6 border-2 rounded-xl overflow-hidden shadow-2xl" :style="actualNetProfit >= 1200 ? 'border-color:#10b981' : (actualNetProfit > 0 ? 'border-color:#f59e0b' : 'border-color:#ef4444')">
+                    <div class="p-4 flex justify-between items-center" style="background:#1e293b;">
+                        <div>
+                            <div class="font-bold text-lg">年度预估净利润</div>
+                            <div class="text-xs text-text-muted mt-1">月均: {{(actualNetProfit/12).toFixed(0)}} 万</div>
+                        </div>
+                        <div class="text-3xl font-black tracking-tight"
+                             :class="actualNetProfit >= 1200 ? 'text-[#10b981]' : (actualNetProfit > 0 ? 'text-[#f59e0b]' : 'text-[#ef4444]')">
+                            {{actualNetProfit >= 0 ? '+' : ''}}{{actualNetProfit.toFixed(0)}} <span style="font-size:16px;">万</span>
                         </div>
                     </div>
-                    <div class="bg-[#0f172a] p-3 flex justify-between text-sm px-6">
-                        <span>真实净利率: <span class="font-bold" :class="actualNetMargin >= 10 ? 'text-[#10b981]' : 'text-[#ef4444]'">{{actualNetMargin.toFixed(1)}}%</span> (目标 10%)</span>
-                        <span>UE毛利率(不含固本): <span class="font-bold" :class="actualUeMargin >= 34 ? 'text-[#10b981]' : 'text-[#f97316]'">{{actualUeMargin.toFixed(1)}}%</span></span>
+                    <div style="background:#0f172a; padding:10px 24px; display:flex; justify-content:space-between; font-size:13px;">
+                        <span>净利率: <span class="font-bold" :class="actualNetMargin >= 10 ? 'text-[#10b981]' : 'text-[#ef4444]'">{{actualNetMargin.toFixed(1)}}%</span> (目标≥10%)</span>
+                        <span>UE毛利率: <span class="font-bold" :class="actuals.ue_margin >= 30 ? 'text-[#10b981]' : 'text-[#f97316]'">{{actuals.ue_margin}}%</span></span>
                     </div>
                 </div>
-                
+
+                <!-- 状态标签 -->
                 <div class="mt-4 text-center">
-                    <span v-if="actualNetProfit >= targets.net_profit" class="inline-block py-1 px-4 rounded-full bg-[rgba(16,185,129,0.2)] text-[#10b981] text-sm font-bold border border-[#10b981]">
-                        🟢 财务指标健康，第一曲线可为第二曲线输血
+                    <span v-if="actualNetProfit >= 1200"
+                          class="inline-block py-1 px-4 rounded-full text-sm font-bold"
+                          style="background:rgba(16,185,129,0.2); color:#10b981; border:1px solid #10b981;">
+                        ✅ 已达年度1200万底线目标
                     </span>
-                    <span v-else-if="actualNetProfit > 0" class="inline-block py-1 px-4 rounded-full bg-[rgba(245,158,11,0.2)] text-[#f59e0b] text-sm font-bold border border-[#f59e0b]">
-                        🟠 仅有微薄利润，不足以撑起公司第二曲线战略，业务随时重返亏损
+                    <span v-else-if="actualNetProfit > 0"
+                          class="inline-block py-1 px-4 rounded-full text-sm font-bold"
+                          style="background:rgba(245,158,11,0.2); color:#f59e0b; border:1px solid #f59e0b;">
+                        ⚠️ 微利润，距1200万目标还差 {{(1200-actualNetProfit).toFixed(0)}} 万
                     </span>
-                    <span v-else class="inline-block py-1 px-4 rounded-full bg-[rgba(239,68,68,0.2)] text-[#ef4444] text-sm font-bold border border-[#ef4444]">
-                        🔴 严重失血中！必须立即拉下业务熔断手闸！见下方BP诊断！
+                    <span v-else
+                          class="inline-block py-1 px-4 rounded-full text-sm font-bold"
+                          style="background:rgba(239,68,68,0.2); color:#ef4444; border:1px solid #ef4444;">
+                        🔴 亏损状态！差距 {{Math.abs(actualNetProfit).toFixed(0)}} 万，需立即熔断
                     </span>
                 </div>
 
-            </div>
-        </div>
-
-        <!-- Finance BP Diagnostics Area -->
-        <div class="mt-10">
-            <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
-                <i class="fas fa-stethoscope text-[#60a5fa] text-3xl"></i>
-                <span class="bg-gradient-to-r from-[#60a5fa] to-[#8b5cf6] text-transparent bg-clip-text">财务 BP 顶尖干预研判报告</span>
-            </h2>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Diagnosic Card 1: Refund -->
-                <transition name="fade" mode="out-in">
-                    <div v-if="actuals.refund_rate > 10" class="glass-card p-6" style="border-top: 4px solid #ef4444;">
-                        <div class="flex items-center gap-3 mb-3">
-                            <span class="w-8 h-8 rounded-full bg-[rgba(239,68,68,0.2)] flex items-center justify-center text-[#ef4444]"><i class="fas fa-exclamation-triangle"></i></span>
-                            <h3 class="font-bold text-[#ef4444] text-lg">致命失血：高毒性退单红线</h3>
-                        </div>
-                        <p class="text-sm text-text-dim mb-4 leading-relaxed">
-                            <strong class="text-white">发现黑洞：</strong> 退费率高达 {{actuals.refund_rate}}%！这吃掉了约 <strong class="text-[#ef4444]">{{actualRefundAmount.toFixed(0)}}万</strong> 的签单流水。不仅浪费了已投入的前置流量（约等于白烧了这部分的获客成本），更带来大量隐形的公关和客诉人力重负。
-                        </p>
-                        <div class="bg-[rgba(249,115,22,0.1)] p-4 rounded-lg border border-[rgba(249,115,22,0.3)]">
-                            <span class="text-xs uppercase tracking-wider text-[#f97316] font-bold block mb-1">执行熔断动作</span>
-                            <p class="text-sm text-white font-medium">立刻切断向那些易产生客诉的高危渠道（如过度下沉市场）投流。必须强化前链路 ABCD 用户分层拦截，D 类强制劝退。</p>
-                        </div>
-                    </div>
-                </transition>
-
-                <!-- Diagnosic Card 2: CAC Efficiency -->
-                <transition name="fade" mode="out-in">
-                    <div v-if="actualTotalCac > (targetConfirmedRevenue * 0.28)" class="glass-card p-6" style="border-top: 4px solid #f97316;">
-                        <div class="flex items-center gap-3 mb-3">
-                            <span class="w-8 h-8 rounded-full bg-[rgba(249,115,22,0.2)] flex items-center justify-center text-[#f97316]"><i class="fas fa-money-bill-wave"></i></span>
-                            <h3 class="font-bold text-[#f97316] text-lg">获客畸高：ROI低于警戒</h3>
-                        </div>
-                        <p class="text-sm text-text-dim mb-4 leading-relaxed">
-                            <strong class="text-white">发现黑洞：</strong> 流量采购费用达 {{actualTotalCac.toFixed(0)}} 万，超过了健康经营模型允许的顶棚（目标确认收入的约28%），说明要么无效线索太多，要么单客转化链路失效。
-                        </p>
-                        <div class="bg-[rgba(249,115,22,0.1)] p-4 rounded-lg border border-[rgba(249,115,22,0.3)]">
-                            <span class="text-xs uppercase tracking-wider text-[#f97316] font-bold block mb-1">执行熔断动作</span>
-                            <p class="text-sm text-white font-medium">重构 S2B2C 阶梯获客链，必须通过后端 199/398 等低门槛陪伴产品（C1类）扩编自然流和私域流，摊薄大盘综合单人 CAC 至 70 元以内。</p>
-                        </div>
-                    </div>
-                </transition>
-
-                <!-- Diagnosic Card 3: Fixed Costs Limit -->
-                <transition name="fade" mode="out-in">
-                    <div v-if="actualNetProfit < 0" class="glass-card p-6" style="border-top: 4px solid #8b5cf6;">
-                        <div class="flex items-center gap-3 mb-3">
-                            <span class="w-8 h-8 rounded-full bg-[rgba(139,92,246,0.2)] flex items-center justify-center text-[#8b5cf6]"><i class="fas fa-users-slash"></i></span>
-                            <h3 class="font-bold text-[#8b5cf6] text-lg">造血枯竭：被固本拖死</h3>
-                        </div>
-                        <p class="text-sm text-text-dim mb-4 leading-relaxed">
-                            <strong class="text-white">发现黑洞：</strong> 你的UE毛利 {{actualUeProfit.toFixed(0)}} 万 甚至无法覆盖 {{actuals.fixed_cost}} 万 的刚性固定成本（薪酬和房租）。你不仅白忙活，每个月还要自己掏腰包倒贴钱。
-                        </p>
-                        <div class="bg-[rgba(139,92,246,0.1)] p-4 rounded-lg border border-[rgba(139,92,246,0.3)]">
-                            <span class="text-xs uppercase tracking-wider text-[#8b5cf6] font-bold block mb-1">强力护城河建议</span>
-                            <p class="text-sm text-white font-medium">严禁任何未绑定后端实际产出利润基数的头部扩招；开启班主任到合伙人的转化引擎，用分成取代底薪刚性支持。</p>
-                        </div>
-                    </div>
-                    
-                    <div v-else-if="actualNetProfit >= targets.net_profit" class="glass-card p-6" style="border-top: 4px solid #10b981; background: linear-gradient(135deg, rgba(24,24,27,0.95), rgba(16,185,129,0.05));">
-                        <div class="flex items-center gap-3 mb-3">
-                            <span class="w-8 h-8 rounded-full bg-[rgba(16,185,129,0.2)] flex items-center justify-center text-[#10b981]"><i class="fas fa-check-circle"></i></span>
-                            <h3 class="font-bold text-[#10b981] text-lg">大盘稳固：战略资金库建立</h3>
-                        </div>
-                        <p class="text-sm text-text-dim mb-4 leading-relaxed">
-                            <strong class="text-white">财务护航通过：</strong> 退费（{{actuals.refund_rate}}%）得到严控，流量效率达到临界点之上，实现了预定单期 {{targets.net_profit}}万 的正向现金流造血。
-                        </p>
-                        <div class="bg-[rgba(16,185,129,0.1)] p-4 rounded-lg border border-[rgba(16,185,129,0.3)]">
-                            <span class="text-xs uppercase tracking-wider text-[#10b981] font-bold block mb-1">进击动作</span>
-                            <p class="text-sm text-white font-medium">此时可以果断将首曲线产生利润的20%转移作为独立弹药库，加速进攻“大健康”与 S2B2C 新域扩张的第二曲线。</p>
-                        </div>
-                    </div>
-                </transition>
-            </div>
-        </div>
-        
-        <!-- Summary Insights Panel -->
-        <div class="mt-8 glass-card p-8" style="background: linear-gradient(145deg, #18181b, #0f172a); border-left: 5px solid #3b82f6;">
-            <h3 class="text-xl font-black text-white mb-4"><i class="fas fa-lightbulb text-[#f59e0b] mr-2"></i> 核心认知升级：为什么要这么算帐？</h3>
-            <div class="grid md:grid-cols-2 gap-8 text-sm text-text-dim">
-                <div class="space-y-3">
-                    <p><strong class="text-white block">1. 不是“卖得更多”，而是“漏得更少”</strong>
-                    签单流水做多很容易，只要过度承诺即可，但这会极大推高 <strong>“退费率”</strong>。每退掉1万块钱，公司要倒贴的不止是这1万块的授课成本（VC），还有已经支付出去买这个客户的流量费（CAC），隐损比预想的高1.4倍。</p>
-                </div>
-                <div class="space-y-3">
-                    <p><strong class="text-white block">2. 要规模化，必须降低 CAC 并依赖自然流</strong>
-                    单纯跑效果广告会撞上“内卷墙”，这是为什么目标 CAC 锚定在不可思议的 69 元极低水平。这实际上是在逼迫业务层从“纯流量买卖模式”转为 <strong>IP + C类社群养粉发酵的生态运营模式</strong>。</p>
+                <!-- 快捷重置按钮 -->
+                <div class="mt-4 flex gap-3">
+                    <button @click="resetToF26"
+                            style="flex:1; padding:8px; background:#27272a; border:1px solid #3f3f46; border-radius:8px; color:#a1a1aa; font-size:12px; cursor:pointer; transition: all 0.2s;"
+                            onmouseover="this.style.background='#3f3f46'; this.style.color='#fff'"
+                            onmouseout="this.style.background='#27272a'; this.style.color='#a1a1aa'">
+                        🔄 重置为F26基线
+                    </button>
+                    <button @click="resetToTarget"
+                            style="flex:1; padding:8px; background:rgba(16,185,129,0.1); border:1px solid rgba(16,185,129,0.3); border-radius:8px; color:#10b981; font-size:12px; cursor:pointer; transition: all 0.2s;"
+                            onmouseover="this.style.background='rgba(16,185,129,0.2)'"
+                            onmouseout="this.style.background='rgba(16,185,129,0.1)'">
+                        🎯 模拟目标达成
+                    </button>
                 </div>
             </div>
         </div>
@@ -454,64 +446,56 @@
     <script>
         const { createApp } = Vue;
 
+        // F26 budget baseline from finance team (annual, 万元)
+        const F26_BASELINE = {
+            signed_revenue: 59836,
+            refund_rate: 15,      // 估算退费率（F26含有声线高退费历史）
+            ue_margin: 22,        // 22% UE rate per budget
+            fixed_cost: 12007     // 年度固定成本
+        };
+
+        // Target scenario that hits 1200M net profit
+        const TARGET_SCENARIO = {
+            signed_revenue: 59836,
+            refund_rate: 10,
+            ue_margin: 34,
+            fixed_cost: 10000
+        };
+
         createApp({
             data() {
                 return {
-                    // Default baseline reflecting the 2602 monthly actuals 
-                    // which shows a heavily bleeding UE scenario
-                    actuals: {
-                        signed_revenue: 2756, // 万元 
-                        refund_rate: 24.6, // %
-                        fixed_cost: 917, // 万元
-                        cac_per_user: 97, // 元 (CPL actually based on 加微)
-                        new_students: 71441, // 人 (表示有效加微数)
-                        variable_cost: 1170 // 万元
-                    },
-                    // Theoretical Target Anchors based on 12M profit definition
-                    targets: {
-                        net_profit: 100,  // 对应今年保守1200万（即单月100万）保底目标
-                        net_margin: 10,
-                        refund_ceiling: 10
-                    }
+                    actuals: { ...F26_BASELINE }
                 };
             },
             computed: {
-                // Actual computations
+                // F26 baseline refund for comparison
+                f26RefundBase() {
+                    return F26_BASELINE.signed_revenue * (F26_BASELINE.refund_rate / 100);
+                },
                 actualRefundAmount() {
                     return this.actuals.signed_revenue * (this.actuals.refund_rate / 100);
                 },
                 actualConfirmedRevenue() {
                     return this.actuals.signed_revenue - this.actualRefundAmount;
                 },
-                actualTotalCac() {
-                    return (this.actuals.cac_per_user * this.actuals.new_students) / 10000;
-                },
                 actualUeProfit() {
-                    // Confirmed Rev - CAC - Variable Costs
-                    return this.actualConfirmedRevenue - this.actualTotalCac - this.actuals.variable_cost;
-                },
-                actualUeMargin() {
-                    return this.actualConfirmedRevenue > 0 ? (this.actualUeProfit / this.actualConfirmedRevenue) * 100 : 0;
+                    return this.actualConfirmedRevenue * (this.actuals.ue_margin / 100);
                 },
                 actualNetProfit() {
                     return this.actualUeProfit - this.actuals.fixed_cost;
                 },
                 actualNetMargin() {
-                    return this.actualConfirmedRevenue > 0 ? (this.actualNetProfit / this.actualConfirmedRevenue) * 100 : 0;
+                    return this.actualConfirmedRevenue > 0
+                        ? (this.actualNetProfit / this.actualConfirmedRevenue) * 100 : 0;
+                }
+            },
+            methods: {
+                resetToF26() {
+                    this.actuals = { ...F26_BASELINE };
                 },
-
-                // Derived Ideal Targets based on 12M goal
-                // We know that NetProfit = Confirmed - Fixed - CAC - VC
-                // And we want 10% NetProfitMargin => Confirmed = NetProfit * 10
-                targetConfirmedRevenue() {
-                    return this.targets.net_profit / (this.targets.net_margin / 100); // 50000
-                },
-                // If refund is kept at strictly max 10%
-                targetSignedRevenue() {
-                    return this.targetConfirmedRevenue / (1 - (this.targets.refund_ceiling / 100)); // ~55555
-                },
-                targetRefundAmount() {
-                    return this.targetSignedRevenue - this.targetConfirmedRevenue; // ~5555
+                resetToTarget() {
+                    this.actuals = { ...TARGET_SCENARIO };
                 }
             }
         }).mount('#app');
