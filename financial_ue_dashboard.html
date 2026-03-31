@@ -296,11 +296,43 @@
                         <p class="text-xs text-text-muted mt-1">F26基线: 59,836万（YOY -38%）</p>
                     </div>
 
-                    <div class="input-group">
-                        <label>整体退费率 (%) <span class="text-danger font-bold text-xs ml-2" v-if="actuals.refund_rate > 10">⚠️ 超10%安全线</span></label>
-                        <input type="range" v-model.number="actuals.refund_rate" max="60" step="0.5">
-                        <div class="flex justify-between mt-1"><span class="text-xs text-text-muted">0%</span><span class="text-xs font-bold text-white">{{actuals.refund_rate}}%</span><span class="text-xs text-text-muted">60%</span></div>
+                    <!-- 退费拆解 -->
+                    <div style="background:rgba(239,68,68,0.06); border:1px solid rgba(239,68,68,0.2); border-radius:10px; padding:14px;">
+                        <div style="font-size:13px; font-weight:700; color:#ef4444; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;">
+                            <span>💸 退费拆解（万元）</span>
+                            <span style="font-size:16px; color:#fff;">合计: <strong :class="totalRefund > 4045 ? 'text-[#ef4444]' : 'text-[#f59e0b]'">{{totalRefund.toFixed(0)}}</strong> 万</span>
+                        </div>
+                        <div style="display:grid; gap:10px;">
+                            <div class="input-group" style="margin:0;">
+                                <label style="display:flex; justify-content:space-between; align-items:center;">
+                                    <span>🔴 去年遗留退费</span>
+                                    <span style="color:#ef4444; font-size:11px;">F26实际: 2,810万</span>
+                                </label>
+                                <input type="number" v-model.number="actuals.refund_legacy">
+                                <p class="text-xs text-text-muted mt-1">去年L1+L2捆绑售卖遗留的历史包袱</p>
+                            </div>
+                            <div class="input-group" style="margin:0;">
+                                <label style="display:flex; justify-content:space-between; align-items:center;">
+                                    <span>🟡 今年新签退费</span>
+                                    <span style="color:#10b981; font-size:11px;">F26实际: 1,235万</span>
+                                </label>
+                                <input type="number" v-model.number="actuals.refund_current">
+                                <p class="text-xs text-text-muted mt-1">今年F26新业务、反映真实当期交付质量</p>
+                            </div>
+                        </div>
+                        <!-- 今年新签退费率 -->
+                        <div style="margin-top:12px; padding:10px; background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.2); border-radius:8px;">
+                            <div style="font-size:12px; color:#a1a1aa; margin-bottom:4px;">✨ 今年新签真实退费率 = 今年退费 ÷ 年度签单流水</div>
+                            <div style="font-size:22px; font-weight:900;" :class="currentYearRefundRate > 10 ? 'text-[#ef4444]' : 'text-[#10b981]'">
+                                {{currentYearRefundRate.toFixed(2)}}%
+                                <span style="font-size:12px; font-weight:400; color:#71717a;">（含去年遗留合计比率: {{totalRefundRate.toFixed(1)}}%）</span>
+                            </div>
+                            <div style="font-size:11px; color:#71717a; margin-top:4px;">
+                                去年遗留退费为历史包袱，不反映今年新产品真实交付能力
+                            </div>
+                        </div>
                     </div>
+
 
                     <div class="input-group">
                         <label>年度UE毛利率 (%)</label>
@@ -355,21 +387,26 @@
                 <div class="metric-group space-y-2">
                     <div class="compare-row">
                         <div>
-                            <span class="text-sm font-semibold text-text-dim block mb-1">退费损耗</span>
-                            <span class="text-xs text-text-muted">流水 × 退费率</span>
+                            <span class="text-sm font-semibold text-text-dim block mb-1">退费损耗（合计）</span>
+                            <div style="font-size:11px; color:#71717a; line-height:1.7; margin-top:2px;">
+                                🔴 去年遊留 {{actuals.refund_legacy}}万 | 🟡 今年新签 {{actuals.refund_current}}万
+                            </div>
+                            <div style="font-size:11px; margin-top:4px;" :class="currentYearRefundRate > 10 ? 'text-[#ef4444]' : 'text-[#10b981]'">
+                                ✨ 今年新签退费率: <strong>{{currentYearRefundRate.toFixed(2)}}%</strong>
+                            </div>
                         </div>
                         <div class="text-right">
-                            <div class="value-actual" :class="actualRefundAmount > f26RefundBase ? 'text-[#ef4444]' : 'text-[#10b981]'">
-                                -{{actualRefundAmount.toFixed(0)}} 万
+                            <div class="value-actual" :class="totalRefund > 4045 ? 'text-[#ef4444]' : 'text-[#f59e0b]'">
+                                -{{totalRefund.toFixed(0)}} 万
                             </div>
-                            <div class="text-xs mt-1 text-[#f59e0b]">F26基线: -{{f26RefundBase.toFixed(0)}}万</div>
+                            <div class="text-xs mt-1 text-[#a1a1aa]">F26实际: -4,045万</div>
                         </div>
                     </div>
 
                     <div class="compare-row">
                         <div>
                             <span class="text-sm font-semibold text-text-dim block mb-1">确认净收入</span>
-                            <span class="text-xs text-text-muted">流水 - 退费</span>
+                            <span class="text-xs text-text-muted">流水 - 合计退费</span>
                         </div>
                         <div class="text-right">
                             <div class="value-actual text-white">{{actualConfirmedRevenue.toFixed(0)}} 万</div>
@@ -470,7 +507,8 @@
         // F26 budget baseline from finance team (annual, 万元)
         const F26_BASELINE = {
             signed_revenue: 59836,
-            refund_rate: 15,
+            refund_legacy: 2810,    // 去年L1+L2捆绑遊留退费
+            refund_current: 1235,   // 今年F26新签退费
             ue_margin: 22,
             cost_headcount: 8982,   // 人力成本
             cost_admin: 1940,       // 行政成本
@@ -478,12 +516,13 @@
             cost_other: 300         // 内容/市场公关
         };
 
-        // Target scenario that hits 1200M net profit
+        // Target scenario: cut legacy refunds by transitioning old clients, improve new biz quality
         const TARGET_SCENARIO = {
             signed_revenue: 59836,
-            refund_rate: 10,
+            refund_legacy: 1000,    // 卅消历史包裱
+            refund_current: 600,    // 改善交付优化
             ue_margin: 34,
-            cost_headcount: 7500,   // 降本10%
+            cost_headcount: 7500,   // 降本
             cost_admin: 1500,
             cost_rd: 700,
             cost_other: 300
@@ -496,20 +535,30 @@
                 };
             },
             computed: {
-                f26RefundBase() {
-                    return F26_BASELINE.signed_revenue * (F26_BASELINE.refund_rate / 100);
+                f26RefundBase() { return 4045; }, // F26实际总退费
+                totalRefund() {
+                    return (this.actuals.refund_legacy || 0) + (this.actuals.refund_current || 0);
+                },
+                totalRefundRate() {
+                    return this.actuals.signed_revenue > 0
+                        ? (this.totalRefund / this.actuals.signed_revenue) * 100 : 0;
+                },
+                currentYearRefundRate() {
+                    // 今年新签退费率 = 今年退费 / 年度签单流水
+                    return this.actuals.signed_revenue > 0
+                        ? ((this.actuals.refund_current || 0) / this.actuals.signed_revenue) * 100 : 0;
+                },
+                actualRefundAmount() {
+                    return this.totalRefund;
+                },
+                actualConfirmedRevenue() {
+                    return this.actuals.signed_revenue - this.totalRefund;
                 },
                 totalFixedCost() {
                     return (this.actuals.cost_headcount || 0) +
                            (this.actuals.cost_admin || 0) +
                            (this.actuals.cost_rd || 0) +
                            (this.actuals.cost_other || 0);
-                },
-                actualRefundAmount() {
-                    return this.actuals.signed_revenue * (this.actuals.refund_rate / 100);
-                },
-                actualConfirmedRevenue() {
-                    return this.actuals.signed_revenue - this.actualRefundAmount;
                 },
                 actualUeProfit() {
                     return this.actualConfirmedRevenue * (this.actuals.ue_margin / 100);
