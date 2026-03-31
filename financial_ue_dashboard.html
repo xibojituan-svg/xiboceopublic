@@ -231,43 +231,61 @@
             </div>
             <h1>UE 财务模拟计算器</h1>
             <p class="text-text-dim max-w-2xl mx-auto mt-4 font-medium" style="font-size:15px; line-height:1.8;">
-                F26预算初版净利润仅 <strong style="color:#ef4444;">1,281万</strong>（净利率2%）。拖动下方参数，看各指标变化是否能让净利达到 <strong style="color:#10b981;">年化1200万以上</strong> 的最低目标。
+                Q1实际到账 <strong style="color:#f97316;">8,816万</strong>，F26全年预算目标 59,836万，当前完成率仅 <strong style="color:#ef4444;">14.7%</strong>。
+                拖动下方参数，推演年化走势能否实现年度净利 <strong style="color:#10b981;">1,200万以上</strong> 的底线目标。
             </p>
         </div>
 
-        <!-- F26预算基线参考表 -->
+        <!-- Q1实际 vs F26预算对比面板 -->
         <div class="glass-card p-6 mb-8" style="border-left: 4px solid #f97316;">
             <div class="flex items-center gap-2 mb-4">
-                <i class="fas fa-file-invoice-dollar" style="color:#f97316;"></i>
-                <span class="font-bold text-white">F26预算基线（马长久财务团队·2026-03-31）</span>
+                <i class="fas fa-chart-line" style="color:#f97316;"></i>
+                <span class="font-bold text-white">Q1实际到账 vs F26全年预算（马长久财务团队·2026-03-31）</span>
+            </div>
+            <!-- 进度条 -->
+            <div style="margin-bottom:16px;">
+                <div style="display:flex; justify-content:space-between; font-size:12px; color:#a1a1aa; margin-bottom:6px;">
+                    <span>全年预算完成率</span>
+                    <span style="color:#f97316; font-weight:700;">8,816 / 59,836万 = 14.7%</span>
+                </div>
+                <div style="height:8px; background:#27272a; border-radius:999px; overflow:hidden;">
+                    <div style="height:100%; width:14.7%; background:linear-gradient(90deg,#f97316,#ef4444); border-radius:999px;"></div>
+                </div>
+                <div style="font-size:11px; color:#71717a; margin-top:4px;">Q1结束应完成25%，目前落后10个百分点</div>
             </div>
             <div style="display:grid; grid-template-columns: repeat(3,1fr); gap: 12px;">
                 <div style="background:#27272a; padding:12px; border-radius:8px; text-align:center;">
-                    <div style="font-size:11px; color:#71717a; margin-bottom:4px;">总签单收入</div>
+                    <div style="font-size:11px; color:#71717a; margin-bottom:4px;">Q1实际签单流水</div>
+                    <div style="font-size:20px; font-weight:900; color:#f97316;">8,816 <span style="font-size:12px;">万</span></div>
+                    <div style="font-size:11px; color:#a1a1aa;">年刖1–年度3月实际</div>
+                </div>
+                <div style="background:#27272a; padding:12px; border-radius:8px; text-align:center;">
+                    <div style="font-size:11px; color:#71717a; margin-bottom:4px;">F26全年预算</div>
                     <div style="font-size:20px; font-weight:900; color:#fff;">59,836 <span style="font-size:12px;">万</span></div>
                     <div style="font-size:11px; color:#ef4444;">YOY -38%</div>
                 </div>
                 <div style="background:#27272a; padding:12px; border-radius:8px; text-align:center;">
-                    <div style="font-size:11px; color:#71717a; margin-bottom:4px;">UE毛利</div>
-                    <div style="font-size:20px; font-weight:900; color:#10b981;">13,288 <span style="font-size:12px;">万</span></div>
-                    <div style="font-size:11px; color:#a1a1aa;">UE率 22%</div>
+                    <div style="font-size:11px; color:#71717a; margin-bottom:4px;">Q1年化投射</div>
+                    <div style="font-size:20px; font-weight:900; color:#f59e0b;">35,264 <span style="font-size:12px;">万</span></div>
+                    <div style="font-size:11px; color:#ef4444;">8816×4 ，缺口24,572万</div>
                 </div>
                 <div style="background:#27272a; padding:12px; border-radius:8px; text-align:center;">
-                    <div style="font-size:11px; color:#71717a; margin-bottom:4px;">固定成本</div>
+                    <div style="font-size:11px; color:#71717a; margin-bottom:4px;">F26 UE比率</div>
+                    <div style="font-size:20px; font-weight:900; color:#10b981;">22% <span style="font-size:12px;"></span></div>
+                    <div style="font-size:11px; color:#a1a1aa;">有声13抅3% · AI23% · IP IP17%</div>
+                </div>
+                <div style="background:#27272a; padding:12px; border-radius:8px; text-align:center;">
+                    <div style="font-size:11px; color:#71717a; margin-bottom:4px;">F26年度固定成本</div>
                     <div style="font-size:20px; font-weight:900; color:#f97316;">12,007 <span style="font-size:12px;">万</span></div>
                     <div style="font-size:11px; color:#ef4444;">YOY +30%</div>
                 </div>
                 <div style="background:#27272a; padding:12px; border-radius:8px; text-align:center;">
-                    <div style="font-size:11px; color:#71717a; margin-bottom:4px;">有声线收入</div>
-                    <div style="font-size:18px; font-weight:800; color:#fff;">41,121 <span style="font-size:11px;">万</span></div>
-                    <div style="font-size:11px; color:#ef4444;">YOY -54%（主力大盘）</div>
+                    <div style="font-size:11px; color:#71717a; margin-bottom:4px;">F26预算净利润</div>
+                    <div style="font-size:20px; font-weight:900; color:#f59e0b;">1,281 <span style="font-size:12px;">万</span></div>
+                    <div style="font-size:11px; color:#ef4444;">净利率2%</div>
                 </div>
-                <div style="background:#27272a; padding:12px; border-radius:8px; text-align:center;">
-                    <div style="font-size:11px; color:#71717a; margin-bottom:4px;">AI产品线收入</div>
-                    <div style="font-size:18px; font-weight:800; color:#fff;">13,566 <span style="font-size:11px;">万</span></div>
-                    <div style="font-size:11px; color:#10b981;">YOY +102%（增长极）</div>
-                </div>
-                <div style="background:#27272a; padding:12px; border-radius:8px; text-align:center;">
+            </div>
+        </div>">
                     <div style="font-size:11px; color:#71717a; margin-bottom:4px;">预算净利润</div>
                     <div style="font-size:20px; font-weight:900; color:#f59e0b;">1,281 <span style="font-size:12px;">万</span></div>
                     <div style="font-size:11px; color:#ef4444;">净利率仅 2%</div>
@@ -291,9 +309,15 @@
 
                 <div class="space-y-5">
                     <div class="input-group">
-                        <label>年度签单流水（万元）</label>
+                        <label style="display:flex; justify-content:space-between; align-items:center;">
+                            <span>年度签单流水（万元）</span>
+                            <span style="font-size:10px; padding:2px 8px; border-radius:20px; background:rgba(249,115,22,0.2); color:#f97316; font-weight:700;">Q1实际到账</span>
+                        </label>
                         <input type="number" v-model.number="actuals.signed_revenue">
-                        <p class="text-xs text-text-muted mt-1">F26基线: 59,836万（YOY -38%）</p>
+                        <div style="display:flex; justify-content:space-between; font-size:11px; margin-top:5px;">
+                            <span style="color:#a1a1aa;">F26全年预算: 59,836万</span>
+                            <span :class="annualizedRevenue >= 59836 ? 'text-[#10b981]' : 'text-[#f59e0b]'" style="font-weight:700;">年化投射: {{annualizedRevenue.toFixed(0)}}万</span>
+                        </div>
                     </div>
 
                     <!-- 退费拆解 -->
@@ -448,7 +472,7 @@
                     <div class="p-4 flex justify-between items-center" style="background:#1e293b;">
                         <div>
                             <div class="font-bold text-lg">年度预估净利润</div>
-                            <div class="text-xs text-text-muted mt-1">月均: {{(actualNetProfit/12).toFixed(0)}} 万</div>
+                            <div class="text-xs text-text-muted mt-1">月均: {{(actualNetProfit/12).toFixed(0)}} 万 | Q1年化投射基准</div>
                         </div>
                         <div class="text-3xl font-black tracking-tight"
                              :class="actualNetProfit >= 1200 ? 'text-[#10b981]' : (actualNetProfit > 0 ? 'text-[#f59e0b]' : 'text-[#ef4444]')">
@@ -504,25 +528,27 @@
     <script>
         const { createApp } = Vue;
 
-        // F26 budget baseline from finance team (annual, 万元)
+        // F26 budget baseline — Q1 YTD actual (annual, 万元)
         const F26_BASELINE = {
-            signed_revenue: 59836,
+            signed_revenue: 8816,   // Q1实际到账
             refund_legacy: 2810,    // 去年L1+L2捆绑遊留退费
             refund_current: 1235,   // 今年F26新签退费
             ue_margin: 22,
-            cost_headcount: 8982,   // 人力成本
-            cost_admin: 1940,       // 行政成本
-            cost_rd: 785,           // 产研运维
-            cost_other: 300         // 内容/市场公关
+            months_elapsed: 3,      // Q1已日历月12月中的3个月
+            cost_headcount: 8982,   // 年度人力成本
+            cost_admin: 1940,
+            cost_rd: 785,
+            cost_other: 300
         };
 
-        // Target scenario: cut legacy refunds by transitioning old clients, improve new biz quality
+        // Target scenario: Q1年化投射应达此水平
         const TARGET_SCENARIO = {
-            signed_revenue: 59836,
-            refund_legacy: 1000,    // 卅消历史包裱
-            refund_current: 600,    // 改善交付优化
+            signed_revenue: 14959,  // 年化必须达刐59836，Q1应脄14,959万
+            refund_legacy: 1000,
+            refund_current: 300,
             ue_margin: 34,
-            cost_headcount: 7500,   // 降本
+            months_elapsed: 3,
+            cost_headcount: 7500,
             cost_admin: 1500,
             cost_rd: 700,
             cost_other: 300
@@ -535,7 +561,11 @@
                 };
             },
             computed: {
-                f26RefundBase() { return 4045; }, // F26实际总退费
+                f26RefundBase() { return 4045; },
+                annualizedRevenue() {
+                    const m = this.actuals.months_elapsed || 3;
+                    return m > 0 ? (this.actuals.signed_revenue / m) * 12 : 0;
+                },
                 totalRefund() {
                     return (this.actuals.refund_legacy || 0) + (this.actuals.refund_current || 0);
                 },
