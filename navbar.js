@@ -85,6 +85,8 @@
         <a href="financial_ue_dashboard.html" class="nav-link` + isActive('financial_ue_dashboard.html') + `">财务UE预演</a>
         <a href="refund_analysis_dashboard.html" class="nav-link` + isActive('refund_analysis_dashboard.html') + `">退费熔断看板</a>
         <a href="dual_track_system.html" class="nav-link` + isActive('dual_track_system.html') + `">双轨制组织设计</a>
+        <a href="student_psychology_map.html" class="nav-link` + isActive('student_psychology_map.html') + `">学员心理地图</a>
+        <a href="user_decoder_dashboard.html" class="nav-link` + isActive('user_decoder_dashboard.html') + `">🧠 用户解码中心</a>
       </div>
     </nav>
     `;

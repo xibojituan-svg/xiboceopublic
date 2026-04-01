@@ -1,0 +1,761 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>学员深层需求解码中心 v3.0 · DISC+依恋+决策模型 - Xibo CEO</title>
+
+  <style>
+    :root {
+      --bg: #09090b;
+      --bg-surface: #18181b;
+      --bg-surface-hover: #27272a;
+      --border: #3f3f46;
+      --text: #f4f4f5;
+      --text-dim: #a1a1aa;
+      --text-muted: #71717a;
+      --brand-primary: #ef4444;
+      --brand-secondary: #f97316;
+      --brand-accent: #10b981;
+      --brand-blue: #3b82f6;
+      --brand-purple: #8b5cf6;
+      --brand-yellow: #eab308;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, 'PingFang SC', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .bg-glow {
+      position: fixed; top: -20vh; left: 50%; transform: translateX(-50%);
+      width: 100vw; height: 60vh;
+      background: radial-gradient(ellipse at bottom, rgba(139, 92, 246, 0.12) 0%, rgba(9, 9, 11, 0) 70%);
+      z-index: -1; pointer-events: none;
+    }
+
+    .main-container { max-width: 1200px; margin: 0 auto; padding: 40px 24px 100px; }
+
+    /* Hero */
+    .hero { margin-bottom: 56px; text-align: center; animation: fadeUp 0.8s ease-out; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 6px; padding: 6px 16px; border-radius: 100px;
+      background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); color: var(--brand-purple);
+      font-size: 12px; font-weight: 800; letter-spacing: 1px; margin-bottom: 24px; text-transform: uppercase;
+    }
+    .origin-pulse { width: 6px; height: 6px; border-radius: 50%; background: var(--brand-purple); box-shadow: 0 0 10px var(--brand-purple); animation: pulse 2s infinite; }
+    h1 { font-size: clamp(28px, 4.5vw, 46px); font-weight: 900; line-height: 1.2; letter-spacing: -1px; margin-bottom: 20px; background: linear-gradient(180deg, #fff 0%, #a1a1aa 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero-subtitle { font-size: clamp(14px, 2vw, 16px); color: var(--text-dim); max-width: 800px; margin: 0 auto; font-weight: 500; }
+
+    /* Stats Bar */
+    .stats-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 52px; animation: fadeUp 1s ease-out 0.2s backwards; }
+    .stat-card { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 14px; padding: 20px 16px; text-align: center; }
+    .stat-value { font-size: 30px; font-weight: 900; line-height: 1; margin-bottom: 6px; }
+    .stat-label { font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; }
+
+    /* Section Headers */
+    .section-header { margin: 56px 0 28px; padding-bottom: 14px; border-bottom: 1px solid var(--border); position: relative; }
+    .section-header::after { content: ''; position: absolute; bottom: -1px; left: 0; width: 60px; height: 2px; background: var(--brand-purple); }
+    .section-num { font-size: 13px; font-weight: 800; color: var(--brand-purple); letter-spacing: 2px; margin-bottom: 6px; display: block; }
+    .section-title { font-size: 22px; font-weight: 800; color: #fff; }
+
+    /* User Cards Grid */
+    .user-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 20px; }
+
+    .user-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+      cursor: pointer;
+    }
+    .user-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      border-color: rgba(255,255,255,0.15);
+    }
+
+    .card-header {
+      padding: 20px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .user-identity { flex: 1; min-width: 0; }
+    .user-name { font-size: 17px; font-weight: 800; color: #fff; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .user-meta { font-size: 12px; color: var(--text-muted); font-weight: 600; }
+
+    .abcd-badge {
+      flex-shrink: 0;
+      font-size: 13px; font-weight: 900;
+      padding: 6px 14px; border-radius: 100px;
+      letter-spacing: 0.5px;
+    }
+    .abcd-a { background: rgba(234, 179, 8, 0.15); color: var(--brand-yellow); border: 1px solid rgba(234, 179, 8, 0.3); }
+    .abcd-b { background: rgba(16, 185, 129, 0.12); color: var(--brand-accent); border: 1px solid rgba(16, 185, 129, 0.25); }
+    .abcd-c1 { background: rgba(59, 130, 246, 0.12); color: var(--brand-blue); border: 1px solid rgba(59, 130, 246, 0.25); }
+    .abcd-c2 { background: rgba(239, 68, 68, 0.12); color: var(--brand-primary); border: 1px solid rgba(239, 68, 68, 0.25); }
+
+    .card-body { padding: 20px 24px; }
+
+    /* Core Diagnosis */
+    .diagnosis { background: rgba(139, 92, 246, 0.06); border-left: 3px solid var(--brand-purple); padding: 12px 16px; border-radius: 0 10px 10px 0; margin-bottom: 18px; font-size: 13.5px; color: var(--text-dim); line-height: 1.6; }
+    .diagnosis strong { color: #fff; }
+
+    /* Personality Row */
+    .personality-row { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+    .pill {
+      font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 100px;
+      letter-spacing: 0.3px;
+    }
+    .pill-disc { background: rgba(249, 115, 22, 0.12); color: var(--brand-secondary); border: 1px solid rgba(249, 115, 22, 0.25); }
+    .pill-attach { background: rgba(16, 185, 129, 0.1); color: var(--brand-accent); border: 1px solid rgba(16, 185, 129, 0.2); }
+    .pill-attach-y { background: rgba(234, 179, 8, 0.1); color: var(--brand-yellow); border: 1px solid rgba(234, 179, 8, 0.2); }
+    .pill-attach-r { background: rgba(239, 68, 68, 0.1); color: var(--brand-primary); border: 1px solid rgba(239, 68, 68, 0.2); }
+    .pill-decision { background: rgba(59, 130, 246, 0.1); color: var(--brand-blue); border: 1px solid rgba(59, 130, 246, 0.2); }
+    .pill-decision-r { background: rgba(239, 68, 68, 0.1); color: var(--brand-primary); border: 1px solid rgba(239, 68, 68, 0.2); }
+
+    /* Needs Blind Spot */
+    .blind-spot-title { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+    .blind-spot-title::before { content: '⚠'; color: var(--brand-secondary); }
+    .blind-spot-item { font-size: 13px; color: var(--text-dim); margin-bottom: 6px; padding-left: 14px; position: relative; line-height: 1.5; }
+    .blind-spot-item::before { content: '→'; position: absolute; left: 0; color: var(--brand-secondary); font-weight: 700; }
+    .blind-spot-item strong { color: var(--brand-secondary); }
+
+    /* SOP Action Preview */
+    .action-preview { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--border); }
+    .action-title { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+    .action-title::before { content: '💊'; }
+    .rx-item { font-size: 12.5px; color: var(--text-dim); margin-bottom: 8px; padding: 8px 12px; background: rgba(16, 185, 129, 0.04); border: 1px solid rgba(16, 185, 129, 0.12); border-radius: 8px; line-height: 1.5; }
+    .rx-item strong { color: var(--brand-accent); }
+
+    /* LTV Row */
+    .ltv-row { display: flex; gap: 6px; margin-top: 16px; flex-wrap: wrap; }
+    .ltv-item { display: flex; flex-direction: column; align-items: center; background: var(--bg-surface-hover); border-radius: 10px; padding: 8px 10px; min-width: 60px; flex: 1; }
+    .ltv-label { font-size: 9px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.5px; text-align: center; }
+    .star-row { font-size: 10px; color: var(--brand-yellow); letter-spacing: -1px; }
+    .star-dim { color: var(--border); }
+
+    /* Forbidden zone */
+    .forbidden { margin-top: 14px; padding: 10px 14px; background: rgba(239, 68, 68, 0.05); border: 1px solid rgba(239, 68, 68, 0.15); border-radius: 10px; }
+    .forbidden-label { font-size: 11px; font-weight: 800; color: var(--brand-primary); margin-bottom: 6px; display: flex; align-items: center; gap: 5px; }
+    .forbidden-label::before { content: '🚫'; }
+    .forbidden-text { font-size: 12px; color: var(--text-dim); line-height: 1.5; }
+
+    /* Full-width comparison table */
+    .table-wrapper { width: 100%; overflow-x: auto; margin: 28px 0; border: 1px solid var(--border); border-radius: 14px; }
+    table { width: 100%; border-collapse: collapse; text-align: left; min-width: 900px; }
+    th { background: #1f1f22; padding: 14px 18px; font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+    td { padding: 14px 18px; font-size: 13px; color: var(--text-dim); border-bottom: 1px solid var(--border); vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--bg-surface-hover); }
+    td strong { color: #fff; }
+    td .mini-tag { display: inline-block; padding: 2px 8px; border-radius: 100px; font-size: 10px; font-weight: 700; }
+
+    /* Framework legend */
+    .legend-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-top: 28px; }
+    .legend-item { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 14px; padding: 18px 20px; }
+    .legend-icon { font-size: 24px; margin-bottom: 10px; }
+    .legend-name { font-size: 14px; font-weight: 800; color: #fff; margin-bottom: 6px; }
+    .legend-desc { font-size: 12.5px; color: var(--text-dim); line-height: 1.6; }
+
+    /* Content helpers */
+    .content-p { font-size: 15px; color: var(--text-dim); line-height: 1.8; margin-bottom: 20px; }
+    .content-p strong { color: #fff; }
+    .quote-box { padding: 20px 28px; background: var(--bg-surface); border: 1px solid var(--border); border-left: 4px solid var(--brand-purple); border-radius: 8px; font-size: 16px; font-style: italic; font-weight: 600; color: var(--text); margin: 28px 0; }
+    .c-red { color: var(--brand-primary); }
+    .c-orange { color: var(--brand-secondary); }
+    .c-green { color: var(--brand-accent); }
+    .c-purple { color: var(--brand-purple); }
+    .c-blue { color: var(--brand-blue); }
+    .c-yellow { color: var(--brand-yellow); }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(139, 92, 246, 0); } 100% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0); } }
+  </style>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+</head>
+<body>
+  <div class="bg-glow"></div>
+  <script src="navbar.js?v=20260328"></script>
+
+  <div class="main-container">
+
+    <header class="hero">
+      <div class="badge"><div class="origin-pulse"></div>心理解码 · CEO 内参 · v3.0</div>
+      <h1>学员深层需求解码中心<br/>DISC · 依恋模型 · 决策风格</h1>
+      <p class="hero-subtitle">
+        基于企微真实聊天原石，融合DISC人格模型、依恋类型理论、决策风格三维分析框架，
+        将班主任-学员关系从「任务管理」升级为「精准心理陪伴」。
+      </p>
+    </header>
+
+    <!-- Stats Bar -->
+    <div class="stats-bar">
+      <div class="stat-card">
+        <div class="stat-value c-purple">6</div>
+        <div class="stat-label">已解码学员</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value c-green">2,644</div>
+        <div class="stat-label">总聊天条数</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value c-orange">3</div>
+        <div class="stat-label">人格维度模型</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value c-blue">9</div>
+        <div class="stat-label">报告板块</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value c-yellow">v3.0</div>
+        <div class="stat-label">框架版本</div>
+      </div>
+    </div>
+
+    <div class="quote-box">
+      "聊天记录里每一句话都是信号，班主任看到的是表面意思，解码器刺穿的是底层动机。真正的留存和转化，发生在那句从未被承接的话被认真回应的瞬间。"
+    </div>
+
+    <!-- Section 1: Framework -->
+    <div class="section-header">
+      <span class="section-num">01 / FRAMEWORK</span>
+      <h2 class="section-title">三维人格解码框架 · 新增 v3.0</h2>
+    </div>
+    <p class="content-p">v3.0 框架在原有 ABCD 分层 + 需求双轨（显性/隐性）基础上，新增<strong>人格三维速描板块</strong>。三套模型分工明确，共同驱动班主任话术从「千人一面」升级为「精准对话」。</p>
+    <div class="legend-grid">
+      <div class="legend-item">
+        <div class="legend-icon">🎭</div>
+        <div class="legend-name">DISC 沟通风格</div>
+        <div class="legend-desc">
+          识别用户的行为腔调——<br>
+          <strong style="color: var(--brand-secondary);">D型</strong>：直接结果导向，用数字和稀缺性打动<br>
+          <strong style="color: var(--brand-accent);">I型</strong>：热情社交驱动，用故事和情感连接<br>
+          <strong style="color: var(--brand-blue);">S型</strong>：稳健重承诺，给稳定感不催促<br>
+          <strong style="color: var(--brand-purple);">C型</strong>：逻辑细节敏感，用数据和流程说服
+        </div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-icon">🔗</div>
+        <div class="legend-name">依恋类型模型</div>
+        <div class="legend-desc">
+          识别用户对班主任/平台的依附模式——<br>
+          🟢 <strong style="color: var(--brand-accent);">安全型</strong>：自驱力强，留存风险低<br>
+          🟡 <strong style="color: var(--brand-yellow);">焦虑型</strong>：极度依赖回复，高频稳定是关键<br>
+          🔵 <strong style="color: var(--brand-blue);">回避型</strong>：潜水不代表无问题，需主动破冰<br>
+          🔴 <strong style="color: var(--brand-primary);">混乱型</strong>：情绪周期大，断崖式流失风险高
+        </div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-icon">💡</div>
+        <div class="legend-name">决策风格分析</div>
+        <div class="legend-desc">
+          识别关单引爆点和致命禁忌——<br>
+          💹 <strong style="color: var(--brand-accent);">价值驱动</strong>：看ROI，给蓝图<br>
+          ❤️ <strong style="color: var(--brand-primary);">关系驱动</strong>：信任第一，先建关系<br>
+          🛡️ <strong style="color: var(--brand-blue);">风险规避</strong>：怕亏损，给保障承诺<br>
+          👥 <strong style="color: var(--brand-yellow);">从众参照</strong>：给同类人成功案例
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2: User Cards -->
+    <div class="section-header">
+      <span class="section-num">02 / DECODED USERS</span>
+      <h2 class="section-title">6 位学员深层解码全景</h2>
+    </div>
+    <p class="content-p">以下卡片为每位学员的核心解码摘要，涵盖 ABCD 定性、人格三维、需求盲区与班主任处方。点击查看聊天原石档案（功能规划中）。</p>
+
+    <div class="user-grid">
+
+      <!-- UID 677109664 -->
+      <div class="user-card">
+        <div class="card-header">
+          <div class="user-identity">
+            <div class="user-name">宅宝音声</div>
+            <div class="user-meta">UID 677109664 · 女 · 北京 · 上班族 · 私聊+群聊 542条</div>
+          </div>
+          <div class="abcd-badge abcd-b">B类</div>
+        </div>
+        <div class="card-body">
+          <div class="diagnosis">
+            <strong>真实病灶：</strong>不是来学技术的，是寻找一个「哪怕在现实里妥协也有尊严的平行赛道」。她把有声当成对抗生活压力的"自我治愈工程"，需要的是路线图，而非打卡提醒。
+          </div>
+
+          <div class="blind-spot-title">需求盲区（最高风险）</div>
+          <div class="blind-spot-item">从未有人认真问她：<strong>「你说的'专业化发展'具体指的是什么状态？」</strong></div>
+          <div class="blind-spot-item">她问过剪辑软件、版权书方向，均被班主任用「后面课程会讲」搪塞</div>
+          <div class="blind-spot-item">独立发展欲与班主任过度引导之间的张力，从未被正面处理</div>
+
+          <div class="personality-row">
+            <span class="pill pill-disc">DISC-I主/C次</span>
+            <span class="pill pill-attach-y">🟡 焦虑型依恋</span>
+            <span class="pill pill-decision">💹 价值驱动</span>
+          </div>
+
+          <div class="action-preview">
+            <div class="action-title">班主任TOP处方</div>
+            <div class="rx-item"><strong>①</strong> 主动打开「专业化路径」对话——她的独立发展欲从未被承接</div>
+            <div class="rx-item"><strong>②</strong> 给具体的技术蓝图（剪辑→对轨→版权书），让她看到「走完这条路站在哪里」</div>
+          </div>
+
+          <div class="ltv-row">
+            <div class="ltv-item">
+              <div class="ltv-label">续费</div>
+              <div class="star-row">★★★★<span class="star-dim">★</span></div>
+            </div>
+            <div class="ltv-item">
+              <div class="ltv-label">客单</div>
+              <div class="star-row">★★★<span class="star-dim">★★</span></div>
+            </div>
+            <div class="ltv-item">
+              <div class="ltv-label">转介绍</div>
+              <div class="star-row">★★★★<span class="star-dim">★</span></div>
+            </div>
+            <div class="ltv-item">
+              <div class="ltv-label">共创值</div>
+              <div class="star-row">★★★<span class="star-dim">★★</span></div>
+            </div>
+            <div class="ltv-item">
+              <div class="ltv-label">风险</div>
+              <div class="star-row">★★<span class="star-dim">★★★</span></div>
+            </div>
+          </div>
+
+          <div class="forbidden">
+            <div class="forbidden-label">绝对禁忌</div>
+            <div class="forbidden-text">不能把她当成普通C1打感情牌——她是B类，情感攻势会让她产生「被操控」的反感，直接触发防御本能。</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- UID 125551088 -->
+      <div class="user-card">
+        <div class="card-header">
+          <div class="user-identity">
+            <div class="user-name">向阳花开向太阳</div>
+            <div class="user-meta">UID 125551088 · 女 · 宁夏 · 下岗女工 · 私聊+群聊 318条</div>
+          </div>
+          <div class="abcd-badge abcd-c1">C1类</div>
+        </div>
+        <div class="card-body">
+          <div class="diagnosis">
+            <strong>真实病灶：</strong>她不是来学技术的，是在下岗之后寻找第一个愿意说「你值得被认真对待」的地方。有声是她的第二次人生出场机会，班主任是她短期内最重要的情绪供给者。
+          </div>
+
+          <div class="blind-spot-title">需求盲区（最高风险）</div>
+          <div class="blind-spot-item">没有任何人认真承接过<strong>「下岗后如何通过有声重建收入」</strong>这个核心焦虑</div>
+          <div class="blind-spot-item">她问了宁夏本地市场能否接单，班主任没有给出有深度的回答</div>
+          <div class="blind-spot-item">「家里人的支持」——从未被问过，但是她最需要被帮助打开的话题</div>
+
+          <div class="personality-row">
+            <span class="pill pill-disc">DISC-I主/S次</span>
+            <span class="pill pill-attach-y">🟡 焦虑型依恋</span>
+            <span class="pill pill-decision-r">🛡️ 风险规避</span>
+          </div>
+
+          <div class="action-preview">
+            <div class="action-title">班主任TOP处方</div>
+            <div class="rx-item"><strong>①</strong> 每周一次主动问候，确定「我在」的存在感——焦虑型依恋需要高频稳定回应</div>
+            <div class="rx-item"><strong>②</strong> 帮她想清楚「冰雪之地宁夏的女声赛道」，让她看到本地化的可能性</div>
+          </div>
+
+          <div class="ltv-row">
+            <div class="ltv-item">
+              <div class="ltv-label">续费</div>
+              <div class="star-row">★★★<span class="star-dim">★★</span></div>
+            </div>
+            <div class="ltv-item">
+              <div class="ltv-label">客单</div>
+              <div class="star-row">★★<span class="star-dim">★★★</span></div>
+            </div>
+            <div class="ltv-item">
+              <div class="ltv-label">转介绍</div>
+              <div class="star-row">★★★<span class="star-dim">★★</span></div>
+            </div>
+            <div class="ltv-item">
+              <div class="ltv-label">共创值</div>
+              <div class="star-row">★★<span class="star-dim">★★★</span></div>
+            </div>
+            <div class="ltv-item">
+              <div class="ltv-label">风险</div>
+              <div class="star-row">★★★<span class="star-dim">★★</span></div>
+            </div>
+          </div>
+
+          <div class="forbidden">
+            <div class="forbidden-label">绝对禁忌</div>
+            <div class="forbidden-text">绝不能催课、催交作业——她的时间节奏由生活决定，任何催促都会复刻她被「下岗」那种被外力剥夺控制权的感受。</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- UID 677039581 -->
+      <div class="user-card">
+        <div class="card-header">
+          <div class="user-identity">
+            <div class="user-name">时光漫步者</div>
+            <div class="user-meta">UID 677039581 · 性别待确认 · 私聊+群聊 810条</div>
+          </div>
+          <div class="abcd-badge abcd-b">B类</div>
+        </div>
+        <div class="card-body">
+          <div class="diagnosis">
+            <strong>真实病灶：</strong>高学习密度 + 高频提问背后，是对「把有声做成可持续副业」的极度渴望。每一次细节追问都是在测试「这个平台能不能给我一个清晰的变现地图」。
+          </div>
+
+          <div class="blind-spot-title">需求盲区（最高风险）</div>
+          <div class="blind-spot-item">在平台制度层面的「暗箱规则」（派单逻辑、收益分成）反复追问，<strong>从未得到透明完整的回答</strong></div>
+          <div class="blind-spot-item">对「哪个品类真正最容易出单」的核心问题，只得到了模糊鼓励</div>
+
+          <div class="personality-row">
+            <span class="pill pill-disc">DISC-C主/D次</span>
+            <span class="pill pill-attach">🟢 安全型依恋</span>
+            <span class="pill pill-decision">💹 价值驱动</span>
+          </div>
+
+          <div class="action-preview">
+            <div class="action-title">班主任TOP处方</div>
+            <div class="rx-item"><strong>①</strong> 给他做一次「派单机制透明化」的专项讲解，满足C型的逻辑自洽需求</div>
+            <div class="rx-item"><strong>②</strong> 承诺第N个月有接单机会的具体时间节点，把「变现路径」从承诺变成合约</div>
+          </div>
+
+          <div class="ltv-row">
+            <div class="ltv-item">
+              <div class="ltv-label">续费</div>
+              <div class="star-row">★★★★<span class="star-dim">★</span></div>
+            </div>
+            <div class="ltv-item">
+              <div class="ltv-label">客单</div>
+              <div class="star-row">★★★<span class="star-dim">★★</span></div>
+            </div>
+            <div class="ltv-item">
+              <div class="ltv-label">转介绍</div>
+              <div class="star-row">★★★<span class="star-dim">★★</span></div>
+            </div>
+            <div class="ltv-item">
+              <div class="ltv-label">共创值</div>
+              <div class="star-row">★★★★<span class="star-dim">★</span></div>
+            </div>
+            <div class="ltv-item">
+              <div class="ltv-label">风险</div>
+              <div class="star-row">★★★<span class="star-dim">★★</span></div>
+            </div>
+          </div>
+
+          <div class="forbidden">
+            <div class="forbidden-label">绝对禁忌</div>
+            <div class="forbidden-text">绝不能给逻辑空洞的安慰式回复——C型会立刻识破并失去信任，这比不回答更危险。</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- UID 572747666 -->
+      <div class="user-card">
+        <div class="card-header">
+          <div class="user-identity">
+            <div class="user-name">雨落有声666</div>
+            <div class="user-meta">UID 572747666 · 女 · 36岁 · 江苏南通 · 全职妈妈 · 526条</div>
+          </div>
+          <div class="abcd-badge abcd-c1">C1类</div>
+        </div>
+        <div class="card-body">
+          <div class="diagnosis">
+            <strong>真实病灶：</strong>付款7个月连续延期3次从不退款——不是在逃避，是在等一个人认真回应7个月前那句「我对画本、对轨、申听、后期感兴趣」。她真正想做的是<strong>有声产业链幕后制作人</strong>，不是当主播。
+          </div>
+
+          <div class="blind-spot-title">需求盲区（最高风险 🔴）</div>
+          <div class="blind-spot-item">体验营第3天说的<strong>「画本/对轨/后期」兴趣</strong>——7个月4位班主任，没有一个人再提起过这件事</div>
+          <div class="blind-spot-item">老公不知道她花钱学习，她一个人扛着这个「秘密投资」的孤独——从未被任何班主任帮她处理</div>
+          <div class="blind-spot-item">「微商第一批做过，后来没做」的失败背景带来的自我效能恐惧，从未被正面触及</div>
+
+          <div class="personality-row">
+            <span class="pill pill-disc">DISC-S主型</span>
+            <span class="pill pill-attach-y">🟡 焦虑型依恋</span>
+            <span class="pill pill-decision-r">🛡️ 风险规避</span>
+          </div>
+
+          <div class="action-preview">
+            <div class="action-title">班主任TOP处方（现在最紧迫）</div>
+            <div class="rx-item"><strong>① 7个月前的线索</strong>：「雨雨，我翻了一下你的信息，你在体验营第3天说对画本、对轨感兴趣，现在还感兴趣吗？我帮你梳理一下怎么走。」</div>
+            <div class="rx-item"><strong>② 破解秘密孤独</strong>：帮她想清楚「怎么跟老公讲这件事」，解除她的隐性压力</div>
+          </div>
+
+          <div class="ltv-row">
+            <div class="ltv-item">
+              <div class="ltv-label">续费</div>
+              <div class="star-row">★★★<span class="star-dim">★★</span></div>
+            </div>
+            <div class="ltv-item">
+              <div class="ltv-label">客单</div>
+              <div class="star-row">★★<span class="star-dim">★★★</span></div>
+            </div>
+            <div class="ltv-item">
+              <div class="ltv-label">转介绍</div>
+              <div class="star-row">★★★<span class="star-dim">★★</span></div>
+            </div>
+            <div class="ltv-item">
+              <div class="ltv-label">共创值</div>
+              <div class="star-row">★★★★<span class="star-dim">★</span></div>
+            </div>
+            <div class="ltv-item">
+              <div class="ltv-label">风险</div>
+              <div class="star-row">★★★<span class="star-dim">★★</span></div>
+            </div>
+          </div>
+
+          <div class="forbidden">
+            <div class="forbidden-label">绝对禁忌</div>
+            <div class="forbidden-text">绝不能催作业或制造紧迫感——她在凌晨1点起床包包子的7年里被时间绑架过，催促会让她复刻那种被逼迫的压迫感，立刻关闭。</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- UID 677028298 -->
+      <div class="user-card" style="border-color: rgba(139, 92, 246, 0.3);">
+        <div class="card-header" style="background: rgba(139, 92, 246, 0.05);">
+          <div class="user-identity">
+            <div class="user-name">金声致远 <span style="font-size: 11px; color: var(--brand-purple); font-weight: 700; margin-left: 6px;">NEW · v3.0首跑</span></div>
+            <div class="user-meta">UID 677028298 · 男 · 61岁 · 河南 · 退休 · 精英版2380元 · 473条</div>
+          </div>
+          <div class="abcd-badge abcd-b">B类</div>
+        </div>
+        <div class="card-body">
+          <div class="diagnosis">
+            <strong>真实病灶：</strong>他付的不是2380元学录书技巧，他付的是「61岁之后，还有没有一件值得全力投入的事」的答案。档案填全职，名字叫金声致远——他要的是人生第三幕，不是零花钱。
+          </div>
+
+          <div class="blind-spot-title">需求盲区（最高风险）</div>
+          <div class="blind-spot-item"><strong>「全职有声路径规划」从未被任何人认真打开</strong>——他进来说全职，课程给的是技术入门</div>
+          <div class="blind-spot-item">「时间多是优势」这句话被当顺带提起，没人接过来说「你的成长速度可以是别人2倍」</div>
+          <div class="blind-spot-item">设备清单（电脑配置+麦克风型号）群里讨论了，但没有给出系统性方案</div>
+
+          <div class="personality-row">
+            <span class="pill pill-disc">DISC-S主/I次</span>
+            <span class="pill pill-attach">🟢 安全型依恋</span>
+            <span class="pill pill-decision">💹 价值驱动+从众参照</span>
+          </div>
+
+          <div class="action-preview">
+            <div class="action-title">班主任TOP处方</div>
+            <div class="rx-item"><strong>① 打开全职对话</strong>：「姥爷，你进来第一天说全职，我一直记得。6个月后你设想的日子长什么样？我帮你把这幅画描清楚。」</div>
+            <div class="rx-item"><strong>② 从众引爆</strong>：找一个60岁+学员的真实成功案例，用「和你类似的人走了这条路」来锁定续费/升级决策</div>
+            <div class="rx-item"><strong>③ 正式认可身份</strong>：告诉他「因为你在，这个班多了一种不一样的质感」——安全型I次需要一次真实的认可而非持续的安慰</div>
+          </div>
+
+          <div class="ltv-row">
+            <div class="ltv-item">
+              <div class="ltv-label">续费</div>
+              <div class="star-row">★★★★<span class="star-dim">★</span></div>
+            </div>
+            <div class="ltv-item">
+              <div class="ltv-label">客单</div>
+              <div class="star-row">★★★<span class="star-dim">★★</span></div>
+            </div>
+            <div class="ltv-item">
+              <div class="ltv-label">转介绍</div>
+              <div class="star-row">★★★★★</div>
+            </div>
+            <div class="ltv-item">
+              <div class="ltv-label">共创值</div>
+              <div class="star-row">★★★★<span class="star-dim">★</span></div>
+            </div>
+            <div class="ltv-item">
+              <div class="ltv-label">风险</div>
+              <div class="star-row">★★<span class="star-dim">★★★</span></div>
+            </div>
+          </div>
+
+          <div class="forbidden">
+            <div class="forbidden-label">绝对禁忌</div>
+            <div class="forbidden-text">不要用「年纪大也没关系」安慰——「没关系」的潜台词是承认了年纪是障碍，会激活他的自我质疑。正确姿势：直接说「你的声音条件和时间投入是这班前20%的竞争力」。</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Placeholder for 677109664 (original first case) -->
+      <div class="user-card" style="border-style: dashed; opacity: 0.6;">
+        <div class="card-header">
+          <div class="user-identity">
+            <div class="user-name">更多学员画像</div>
+            <div class="user-meta">持续迭代更新中 · 运营商可提交UID触发解码</div>
+          </div>
+          <div class="abcd-badge" style="background: rgba(63,63,70,0.5); color: var(--text-muted); border-color: var(--border);">待分析</div>
+        </div>
+        <div class="card-body">
+          <div class="diagnosis" style="border-color: var(--border); background: transparent;">
+            在 zhiyuan 目录下运行 <code style="color: var(--brand-accent); background: rgba(16,185,129,0.1); padding: 2px 6px; border-radius: 4px; font-size: 12px;">python3 analyze_wecom_chat.py &lt;UID&gt;</code> 即可触发解码，聊天原石自动落盘至 xiboData/聊天记录，分析报告落盘至 xiboData/用户画像数据。
+          </div>
+          <div class="personality-row">
+            <span class="pill pill-disc" style="opacity: 0.5;">DISC-?</span>
+            <span class="pill pill-attach" style="opacity: 0.5;">依恋-?</span>
+            <span class="pill pill-decision" style="opacity: 0.5;">决策-?</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Section 3: Comparison Table -->
+    <div class="section-header">
+      <span class="section-num">03 / COMPARE</span>
+      <h2 class="section-title">6 位学员横向对比矩阵</h2>
+    </div>
+    <p class="content-p">快速识别不同用户的核心差异，为班主任分配和话术适配提供决策依据。</p>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>学员</th>
+            <th>ABCD</th>
+            <th>DISC类型</th>
+            <th>依恋类型</th>
+            <th>决策风格</th>
+            <th>核心未被承接需求</th>
+            <th>最大流失风险</th>
+            <th>续费潜力</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <strong>宅宝音声</strong><br>
+              <span style="font-size: 11px; color: var(--text-muted);">女·北京·上班族</span>
+            </td>
+            <td><span class="mini-tag" style="background: rgba(16,185,129,0.12); color: var(--brand-accent);">B类</span></td>
+            <td><span style="color: var(--brand-secondary);">I主/C次</span></td>
+            <td><span style="color: var(--brand-yellow);">🟡 焦虑型</span></td>
+            <td><span style="color: var(--brand-accent);">💹 价值驱动</span></td>
+            <td>专业化路径规划，剪辑/版权书通道</td>
+            <td>感觉只在学技术，看不到「声音升值」的全景</td>
+            <td><span style="color: var(--brand-yellow);">★★★★</span></td>
+          </tr>
+          <tr>
+            <td>
+              <strong>向阳花开向太阳</strong><br>
+              <span style="font-size: 11px; color: var(--text-muted);">女·宁夏·下岗</span>
+            </td>
+            <td><span class="mini-tag" style="background: rgba(59,130,246,0.12); color: var(--brand-blue);">C1类</span></td>
+            <td><span style="color: var(--brand-secondary);">I主/S次</span></td>
+            <td><span style="color: var(--brand-yellow);">🟡 焦虑型</span></td>
+            <td><span style="color: var(--brand-primary);">🛡️ 风险规避</span></td>
+            <td>本地化收入路径，下岗后重建收入的系统答案</td>
+            <td>班主任回应不稳定导致焦虑爆发，主动退费</td>
+            <td><span style="color: var(--brand-yellow);">★★★</span></td>
+          </tr>
+          <tr>
+            <td>
+              <strong>时光漫步者</strong><br>
+              <span style="font-size: 11px; color: var(--text-muted);">Private·高活跃</span>
+            </td>
+            <td><span class="mini-tag" style="background: rgba(16,185,129,0.12); color: var(--brand-accent);">B类</span></td>
+            <td><span style="color: var(--brand-purple);">C主/D次</span></td>
+            <td><span style="color: var(--brand-accent);">🟢 安全型</span></td>
+            <td><span style="color: var(--brand-accent);">💹 价值驱动</span></td>
+            <td>派单机制透明化，「哪个品类最先出单」的数据答案</td>
+            <td>逻辑问题被模糊应付后，信任体系崩塌</td>
+            <td><span style="color: var(--brand-yellow);">★★★★</span></td>
+          </tr>
+          <tr>
+            <td>
+              <strong>雨落有声666</strong><br>
+              <span style="font-size: 11px; color: var(--text-muted);">女·36岁·全职妈妈</span>
+            </td>
+            <td><span class="mini-tag" style="background: rgba(59,130,246,0.12); color: var(--brand-blue);">C1类</span></td>
+            <td><span style="color: var(--brand-blue);">S主型</span></td>
+            <td><span style="color: var(--brand-yellow);">🟡 焦虑型</span></td>
+            <td><span style="color: var(--brand-primary);">🛡️ 风险规避</span></td>
+            <td>「画本/对轨/后期」兴趣7个月无人回应；秘密消费的孤独感</td>
+            <td>精英班结束时没有「制作方向」的具体路径，自然蒸发</td>
+            <td><span style="color: var(--brand-yellow);">★★★</span></td>
+          </tr>
+          <tr style="background: rgba(139, 92, 246, 0.04);">
+            <td>
+              <strong>金声致远 🆕</strong><br>
+              <span style="font-size: 11px; color: var(--brand-purple);">男·61岁·河南退休</span>
+            </td>
+            <td><span class="mini-tag" style="background: rgba(16,185,129,0.12); color: var(--brand-accent);">B类</span></td>
+            <td><span style="color: var(--brand-blue);">S主/I次</span></td>
+            <td><span style="color: var(--brand-accent);">🟢 安全型</span></td>
+            <td><span style="color: var(--brand-accent);">💹 价值+从众参照</span></td>
+            <td>「全职有声路径」从未被规划；设备系统方案未给出</td>
+            <td>精英班结束时只获得技术，未获得「全职可行性论证」，平静离场</td>
+            <td><span style="color: var(--brand-accent);">★★★★</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Section 4: System Architecture -->
+    <div class="section-header">
+      <span class="section-num">04 / SYSTEM</span>
+      <h2 class="section-title">自动化解码引擎架构</h2>
+    </div>
+    <p class="content-p">解码引擎完全基于 Python 标准库构建，<strong>无额外依赖，可在服务器直接运行</strong>。支持缓存复用，同一用户的聊天记录只需从企微 API 拉取一次。</p>
+
+    <div class="legend-grid">
+      <div class="legend-item">
+        <div class="legend-icon">📡</div>
+        <div class="legend-name">数据抓取层</div>
+        <div class="legend-desc">调用企微 API 拉取私聊+群聊记录，按时间轴清洗融合，输出结构化聊天流。支持最长 400 天历史数据。</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-icon">💾</div>
+        <div class="legend-name">缓存管理层</div>
+        <div class="legend-desc">首次拉取后自动落盘至 <code style="color: var(--brand-accent); font-size: 11px;">xiboData/聊天记录/UID_xxx_聊天记录.txt</code>，重复运行直接命中缓存，零 API 调用。</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-icon">🧠</div>
+        <div class="legend-name">AI 解码层</div>
+        <div class="legend-desc">将 SKILL.md v3.0（九大板块）+ 聊天原石拼装为 Prompt，调用 GPT-4o / Gemini 进行深层心理解码，输出结构化报告。</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-icon">📂</div>
+        <div class="legend-name">报告落盘层</div>
+        <div class="legend-desc">标准化报告存储至 <code style="color: var(--brand-accent); font-size: 11px;">xiboData/用户画像数据/UID_xxx_分析报告.md</code>，遵循统一命名规范，便于批量检索。</div>
+      </div>
+    </div>
+
+    <div style="margin-top: 28px; padding: 20px 24px; background: var(--bg-surface); border: 1px solid var(--border); border-radius: 14px;">
+      <div style="font-size: 12px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px;">📌 快速命令参考</div>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+          <code style="background: rgba(16,185,129,0.1); color: var(--brand-accent); padding: 6px 12px; border-radius: 8px; font-size: 13px; white-space: nowrap;">首次分析</code>
+          <code style="color: var(--text-dim); font-size: 13px; line-height: 1.6;">python3 analyze_wecom_chat.py &lt;UID&gt;</code>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+          <code style="background: rgba(249,115,22,0.1); color: var(--brand-secondary); padding: 6px 12px; border-radius: 8px; font-size: 13px; white-space: nowrap;">强制刷新</code>
+          <code style="color: var(--text-dim); font-size: 13px; line-height: 1.6;">python3 analyze_wecom_chat.py &lt;UID&gt; --refresh</code>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+          <code style="background: rgba(59,130,246,0.1); color: var(--brand-blue); padding: 6px 12px; border-radius: 8px; font-size: 13px; white-space: nowrap;">缓存目录</code>
+          <code style="color: var(--text-dim); font-size: 13px; line-height: 1.6;">xiboData/聊天记录/UID_xxx_聊天记录.txt</code>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+          <code style="background: rgba(139,92,246,0.1); color: var(--brand-purple); padding: 6px 12px; border-radius: 8px; font-size: 13px; white-space: nowrap;">报告目录</code>
+          <code style="color: var(--text-dim); font-size: 13px; line-height: 1.6;">xiboData/用户画像数据/UID_xxx_分析报告.md</code>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer style="margin-top: 40px; text-align: center; padding: 40px; border-top: 1px solid var(--border);">
+    <div style="color: var(--text-dim); font-size: 14px; font-weight: 600;">喜播集团 · 战略 BP 办公室 &nbsp; | &nbsp; 学员心理解码实验室 v3.0</div>
+    <div style="margin-top: 8px; color: var(--text-muted); font-size: 13px;">DISC · 依恋理论 · 决策风格 · 需求双轨 · ABCD分层 · 深度研究 · 精准陪伴</div>
+  </footer>
+
+</body>
+</html>
