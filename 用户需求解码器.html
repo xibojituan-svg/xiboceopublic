@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🧠 用户深层需求解码器 · 喜播内部工具</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#07080d;--card:#0d1117;--card2:#111827;--border:#1f2937;
+  --accent:#8b5cf6;--accent2:#a78bfa;--green:#10b981;--red:#f87171;
+  --amber:#fbbf24;--blue:#38bdf8;--text:#e2e8f0;--muted:#6b7280;--sub:#9ca3af;
+}
+body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
+
+/* ── Header ── */
+.header{
+  background:linear-gradient(135deg,#0d0715 0%,#130820 50%,#0d0715 100%);
+  border-bottom:1px solid #1a0f2e;
+  padding:24px 32px;display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:100;
+}
+.header-left{display:flex;align-items:center;gap:16px}
+.logo{
+  width:44px;height:44px;border-radius:12px;
+  background:linear-gradient(135deg,#7c3aed,#4f46e5);
+  display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;
+}
+.header-title{font-size:18px;font-weight:800;color:#f0e6ff}
+.header-sub{font-size:11px;color:var(--muted);margin-top:2px}
+.status-badge{
+  padding:5px 12px;border-radius:20px;font-size:11px;font-weight:600;
+  background:rgba(139,92,246,0.12);border:1px solid rgba(139,92,246,0.3);color:#a78bfa;
+  display:flex;align-items:center;gap:6px;
+}
+.status-dot{width:6px;height:6px;border-radius:50%;background:#8b5cf6;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+
+/* ── Main Layout ── */
+.main{display:flex;flex:1;height:calc(100vh - 77px)}
+
+/* ── Left Panel ── */
+.left-panel{
+  width:360px;flex-shrink:0;
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+  background:var(--card);
+  overflow-y:auto;
+}
+.panel-section{padding:20px;border-bottom:1px solid var(--border)}
+.section-label{
+  font-size:10px;color:var(--muted);font-weight:600;letter-spacing:2px;
+  text-transform:uppercase;margin-bottom:12px;
+}
+
+/* ── Input Controls ── */
+.uid-input-wrap{position:relative;margin-bottom:12px}
+.uid-display{
+  background:var(--card2);border:1px solid var(--border);border-radius:10px;
+  padding:12px 16px;font-size:22px;font-weight:900;font-family:'JetBrains Mono',monospace;
+  color:#a78bfa;letter-spacing:2px;min-height:54px;display:flex;align-items:center;
+  transition:border-color 0.2s;
+}
+.uid-display.active{border-color:rgba(139,92,246,0.6);box-shadow:0 0 0 3px rgba(139,92,246,0.1)}
+.uid-display .placeholder{color:var(--muted);font-size:14px;font-weight:400;font-family:'Noto Sans SC',sans-serif;letter-spacing:0}
+
+.uid-hint{font-size:11px;color:var(--muted);margin-bottom:16px;line-height:1.6}
+
+.file-upload-zone{
+  border:2px dashed var(--border);border-radius:12px;padding:20px;
+  text-align:center;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden;
+}
+.file-upload-zone:hover,.file-upload-zone.dragover{
+  border-color:rgba(139,92,246,0.5);background:rgba(139,92,246,0.05);
+}
+.file-upload-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.upload-icon{font-size:28px;margin-bottom:8px}
+.upload-text{font-size:13px;color:var(--sub);line-height:1.6}
+.upload-text strong{color:#a78bfa}
+.upload-text small{display:block;margin-top:4px;font-size:11px;color:var(--muted)}
+
+.file-loaded{
+  background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.25);
+  border-radius:10px;padding:12px 14px;display:flex;align-items:flex-start;gap:10px;
+}
+.file-loaded .fi-icon{font-size:20px;flex-shrink:0;margin-top:1px}
+.file-loaded .fi-info{flex:1;min-width:0}
+.file-loaded .fi-name{font-size:12px;font-weight:600;color:#6ee7b7;word-break:break-all}
+.file-loaded .fi-meta{font-size:11px;color:var(--muted);margin-top:3px}
+.fi-clear{background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;padding:2px;line-height:1}
+.fi-clear:hover{color:var(--red)}
+
+/* ── Analyze Button ── */
+.analyze-btn{
+  width:100%;padding:14px;border-radius:12px;border:none;cursor:pointer;
+  font-family:'Noto Sans SC',sans-serif;font-size:15px;font-weight:700;
+  background:linear-gradient(135deg,#7c3aed,#6d28d9);color:#fff;
+  transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:8px;
+  margin-top:16px;position:relative;overflow:hidden;
+}
+.analyze-btn::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,#8b5cf6,#7c3aed);opacity:0;transition:opacity 0.2s;
+}
+.analyze-btn:hover::before{opacity:1}
+.analyze-btn:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(124,58,237,0.4)}
+.analyze-btn:disabled{opacity:0.5;cursor:not-allowed;transform:none;box-shadow:none}
+.analyze-btn span{position:relative;z-index:1}
+.btn-spinner{
+  width:18px;height:18px;border:2px solid rgba(255,255,255,0.3);
+  border-top-color:#fff;border-radius:50%;animation:spin 0.8s linear infinite;display:none;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.analyzing .btn-spinner{display:block}
+.analyzing .btn-text{display:none}
+
+/* ── Model Config ── */
+.model-select{
+  background:var(--card2);border:1px solid var(--border);border-radius:8px;
+  padding:8px 12px;color:var(--text);font-size:12px;font-family:inherit;width:100%;
+  appearance:none;cursor:pointer;
+}
+.model-select option{background:#1f2937}
+
+/* ── Progress ── */
+.progress-area{padding:16px 20px;border-bottom:1px solid var(--border);display:none}
+.progress-label{font-size:11px;color:var(--muted);margin-bottom:8px;display:flex;justify-content:space-between}
+.progress-bar-bg{height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.progress-bar{height:100%;background:linear-gradient(90deg,#7c3aed,#a78bfa);width:0%;transition:width 0.3s;border-radius:2px}
+.progress-steps{margin-top:12px;display:flex;flex-direction:column;gap:6px}
+.step-item{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--muted)}
+.step-item.done{color:#6ee7b7}
+.step-item.active{color:#a78bfa}
+.step-dot{width:6px;height:6px;border-radius:50%;background:var(--border);flex-shrink:0}
+.step-item.done .step-dot{background:#10b981}
+.step-item.active .step-dot{background:#8b5cf6;box-shadow:0 0 6px rgba(139,92,246,0.6)}
+
+/* ── History ── */
+.history-list{padding:8px}
+.history-item{
+  padding:10px 12px;border-radius:8px;cursor:pointer;
+  transition:background 0.15s;display:flex;align-items:center;gap:10px;
+}
+.history-item:hover{background:var(--card2)}
+.h-uid{font-size:12px;font-weight:700;font-family:'JetBrains Mono',monospace;color:#a78bfa}
+.h-name{font-size:11px;color:var(--sub);margin-top:2px}
+.h-time{font-size:10px;color:var(--muted);margin-left:auto;white-space:nowrap}
+
+/* ── Right Panel: Output ── */
+.right-panel{
+  flex:1;display:flex;flex-direction:column;overflow:hidden;
+}
+.output-header{
+  padding:16px 28px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--card);flex-shrink:0;
+}
+.output-title{font-size:14px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:8px}
+.output-actions{display:flex;gap:8px}
+.action-btn{
+  background:var(--card2);border:1px solid var(--border);border-radius:7px;
+  padding:6px 12px;font-size:11px;color:var(--sub);cursor:pointer;
+  font-family:inherit;transition:all 0.15s;display:flex;align-items:center;gap:6px;
+}
+.action-btn:hover{border-color:rgba(139,92,246,0.4);color:#a78bfa}
+
+.output-body{
+  flex:1;overflow-y:auto;padding:28px;
+  background:var(--bg);
+}
+
+/* ── Welcome State ── */
+.welcome-state{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-height:60vh;text-align:center;
+}
+.welcome-icon{font-size:64px;margin-bottom:20px;opacity:0.5}
+.welcome-title{font-size:22px;font-weight:700;color:var(--sub);margin-bottom:8px}
+.welcome-desc{font-size:13px;color:var(--muted);line-height:1.8;max-width:400px}
+.welcome-tips{
+  margin-top:24px;display:flex;gap:12px;flex-wrap:wrap;justify-content:center;
+}
+.tip-tag{
+  padding:5px 14px;border-radius:20px;font-size:11px;
+  background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.2);color:#a78bfa;
+}
+
+/* ── Streaming Output ── */
+.stream-output{
+  font-size:14px;line-height:1.9;color:#e2e8f0;
+}
+.stream-output h1{font-size:20px;font-weight:800;color:#f0e6ff;margin:24px 0 14px;border-bottom:1px solid rgba(139,92,246,0.2);padding-bottom:10px}
+.stream-output h2{font-size:16px;font-weight:700;color:#c4b5fd;margin:20px 0 10px;display:flex;align-items:center;gap:6px}
+.stream-output h3{font-size:14px;font-weight:700;color:#ddd6fe;margin:14px 0 8px}
+.stream-output p{color:var(--sub);margin-bottom:10px}
+.stream-output strong{color:#e2e8f0}
+.stream-output em{color:#a78bfa;font-style:normal}
+.stream-output blockquote{
+  border-left:3px solid rgba(139,92,246,0.5);padding:12px 16px;
+  margin:12px 0;background:rgba(139,92,246,0.06);border-radius:0 8px 8px 0;
+  color:#c4b5fd;font-size:13px;line-height:1.8;
+}
+.stream-output table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12px}
+.stream-output th{
+  background:rgba(30,20,60,0.6);color:var(--muted);font-weight:600;
+  padding:8px 12px;text-align:left;border-bottom:1px solid var(--border);
+}
+.stream-output td{padding:9px 12px;border-bottom:1px solid rgba(31,41,55,0.5);color:var(--sub);vertical-align:top}
+.stream-output code{
+  background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.2);
+  border-radius:4px;padding:2px 6px;font-family:'JetBrains Mono',monospace;
+  font-size:12px;color:#c4b5fd;
+}
+.stream-output pre{
+  background:#0a0a14;border:1px solid var(--border);border-radius:10px;
+  padding:16px;margin:12px 0;overflow-x:auto;
+}
+.stream-output pre code{background:none;border:none;padding:0;font-size:12px;color:#94a3b8}
+.stream-output ul,.stream-output ol{padding-left:20px;margin-bottom:10px}
+.stream-output li{color:var(--sub);line-height:1.8;margin-bottom:3px}
+.stream-output li strong{color:#e2e8f0}
+.stream-output hr{border:none;border-top:1px solid var(--border);margin:20px 0}
+
+/* ── Cursor blink ── */
+.cursor{
+  display:inline-block;width:2px;height:1em;background:#8b5cf6;
+  vertical-align:text-bottom;animation:blink 1s step-end infinite;margin-left:2px;
+}
+@keyframes blink{50%{opacity:0}}
+
+/* ── Error state ── */
+.error-block{
+  background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.25);
+  border-radius:12px;padding:20px;margin:20px 0;
+}
+.error-block .e-title{font-size:14px;font-weight:700;color:#f87171;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.error-block .e-body{font-size:13px;color:#fca5a5;line-height:1.7}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#1f2937;border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:#374151}
+
+/* ── Token counter ── */
+.token-info{
+  font-size:11px;color:var(--muted);display:flex;align-items:center;gap:6px;
+}
+.token-count{color:#a78bfa;font-weight:600;font-family:'JetBrains Mono',monospace}
+</style>
+</head>
+<body>
+
+<script src="navbar.js"></script>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo">🧠</div>
+    <div>
+      <div class="header-title">用户深层需求解码器</div>
+      <div class="header-sub">User Needs Decoder · 喜播内部工具 · SKILL.md V2.0</div>
+    </div>
+  </div>
+  <div class="status-badge">
+    <span class="status-dot"></span>
+    DeepSeek 接入中
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- ═══ 左侧控制面板 ═══ -->
+  <div class="left-panel">
+
+    <!-- UID 输入与获取 -->
+    <div class="panel-section">
+      <div class="section-label">学员 UID</div>
+      <div class="uid-input-container" style="display:flex;gap:8px;margin-bottom:12px;">
+        <input type="text" id="uidInput" placeholder="输入 UID" style="flex:1;background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:12px 16px;font-size:18px;font-weight:700;font-family:'JetBrains Mono',monospace;color:#a78bfa;outline:none;min-width:0;">
+        <button onclick="fetchOnlineChat()" id="fetchBtn" style="padding:0 16px;border-radius:10px;border:none;background:var(--accent);color:white;cursor:pointer;font-weight:700;white-space:nowrap;transition:all 0.2s;">拉取数据</button>
+      </div>
+      <div class="uid-hint" id="uidHint">输入 UID 从接口获取，或拖放 JSON 文件。</div>
+
+      <!-- 文件上传 -->
+      <div id="uploadZone" class="file-upload-zone">
+        <input type="file" id="fileInput" accept=".json" multiple>
+        <div class="upload-icon">📂</div>
+        <div class="upload-text">
+          <strong>拖放或点击上传聊天记录</strong>
+          <small>支持 UID_XXXXXXX_聊天记录.json 格式</small>
+        </div>
+      </div>
+
+      <div id="fileLoaded" class="file-loaded" style="display:none">
+        <div class="fi-icon">✅</div>
+        <div class="fi-info">
+          <div class="fi-name" id="fileName"></div>
+          <div class="fi-meta" id="fileMeta"></div>
+        </div>
+        <button class="fi-clear" onclick="clearFile()" title="清除文件">✕</button>
+      </div>
+
+      <button class="analyze-btn" id="analyzeBtn" onclick="startAnalysis()" disabled>
+        <span class="btn-text">🚀 <span>开始解码分析</span></span>
+        <div class="btn-spinner"></div>
+        <span class="btn-spinner-text" style="display:none;color:#fff;font-size:14px">AI 解码中...</span>
+      </button>
+    </div>
+
+    <!-- 模型配置 -->
+    <div class="panel-section">
+      <div class="section-label">模型配置</div>
+      <select class="model-select" id="modelSelect">
+        <option value="hw-deepseek-v3.2">DeepSeek V3.2 (Enterprise)</option>
+        <option value="deepseek-chat">deepseek-chat (推荐 · 性价比)</option>
+        <option value="deepseek-reasoner">deepseek-reasoner (深度推理)</option>
+      </select>
+      <div style="margin-top:10px">
+        <div class="section-label" style="margin-bottom:6px">内容控制</div>
+        <select class="model-select" id="contentMode">
+          <option value="full">完整报告（全部8个板块）</option>
+          <option value="quick">快速画像（板块1+2+4）</option>
+          <option value="ltv">LTV评估（板块1+2+6+7）</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- 进度显示 -->
+    <div class="progress-area" id="progressArea">
+      <div class="progress-label">
+        <span id="progressText">准备中...</span>
+        <span id="progressPct">0%</span>
+      </div>
+      <div class="progress-bar-bg"><div class="progress-bar" id="progressBar"></div></div>
+      <div class="progress-steps" id="progressSteps">
+        <div class="step-item" id="step1"><div class="step-dot"></div><span>解析聊天记录</span></div>
+        <div class="step-item" id="step2"><div class="step-dot"></div><span>构建分析Prompt</span></div>
+        <div class="step-item" id="step3"><div class="step-dot"></div><span>DeepSeek 深度分析</span></div>
+        <div class="step-item" id="step4"><div class="step-dot"></div><span>生成结构化报告</span></div>
+      </div>
+    </div>
+
+    <!-- 分析历史 -->
+    <div class="panel-section">
+      <div class="section-label">本地历史记录</div>
+      <div class="history-list" id="historyList">
+        <div style="font-size:12px;color:var(--muted);text-align:center;padding:12px 0">暂无历史记录</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ═══ 右侧输出区 ═══ -->
+  <div class="right-panel">
+    <div class="output-header">
+      <div class="output-title">
+        <span>📄</span>
+        <span id="outputTitleText">解码报告</span>
+      </div>
+      <div class="output-actions">
+        <div class="token-info">
+          消耗 Token：<span class="token-count" id="tokenCount">-</span>
+        </div>
+        <button class="action-btn" onclick="copyOutput()" id="copyBtn" style="display:none">📋 复制全文</button>
+        <button class="action-btn" onclick="saveOutput()" id="saveBtn" style="display:none">💾 保存MD</button>
+        <button class="action-btn" onclick="clearOutput()">🗑 清空</button>
+      </div>
+    </div>
+    <div class="output-body" id="outputBody">
+      <div class="welcome-state" id="welcomeState">
+        <div class="welcome-icon">🧠</div>
+        <div class="welcome-title">等待学员数据</div>
+        <div class="welcome-desc">
+          上传聊天记录 JSON 文件，点击「开始解码分析」，AI 将按照 SKILL.md 框架对学员进行深度心理画像分析。
+        </div>
+        <div class="welcome-tips">
+          <span class="tip-tag">ABCD 战略定性</span>
+          <span class="tip-tag">显/隐性需求双轨</span>
+          <span class="tip-tag">LTV 预估</span>
+          <span class="tip-tag">班主任话术处方</span>
+          <span class="tip-tag">最终标签库</span>
+        </div>
+      </div>
+      <div class="stream-output" id="streamOutput" style="display:none"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ═══════════════════════════════════
+//  API 配置
+// ═══════════════════════════════════
+const DEEPSEEK_API_KEY = 'sk-hIljySd50zNOSWwWkIzMnRPhByCxwWhvmbmJAUUwYkVutvMp';
+const DEEPSEEK_API_URL = 'https://newapi.xbjyoa.com/v1/chat/completions';
+
+// ═══════════════════════════════════
+//  SKILL.md 系统提示词 (ABCD 深度版)
+// ═══════════════════════════════════
+const SKILL_SYSTEM_PROMPT = `你是一位顶级的“需求解码专家”与“用户价值架构师”。你服务的对象是喜播教育集团的私域带货/教学班主任。
+你的核心任务：对提供的学员聊天记录进行“脱水与剥洋葱”，将表面上的客套话转化为清晰的“底层焦虑动机”，并严格按照 ABCD 框架定性。
+
+---
+
+## 🎯 ABCD 用户分层定义（判定核心维度：需求真实度 × 资源底座强度）
+
+1. **A类（顶级种子/共创者）**
+- **特征**：主业稳定且处于上升期（如企业中高管、成功创业者），支付能力极强。不仅是为了学技能，更看重圈层价值和认知跃迁。
+- **沟通关键词**：高屋建瓴、对结果负责、资源置换、不纠结价格、重效率。
+- **判定要点**：明确表达过对高价产品的兴趣，或表现出极高的社会地位信号。
+
+2. **B类（核心增长动力/高转个体）**
+- **特征**：强烈的赚钱/成长焦虑，执行力极强。可能是想搞副业的职场人或全职宝妈。他们将学费视为“投资”而非“开销”。
+- **沟通关键词**：怎么落地、什么时候赚钱、具体案例、执行细节。
+- **判定要点**：频繁追问技能细节，积极完成作业，对“变现路径”反应极大。
+
+3. **C类（情绪消费/陪伴驱动型）**
+- **C1（高粘性陪伴型）**：孤独感重，花钱买认同和陪伴。学习动力不稳定，受班主任个人魅力影响大。
+- **C2（价格敏感/冲动犹豫型）**：容易被直播间气氛带动，但事后极度纠结，典型特征是频繁询问“包回本吗”、“能不能退钱”。
+- **判定要点**：高频使用情感表情符号，提及个人生活琐事，或者在价格上反复拉锯。
+
+4. **D类（风控/斩杀对象）**
+- **特征**：薅羊毛心态严重，或完全不在学习状态。逻辑混乱，负能量重，极大概率申请退费。
+- **沟通关键词**：骂人、不讲理、没时间、没钱。
+- **判定要点**：完全不看课程资料，只在社群吐槽，或长期失联。
+
+---
+
+## ⚙️ 解码工作流：显性与隐性需求扫描
+- **显性需求**：用户主动索取的（资料、价格、优惠、路径）。
+- **隐性需求**：用户从未开口但行为指向的（渴望被尊重、害怕被收割、社交虚荣心、对现状的深刻恐惧）。
+
+---
+
+## 📤 标准输出规范（必须严格按以下八大板块）
+# UID [ID] | [姓名] 深度解码报告
+### 板块一：👤 基础画像速写 (表格形式, 需附原文)
+### 板块二：🏆 ABCD 战略定性 (铁饼定性 + 3组证据点)
+### 板块三：🩺 真实病灶 (表面诉求 vs 底层动机)
+### 板块四：💊 班主任战术处方 (战略定位 + 禁忌红线 + DISC适配话术模拟)
+### 板块六：📊 LTV 评估 (六维五星图评分)
+### 板块七：🏷️ 最终标签库 (代码块格式输出)
+
+---
+⚠️ **禁忌**：严禁模棱两可。如果是 A 就说是 A，并在处方中给出“降维打击”式的建议。`;
+
+// ═══════════════════════════════════
+//  全局状态
+// ═══════════════════════════════════
+let currentFile = null;
+let currentData = null;
+let currentUID = null;
+let currentName = '未知';
+let fullMarkdown = '';
+let isAnalyzing = false;
+let history = JSON.parse(localStorage.getItem('decoder_history') || '[]');
+
+// ═══════════════════════════════════
+//  文件处理
+// ═══════════════════════════════════
+const fileInput = document.getElementById('fileInput');
+const uploadZone = document.getElementById('uploadZone');
+
+uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('dragover'); });
+uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
+uploadZone.addEventListener('drop', e => {
+  e.preventDefault(); uploadZone.classList.remove('dragover');
+  if (e.dataTransfer.files.length > 0) handleFile(e.dataTransfer.files[0]);
+});
+fileInput.addEventListener('change', e => { if (e.target.files.length > 0) handleFile(e.target.files[0]); });
+
+function handleFile(file) {
+  if (!file.name.endsWith('.json')) { showError('请上传 .json 格式的聊天记录文件'); return; }
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const data = JSON.parse(e.target.result);
+      const uid = extractUID(data, file.name);
+      const name = extractName(data);
+      const msgCount = countMessages(data);
+
+      currentFile = file;
+      currentData = data;
+      currentUID = uid;
+      currentName = name;
+
+      // 更新 UI
+      const uidDisplay = document.getElementById('uidDisplay');
+      uidDisplay.innerHTML = uid || '未识别';
+      uidDisplay.classList.add('active');
+
+      document.getElementById('uploadZone').style.display = 'none';
+      document.getElementById('fileLoaded').style.display = 'flex';
+      document.getElementById('fileName').textContent = file.name;
+      document.getElementById('fileMeta').textContent = `UID: ${uid} · 昵称: ${name} · ${msgCount} 条消息 · ${(file.size/1024).toFixed(1)}KB`;
+      document.getElementById('analyzeBtn').disabled = false;
+      document.getElementById('uidInput').value = uid;
+    } catch(err) {
+      showError('JSON 解析失败：' + err.message);
+    }
+  };
+  reader.readAsText(file, 'utf-8');
+}
+
+function extractUID(data, filename) {
+  if (data.private_chat?.data?.studentUid) return String(data.private_chat.data.studentUid);
+  const match = filename.match(/UID[_-]?(\d+)/i);
+  return match ? match[1] : '未知';
+}
+
+function extractName(data) {
+  return data.private_chat?.data?.studentName || '未知';
+}
+
+function countMessages(data) {
+  let count = 0;
+  const pc = data.private_chat?.data;
+  if (pc?.teacherChatGroups) {
+    pc.teacherChatGroups.forEach(g => { count += (g.chatMessages || []).length; });
+  }
+  return count;
+}
+
+function clearFile() {
+  currentFile = currentData = currentUID = null;
+  document.getElementById('uploadZone').style.display = 'block';
+  document.getElementById('fileLoaded').style.display = 'none';
+  document.getElementById('fileInput').value = '';
+  document.getElementById('uidInput').value = '';
+  document.getElementById('analyzeBtn').disabled = true;
+}
+
+// ═══════════════════════════════════
+//  接口在线获取聊天记录
+// ═══════════════════════════════════
+async function fetchOnlineChat() {
+  const uid = document.getElementById('uidInput').value.trim();
+  if (!uid) { alert('请输入学员 UID'); return; }
+
+  const fetchBtn = document.getElementById('fetchBtn');
+  const originalText = fetchBtn.textContent;
+  fetchBtn.disabled = true;
+  fetchBtn.textContent = '获取中...';
+  
+  try {
+    const now = new Date();
+    const endTime = now.toISOString().slice(0, 19).replace('T', ' ');
+    const startTime = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000).toISOString().slice(0, 19).replace('T', ' ');
+
+    const payload = { studentUid: uid, startTime, endTime };
+    
+    // 拉取私聊
+    const resPrivate = await fetch('/api/qwChat/queryChatByStudent', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).then(r => r.json());
+
+    // 拉取群聊
+    const resGroup = await fetch('/api/qwChat/queryGroupChatByStudent', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).then(r => r.json());
+
+    currentData = { private_chat: resPrivate, group_chat: resGroup };
+    currentUID = uid;
+    currentName = resPrivate.data?.studentName || '未知学员';
+    
+    // 更新 UI
+    document.getElementById('uploadZone').style.display = 'none';
+    document.getElementById('fileLoaded').style.display = 'flex';
+    document.getElementById('fileName').textContent = `在线调取: ${uid}`;
+    const msgCount = countMessages(currentData);
+    document.getElementById('fileMeta').textContent = `昵称: ${currentName} · 最近90天共 ${msgCount} 条消息`;
+    document.getElementById('analyzeBtn').disabled = false;
+    
+  } catch(err) {
+    alert('接口拉取失败: ' + err.message);
+  } finally {
+    fetchBtn.disabled = false;
+    fetchBtn.textContent = originalText;
+  }
+}
+
+// ═══════════════════════════════════
+//  聊天记录提取与格式化
+// ═══════════════════════════════════
+function formatChatData(data) {
+  const uid = currentUID;
+  const pc = data.private_chat?.data;
+  const studentName = pc?.studentName || '未知学员';
+  let text = `=== 学员信息 ===\nUID: ${uid}\n学员昵称: ${studentName}\n\n`;
+
+  if (pc?.teacherChatGroups?.length) {
+    pc.teacherChatGroups.forEach(group => {
+      text += `=== 对话分析：${group.teacherName} (班主任) vs ${studentName} (学员) ===\n`;
+      (group.chatMessages || []).forEach(msg => {
+        const isStudent = msg.senderId !== group.teacherQwId;
+        const role = isStudent ? `【学员】` : `【班务】`;
+        text += `[${msg.sendTime}] ${role}${msg.senderName}: ${msg.decodeContent}\n`;
+      });
+    });
+  }
+
+  if (text.length > 50000) {
+    text = text.slice(0, 50000) + '\n\n[...⚠️ 数据过长，已截断前5万字符...]';
+  }
+  return text;
+}
+
+// ═══════════════════════════════════
+//  主分析流程 (批量模式 + 自动存盘)
+// ═══════════════════════════════════
+async function startAnalysis() {
+  if (!currentData || isAnalyzing) return;
+  isAnalyzing = true;
+  fullMarkdown = '';
+
+  const btn = document.getElementById('analyzeBtn');
+  btn.classList.add('analyzing');
+  btn.disabled = true;
+  document.getElementById('welcomeState').style.display = 'none';
+  const outArea = document.getElementById('streamOutput');
+  outArea.style.display = 'block';
+  outArea.innerHTML = '<div style="padding:40px;text-align:center;color:var(--muted)">🔄 AI 正在深度扫描解码，请稍候...</div>';
+  document.getElementById('progressArea').style.display = 'block';
+  
+  try {
+    updateProgress(10, '解析聊天上下文...');
+    const chatText = formatChatData(currentData);
+
+    updateProgress(30, '正在连接 DeepSeek 神经网络...');
+    const model = document.getElementById('modelSelect').value;
+    
+    const response = await fetch(DEEPSEEK_API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${DEEPSEEK_API_KEY}`
+      },
+      body: JSON.stringify({
+        model: model,
+        messages: [
+          { role: 'system', content: SKILL_SYSTEM_PROMPT },
+          { role: 'user', content: `请基于以下聊天记录生成 ABCD 深度画像报告：\n\n${chatText}` }
+        ],
+        stream: false
+      })
+    });
+
+    if (!response.ok) throw new Error(`API Error: ${response.status}`);
+    
+    const resData = await response.json();
+    fullMarkdown = resData.choices?.[0]?.message?.content || '';
+    
+    if (!fullMarkdown) throw new Error('AI 返回内容为空');
+
+    updateProgress(80, '渲染解码报告中...');
+    outArea.innerHTML = markdownToHTML(fullMarkdown);
+    document.getElementById('tokenCount').textContent = (resData.usage?.total_tokens || 0).toLocaleString();
+
+    // 同时自动同步到服务器
+    try {
+      fetch('/api/save_report', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ uid: currentUID, name: currentName, report: fullMarkdown })
+      });
+    } catch(e) { console.warn('Auto-save failed', e); }
+
+    updateProgress(100, '分析完成！');
+    document.getElementById('copyBtn').style.display = 'flex';
+    document.getElementById('saveBtn').style.display = 'flex';
+    saveToHistory();
+
+  } catch(err) {
+    showError(err.message);
+  } finally {
+    isAnalyzing = false;
+    btn.classList.remove('analyzing');
+    btn.disabled = false;
+  }
+}
+
+// ═══════════════════════════════════
+//  简易 Markdown 渲染
+// ═══════════════════════════════════
+function markdownToHTML(md) {
+  return md
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+    .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+    .replace(/^# (.+)$/gm, '<h1>$1</h1>')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/^[\*\-] (.+)$/gm, '<li>$1</li>')
+    .replace(/(<li>.*<\/li>\n?)+/g, m => `<ul>${m}</ul>`)
+    .replace(/```(\w*)\n([\s\S]*?)```/g, '<pre><code>$2</code></pre>')
+    .replace(/\n\n+/g, '</p><p>')
+    .replace(/\n/g, '<br>');
+}
+
+// ═══════════════════════════════════
+//  工具函数
+// ═══════════════════════════════════
+function updateProgress(pct, text) {
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressText').textContent = text;
+  document.getElementById('progressPct').textContent = pct + '%';
+}
+
+function showError(msg) {
+  const output = document.getElementById('streamOutput');
+  output.style.display = 'block';
+  document.getElementById('welcomeState').style.display = 'none';
+  output.innerHTML = `<div class="error-block">
+    <div class="e-title">⚠️ 分析失败</div>
+    <div class="e-body">${escapeHTML(msg)}</div>
+  </div>`;
+}
+
+function escapeHTML(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function copyOutput() {
+  navigator.clipboard.writeText(fullMarkdown).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = '✅ 已复制';
+    setTimeout(() => btn.innerHTML = '📋 复制全文', 2000);
+  });
+}
+
+function saveOutput() {
+  const blob = new Blob([fullMarkdown], { type: 'text/markdown;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `UID_${currentUID}_分析报告.md`;
+  a.click();
+}
+
+function clearOutput() {
+  document.getElementById('streamOutput').style.display = 'none';
+  document.getElementById('welcomeState').style.display = 'flex';
+  document.getElementById('copyBtn').style.display = 'none';
+  document.getElementById('saveBtn').style.display = 'none';
+  document.getElementById('progressArea').style.display = 'none';
+  fullMarkdown = '';
+}
+
+function saveToHistory() {
+  const entry = { uid: currentUID, name: currentName, time: new Date().toLocaleString('zh-CN'), report: fullMarkdown };
+  history.unshift(entry);
+  if (history.length > 20) history = history.slice(0, 20);
+  localStorage.setItem('decoder_history', JSON.stringify(history));
+  renderHistory();
+}
+
+function renderHistory() {
+  const list = document.getElementById('historyList');
+  if (!history.length) return;
+  list.innerHTML = history.map((h, i) => `
+    <div class="history-item" onclick="loadHistory(${i})">
+      <div>
+        <div class="h-uid">${h.uid}</div>
+        <div class="h-name">${h.name}</div>
+      </div>
+      <div class="h-time">${h.time.slice(5,16)}</div>
+    </div>`).join('');
+}
+
+function loadHistory(i) {
+  const h = history[i];
+  fullMarkdown = h.report;
+  document.getElementById('welcomeState').style.display = 'none';
+  document.getElementById('streamOutput').style.display = 'block';
+  document.getElementById('streamOutput').innerHTML = markdownToHTML(h.report);
+  document.getElementById('copyBtn').style.display = 'flex';
+  document.getElementById('saveBtn').style.display = 'flex';
+  document.getElementById('outputTitleText').textContent = `UID ${h.uid} · ${h.name}`;
+}
+
+renderHistory();
+</script>
+</body>
+</html>
