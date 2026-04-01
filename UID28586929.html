@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>用户情感旅程曲线 · UID_28586929 · 栗子</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+  :root {
+    --bg: #0a0d16;
+    --surface: #111827;
+    --surface2: #1a2235;
+    --border: #1f2d45;
+    --text: #e2e8f0;
+    --text-muted: #64748b;
+    --accent: #3b82f6;
+    --accent2: #6366f1;
+    --positive: #10b981;
+    --negative: #ef4444;
+    --warning: #f59e0b;
+    --purple: #8b5cf6;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans SC', 'Inter', sans-serif;
+    min-height: 100vh;
+    padding: 32px 24px;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .header .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(59,130,246,0.1);
+    border: 1px solid rgba(59,130,246,0.3);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #e2e8f0 0%, #94a3b8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+
+  .header p {
+    color: var(--text-muted);
+    font-size: 14px;
+  }
+
+  .chart-container {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 32px;
+    margin-bottom: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .chart-container::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(99,102,241,0.5), transparent);
+  }
+
+  canvas {
+    width: 100% !important;
+    max-height: 420px;
+  }
+
+  .events-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .event-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    position: relative;
+    transition: border-color 0.2s, transform 0.2s;
+    cursor: default;
+  }
+
+  .event-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .event-card .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 8px;
+  }
+
+  .event-card .phase {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+  }
+
+  .event-card .title {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    line-height: 1.4;
+  }
+
+  .event-card .desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .event-card .quote {
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: rgba(99,102,241,0.08);
+    border-left: 3px solid var(--accent2);
+    border-radius: 0 8px 8px 0;
+    font-size: 13px;
+    color: #a5b4fc;
+    font-style: italic;
+  }
+
+  .event-card .score {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    font-size: 22px;
+    font-weight: 700;
+  }
+
+  .positive { color: var(--positive); }
+  .negative { color: var(--negative); }
+  .warning { color: var(--warning); }
+
+  .insights {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .insight-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .insight-card .icon {
+    font-size: 28px;
+    margin-bottom: 10px;
+  }
+
+  .insight-card .label {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
+
+  .insight-card .value {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .insight-card .sub {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  .legend {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 20px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+
+  .section-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .tooltip {
+    position: absolute;
+    background: rgba(17, 24, 39, 0.95);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 16px;
+    pointer-events: none;
+    transform: translateX(-50%);
+    min-width: 200px;
+    z-index: 100;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    display: none;
+  }
+
+  .tooltip .t-date { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; }
+  .tooltip .t-title { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+  .tooltip .t-score { font-size: 22px; font-weight: 700; }
+  .tooltip .t-reason { font-size: 12px; color: var(--text-muted); margin-top: 6px; line-height: 1.5; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="badge">📊 用户情感旅程分析</div>
+  <h1>UID_28586929（栗子）· 满意度曲线</h1>
+  <p>2025年12月 — 2026年4月 · 基于真实聊天记录行为序列还原</p>
+</div>
+
+<!-- 关键指标 -->
+<div class="insights">
+  <div class="insight-card">
+    <div class="icon">📅</div>
+    <div class="label">观察周期</div>
+    <div class="value">4 个月</div>
+    <div class="sub">2025.12 → 2026.04</div>
+  </div>
+  <div class="insight-card">
+    <div class="icon">🎢</div>
+    <div class="label">情绪波动次数</div>
+    <div class="value">8 次</div>
+    <div class="sub">峰值→谷值×4轮</div>
+  </div>
+  <div class="insight-card">
+    <div class="icon">🏆</div>
+    <div class="label">满意度峰值</div>
+    <div class="value positive">+92</div>
+    <div class="sub">抽中商单课程大奖时</div>
+  </div>
+  <div class="insight-card">
+    <div class="icon">🚨</div>
+    <div class="label">满意度谷值</div>
+    <div class="value negative">-15</div>
+    <div class="sub">进入投诉客服群</div>
+  </div>
+  <div class="insight-card">
+    <div class="icon">💰</div>
+    <div class="label">累计消费</div>
+    <div class="value warning">¥5000+</div>
+    <div class="sub">3条赛道·多次转化</div>
+  </div>
+</div>
+
+<!-- 主曲线图 -->
+<p class="section-title">情感旅程曲线</p>
+<div class="chart-container">
+  <canvas id="satisfactionChart"></canvas>
+  <div class="tooltip" id="tooltip">
+    <div class="t-date" id="t-date"></div>
+    <div class="t-title" id="t-title"></div>
+    <div class="t-score" id="t-score"></div>
+    <div class="t-reason" id="t-reason"></div>
+  </div>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#10b981"></div>满意/兴奋状态</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div>中性/观望状态</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#ef4444"></div>沮丧/不满状态</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#6366f1"></div>转化节点</div>
+  </div>
+</div>
+
+<!-- 关键事件详情 -->
+<p class="section-title">关键情绪节点解析</p>
+<div class="events-grid" id="eventsGrid"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+// ============= 数据定义 =============
+const dataPoints = [
+  {
+    date: '2025-12-20',
+    label: '首次进营',
+    score: 68,
+    phase: '体验营·第1期（星禾）',
+    phaseColor: '#3b82f6',
+    sentiment: 'neutral',
+    title: '首次进入AI短视频体验营',
+    desc: '在职·35岁·每天1小时·零基础。完成AI鉴定测试，第一次接触AI图文创作工具，有轻微好奇和期待。',
+    quote: '在职，一小时，35'
+  },
+  {
+    date: '2025-12-22',
+    label: '首次作业',
+    score: 78,
+    phase: '体验营·第1期',
+    phaseColor: '#3b82f6',
+    sentiment: 'positive',
+    title: '完成第一次作业，获到好评',
+    desc: '作业被助教夸"完成度不错"，立刻追问变现时间和收入方式，变现欲望强烈被激活。',
+    quote: '期待期待，接商单吗？'
+  },
+  {
+    date: '2025-12-23',
+    label: '入学决策',
+    score: 74,
+    phase: '体验营·第1期',
+    phaseColor: '#3b82f6',
+    sentiment: 'positive',
+    title: '考虑付费但有顾虑',
+    desc: '助教给出"喜马13年大平台·不满意随时退费"定心丸，用户没有立刻付费，但倾向已明确。',
+    quote: '（沉默，未立刻报名）'
+  },
+  {
+    date: '2025-12-27',
+    label: '二进体验营',
+    score: 55,
+    phase: '体验营·第2期（段老师）',
+    phaseColor: '#6366f1',
+    sentiment: 'neutral',
+    title: '二次进营，被当新人接待',
+    desc: '再次被问"你是在职/宝妈？"完全重复流程。说明第一次已付费但未完全满足，带着同样的变现渴望再来碰运气。',
+    quote: '（重新回答了所有入营问题）'
+  },
+  {
+    date: '2026-01-04',
+    label: '跨赛道探索',
+    score: 72,
+    phase: '体验营·AI写作（酥酥然）',
+    phaseColor: '#8b5cf6',
+    sentiment: 'positive',
+    title: '跨赛道进入AI写作体验营',
+    desc: '明确回复"1+2"（副业+兴趣），对变现路径重新燃起期望。助教讲到"年收入20-30万"，情绪被再次激活。',
+    quote: '1+2（副业+兴趣两个都要）'
+  },
+  {
+    date: '2026-01-17',
+    label: '三进体验营',
+    score: 62,
+    phase: '体验营·第3期（梁桃）',
+    phaseColor: '#06b6d4',
+    sentiment: 'neutral',
+    title: '第三次进入AI短视频体验营',
+    desc: '再次被全新助教当作陌生人接待，重复相同的开场询问。信任资产在重复灌输中缓慢消耗。',
+    quote: '（AI我来了——第三次发同样的口令）'
+  },
+  {
+    date: '2026-01-19',
+    label: '完成作业',
+    score: 82,
+    phase: '体验营·第3期',
+    phaseColor: '#06b6d4',
+    sentiment: 'positive',
+    title: '作业被夸"可以直接发布"',
+    desc: '梁桃老师表扬今天作业非常棒，可以直接拿来发布。用户满意度短暂回升，信心增强。',
+    quote: '谢谢师姐❤️❤️'
+  },
+  {
+    date: '2026-01-21',
+    label: '抽到大奖',
+    score: 92,
+    phase: '体验营·第3期',
+    phaseColor: '#06b6d4',
+    sentiment: 'peak',
+    title: '🏆 情绪峰值：抽中1899商单指导课',
+    desc: '直播抽奖抽中"1899商单指导课"，立刻报告老师并询问何时可以开始学习，显示出极强的行动欲望。',
+    quote: '师姐，我中了那个1899的商单指导课'
+  },
+  {
+    date: '2026-01-21',
+    label: '被告知等待',
+    score: 58,
+    phase: '体验营→正式课衔接期',
+    phaseColor: '#f59e0b',
+    sentiment: 'negative',
+    title: '⚠️ 情感断崖：被要求"先学基础再说"',
+    desc: '刚抽到大奖的兴奋被"你还没有基础，看了也理解慢"浇灭。课程在"等候室"里，热情开始冷却。',
+    quote: '放心，课程在那儿的跑不了啊'
+  },
+  {
+    date: '2026-01-26',
+    label: '正式开课',
+    score: 75,
+    phase: '正式课·AIGC10期25班',
+    phaseColor: '#10b981',
+    sentiment: 'positive',
+    title: '正式进入AIGC10期25班',
+    desc: '发出欢迎陪跑大大的打招呼消息，"必须锁死"表情说明入班意愿和期待感都较强。',
+    quote: '欢迎陪跑大大，往后请多多指教'
+  },
+  {
+    date: '2026-02-14',
+    label: '第2周',
+    score: 70,
+    phase: '正式课·学习期',
+    phaseColor: '#10b981',
+    sentiment: 'neutral',
+    title: '提交第2周作业（晚春节后）',
+    desc: '收到点评，回复"谢谢大大，努力改进中"，情绪平稳但已无入班时的亢奋，进入日常学习状态。',
+    quote: '收到点评，谢谢大大，努力改进中'
+  },
+  {
+    date: '2026-03-06',
+    label: '第4周',
+    score: 58,
+    phase: '正式课·学习期',
+    phaseColor: '#10b981',
+    sentiment: 'warning',
+    title: '第4周作业迟交，开始发歉意',
+    desc: '"交晚了，不好意思"——作业开始出现延迟，频率从每2周一次变为更长。沉默期延长信号出现。',
+    quote: '交晚了，不好意思🙇🙇'
+  },
+  {
+    date: '2026-03-10',
+    label: '等待点评',
+    score: 52,
+    phase: '正式课·渐冷期',
+    phaseColor: '#f59e0b',
+    sentiment: 'warning',
+    title: '催促陪跑看作业——被动等待',
+    desc: '主动@陪跑催促，说明作品已提交但缺乏及时反馈，用户开始产生"是否被忽视"的感知。',
+    quote: '大大，有空看一下我的作业，在小程序里'
+  },
+  {
+    date: '2026-03-21',
+    label: '第6周',
+    score: 42,
+    phase: '正式课·冷却期',
+    phaseColor: '#f59e0b',
+    sentiment: 'negative',
+    title: '第6周作业：最后一次课程互动',
+    desc: '作业周期拉长到约2周一次。这是记录中最后一条课程相关消息，此后进入11天的完全沉默期。',
+    quote: '大大，麻烦有空看看第六周的作业'
+  },
+  {
+    date: '2026-04-01',
+    label: '联系客服',
+    score: -15,
+    phase: '投诉/危机期',
+    phaseColor: '#ef4444',
+    sentiment: 'crisis',
+    title: '🚨 谷值：出现在客服投诉群',
+    desc: '距最后一次课程互动11天后，直接联系客服群（多宝+小寻）。"就这么说吧，不方便打电话"——说明有较严重的不满。',
+    quote: '就这么说吧，不方便打电话'
+  }
+];
+
+// ============= 颜色生成 =============
+function getColor(score, alpha=1) {
+  if (score >= 80) return `rgba(16,185,129,${alpha})`;
+  if (score >= 60) return `rgba(59,130,246,${alpha})`;
+  if (score >= 40) return `rgba(245,158,11,${alpha})`;
+  return `rgba(239,68,68,${alpha})`;
+}
+
+// ============= 渲染事件卡片 =============
+const grid = document.getElementById('eventsGrid');
+dataPoints.forEach(d => {
+  const color = getColor(d.score);
+  const sentiment = d.score >= 80 ? 'positive' : d.score >= 60 ? '' : d.score >= 40 ? 'warning' : 'negative';
+  grid.innerHTML += `
+    <div class="event-card">
+      <div class="phase">
+        <span class="dot" style="background:${d.phaseColor}"></span>
+        ${d.phase}
+      </div>
+      <div class="score ${sentiment}">${d.score > 0 ? d.score : d.score}</div>
+      <div class="title">${d.title}</div>
+      <div class="desc">${d.desc}</div>
+      <div class="quote">"${d.quote}"</div>
+    </div>
+  `;
+});
+
+// ============= Chart.js 曲线图 =============
+const ctx = document.getElementById('satisfactionChart').getContext('2d');
+
+// 渐变区域
+const gradientFill = ctx.createLinearGradient(0, 0, 0, 400);
+gradientFill.addColorStop(0, 'rgba(99,102,241,0.3)');
+gradientFill.addColorStop(0.5, 'rgba(59,130,246,0.1)');
+gradientFill.addColorStop(1, 'rgba(239,68,68,0.05)');
+
+const labels = dataPoints.map(d => d.label);
+const scores = dataPoints.map(d => d.score);
+const pointColors = dataPoints.map(d => getColor(d.score));
+const pointBorders = dataPoints.map(d => {
+  if (d.sentiment === 'peak') return '#fbbf24';
+  if (d.sentiment === 'crisis') return '#ef4444';
+  return getColor(d.score);
+});
+
+const chart = new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: labels,
+    datasets: [{
+      label: '满意度指数',
+      data: scores,
+      borderColor: 'rgba(99,102,241,0.8)',
+      borderWidth: 3,
+      pointBackgroundColor: pointColors,
+      pointBorderColor: pointBorders,
+      pointBorderWidth: 3,
+      pointRadius: 7,
+      pointHoverRadius: 10,
+      fill: true,
+      backgroundColor: gradientFill,
+      tension: 0.45,
+    }]
+  },
+  options: {
+    responsive: true,
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        enabled: false,
+        external: function(context) {
+          const tooltip = document.getElementById('tooltip');
+          if (context.tooltip.opacity === 0) {
+            tooltip.style.display = 'none';
+            return;
+          }
+          const idx = context.tooltip.dataPoints[0].dataIndex;
+          const d = dataPoints[idx];
+          tooltip.style.display = 'block';
+          document.getElementById('t-date').textContent = d.date;
+          document.getElementById('t-title').textContent = d.title;
+          const scoreEl = document.getElementById('t-score');
+          scoreEl.textContent = d.score;
+          scoreEl.style.color = getColor(d.score);
+          document.getElementById('t-reason').textContent = d.desc;
+          const canvasRect = ctx.canvas.getBoundingClientRect();
+          const x = context.tooltip.caretX;
+          const y = context.tooltip.caretY;
+          tooltip.style.left = (x + canvasRect.left - tooltip.offsetWidth / 2 + window.scrollX) + 'px';
+          tooltip.style.top = (y + canvasRect.top - tooltip.offsetHeight - 20 + window.scrollY) + 'px';
+          tooltip.style.position = 'absolute';
+        }
+      },
+    },
+    scales: {
+      x: {
+        grid: { color: 'rgba(31,45,69,0.6)', drawBorder: false },
+        ticks: {
+          color: '#64748b',
+          font: { size: 11, family: 'Noto Sans SC' },
+          maxRotation: 30,
+        }
+      },
+      y: {
+        min: -30,
+        max: 100,
+        grid: { color: 'rgba(31,45,69,0.6)', drawBorder: false },
+        ticks: {
+          color: '#64748b',
+          font: { size: 11 },
+          callback: v => v === 0 ? '0 中性线' : v
+        }
+      }
+    },
+    animation: {
+      duration: 1800,
+      easing: 'easeInOutQuart'
+    }
+  },
+  plugins: [{
+    id: 'zeroLine',
+    afterDraw(chart) {
+      const { ctx, chartArea, scales } = chart;
+      const y0 = scales.y.getPixelForValue(0);
+      ctx.save();
+      ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([6, 4]);
+      ctx.beginPath();
+      ctx.moveTo(chartArea.left, y0);
+      ctx.lineTo(chartArea.right, y0);
+      ctx.stroke();
+      ctx.restore();
+
+      // 标注满意区/不满区
+      ctx.save();
+      ctx.font = '11px Inter';
+      ctx.fillStyle = 'rgba(16,185,129,0.4)';
+      ctx.fillText('▲ 满意区', chartArea.left + 8, chartArea.top + 16);
+      ctx.fillStyle = 'rgba(239,68,68,0.4)';
+      ctx.fillText('▼ 不满/风险区', chartArea.left + 8, y0 + 20);
+      ctx.restore();
+    }
+  }]
+});
+
+// ============= 动态背景网格效果 =============
+document.addEventListener('mousemove', (e) => {
+  const tooltip = document.getElementById('tooltip');
+  if (tooltip.style.display === 'block') return;
+});
+</script>
+</body>
+</html>
