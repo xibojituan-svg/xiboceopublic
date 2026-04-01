@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>喜播 AI 原生落地三板斧 · 2026 换芯行动 - Xibo CEO</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #09090b;
+      --bg-s: #18181b;
+      --bg-sh: #27272a;
+      --border: #3f3f46;
+      --text: #f4f4f5;
+      --dim: #a1a1aa;
+      --muted: #71717a;
+      --red:    #ef4444;
+      --orange: #f97316;
+      --yellow: #eab308;
+      --green:  #10b981;
+      --blue:   #3b82f6;
+      --purple: #8b5cf6;
+      --ax1: #f97316; /* 第一斧：人的AI化 */
+      --ax2: #8b5cf6; /* 第二斧：流程智能体化 */
+      --ax3: #10b981; /* 第三斧：组织换装 */
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family:'Inter',-apple-system,'PingFang SC',sans-serif;
+      background:var(--bg); color:var(--text);
+      line-height:1.7; overflow-x:hidden;
+      -webkit-font-smoothing:antialiased;
+    }
+
+    /* glow */
+    .bg-glow {
+      position:fixed; top:-20vh; left:50%; transform:translateX(-50%);
+      width:100vw; height:60vh;
+      background:radial-gradient(ellipse at bottom, rgba(139,92,246,0.08) 0%, rgba(9,9,11,0) 70%);
+      z-index:-1; pointer-events:none;
+    }
+
+    .page { max-width:1240px; margin:0 auto; padding:48px 24px 100px; }
+
+    /* ─── HERO ─── */
+    .hero { text-align:center; margin-bottom:60px; animation:fadeUp 0.7s ease-out; }
+    .badge {
+      display:inline-flex; align-items:center; gap:7px;
+      padding:6px 18px; border-radius:100px; margin-bottom:24px;
+      background:rgba(139,92,246,0.1); border:1px solid rgba(139,92,246,0.3);
+      color:var(--purple); font-size:12px; font-weight:800; letter-spacing:1.5px; text-transform:uppercase;
+    }
+    .dot { width:6px; height:6px; border-radius:50%; background:var(--purple); animation:pulse 2s infinite; }
+    h1 {
+      font-size:clamp(30px,5vw,52px); font-weight:900; line-height:1.15; letter-spacing:-1.5px;
+      background:linear-gradient(160deg,#fff 30%,#a1a1aa 100%);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+      margin-bottom:18px;
+    }
+    .hero-sub { font-size:clamp(14px,2vw,16px); color:var(--dim); max-width:760px; margin:0 auto 32px; line-height:1.8; }
+
+    /* quote */
+    .quote {
+      max-width:860px; margin:0 auto 20px;
+      padding:20px 28px; border-radius:14px;
+      background:var(--bg-s); border:1px solid var(--border);
+      border-left:4px solid var(--purple);
+      font-size:15px; color:var(--dim); font-style:italic; line-height:1.8;
+    }
+    .quote strong { color:#fff; }
+
+    /* ─── RUNTIME BASE ─── */
+    .runtime-box {
+      margin-bottom:60px;
+      background:linear-gradient(135deg, rgba(139,92,246,0.07), rgba(59,130,246,0.07));
+      border:1px solid rgba(139,92,246,0.25); border-radius:20px; padding:32px 36px;
+      animation:fadeUp 0.9s ease-out 0.1s backwards;
+    }
+    .runtime-title {
+      font-size:13px; font-weight:800; text-transform:uppercase; letter-spacing:2px;
+      color:var(--purple); margin-bottom:16px; display:flex; align-items:center; gap:8px;
+    }
+    .runtime-title::before { content:'⚙️'; }
+    .runtime-head { font-size:20px; font-weight:800; color:#fff; margin-bottom:10px; }
+    .runtime-desc { font-size:14px; color:var(--dim); margin-bottom:20px; max-width:700px; line-height:1.75; }
+    .runtime-chips { display:flex; flex-wrap:wrap; gap:10px; }
+    .chip {
+      display:flex; align-items:center; gap:6px;
+      padding:6px 14px; border-radius:100px;
+      background:var(--bg-sh); border:1px solid var(--border);
+      font-size:12px; font-weight:700; color:var(--dim);
+    }
+    .chip .ci { font-size:14px; }
+
+    /* ─── AXES NAV ─── */
+    .axes-nav {
+      display:grid; grid-template-columns:repeat(3,1fr); gap:14px;
+      margin-bottom:60px; animation:fadeUp 1s ease-out 0.2s backwards;
+    }
+    .axis-pill {
+      padding:18px 20px; border-radius:16px; text-align:center;
+      border:2px solid; cursor:pointer; transition:transform 0.3s, box-shadow 0.3s;
+    }
+    .axis-pill:hover { transform:translateY(-4px); }
+    .axis-pill-1 { border-color:rgba(249,115,22,0.4); background:rgba(249,115,22,0.06); }
+    .axis-pill-2 { border-color:rgba(139,92,246,0.4); background:rgba(139,92,246,0.06); }
+    .axis-pill-3 { border-color:rgba(16,185,129,0.4); background:rgba(16,185,129,0.06); }
+    .axis-num { font-size:28px; font-weight:900; letter-spacing:-1px; margin-bottom:4px; }
+    .axis-name { font-size:14px; font-weight:700; color:#fff; margin-bottom:2px; }
+    .axis-eng  { font-size:11px; color:var(--muted); font-weight:600; }
+
+    /* ─── AXE SECTION ─── */
+    .axe-section { margin-bottom:72px; animation:fadeUp 0.8s ease-out; }
+    .axe-header {
+      display:flex; align-items:center; gap:18px; margin-bottom:28px;
+      padding-bottom:18px; border-bottom:1px solid var(--border); position:relative;
+    }
+    .axe-header::after { content:''; position:absolute; bottom:-1px; left:0; width:80px; height:2px; }
+    .axe-1 .axe-header::after { background:var(--ax1); }
+    .axe-2 .axe-header::after { background:var(--ax2); }
+    .axe-3 .axe-header::after { background:var(--ax3); }
+
+    .axe-icon {
+      width:56px; height:56px; border-radius:16px; flex-shrink:0;
+      display:flex; align-items:center; justify-content:center;
+      font-size:26px;
+    }
+    .axe-1 .axe-icon { background:rgba(249,115,22,0.12); }
+    .axe-2 .axe-icon { background:rgba(139,92,246,0.12); }
+    .axe-3 .axe-icon { background:rgba(16,185,129,0.12); }
+
+    .axe-meta {}
+    .axe-label { font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:2px; margin-bottom:4px; }
+    .axe-1 .axe-label { color:var(--ax1); }
+    .axe-2 .axe-label { color:var(--ax2); }
+    .axe-3 .axe-label { color:var(--ax3); }
+    .axe-title { font-size:24px; font-weight:900; color:#fff; }
+    .axe-subtitle { font-size:14px; color:var(--dim); font-weight:600; margin-top:2px; }
+
+    /* card grid */
+    .card-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:16px; margin-bottom:24px; }
+    .card {
+      background:var(--bg-s); border:1px solid var(--border);
+      border-radius:16px; padding:22px 24px;
+      transition:transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+    }
+    .card:hover { transform:translateY(-3px); box-shadow:0 12px 32px rgba(0,0,0,0.45); }
+    .axe-1 .card:hover { border-color:rgba(249,115,22,0.3); }
+    .axe-2 .card:hover { border-color:rgba(139,92,246,0.3); }
+    .axe-3 .card:hover { border-color:rgba(16,185,129,0.3); }
+
+    .card-icon { font-size:22px; margin-bottom:10px; }
+    .card-title { font-size:15px; font-weight:800; color:#fff; margin-bottom:8px; }
+    .card-body { font-size:13px; color:var(--dim); line-height:1.7; }
+    .card-body strong { color:#fff; }
+
+    /* tag list */
+    .tag-row { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+    .tag {
+      font-size:11px; font-weight:700; padding:3px 10px; border-radius:100px;
+      background:var(--bg-sh); border:1px solid var(--border); color:var(--dim);
+    }
+
+    /* highlight box */
+    .highlight {
+      padding:16px 20px; border-radius:12px; margin-top:0; font-size:13px; line-height:1.7;
+    }
+    .axe-1 .highlight { background:rgba(249,115,22,0.06); border:1px solid rgba(249,115,22,0.2); color:rgba(253,186,116,0.9); }
+    .axe-2 .highlight { background:rgba(139,92,246,0.06); border:1px solid rgba(139,92,246,0.2); color:rgba(196,181,253,0.9); }
+    .axe-3 .highlight { background:rgba(16,185,129,0.06); border:1px solid rgba(16,185,129,0.2); color:rgba(110,231,183,0.9); }
+    .highlight strong { color:#fff; }
+
+    /* metric row */
+    .metric-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:10px; margin:20px 0; }
+    .metric {
+      background:var(--bg-sh); border-radius:12px; padding:14px 16px; text-align:center;
+    }
+    .metric-num { font-size:24px; font-weight:900; margin-bottom:4px; }
+    .metric-label { font-size:11px; color:var(--muted); font-weight:700; text-transform:uppercase; letter-spacing:0.5px; }
+
+    /* process flow */
+    .flow { display:flex; align-items:center; flex-wrap:wrap; gap:8px; margin:16px 0; }
+    .flow-step {
+      padding:8px 16px; border-radius:8px;
+      font-size:13px; font-weight:600; color:#fff;
+    }
+    .flow-arrow { color:var(--muted); font-size:16px; font-weight:700; }
+
+    /* CIAO Box */
+    .ciao-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+    .ciao-cell { background:var(--bg-sh); border-radius:10px; padding:12px 14px; }
+    .ciao-letter { font-size:20px; font-weight:900; margin-bottom:4px; }
+    .ciao-name { font-size:12px; font-weight:700; color:#fff; margin-bottom:4px; }
+    .ciao-desc { font-size:11px; color:var(--muted); line-height:1.5; }
+
+    /* chapter divider */
+    .chapter-label {
+      font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:2px;
+      color:var(--muted); margin:0 0 12px; display:flex; align-items:center; gap:8px;
+    }
+    .chapter-label::after { content:''; flex:1; height:1px; background:var(--border); }
+
+    /* progression bar */
+    .progression {
+      display:flex; align-items:stretch; gap:0; margin:32px 0;
+      border:1px solid var(--border); border-radius:16px; overflow:hidden;
+    }
+    .prog-step { flex:1; padding:20px 18px; position:relative; }
+    .prog-step:not(:last-child)::after {
+      content:'→'; position:absolute; right:-10px; top:50%; transform:translateY(-50%);
+      font-size:18px; color:var(--muted); z-index:1;
+    }
+    .prog-step:nth-child(1) { background:rgba(249,115,22,0.05); }
+    .prog-step:nth-child(2) { background:rgba(139,92,246,0.05); }
+    .prog-step:nth-child(3) { background:rgba(16,185,129,0.05); }
+    .prog-num { font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; }
+    .prog-step:nth-child(1) .prog-num { color:var(--ax1); }
+    .prog-step:nth-child(2) .prog-num { color:var(--ax2); }
+    .prog-step:nth-child(3) .prog-num { color:var(--ax3); }
+    .prog-name { font-size:15px; font-weight:800; color:#fff; margin-bottom:6px; }
+    .prog-desc { font-size:12px; color:var(--dim); line-height:1.6; }
+
+    /* okr table */
+    .okr-table { width:100%; border-collapse:collapse; font-size:13px; }
+    .okr-table th { padding:10px 14px; background:rgba(255,255,255,0.04); color:var(--muted); font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.8px; text-align:left; border-bottom:1px solid var(--border); }
+    .okr-table td { padding:12px 14px; color:var(--dim); border-bottom:1px solid rgba(255,255,255,0.04); vertical-align:top; line-height:1.6; }
+    .okr-table tr:last-child td { border-bottom:none; }
+    .okr-table td strong { color:#fff; }
+
+    /* warning / insight */
+    .insight {
+      display:flex; gap:12px; padding:14px 18px;
+      border-radius:10px; margin-top:16px; align-items:flex-start;
+      background:rgba(234,179,8,0.05); border:1px solid rgba(234,179,8,0.2);
+    }
+    .insight-icon { font-size:18px; flex-shrink:0; margin-top:1px; }
+    .insight-text { font-size:13px; color:rgba(253,230,138,0.85); line-height:1.65; }
+    .insight-text strong { color:#fff; }
+
+    /* summary card */
+    .summary-strip {
+      display:grid; grid-template-columns:repeat(3,1fr); gap:16px;
+      margin:52px 0 0; border-radius:20px; overflow:hidden;
+    }
+    .summary-cell { padding:28px 24px; position:relative; overflow:hidden; }
+    .summary-cell:nth-child(1) { background:rgba(249,115,22,0.07); border:1px solid rgba(249,115,22,0.2); border-radius:16px; }
+    .summary-cell:nth-child(2) { background:rgba(139,92,246,0.07); border:1px solid rgba(139,92,246,0.2); border-radius:16px; }
+    .summary-cell:nth-child(3) { background:rgba(16,185,129,0.07); border:1px solid rgba(16,185,129,0.2); border-radius:16px; }
+    .summary-ax { font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:2px; margin-bottom:8px; }
+    .summary-cell:nth-child(1) .summary-ax { color:var(--ax1); }
+    .summary-cell:nth-child(2) .summary-ax { color:var(--ax2); }
+    .summary-cell:nth-child(3) .summary-ax { color:var(--ax3); }
+    .summary-title { font-size:18px; font-weight:900; color:#fff; margin-bottom:10px; }
+    .summary-list { list-style:none; font-size:13px; color:var(--dim); }
+    .summary-list li { margin-bottom:6px; padding-left:14px; position:relative; }
+    .summary-list li::before { content:'›'; position:absolute; left:0; font-weight:900; }
+    .summary-cell:nth-child(1) .summary-list li::before { color:var(--ax1); }
+    .summary-cell:nth-child(2) .summary-list li::before { color:var(--ax2); }
+    .summary-cell:nth-child(3) .summary-list li::before { color:var(--ax3); }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes pulse  { 0%,100%{box-shadow:0 0 0 0 rgba(139,92,246,.5)} 70%{box-shadow:0 0 0 8px rgba(139,92,246,0)} }
+
+    @media(max-width:768px){
+      .axes-nav { grid-template-columns:1fr; }
+      .progression { flex-direction:column; }
+      .prog-step::after { display:none; }
+      .summary-strip { grid-template-columns:1fr; }
+      .ciao-grid { grid-template-columns:1fr; }
+    }
+  </style>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+</head>
+<body>
+<div class="bg-glow"></div>
+<script src="navbar.js?v=20260401"></script>
+
+<div class="page">
+
+  <!-- ─── HERO ─── -->
+  <header class="hero">
+    <div class="badge"><div class="dot"></div>换芯行动 · AI Native · 2026 Q2 启动</div>
+    <h1>喜播 AI 原生落地<br>三板斧</h1>
+    <p class="hero-sub">
+      基于 AI-Native Transformation Framework，结合喜播 2026「活下来」战略纲领，<br>
+      将通用三板斧落地为喜播专属的<strong style="color:#fff">人→流程→组织</strong>三步递进换芯路线图。
+    </p>
+    <div class="quote">
+      💡 <strong>核心纪律：三板斧是递进关系，不是并行。</strong><br>
+      人不变，流程就无人建设；流程不通，组织换装就无实质内容；<br>
+      组织不动，流程智能体就只有几个人用，无法拉通整体效率。
+    </div>
+  </header>
+
+  <!-- ─── RUNTIME BASE ─── -->
+  <div class="runtime-box">
+    <div class="runtime-title">底座 · Agent Runtime</div>
+    <div class="runtime-head">🏗️ 喜播自建智能体运行层（统一 AI 底座）</div>
+    <div class="runtime-desc">
+      三板斧落地的前提：公司统一 AI 通道，所有员工 AI 访问必须经公司侧统一路由，才能沉淀员工 AI 行为数据、支撑 AI 能力评估和流程 Agent 运行。禁止员工私用外部账号。
+    </div>
+    <div class="runtime-chips">
+      <div class="chip"><span class="ci">🔄</span>模型中立路由：千问 / 智谱 / Kimi / MiniMax 动态切换</div>
+      <div class="chip"><span class="ci">📊</span>三维评估：效果 × 交互时长 × 成本</div>
+      <div class="chip"><span class="ci">👁️</span>全量可观测：AI 聊天记录落库 + AI 分析</div>
+      <div class="chip"><span class="ci">🔐</span>统一 Token：公司发放，个人禁用私号</div>
+      <div class="chip"><span class="ci">🎯</span>对标喜播战略第零法则：数据即底座</div>
+    </div>
+  </div>
+
+  <!-- ─── THREE AXES NAV ─── -->
+  <div class="axes-nav">
+    <div class="axis-pill axis-pill-1">
+      <div class="axis-num" style="color:var(--ax1)">第一斧</div>
+      <div class="axis-name">人的 AI 化</div>
+      <div class="axis-eng">People × AI Capability</div>
+    </div>
+    <div class="axis-pill axis-pill-2">
+      <div class="axis-num" style="color:var(--ax2)">第二斧</div>
+      <div class="axis-name">流程智能体化</div>
+      <div class="axis-eng">Process → Agent (IPA)</div>
+    </div>
+    <div class="axis-pill axis-pill-3">
+      <div class="axis-num" style="color:var(--ax3)">第三斧</div>
+      <div class="axis-name">组织换装</div>
+      <div class="axis-eng">Squad Armor-up</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- AXE 1: 人的 AI 化 -->
+  <!-- ══════════════════════════════════════ -->
+  <section class="axe-section axe-1">
+    <div class="axe-header">
+      <div class="axe-icon">🕹️</div>
+      <div class="axe-meta">
+        <div class="axe-label">第一斧 · 招募飞行员 & 改造步兵</div>
+        <div class="axe-title">人的 AI 化</div>
+        <div class="axe-subtitle">核心挂钩 OKR：关键岗位 AI 重构率 ≥ 80%（战役5，@王俊）</div>
+      </div>
+    </div>
+
+    <div class="chapter-label">核心命题</div>
+    <p style="font-size:14px;color:var(--dim);margin-bottom:20px;line-height:1.8;">
+      AI 时代的核心能力不再是领域知识积累，而是<strong style="color:#fff">与 AI 协同解决问题的能力</strong>。
+      喜播 2026「换芯行动」的起点——从招步兵转变为<strong style="color:#fff">招/养飞行员</strong>。
+    </p>
+
+    <div class="chapter-label">1.1 增量人才：飞行员考试制（新招+社招）</div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">✈️</div>
+        <div class="card-title">AI 上机考试（飞行员考试）</div>
+        <div class="card-body">
+          给出<strong>真实喜播业务问题</strong>（如：用户 ABCD 分层策略设计、退费率原因分析），要求应聘者借助 AI 协作完成。<br><br>
+          限时 1.5～3 小时。<strong>AI 出题 + AI 判卷</strong>，评估思维清晰度、问题定义能力与探索能力，而非 AI 功能使用深度。
+        </div>
+        <div class="tag-row">
+          <span class="tag">考察过程 > 结果</span>
+          <span class="tag">AI出题+AI判卷</span>
+          <span class="tag">限时1.5-3小时</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-icon">📊</div>
+        <div class="card-title">喜播参考基准（行业数据）</div>
+        <div class="card-body">
+          100 名应聘者中约 <strong>10% 优秀，20% 良好</strong>（与是否 985 无明显相关）。<br><br>
+          社招优秀约 <strong>30%</strong>，良好约 60-70%。<br>
+          达标飞行员薪酬上浮约 <strong>30%</strong>，规模可压缩至原招募量的 50%。
+        </div>
+        <div class="tag-row">
+          <span class="tag">优秀≈10%</span>
+          <span class="tag">良好≈20%</span>
+          <span class="tag">薪资+30%</span>
+          <span class="tag">规模砍50%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="chapter-label" style="margin-top:28px;">1.2 存量人才：驾考分级制（班主任/助教/运营）</div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">📋</div>
+        <div class="card-title">AI 意愿分 · 日常驾驶</div>
+        <div class="card-body">
+          通过统一 AI 通道采集员工与 AI 交互的<strong>时长、轮次、频率、深度</strong>综合评分，而非 Token 消耗量。<br><br>
+          系统自动识别高频、深度对话——是否在用 AI 解决真实工作问题，而不是随便问两句。
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🧠</div>
+        <div class="card-title">AI 能力分 · 科目三考核</div>
+        <div class="card-body">
+          能否<strong>清晰定义问题、抓住关键、拆解步骤</strong>，映射日常 Session 进行打分。<br><br>
+          科目二可作弊（单次考试），因此核心压力点放在<strong>科目三（持续日常驾驶）</strong>，不可刷分。
+        </div>
+      </div>
+    </div>
+
+    <div class="metric-row">
+      <div class="metric">
+        <div class="metric-num" style="color:var(--ax1)">80%</div>
+        <div class="metric-label">关键岗位AI化目标</div>
+      </div>
+      <div class="metric">
+        <div class="metric-num" style="color:var(--ax1)">40%</div>
+        <div class="metric-label">AI助教替代（战役4）</div>
+      </div>
+      <div class="metric">
+        <div class="metric-num" style="color:var(--ax1)">30%</div>
+        <div class="metric-label">AI班主任替代</div>
+      </div>
+      <div class="metric">
+        <div class="metric-num" style="color:var(--ax1)">30%</div>
+        <div class="metric-label">AI点评官替代</div>
+      </div>
+      <div class="metric">
+        <div class="metric-num" style="color:var(--ax1)">15%</div>
+        <div class="metric-label">兼职人效提升目标</div>
+      </div>
+    </div>
+
+    <div class="insight">
+      <div class="insight-icon">⚡</div>
+      <div class="insight-text">
+        <strong>喜播专项落地：</strong>班主任「AI 伴学官」模式已在健康训练营试点（真人班主任 + AI 伴学官）。
+        2026 目标：前 70% 班主任+点评官结合 AI 工具<strong>服务更多用户，而不是裁减</strong>；
+        后 30-40% 的低效岗位被 AI 替代，人效提升 15%+。
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- AXE 2: 流程智能体化 -->
+  <!-- ══════════════════════════════════════ -->
+  <section class="axe-section axe-2">
+    <div class="axe-header">
+      <div class="axe-icon">🔬</div>
+      <div class="axe-meta">
+        <div class="axe-label">第二斧 · 流程从 RPA 跃升至 IPA</div>
+        <div class="axe-title">流程智能体化</div>
+        <div class="axe-subtitle">核心挂钩 OKR：新课程开发 80% 由硅基员工完成（战役3，@待定）</div>
+      </div>
+    </div>
+
+    <div class="chapter-label">核心命题</div>
+    <p style="font-size:14px;color:var(--dim);margin-bottom:20px;line-height:1.8;">
+      把喜播所有<strong style="color:#fff">高频、高价值、高风险</strong>业务流程转化为流程智能体（Process Agent / PA），
+      再将多个 PA 串联为集成流程智能体（IPA），实现跨角色、跨部门工作流的 AI 化自动流转。
+    </p>
+
+    <div class="chapter-label">2.1 CIAO 原则：每个 PA 的基本格式</div>
+    <div class="ciao-grid" style="margin-bottom:20px;">
+      <div class="ciao-cell">
+        <div class="ciao-letter" style="color:var(--ax2)">C</div>
+        <div class="ciao-name">Check Input</div>
+        <div class="ciao-desc">检查输入完整性：用户类型、课程阶段、对话记录是否齐备</div>
+      </div>
+      <div class="ciao-cell">
+        <div class="ciao-letter" style="color:var(--ax2)">A</div>
+        <div class="ciao-name">Activity</div>
+        <div class="ciao-desc">执行核心活动：如 AI 点评、自动触达、分层推送</div>
+      </div>
+      <div class="ciao-cell">
+        <div class="ciao-letter" style="color:var(--ax2)">O</div>
+        <div class="ciao-name">Output + Score</div>
+        <div class="ciao-desc">输出打分，低于质量门槛则循环重做，直到达标</div>
+      </div>
+    </div>
+
+    <div class="chapter-label">2.2 喜播三条主价值流 → IPA 映射</div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">🎯</div>
+        <div class="card-title">流水线1：用户获取 & 分层 IPA</div>
+        <div class="card-body">
+          <strong>PA链：</strong>投放素材 → 直播转化 → 用户 ABCD 自动分层 → 大黑用户拦截 → 精准推课<br><br>
+          目标：大黑用户拦截率 ≥98%，大黑拦截外溢 ≤8件/月。
+          <strong>AI 扫描企微/电话，命中高危词自动计入 L2 投诉。</strong>
+        </div>
+        <div class="tag-row">
+          <span class="tag">ABCD自动分层</span>
+          <span class="tag">高危词识别</span>
+          <span class="tag">大黑拦截98%</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-icon">📚</div>
+        <div class="card-title">流水线2：课程交付 & 服务 IPA</div>
+        <div class="card-body">
+          <strong>PA链：</strong>AI 助教答疑 → AI 作业点评 → 学员合格率追踪 → 班主任自动 SOP 触发 → 服务满意度回收<br><br>
+          目标：NPS ≥85，学员合格率 ≥75%，80% 作业由 AI 点评完成。
+        </div>
+        <div class="tag-row">
+          <span class="tag">AI点评</span>
+          <span class="tag">NPS≥85</span>
+          <span class="tag">合格率≥75%</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-icon">💰</div>
+        <div class="card-title">流水线3：复购 & 续费 IPA</div>
+        <div class="card-body">
+          <strong>PA链：</strong>ABCD 用户画像 → 心理解码报告 → 最优触达时机识别 → 精准升单话术生成 → 续费成功回路<br><br>
+          目标：订单复购率提升 20%，AI 学员心理解码覆盖全量 B/C1 学员。
+        </div>
+        <div class="tag-row">
+          <span class="tag">心理解码</span>
+          <span class="tag">精准升单</span>
+          <span class="tag">复购+20%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="chapter-label" style="margin-top:28px;">2.3 归一化原则：PA 之间的数据对象统一</div>
+    <div class="highlight">
+      <strong>⚠️ 关键约束：</strong>
+      各 PA 之间的输入输出必须<strong>归一化到同一组数据对象</strong>（用户 UID + ABCD 标签 + 聊天 Session），
+      否则整个系统碎片化——每个人用自己的模板，IPA 就无法拉通。
+      喜播当前已具备的 <strong>xiboData / 聊天记录缓存体系</strong> 即是数据归一化的基础设施。
+    </div>
+
+    <div class="insight" style="margin-top:16px;">
+      <div class="insight-icon">💡</div>
+      <div class="insight-text">
+        <strong>IPA 对应的是实质协作关系，不是组织架构图。</strong>
+        喜播的 Scrum 小组（直播→助教→班主任→点评→复购运营）才是 IPA 的边界，
+        而非部门墙。必须以这条实质链条为单位建设流程 Agent，而非各部门单独跑。
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- AXE 3: 组织换装 -->
+  <!-- ══════════════════════════════════════ -->
+  <section class="axe-section axe-3">
+    <div class="axe-header">
+      <div class="axe-icon">🛡️</div>
+      <div class="axe-meta">
+        <div class="axe-label">第三斧 · 步兵班 → 装甲化作战单元</div>
+        <div class="axe-title">组织换装</div>
+        <div class="axe-subtitle">核心挂钩 OKR：兼职人效提升 15%（战役4）× 关键岗位 AI 化 80%（战役5）</div>
+      </div>
+    </div>
+
+    <div class="chapter-label">核心命题</div>
+    <p style="font-size:14px;color:var(--dim);margin-bottom:20px;line-height:1.8;">
+      流程智能体不能靠个体散点推动，必须以<strong style="color:#fff">最小作战单元为整体，强制集体同步换装</strong>。
+      一个 10 人 Scrum 里哪怕有 2 人换装，其余 8 人不动，IPA 就跑不通。
+    </p>
+
+    <div class="chapter-label">3.1 喜播换装路线图</div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">🔍</div>
+        <div class="card-title">识别阶段：盘点关键岗位</div>
+        <div class="card-body">
+          通过「<strong>高频 × 高价值 × 高风险</strong>」三维滤网，完成全组织关键岗位 100% 盘点。<br><br>
+          优先识别：班主任、助教、点评官、投放运营、用户分层专员、课程开发。
+        </div>
+        <div class="tag-row">
+          <span class="tag">100%岗位盘点</span>
+          <span class="tag">三维滤网</span>
+          <span class="tag">Q1完成</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-icon">📝</div>
+        <div class="card-title">重构阶段：发布 AI Native SOP</div>
+        <div class="card-body">
+          为每个关键岗位发布 <strong>AI Native 作业标准（SOP）</strong> 和新版岗位说明书（JD）。<br><br>
+          要求：50% 以上工作流由 AI Agent 完成，AI 编排 + 质检每周出报告。
+        </div>
+        <div class="tag-row">
+          <span class="tag">SOP发布率100%</span>
+          <span class="tag">新版JD</span>
+          <span class="tag">50%流程AI化</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🏆</div>
+        <div class="card-title">认证阶段：人岗匹配 AI 能力认证</div>
+        <div class="card-body">
+          关键岗位在岗人员「<strong>AI 重构能力认证</strong>」通过率 ≥80%，证明具备驾驭新流程的能力。<br><br>
+          低于认证门槛 → 进入「教导队」缓冲 → 教导队期满未达标 → 有序退役。
+        </div>
+        <div class="tag-row">
+          <span class="tag">认证通过率80%</span>
+          <span class="tag">教导队缓冲</span>
+          <span class="tag">Q3完成</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="metric-row" style="margin-top:24px;">
+      <div class="metric">
+        <div class="metric-num" style="color:var(--ax3)">2-3月</div>
+        <div class="metric-label">一个 Scrum 换装周期</div>
+      </div>
+      <div class="metric">
+        <div class="metric-num" style="color:var(--ax3)">50%</div>
+        <div class="metric-label">装甲化后人员精简参考</div>
+      </div>
+      <div class="metric">
+        <div class="metric-num" style="color:var(--ax3)">20+</div>
+        <div class="metric-label">Agent / 5人团队</div>
+      </div>
+      <div class="metric">
+        <div class="metric-num" style="color:var(--ax3)">P0</div>
+        <div class="metric-label">班长动力 = 换装能否推进的关键</div>
+      </div>
+    </div>
+
+    <div class="chapter-label" style="margin-top:28px;">3.2 喜播换装难点 & 应对</div>
+    <div style="overflow-x:auto; border:1px solid var(--border); border-radius:14px;">
+      <table class="okr-table">
+        <thead>
+          <tr>
+            <th>卡点</th>
+            <th>原因分析</th>
+            <th>喜播应对策略</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>班长无动力</strong></td>
+            <td>班长既不被考核也不被激励，换不换装对他无所谓</td>
+            <td>将换装进度纳入班长 KPI，给予明确的权力（推人进教导队）和激励（人效提升奖金）</td>
+          </tr>
+          <tr>
+            <td><strong>显性组织 vs 实质协作脱节</strong></td>
+            <td>以部门维度换装，但实际业务是跨部门 Scrum 协作</td>
+            <td>以三条主价值流（获客/交付/复购）的 Scrum 小组为换装粒度，而非按部门</td>
+          </tr>
+          <tr>
+            <td><strong>直接退役阻力大</strong></td>
+            <td>一次性裁员引发恐慌，影响剩余团队士气</td>
+            <td>设置「教导队」缓冲机制：先进教导队，班长有权推人，期满达标留、不达标序列退出</td>
+          </tr>
+          <tr>
+            <td><strong>复杂度超预期</strong></td>
+            <td>换装过程中业务不停，同时要跑旧流程又要建新流程</td>
+            <td>以 Scrum 为单位顺序换装，不搞全局大爆炸式切换；Q2 试点一个完整 Scrum 出数据</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="insight" style="margin-top:16px;">
+      <div class="insight-icon">🎯</div>
+      <div class="insight-text">
+        <strong>喜播的独特优势：</strong>「学员心理解码引擎」已经是内部 IPA 实践的雏形——
+        用企微聊天记录 → AI 分析 → DISC 画像 → 班主任处方单，整条链路已跑通。
+        以此为样板，向获客、交付、复购三条主流水线推广，是最低摩擦的换装起点。
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── PROGRESSION (递进关系) ─── -->
+  <div class="chapter-label">全景递进关系总览</div>
+  <div class="progression">
+    <div class="prog-step">
+      <div class="prog-num">第一斧</div>
+      <div class="prog-name">🕹️ 人先变</div>
+      <div class="prog-desc">飞行员考试筛新人，驾考积分改造存量。<br>底座：统一 AI 通道，员工行为数据可观测。</div>
+    </div>
+    <div class="prog-step">
+      <div class="prog-num">第二斧</div>
+      <div class="prog-name">🔬 流程再变</div>
+      <div class="prog-desc">三条主价值流构建 PA → IPA，数据归一化。<br>前提：人能写 Prompt、能定义流程才建得起来。</div>
+    </div>
+    <div class="prog-step">
+      <div class="prog-num">第三斧</div>
+      <div class="prog-name">🛡️ 组织换装</div>
+      <div class="prog-desc">以 Scrum 为粒度强制集体装甲化，教导队缓冲。<br>前提：IPA 跑通了，换装才有实质内容可落。</div>
+    </div>
+  </div>
+
+  <!-- ─── SUMMARY ─── -->
+  <div class="summary-strip">
+    <div class="summary-cell">
+      <div class="summary-ax">第一斧 · 人</div>
+      <div class="summary-title">飞行员工程</div>
+      <ul class="summary-list">
+        <li>新招：AI 上机考试淘汰步兵</li>
+        <li>存量：意愿分 + 能力分科目制</li>
+        <li>班主任/助教 AI 伴飞提效 15%</li>
+        <li>统一 AI 通道，数据全量可观测</li>
+        <li>人效提升后薪资上浮 30%</li>
+      </ul>
+    </div>
+    <div class="summary-cell">
+      <div class="summary-ax">第二斧 · 流程</div>
+      <div class="summary-title">三流 IPA</div>
+      <ul class="summary-list">
+        <li>获客流：ABCD 自动分层 + 大黑拦截</li>
+        <li>交付流：AI 点评 + NPS 追踪</li>
+        <li>复购流：心理解码 + 精准升单</li>
+        <li>CIAO 原则：每 PA 自带质检环</li>
+        <li>数据归一化：UID + 标签 + Session</li>
+      </ul>
+    </div>
+    <div class="summary-cell">
+      <div class="summary-ax">第三斧 · 组织</div>
+      <div class="summary-title">Scrum 装甲化</div>
+      <ul class="summary-list">
+        <li>以 Scrum 为粒度同步换装</li>
+        <li>识别 → 重构 SOP → 能力认证</li>
+        <li>教导队缓冲，避免直接退役恐慌</li>
+        <li>班长是核心杠杆，明确权力+激励</li>
+        <li>目标：2-3 月完成一个 Scrum</li>
+      </ul>
+    </div>
+  </div>
+
+</div><!-- /page -->
+
+<footer style="margin-top:60px; text-align:center; padding:32px 24px; border-top:1px solid var(--border);">
+  <div style="color:var(--dim);font-size:13px;font-weight:600;">喜播集团 · 战略 BP 办公室 &nbsp;|&nbsp; AI 原生落地三板斧 · 2026 Q2 启动版</div>
+  <div style="margin-top:6px;color:var(--muted);font-size:12px;">基于 AI-Native Transformation Framework × 喜播换芯行动 OKR · 人→流程→组织 递进换装</div>
+</footer>
+</body>
+</html>

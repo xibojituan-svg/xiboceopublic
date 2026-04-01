@@ -32,10 +32,11 @@
         box-sizing: border-box !important;
       }
       .site-nav-inner {
-        max-width: 1400px !important; margin: 0 auto !important;
+        max-width: 1240px !important; margin: 0 auto !important;
         display: flex !important; align-items: center !important;
-        height: 60px !important; gap: 6px !important;
+        height: 60px !important; gap: 4px !important;
         overflow-x: auto !important; scrollbar-width: none !important;
+        padding: 0 4px !important;
       }
       .site-nav-inner::-webkit-scrollbar { display: none !important; }
       .nav-logo {
@@ -87,6 +88,7 @@
         <a href="dual_track_system.html" class="nav-link` + isActive('dual_track_system.html') + `">双轨制组织设计</a>
         <a href="student_psychology_map.html" class="nav-link` + isActive('student_psychology_map.html') + `">学员心理地图</a>
         <a href="user_decoder_dashboard.html" class="nav-link` + isActive('user_decoder_dashboard.html') + `">🧠 用户解码中心</a>
+        <a href="ai_native_three_axes.html" class="nav-link` + isActive('ai_native_three_axes.html') + `">⚔️ AI三板斧</a>
       </div>
     </nav>
     `;
