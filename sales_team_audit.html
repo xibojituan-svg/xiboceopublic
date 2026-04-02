@@ -1,0 +1,540 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>销售与班主任价值评审看板 · Value-Driven Sales Audit - Xibo CEO</title>
+  <meta name="description" content="基于信任公式的兼职销售与班主任长期价值能力雷达评审看板。融合房产、保险及反套路私域销售方法论。" />
+  <script src="navbar.js"></script>
+  <style>
+    :root {
+      --bg: #09090b;
+      --bg-surface: #18181b;
+      --bg-surface-hover: #27272a;
+      --border: #3f3f46;
+      --text: #f4f4f5;
+      --text-dim: #a1a1aa;
+      --text-muted: #71717a;
+      --brand-primary: #ef4444;
+      --brand-secondary: #f97316;
+      --brand-accent: #10b981;
+      --brand-blue: #3b82f6;
+      --brand-purple: #8b5cf6;
+      --brand-yellow: #eab308;
+      --brand-cyan: #06b6d4;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, 'PingFang SC', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .main-container { max-width: 1200px; margin: 0 auto; padding: 40px 24px 100px; }
+
+    /* Hero */
+    .hero { margin-bottom: 48px; text-align: center; animation: fadeUp 0.8s ease-out; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 6px; padding: 6px 16px; border-radius: 100px;
+      background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.25); color: var(--brand-primary);
+      font-size: 12px; font-weight: 800; letter-spacing: 1px; margin-bottom: 24px; text-transform: uppercase;
+    }
+    .origin-pulse { width: 6px; height: 6px; border-radius: 50%; background: var(--brand-primary); box-shadow: 0 0 10px var(--brand-primary); animation: pulse 2s infinite; }
+    h1 { font-size: clamp(26px, 4.5vw, 44px); font-weight: 900; line-height: 1.2; letter-spacing: -1px; margin-bottom: 16px; background: linear-gradient(180deg, #fff 0%, #a1a1aa 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero-subtitle { font-size: clamp(13px, 2vw, 15px); color: var(--text-dim); max-width: 800px; margin: 0 auto; font-weight: 500; }
+
+    /* Trust Formula */
+    .trust-formula-bar {
+      background: linear-gradient(135deg, rgba(139,92,246,0.08), rgba(239,68,68,0.06));
+      border: 1px solid rgba(139,92,246,0.2);
+      border-radius: 16px; padding: 24px 32px; margin-bottom: 48px; text-align: center;
+      animation: fadeUp 1s ease-out 0.2s backwards;
+    }
+    .trust-formula-bar .formula {
+      font-size: clamp(16px, 3vw, 24px); font-weight: 900; color: #fff; letter-spacing: 1px;
+    }
+    .trust-formula-bar .formula .numerator { color: var(--brand-accent); }
+    .trust-formula-bar .formula .denominator { color: var(--brand-primary); }
+    .trust-formula-bar .formula .operator { color: var(--text-muted); margin: 0 4px; }
+    .trust-formula-bar p { margin-top: 10px; font-size: 13px; color: var(--text-dim); }
+
+    /* Stats Bar */
+    .stats-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 48px; animation: fadeUp 1s ease-out 0.3s backwards; }
+    .stat-card { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 14px; padding: 20px 16px; text-align: center; transition: transform 0.2s, border-color 0.2s; }
+    .stat-card:hover { transform: translateY(-2px); border-color: rgba(255,255,255,0.15); }
+    .stat-value { font-size: 28px; font-weight: 900; line-height: 1; margin-bottom: 6px; }
+    .stat-label { font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; }
+
+    /* Section Titles */
+    .section-title {
+      font-size: 22px; font-weight: 800; margin-bottom: 8px; display: flex; align-items: center; gap: 10px;
+    }
+    .section-subtitle { color: var(--text-dim); font-size: 14px; margin-bottom: 28px; }
+
+    /* Person Card */
+    .person-card {
+      background: var(--bg-surface); border: 1px solid var(--border); border-radius: 20px;
+      padding: 32px; margin-bottom: 28px; position: relative; overflow: hidden;
+      animation: fadeUp 0.6s ease-out backwards;
+      transition: border-color 0.3s;
+    }
+    .person-card:hover { border-color: rgba(255,255,255,0.12); }
+    .person-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      border-radius: 20px 20px 0 0;
+    }
+    .person-card.tier-s::before { background: linear-gradient(90deg, var(--brand-accent), var(--brand-cyan)); }
+    .person-card.tier-b::before { background: linear-gradient(90deg, var(--brand-yellow), var(--brand-secondary)); }
+    .person-card.tier-a::before { background: linear-gradient(90deg, var(--brand-blue), var(--brand-purple)); }
+
+    .person-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; flex-wrap: wrap; gap: 16px; }
+    .person-info { flex: 1; min-width: 240px; }
+    .person-name { font-size: 22px; font-weight: 800; margin-bottom: 6px; display: flex; align-items: center; gap: 10px; }
+    .person-role { font-size: 13px; color: var(--text-dim); margin-bottom: 10px; }
+    .type-tag {
+      display: inline-flex; padding: 4px 12px; border-radius: 100px;
+      font-size: 12px; font-weight: 700; letter-spacing: 0.5px;
+    }
+    .type-tag.star { background: rgba(16,185,129,0.1); color: var(--brand-accent); border: 1px solid rgba(16,185,129,0.3); }
+    .type-tag.warn { background: rgba(234,179,8,0.1); color: var(--brand-yellow); border: 1px solid rgba(234,179,8,0.3); }
+    .type-tag.ok { background: rgba(59,130,246,0.1); color: var(--brand-blue); border: 1px solid rgba(59,130,246,0.3); }
+
+    .score-ring {
+      width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 26px; font-weight: 900; flex-shrink: 0;
+      background: conic-gradient(var(--ring-color) calc(var(--score) * 3.6deg), rgba(255,255,255,0.06) 0);
+      position: relative;
+    }
+    .score-ring::after {
+      content: ''; position: absolute; inset: 6px; border-radius: 50%; background: var(--bg-surface);
+    }
+    .score-ring span { position: relative; z-index: 1; }
+
+    .verdict-box {
+      background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 12px;
+      padding: 16px 20px; margin-bottom: 24px; font-size: 14px; color: var(--text-dim); line-height: 1.8;
+    }
+    .verdict-box strong { color: #fff; }
+
+    /* Radar Grid */
+    .radar-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 24px; }
+    .radar-item {
+      background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 12px; padding: 16px;
+      text-align: center; transition: transform 0.2s;
+    }
+    .radar-item:hover { transform: translateY(-2px); }
+    .radar-dim-name { font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+    .radar-stars { font-size: 18px; margin-bottom: 6px; display: flex; justify-content: center; gap: 2px; }
+    .radar-stars .on { color: var(--brand-yellow); }
+    .radar-stars .off { color: rgba(255,255,255,0.1); }
+    .radar-note { font-size: 12px; color: var(--text-dim); line-height: 1.5; }
+
+    /* Evidence Slices */
+    .slice-grid { display: grid; gap: 16px; margin-bottom: 24px; }
+    .slice-card {
+      background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 12px;
+      padding: 18px 20px; position: relative; overflow: hidden;
+    }
+    .slice-card.bright { border-left: 3px solid var(--brand-accent); }
+    .slice-card.flaw { border-left: 3px solid var(--brand-yellow); }
+    .slice-card.danger { border-left: 3px solid var(--brand-primary); }
+
+    .slice-type { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+    .slice-type.bright-t { color: var(--brand-accent); }
+    .slice-type.flaw-t { color: var(--brand-yellow); }
+    .slice-type.danger-t { color: var(--brand-primary); }
+
+    .slice-quote {
+      background: rgba(255,255,255,0.04); padding: 10px 14px; border-radius: 8px; font-size: 13px;
+      color: #e4e4e7; margin-bottom: 10px; border-left: 2px solid rgba(255,255,255,0.1);
+      font-style: italic; line-height: 1.6;
+    }
+    .slice-analysis { font-size: 13px; color: var(--text-dim); line-height: 1.7; }
+    .slice-verdict { font-size: 12px; font-weight: 700; margin-top: 8px; display: inline-block; padding: 3px 10px; border-radius: 6px; }
+    .slice-verdict.good { background: rgba(16,185,129,0.1); color: var(--brand-accent); }
+    .slice-verdict.bad { background: rgba(239,68,68,0.1); color: var(--brand-primary); }
+    .slice-verdict.neutral { background: rgba(234,179,8,0.1); color: var(--brand-yellow); }
+
+    /* Prescription */
+    .rx-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .rx-card { background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 14px; padding: 20px; }
+    .rx-card h4 { font-size: 14px; font-weight: 800; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+    .rx-card.stop h4 { color: var(--brand-primary); }
+    .rx-card.start h4 { color: var(--brand-accent); }
+    .rx-item { font-size: 13px; color: var(--text-dim); line-height: 1.7; margin-bottom: 12px; padding-left: 12px; border-left: 2px solid var(--border); }
+    .rx-item:last-child { margin-bottom: 0; }
+    .rx-item .talk { font-size: 12px; background: rgba(255,255,255,0.04); padding: 8px 12px; border-radius: 8px; margin-top: 6px; color: #d4d4d8; font-style: italic; display: block; }
+
+    /* Global Strategy */
+    .strategy-section { margin-top: 56px; }
+    .strategy-grid { display: grid; gap: 14px; }
+    .strategy-item {
+      display: grid; grid-template-columns: 80px 1fr auto; align-items: center; gap: 16px;
+      background: var(--bg-surface); border: 1px solid var(--border); border-radius: 14px; padding: 18px 20px;
+      transition: transform 0.2s;
+    }
+    .strategy-item:hover { transform: translateY(-2px); }
+    .priority-tag { padding: 4px 12px; border-radius: 8px; font-size: 11px; font-weight: 800; text-align: center; text-transform: uppercase; letter-spacing: 1px; }
+    .priority-tag.urgent { background: rgba(239,68,68,0.15); color: var(--brand-primary); }
+    .priority-tag.important { background: rgba(234,179,8,0.15); color: var(--brand-yellow); }
+    .strategy-text { font-size: 14px; color: var(--text-dim); line-height: 1.6; }
+    .strategy-text strong { color: #fff; }
+    .strategy-effect { font-size: 12px; color: var(--text-muted); text-align: right; white-space: nowrap; }
+
+    /* Animations */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .stats-bar { grid-template-columns: repeat(2, 1fr); }
+      .radar-grid { grid-template-columns: 1fr; }
+      .rx-grid { grid-template-columns: 1fr; }
+      .strategy-item { grid-template-columns: 1fr; gap: 8px; }
+      .strategy-effect { text-align: left; }
+      .person-header { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="main-container">
+    <!-- Hero -->
+    <div class="hero">
+      <div class="badge"><span class="origin-pulse"></span> VALUE-DRIVEN SALES AUDIT</div>
+      <h1>兼职销售与班主任<br>价值能力雷达评审</h1>
+      <p class="hero-subtitle">基于「信任公式」第一性原理，融合房产、保险与反套路私域方法论，逐人输出三维能力诊断与行动处方</p>
+    </div>
+
+    <!-- Trust Formula -->
+    <div class="trust-formula-bar">
+      <div class="formula">
+        信任度<span class="operator">=</span>(<span class="numerator">资质能力</span><span class="operator">+</span><span class="numerator">可靠性</span><span class="operator">+</span><span class="numerator">亲近度</span>)<span class="operator">÷</span><span class="denominator">自我导向</span>
+      </div>
+      <p>分母越低（越不自私），信任乘数越高。降低「自我导向」是长期价值销售的第一性原理。</p>
+    </div>
+
+    <!-- Stats Bar -->
+    <div class="stats-bar">
+      <div class="stat-card"><div class="stat-value" style="color:var(--brand-accent);">4</div><div class="stat-label">评审人数</div></div>
+      <div class="stat-card"><div class="stat-value" style="color:var(--brand-blue);">2151</div><div class="stat-label">聊天记录总条数</div></div>
+      <div class="stat-card"><div class="stat-value" style="color:var(--brand-purple);">3</div><div class="stat-label">能力评估维度</div></div>
+      <div class="stat-card"><div class="stat-value" style="color:var(--brand-secondary);">16</div><div class="stat-label">事实切片样本</div></div>
+    </div>
+
+    <!-- ============ PERSON 1: 糖果 ============ -->
+    <div class="person-card tier-s" style="animation-delay:0.4s;">
+      <div class="person-header">
+        <div class="person-info">
+          <div class="person-name">🍬 糖果（唐衡） <span class="type-tag star">⭐ 专业陪伴型</span></div>
+          <div class="person-role">后期80期10班班主任 · 去留建议：<strong style="color:var(--brand-accent);">破格提拔为带教组长</strong></div>
+        </div>
+        <div class="score-ring" style="--score:92; --ring-color:var(--brand-accent);"><span>92</span></div>
+      </div>
+
+      <div class="verdict-box">
+        信任公式分母趋近于零的标杆。<strong>远程帮清C盘、硬盘涨价前主动利他预警、外出赶回家给学员发资料包</strong>——每一个动作都在信任公式的分子端疯狂加码，同时将分母中的"自我导向"击穿至零值。是本次评审中唯一达到「可复制为组织能力」标准的角色。
+      </div>
+
+      <div class="radar-grid">
+        <div class="radar-item">
+          <div class="radar-dim-name">诊断监听力</div>
+          <div class="radar-stars"><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="off">★</span></div>
+          <div class="radar-note">能精准判断硬盘断连原因，先问"台式还是笔记本"而非复读FAQ</div>
+        </div>
+        <div class="radar-item">
+          <div class="radar-dim-name">专业托底力</div>
+          <div class="radar-stars"><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span></div>
+          <div class="radar-note">远超岗位职责：远程清C盘、下发硬盘注意事项卡片、整理班会时间线</div>
+        </div>
+        <div class="radar-item">
+          <div class="radar-dim-name">去自私化</div>
+          <div class="radar-stars"><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span></div>
+          <div class="radar-note">涨价前利他预警、外出赶回发包、超额服务不带成交意图</div>
+        </div>
+      </div>
+
+      <div class="slice-grid">
+        <div class="slice-card bright">
+          <div class="slice-type bright-t">✅ 亮点 · 超额价值惊喜</div>
+          <div class="slice-quote">「弄好了哦，顺便看你C盘满了，给你清理了下」</div>
+          <div class="slice-analysis">用户没有要求她做这件事。这种"被超额满足"的感触产生了类似"老公偷偷帮你把车洗了"的情感溢出效应，直接将信任公式中的"可靠性+亲近度"瞬间拉满。</div>
+          <div class="slice-verdict good">信任护城河 · 顶级</div>
+        </div>
+        <div class="slice-card bright">
+          <div class="slice-type bright-t">✅ 亮点 · 即时性承诺</div>
+          <div class="slice-quote">「好的，稍微等我一下啊，我在外面，我马上到家了啊。」</div>
+          <div class="slice-analysis">不说"下次再给你"、不说"你等明天吧"——"我马上到家"意味着她将用户需求优先级置于私人生活之上。用户会本能感受到"我在她眼里很重要"。</div>
+          <div class="slice-verdict good">信任护城河 · 顶级</div>
+        </div>
+        <div class="slice-card bright">
+          <div class="slice-type bright-t">✅ 亮点 · 反向利他预警</div>
+          <div class="slice-quote">「你要打算再买的话，那么最少是在十二点之前啊，因为十二点硬盘涨价。」</div>
+          <div class="slice-analysis">糖果完全可以不说这句话（涨价后促成购买提成更高）。她选择帮用户省钱——信任公式分母"自我导向"降为零值的典型案例。</div>
+          <div class="slice-verdict good">反向劝退式利他 · 标杆级</div>
+        </div>
+        <div class="slice-card flaw">
+          <div class="slice-type flaw-t">⚠️ 微瑕 · AI自动回复暗号</div>
+          <div class="slice-quote">「自行念出"滴"一声，并发送暗号"天生xxx必有用，糖果班班我最爱"，系统会优先排序哦~」</div>
+          <div class="slice-analysis">"念暗号换优先排序"本质上是微弱的"忠诚度测试"，高敏感用户可能产生"我付了钱你还要我表忠心？"的冒犯感。</div>
+          <div class="slice-verdict neutral">无害但不加分 · 建议替换</div>
+        </div>
+      </div>
+
+      <div class="rx-grid">
+        <div class="rx-card stop">
+          <h4>🚫 应该停止</h4>
+          <div class="rx-item">停止AI自动回复中"念暗号换优先排序"玩法，替换为具体时间预期管理。</div>
+          <div class="rx-item">停止在非工作时间用语音交代复杂操作，改用图文步骤卡片。</div>
+          <div class="rx-item">停止"顺便"做超额动作后不告知原因——解释逻辑，让用户理解其中的专业价值。</div>
+        </div>
+        <div class="rx-card start">
+          <h4>✅ 应该加入</h4>
+          <div class="rx-item">主动帮用户"算账"：
+            <span class="talk">「宝，你现在这个学习节奏，8周下来大概掌握到什么程度，之后接到第一个单子能回收多少成本，班班帮你捋一捋～」</span>
+          </div>
+          <div class="rx-item">反向劝退示范（硬件场景）：
+            <span class="talk">「宝，你现在一块4T硬盘够你用到毕业了。毕业后真的开始接单了，量大到装不下时再来找我，千万别提前花冤枉钱～」</span>
+          </div>
+          <div class="rx-item">毕业后终身连结话术：
+            <span class="talk">「宝，80期要结营了。不管你之后走到哪里，遇到技术问题随时找我，班班可不是只管这两个月的～」</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ PERSON 2: 房向南 ============ -->
+    <div class="person-card tier-b" style="animation-delay:0.5s;">
+      <div class="person-header">
+        <div class="person-info">
+          <div class="person-name">🏠 房向南 <span class="type-tag warn">⚠️ 模板话术型</span></div>
+          <div class="person-role">进阶延期班主任 / 兼职销售 · 去留建议：<strong style="color:var(--brand-yellow);">需重塑理念</strong></div>
+        </div>
+        <div class="score-ring" style="--score:58; --ring-color:var(--brand-yellow);"><span>58</span></div>
+      </div>
+
+      <div class="verdict-box">
+        核心问题在于<strong>每条消息都携带"群发模板"的气味</strong>。千篇一律的"Hello~宝子们~~"开头、"直播预告+福利诱饵+扫码链接"三段式正文。可靠性高（按时推送），但亲近度低（零个性化），且自我导向信号偏强——每次出现都暗含"让你买进阶"的意图。
+      </div>
+
+      <div class="radar-grid">
+        <div class="radar-item">
+          <div class="radar-dim-name">诊断监听力</div>
+          <div class="radar-stars"><span class="on">★</span><span class="on">★</span><span class="off">★</span><span class="off">★</span><span class="off">★</span></div>
+          <div class="radar-note">几乎没有探问过学员的时间瓶颈、学习困境或情绪状态</div>
+        </div>
+        <div class="radar-item">
+          <div class="radar-dim-name">专业托底力</div>
+          <div class="radar-stars"><span class="on">★</span><span class="on">★</span><span class="off">★</span><span class="off">★</span><span class="off">★</span></div>
+          <div class="radar-note">没有算过一笔账，没有梳理过变现路径，对"延期"身份无情感安抚</div>
+        </div>
+        <div class="radar-item">
+          <div class="radar-dim-name">去自私化</div>
+          <div class="radar-stars"><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="off">★</span><span class="off">★</span></div>
+          <div class="radar-note">无高压逼单，但也无利他动作。用户拒绝后仅回"ok"关门</div>
+        </div>
+      </div>
+
+      <div class="slice-grid">
+        <div class="slice-card danger">
+          <div class="slice-type danger-t">🚨 病灶 · 预设成交陷阱</div>
+          <div class="slice-quote">「宝子中午好~12月29日开营的进阶45期开始承接……宝子看看时间没问题的话班班后台就帮你开课了~~~」</div>
+          <div class="slice-analysis">不是"你要不要考虑"，而是"没问题我就帮你开了"——这是强预设话术（Default Opt-in）。小雪直接回怼「等后期完课吧，忙不过来」，说明她已察觉被推销意图并启动防御。</div>
+          <div class="slice-verdict bad">信任侵蚀 · 用户已防御</div>
+        </div>
+        <div class="slice-card danger">
+          <div class="slice-type danger-t">🚨 病灶 · 群发感暴露</div>
+          <div class="slice-quote">「Hello~Hello~最爱演播的好宝子们~~上午好！」</div>
+          <div class="slice-analysis">"宝子们~~"（复数称谓）+ "Hello~Hello~"波浪号叠加，是典型的微商营销体语气。用户本能感知"这不是给我一个人发的"，心理账户已将其划入"广告发送器"。</div>
+          <div class="slice-verdict bad">亲近度降级 · 信号灾难</div>
+        </div>
+        <div class="slice-card flaw">
+          <div class="slice-type flaw-t">⚠️ 病灶 · 拒绝后冰冷关门</div>
+          <div class="slice-quote">小雪：「等后期完课吧，忙不过来」<br>房向南：「ok」</div>
+          <div class="slice-analysis">一个两线作战的全职宝妈说"忙不过来"是巨大的情绪信号弹。正确做法应追问"你是不是两边课撞车了？要不要帮你调节节奏？"——而非一个冰冷的"ok"直接关门。</div>
+          <div class="slice-verdict bad">信任断裂 · 高危</div>
+        </div>
+        <div class="slice-card flaw">
+          <div class="slice-type flaw-t">⚠️ 微亮 · 福利推送确实勤勉</div>
+          <div class="slice-quote">「班班又为咱进阶延期小伙伴薅到福利直播课了❗绝对干货❗绝对超值❗免费免费免费❗」</div>
+          <div class="slice-analysis">反复强调"免费"能降低心理防线，如果能追加一句"班班知道延期的你们经济压力也不小"，信任值会再提一个量级。</div>
+          <div class="slice-verdict neutral">有效但粗糙 · 可优化</div>
+        </div>
+      </div>
+
+      <div class="rx-grid">
+        <div class="rx-card stop">
+          <h4>🚫 应该停止</h4>
+          <div class="rx-item">停止使用"宝子们~~"复数称谓做私聊群发——改为直呼其名"小雪～"。</div>
+          <div class="rx-item">停止用"没问题我就帮你开课了"预设成交话术——改为开放式询问。</div>
+          <div class="rx-item">停止在用户表达"忙/压力大"时只回"ok"——这等于告诉用户"你不买我就没话跟你说了"。</div>
+        </div>
+        <div class="rx-card start">
+          <h4>✅ 应该加入</h4>
+          <div class="rx-item">延期用户专属关怀：
+            <span class="talk">「小雪～班班看你同时学后期和演播，真的太拼了！进阶那边你先不用着急，等后期毕业了、手上有余力了咱们再说～」</span>
+          </div>
+          <div class="rx-item">替代"ok"的深挖话术：
+            <span class="talk">「宝你说忙不过来，班班特别理解～你觉得最让你头疼的是时间问题还是精力问题？如果是时间，班班帮你做一张排期表把关键节点错开～」</span>
+          </div>
+          <div class="rx-item">结尾去群发感：每条消息末尾加一句用户近况定制句。
+            <span class="talk">「对了，你家闺女感冒好了吧？上次听你说抱了一天，心疼你～」</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ PERSON 3: 声声慢 ============ -->
+    <div class="person-card tier-a" style="animation-delay:0.6s;">
+      <div class="person-header">
+        <div class="person-info">
+          <div class="person-name">🎙️ 声声慢（王璐） <span class="type-tag ok">✅ 效率事务型</span></div>
+          <div class="person-role">精英42期班主任 · 去留建议：<strong style="color:var(--brand-blue);">保留，强化情感连结</strong></div>
+        </div>
+        <div class="score-ring" style="--score:72; --ring-color:var(--brand-blue);"><span>72</span></div>
+      </div>
+
+      <div class="verdict-box">
+        互动量较少但极其干练——通知进组、确认交音、催促回复。她像一台<strong>高效的调度机器</strong>，专业效率高但缺少"人情味"。在事务层面无可挑剔，但在情感连结层面有明显提升空间。
+      </div>
+
+      <div class="radar-grid">
+        <div class="radar-item">
+          <div class="radar-dim-name">诊断监听力</div>
+          <div class="radar-stars"><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="off">★</span><span class="off">★</span></div>
+          <div class="radar-note">能精准传达关键信息，但没有探问用户当前状态和信心</div>
+        </div>
+        <div class="radar-item">
+          <div class="radar-dim-name">专业托底力</div>
+          <div class="radar-stars"><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="off">★</span></div>
+          <div class="radar-note">清晰的进组时间表和行动指令，专业效率很高</div>
+        </div>
+        <div class="radar-item">
+          <div class="radar-dim-name">去自私化</div>
+          <div class="radar-stars"><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="off">★</span><span class="off">★</span></div>
+          <div class="radar-note">无带货意图，纯事务沟通，中规中矩</div>
+        </div>
+      </div>
+
+      <div class="slice-grid">
+        <div class="slice-card flaw">
+          <div class="slice-type flaw-t">⚠️ 微瑕 · 零回旋二元施压</div>
+          <div class="slice-quote">「宝贝你是否选择能够按时交音？1.放弃进组 2.保证按时交音，正常进组」</div>
+          <div class="slice-analysis">"放弃"或"保证"——没有中间选项，没有"如果时间来不及我帮你协调"的缓冲。对全职宝妈，这种二选一可能制造不必要的焦虑。</div>
+          <div class="slice-verdict neutral">不算失分 · 本可做更好</div>
+        </div>
+      </div>
+
+      <div class="rx-grid">
+        <div class="rx-card stop">
+          <h4>🚫 应该停止</h4>
+          <div class="rx-item">停止"放弃/保证"零回旋二元选择。</div>
+          <div class="rx-item">停止纯指令式沟通，在关键节点增加一句用户近况关怀。</div>
+          <div class="rx-item">停止将所有沟通限制在"事务通知"层面。</div>
+        </div>
+        <div class="rx-card start">
+          <h4>✅ 应该加入</h4>
+          <div class="rx-item">进组通知缓冲话术：
+            <span class="talk">「宝贝，甲方直通车机会来啦！如果觉得时间没问题就大胆冲！如果节奏太紧，也没关系，跟班班说一声～」</span>
+          </div>
+          <div class="rx-item">定期（每两周）触发一次非任务性暖场问候。</div>
+          <div class="rx-item">阶段性成长认可：
+            <span class="talk">「宝藏女孩！你这次交音质量肉眼可见地进步，尤其是那段旁白情绪拿捏——你自己发现了吗？」</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ PERSON 4: 售后柚子 ============ -->
+    <div class="person-card tier-a" style="animation-delay:0.7s;">
+      <div class="person-header">
+        <div class="person-info">
+          <div class="person-name">🍊 售后-柚子 <span class="type-tag ok">✅ 标准后勤型</span></div>
+          <div class="person-role">技术售后 · 去留建议：<strong style="color:var(--brand-blue);">保留，增加主动关怀触点</strong></div>
+        </div>
+        <div class="score-ring" style="--score:68; --ring-color:var(--brand-blue);"><span>68</span></div>
+      </div>
+
+      <div class="verdict-box">
+        在团建日<strong>提前通知"今晚暂停调试"并致歉</strong>，展现了基本的利他意识和预期管理能力。但整体为<strong>纯被动响应模式</strong>——只在用户主动求助时才出现，缺少巡检和回访闭环。
+      </div>
+
+      <div class="radar-grid">
+        <div class="radar-item">
+          <div class="radar-dim-name">诊断监听力</div>
+          <div class="radar-stars"><span class="on">★</span><span class="on">★</span><span class="off">★</span><span class="off">★</span><span class="off">★</span></div>
+          <div class="radar-note">仅在用户主动求助时响应，无主动巡检追踪</div>
+        </div>
+        <div class="radar-item">
+          <div class="radar-dim-name">专业托底力</div>
+          <div class="radar-stars"><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="off">★</span><span class="off">★</span></div>
+          <div class="radar-note">标准化调试链接+工作时间通知，有基本专业底线</div>
+        </div>
+        <div class="radar-item">
+          <div class="radar-dim-name">去自私化</div>
+          <div class="radar-stars"><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="off">★</span></div>
+          <div class="radar-note">团建日主动通知暂停+致歉，说明有基本利他意识</div>
+        </div>
+      </div>
+
+      <div class="slice-grid">
+        <div class="slice-card bright">
+          <div class="slice-type bright-t">✅ 亮点 · 预期管理最佳实践</div>
+          <div class="slice-quote">「技术老师团队7:00后团建聚餐，今天晚饭时间不休息正常调试……对大家的不便深表歉意」</div>
+          <div class="slice-analysis">提前通知"今晚不可用"，同时给出替代方案（"下午不休息赶紧来"+"明天早九来"），避免用户夜间求助无门时的负面情绪。</div>
+          <div class="slice-verdict good">预期管理 · 优秀</div>
+        </div>
+      </div>
+
+      <div class="rx-grid">
+        <div class="rx-card stop">
+          <h4>🚫 应该停止</h4>
+          <div class="rx-item">停止纯被动"等人来找"的工作模式。</div>
+          <div class="rx-item">停止调试完成后"断开远程就结束"——缺少闭环确认。</div>
+          <div class="rx-item">停止对高频求助用户无差别对待——应建立VIP标签。</div>
+        </div>
+        <div class="rx-card start">
+          <h4>✅ 应该加入</h4>
+          <div class="rx-item">调试完成48小时后主动回访：
+            <span class="talk">「宝子～上次帮你调的设备用着还顺手不？有没有遇到新问题？」</span>
+          </div>
+          <div class="rx-item">建立"高频调试用户"标签，每学期主动推送一次设备保养提醒。</div>
+          <div class="rx-item">每轮调试后推送一份《设备小贴士》卡片（如AU版本兼容事项等）。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ 全局战略建议 ============ -->
+    <div class="strategy-section">
+      <div class="section-title">🏆 全局战略建议（给管理层）</div>
+      <div class="section-subtitle">四条关键行动，从个人能力提升到组织制度建设</div>
+      <div class="strategy-grid">
+        <div class="strategy-item">
+          <div class="priority-tag urgent">紧急</div>
+          <div class="strategy-text">将糖果（唐衡）的服务案例<strong>录制为"班主任标杆教学视频"，全员学习</strong></div>
+          <div class="strategy-effect">顶级个例 → 组织能力</div>
+        </div>
+        <div class="strategy-item">
+          <div class="priority-tag urgent">紧急</div>
+          <div class="strategy-text">对房向南进行<strong>"去群发模板化"专项培训</strong>，每条消息必须直呼其名、结尾增加用户近况定制句</div>
+          <div class="strategy-effect">防止延期用户沉默流失</div>
+        </div>
+        <div class="strategy-item">
+          <div class="priority-tag important">重要</div>
+          <div class="strategy-text">建立<strong>「用户拒绝响应SOP」</strong>——当用户说"忙/不需要/以后再说"时，必须有三步跟进动作而非"ok"关门</div>
+          <div class="strategy-effect">挽救流失边缘高价值用户</div>
+        </div>
+        <div class="strategy-item">
+          <div class="priority-tag important">重要</div>
+          <div class="strategy-text">班主任考核新增<strong>「非销售触点频率」指标</strong>——每月至少3次纯关怀消息（不带任何课程链接或购买引导）</div>
+          <div class="strategy-effect">从根本上降低"自我导向"感知</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
