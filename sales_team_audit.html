@@ -199,6 +199,59 @@
       .strategy-effect { text-align: left; }
       .person-header { flex-direction: column; }
     }
+
+    /* Related Link Bar */
+    .related-link-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      background: linear-gradient(135deg, rgba(139,92,246,0.08), rgba(59,130,246,0.08));
+      border: 1px solid rgba(139,92,246,0.25);
+      border-radius: 14px;
+      padding: 16px 24px;
+      margin-bottom: 36px;
+      animation: fadeUp 1s ease-out 0.1s backwards;
+    }
+    .related-link-bar .rlb-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .related-link-bar .rlb-icon {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      background: rgba(139,92,246,0.15);
+      border: 1px solid rgba(139,92,246,0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
+    }
+    .related-link-bar .rlb-text strong {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 2px;
+    }
+    .related-link-bar .rlb-text span {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .related-link-bar .rlb-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 20px;
+      background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+    .related-link-bar .rlb-btn:hover { opacity: 0.88; transform: translateY(-1px); }
   </style>
 </head>
 <body>
@@ -208,6 +261,20 @@
       <div class="badge"><span class="origin-pulse"></span> VALUE-DRIVEN SALES AUDIT</div>
       <h1>兼职销售与班主任<br>价值能力雷达评审</h1>
       <p class="hero-subtitle">基于「信任公式」第一性原理，融合房产、保险与反套路私域方法论，逐人输出三维能力诊断与行动处方</p>
+    </div>
+
+    <!-- Related: 用户解码报告入口 -->
+    <div class="related-link-bar">
+      <div class="rlb-left">
+        <div class="rlb-icon">🔬</div>
+        <div class="rlb-text">
+          <strong>用户深度解码报告 · 金铭 & 曹聪</strong>
+          <span>DISC × ABCD × LTV 双轨诊断 · 揭示模板话术如何将 C 型用户推入沉默流失通道</span>
+        </div>
+      </div>
+      <a class="rlb-btn" href="user/user_decoder_report.html" target="_blank">
+        查看报告 →
+      </a>
     </div>
 
     <!-- Trust Formula -->
