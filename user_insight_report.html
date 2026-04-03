@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>用户行为洞察报告 · 喜播2026</title>
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<style>
+:root{--bg:#09090b;--bg-s:#18181b;--bg-sh:#27272a;--bd:#3f3f46;--text:#f4f4f5;--dim:#a1a1aa;--muted:#71717a;--red:#ef4444;--orange:#f97316;--green:#10b981;--blue:#3b82f6;--purple:#8b5cf6;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',-apple-system,'PingFang SC',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;}
+.bg-glow{position:fixed;top:-20vh;left:50%;transform:translateX(-50%);width:100vw;height:60vh;background:radial-gradient(ellipse at bottom,rgba(139,92,246,.12) 0%,transparent 70%);z-index:-1;pointer-events:none;}
+.wrap{max-width:1200px;margin:0 auto;padding:40px 24px;}
+
+/* HERO */
+.hero{text-align:center;margin-bottom:56px;animation:fadeUp .8s ease-out;}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:6px 16px;border-radius:100px;background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.3);color:var(--purple);font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:24px;}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--purple);box-shadow:0 0 10px var(--purple);animation:pulse 2s infinite;}
+h1{font-size:clamp(32px,5vw,56px);font-weight:900;line-height:1.1;letter-spacing:-2px;margin-bottom:20px;background:linear-gradient(180deg,#fff 0%,#a1a1aa 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.subtitle{font-size:clamp(14px,2vw,18px);color:var(--dim);max-width:700px;margin:0 auto;}
+
+/* META STATS */
+.meta-strip{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:56px;}
+.meta-item{background:var(--bg-s);border:1px solid var(--bd);border-radius:12px;padding:16px 24px;text-align:center;}
+.meta-num{font-size:28px;font-weight:900;color:#fff;}
+.meta-label{font-size:12px;color:var(--muted);margin-top:4px;}
+
+/* SECTION */
+.section{margin-bottom:64px;animation:fadeUp .8s ease-out backwards;}
+.sec-header{display:flex;align-items:center;gap:12px;margin-bottom:28px;padding-bottom:16px;border-bottom:1px solid var(--bd);}
+.sec-tag{font-size:11px;font-weight:700;padding:3px 10px;border-radius:6px;letter-spacing:.5px;}
+.sec-title{font-size:22px;font-weight:800;color:#fff;}
+.sec-desc{font-size:14px;color:var(--muted);margin-top:6px;}
+
+/* ARCHETYPE GRID */
+.archetype-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px;}
+.arc-card{background:var(--bg-s);border:1px solid var(--bd);border-radius:16px;padding:24px;transition:all .3s;position:relative;overflow:hidden;}
+.arc-card:hover{border-color:rgba(255,255,255,.2);transform:translateY(-3px);}
+.arc-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.t1::before{background:var(--orange);}
+.t2::before{background:var(--blue);}
+.t3::before{background:var(--purple);}
+.t4::before{background:var(--green);}
+.t5::before{background:var(--red);}
+.t6::before{background:var(--muted);}
+.arc-emoji{font-size:28px;margin-bottom:12px;}
+.arc-name{font-size:16px;font-weight:800;color:#fff;margin-bottom:4px;}
+.arc-user{font-size:12px;color:var(--muted);margin-bottom:12px;}
+.arc-driver{font-size:13px;color:var(--dim);margin-bottom:8px;}
+.risk-pill{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:3px 10px;border-radius:100px;}
+.risk-low{background:rgba(16,185,129,.1);color:var(--green);}
+.risk-mid{background:rgba(249,115,22,.1);color:var(--orange);}
+.risk-high{background:rgba(239,68,68,.1);color:var(--red);}
+
+/* DIMENSIONS TABLE */
+.dim-section{margin-bottom:32px;}
+.dim-section h4{font-size:14px;font-weight:700;color:var(--orange);margin-bottom:12px;display:flex;align-items:center;gap:6px;}
+.dim-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;}
+.dim-card{background:var(--bg-s);border:1px solid var(--bd);border-radius:10px;padding:14px 16px;display:flex;gap:10px;align-items:flex-start;}
+.dim-id{font-size:11px;font-weight:800;color:var(--purple);min-width:32px;margin-top:2px;}
+.dim-body .dim-name{font-size:13px;font-weight:700;color:#fff;margin-bottom:3px;}
+.dim-body .dim-desc{font-size:12px;color:var(--muted);}
+.star-row{display:flex;gap:2px;margin-top:4px;}
+.star{font-size:10px;}
+.star.on{color:var(--orange);}
+.star.off{color:var(--bd);}
+
+/* INSIGHT CARDS */
+.insight-list{display:flex;flex-direction:column;gap:20px;}
+.insight-card{background:var(--bg-s);border:1px solid var(--bd);border-radius:16px;padding:28px;transition:all .3s;}
+.insight-card:hover{border-color:rgba(255,255,255,.15);}
+.ins-header{display:flex;align-items:flex-start;gap:16px;margin-bottom:16px;}
+.ins-num{font-size:28px;font-weight:900;color:var(--purple);line-height:1;min-width:40px;}
+.ins-title{font-size:18px;font-weight:800;color:#fff;margin-bottom:4px;}
+.ins-tag{font-size:11px;color:var(--muted);}
+.ins-body{font-size:14px;color:var(--dim);line-height:1.7;margin-bottom:16px;}
+.ins-actions{display:flex;flex-direction:column;gap:8px;}
+.action-item{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--dim);}
+.action-icon{font-size:14px;min-width:20px;}
+
+/* FUNNEL */
+.funnel{background:var(--bg-s);border:1px solid var(--bd);border-radius:16px;padding:28px;}
+.funnel-steps{display:flex;flex-direction:column;gap:0;}
+.f-step{display:flex;gap:16px;align-items:flex-start;padding:16px 0;border-bottom:1px solid var(--bd);}
+.f-step:last-child{border-bottom:none;}
+.f-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.f-content .f-label{font-size:13px;font-weight:700;color:#fff;margin-bottom:4px;}
+.f-content .f-desc{font-size:12px;color:var(--muted);}
+.f-timing{margin-left:auto;font-size:11px;font-weight:700;padding:4px 10px;border-radius:100px;white-space:nowrap;align-self:center;}
+.timing-red{background:rgba(239,68,68,.1);color:var(--red);}
+.timing-orange{background:rgba(249,115,22,.1);color:var(--orange);}
+.timing-green{background:rgba(16,185,129,.1);color:var(--green);}
+.timing-blue{background:rgba(59,130,246,.1);color:var(--blue);}
+
+/* MATRIX */
+.matrix-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.matrix-card{background:var(--bg-s);border:1px solid var(--bd);border-radius:12px;padding:20px;}
+.matrix-label{font-size:11px;font-weight:700;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px;}
+.matrix-title{font-size:15px;font-weight:700;color:#fff;margin-bottom:8px;}
+.matrix-action{font-size:13px;color:var(--dim);}
+
+/* DATA COLLECT TABLE */
+table{width:100%;border-collapse:collapse;}
+th{font-size:12px;font-weight:700;color:var(--muted);text-align:left;padding:10px 14px;border-bottom:1px solid var(--bd);}
+td{font-size:13px;color:var(--dim);padding:12px 14px;border-bottom:1px solid rgba(63,63,70,.4);}
+tr:hover td{background:var(--bg-sh);}
+.p0{color:var(--red);font-weight:700;}
+.p1{color:var(--orange);font-weight:700;}
+.p2{color:var(--green);font-weight:700;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(139,92,246,.4)}70%{box-shadow:0 0 0 10px rgba(139,92,246,0)}100%{box-shadow:0 0 0 0 rgba(139,92,246,0)}}
+footer{text-align:center;padding:48px 0;border-top:1px solid var(--bd);color:var(--muted);font-size:12px;}
+@media(max-width:768px){.wrap{padding:24px 16px;}.matrix-grid{grid-template-columns:1fr;}.meta-strip{gap:10px;}}
+</style>
+</head>
+<body>
+<script src="navbar.js?v=20260328"></script>
+<div class="bg-glow"></div>
+<div class="wrap">
+
+<!-- HERO -->
+<header class="hero">
+  <div class="badge"><div class="dot"></div>用户行为研究 · 内部机密</div>
+  <h1>11个用户的聊天记录<br>能告诉我们什么</h1>
+  <p class="subtitle">基于付费用户深度聊天记录的行为维度收敛报告 · 从137维炼至32个核心决策维度</p>
+</header>
+
+<!-- META STATS -->
+<div class="meta-strip">
+  <div class="meta-item"><div class="meta-num">11</div><div class="meta-label">付费用户样本</div></div>
+  <div class="meta-item"><div class="meta-num">7380</div><div class="meta-label">最高付费（元）</div></div>
+  <div class="meta-item"><div class="meta-num">137 → 32</div><div class="meta-label">维度收敛结果</div></div>
+  <div class="meta-item"><div class="meta-num">6</div><div class="meta-label">用户人格原型</div></div>
+  <div class="meta-item"><div class="meta-num">10</div><div class="meta-label">可执行战略洞见</div></div>
+</div>
+
+<!-- 人格原型 -->
+<section class="section" style="animation-delay:.1s">
+  <div class="sec-header">
+    <span class="sec-tag" style="background:rgba(249,115,22,.1);color:var(--orange)">PART 01</span>
+    <div>
+      <div class="sec-title">6种用户人格原型</div>
+      <div class="sec-desc">从11个样本中提炼出的可复用人格标签，每种原型对应不同运营策略</div>
+    </div>
+  </div>
+  <div class="archetype-grid">
+    <div class="arc-card t1">
+      <div class="arc-emoji">🎖️</div>
+      <div class="arc-name">T1 · 社区建造者</div>
+      <div class="arc-user">代表：洛清欢(676) · 7380元</div>
+      <div class="arc-driver">驱动力：身份认同 + 荣誉感。入学第3天申请小助手，主动组队拉人，孩子住院仍布置任务。</div>
+      <span class="risk-pill risk-low">✓ 退费率 &lt;1%</span>
+    </div>
+    <div class="arc-card t2">
+      <div class="arc-emoji">🛠️</div>
+      <div class="arc-name">T2 · 幕后承重者</div>
+      <div class="arc-user">代表：仇苡茉(266) · 7380元</div>
+      <div class="arc-driver">驱动力：服务型成就感。凌晨独立生成4个冠军剧本，软件崩溃7-8次仍坚持推进后期。</div>
+      <span class="risk-pill risk-low">⚠ 隐性疲惫风险</span>
+    </div>
+    <div class="arc-card t3">
+      <div class="arc-emoji">📚</div>
+      <div class="arc-name">T3 · 技术钻研者</div>
+      <div class="arc-user">代表：三水也(481) · 3980元</div>
+      <div class="arc-driver">驱动力：原理驱动/完美主义。画图解释气息，一天连追3个技术问题，练到嗓子疼。</div>
+      <span class="risk-pill risk-mid">中 · 过度练习风险</span>
+    </div>
+    <div class="arc-card t4">
+      <div class="arc-emoji">📝</div>
+      <div class="arc-name">T4 · 务实变现者</div>
+      <div class="arc-user">代表：香水百合(508) · 1880元</div>
+      <div class="arc-driver">驱动力：实际收入回报。第6周已完成3篇签约，深夜1点补作业，持续关注投稿路径。</div>
+      <span class="risk-pill risk-low">✓ 已验证变现=留存</span>
+    </div>
+    <div class="arc-card t5">
+      <div class="arc-emoji">🌱</div>
+      <div class="arc-name">T5 · 试水探索者</div>
+      <div class="arc-user">代表：X墨染(551) · 3980元</div>
+      <div class="arc-driver">驱动力：好奇+获得认可。15岁在校生，招募营100%通关，有一半存款就主动问报名。</div>
+      <span class="risk-pill risk-mid">中 · 经济依赖父母</span>
+    </div>
+    <div class="arc-card t6">
+      <div class="arc-emoji">😟</div>
+      <div class="arc-name">T6 · 高焦虑从众者</div>
+      <div class="arc-user">代表：288/318/370批次</div>
+      <div class="arc-driver">驱动力：外部认可+避险。频繁问"我能行吗"，断续联系立刻冷却，需要持续情绪托底。</div>
+      <span class="risk-pill risk-high">高 · 冷落即流失</span>
+    </div>
+  </div>
+</section>
+
+<!-- 核心维度 -->
+<section class="section" style="animation-delay:.2s">
+  <div class="sec-header">
+    <span class="sec-tag" style="background:rgba(139,92,246,.1);color:var(--purple)">PART 02</span>
+    <div>
+      <div class="sec-title">32个核心维度（137 → 32）</div>
+      <div class="sec-desc">按"对利润的影响力"降序排列，★越多优先级越高</div>
+    </div>
+  </div>
+
+  <div class="dim-section">
+    <h4>🔴 第一层：直接影响退费率/复购率（高价值预测）</h4>
+    <div class="dim-grid">
+      <div class="dim-card"><span class="dim-id">D1</span><div class="dim-body"><div class="dim-name">有声之夜参赛角色</div><div class="dim-desc">队长/成员/旁观者/未参赛</div><div class="star-row"><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span></div></div></div>
+      <div class="dim-card"><span class="dim-id">D2</span><div class="dim-body"><div class="dim-name">班委角色获取时间</div><div class="dim-desc">入学第N周申请/被邀请</div><div class="star-row"><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span></div></div></div>
+      <div class="dim-card"><span class="dim-id">D3</span><div class="dim-body"><div class="dim-name">首次产出/变现时间</div><div class="dim-desc">N天内首次签约/接单</div><div class="star-row"><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span></div></div></div>
+      <div class="dim-card"><span class="dim-id">D4</span><div class="dim-body"><div class="dim-name">付费档位</div><div class="dim-desc">1880 / 3980 / 7380元</div><div class="star-row"><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star off">★</span></div></div></div>
+      <div class="dim-card"><span class="dim-id">D5</span><div class="dim-body"><div class="dim-name">设备真实投入</div><div class="dim-desc">已购设备总额（元）</div><div class="star-row"><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star off">★</span></div></div></div>
+      <div class="dim-card"><span class="dim-id">D6</span><div class="dim-body"><div class="dim-name">招募营通关完整度</div><div class="dim-desc">完成考核百分比（%）</div><div class="star-row"><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star off">★</span></div></div></div>
+      <div class="dim-card"><span class="dim-id">D7</span><div class="dim-body"><div class="dim-name">家人知情与支持度</div><div class="dim-desc">支持 / 未告知 / 反对</div><div class="star-row"><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star off">★</span></div></div></div>
+      <div class="dim-card"><span class="dim-id">D8</span><div class="dim-body"><div class="dim-name">AI工具使用能力</div><div class="dim-desc">未使用 / 基础 / 精准驾驭</div><div class="star-row"><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star off">★</span><span class="star off">★</span></div></div></div>
+    </div>
+  </div>
+
+  <div class="dim-section">
+    <h4>🟡 第二层：影响运营策略（用户深层特征）</h4>
+    <div class="dim-grid">
+      <div class="dim-card"><span class="dim-id">D9</span><div class="dim-body"><div class="dim-name">职业+时间结构</div><div class="dim-desc">全职宝妈/在职/无业/兼职</div></div></div>
+      <div class="dim-card"><span class="dim-id">D10</span><div class="dim-body"><div class="dim-name">学习环境质量</div><div class="dim-desc">录音棚/拼凑环境/高噪音</div></div></div>
+      <div class="dim-card"><span class="dim-id">D11</span><div class="dim-body"><div class="dim-name">技术追因深度</div><div class="dim-desc">操作层/原理层/不追问</div></div></div>
+      <div class="dim-card"><span class="dim-id">D12</span><div class="dim-body"><div class="dim-name">决策来回次数</div><div class="dim-desc">课程选择修改几次</div></div></div>
+      <div class="dim-card"><span class="dim-id">D13</span><div class="dim-body"><div class="dim-name">过度练习倾向</div><div class="dim-desc">有无嗓子疼/头疼身体信号</div></div></div>
+      <div class="dim-card"><span class="dim-id">D16</span><div class="dim-body"><div class="dim-name">经济依赖程度</div><div class="dim-desc">自主/父母支付/分期</div></div></div>
+    </div>
+  </div>
+
+  <div class="dim-section">
+    <h4>🟢 第三层：社区行为维度（影响社区健康度）</h4>
+    <div class="dim-grid">
+      <div class="dim-card"><span class="dim-id">D17</span><div class="dim-body"><div class="dim-name">点对点技术支持</div><div class="dim-desc">是否主动帮同学解决问题</div></div></div>
+      <div class="dim-card"><span class="dim-id">D18</span><div class="dim-body"><div class="dim-name">组队主动性</div><div class="dim-desc">是否主动拉人加入有声之夜</div></div></div>
+      <div class="dim-card"><span class="dim-id">D20</span><div class="dim-body"><div class="dim-name">剧本内容创作贡献</div><div class="dim-desc">是否为小组产出核心内容</div></div></div>
+      <div class="dim-card"><span class="dim-id">D21</span><div class="dim-body"><div class="dim-name">群活跃频率</div><div class="dim-desc">每天发言次数均值</div></div></div>
+    </div>
+  </div>
+
+  <div class="dim-section">
+    <h4>🔵 第四层：销售行为维度（影响转化效率）</h4>
+    <div class="dim-grid">
+      <div class="dim-card"><span class="dim-id">S1</span><div class="dim-body"><div class="dim-name">声线鉴定→设备成单时间</div><div class="dim-desc">鉴定后N小时内成交</div><div class="star-row"><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span></div></div></div>
+      <div class="dim-card"><span class="dim-id">S2</span><div class="dim-body"><div class="dim-name">班委邀请时机精准度</div><div class="dim-desc">第N周邀请 vs 实际参与度</div><div class="star-row"><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star off">★</span></div></div></div>
+      <div class="dim-card"><span class="dim-id">S3</span><div class="dim-body"><div class="dim-name">同地域共情话术</div><div class="dim-desc">学姐与学员同省份</div><div class="star-row"><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star off">★</span></div></div></div>
+      <div class="dim-card"><span class="dim-id">S4</span><div class="dim-body"><div class="dim-name">老用户转介绍信号</div><div class="dim-desc">是否由在读老学员带入</div><div class="star-row"><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span></div></div></div>
+      <div class="dim-card"><span class="dim-id">S6</span><div class="dim-body"><div class="dim-name">技术卡点响应速度</div><div class="dim-desc">班主任解决技术问题时长</div><div class="star-row"><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star off">★</span></div></div></div>
+      <div class="dim-card"><span class="dim-id">S8</span><div class="dim-body"><div class="dim-name">二次销售时机</div><div class="dim-desc">首次变现后N天内推进阶课</div><div class="star-row"><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star off">★</span></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 10大洞见 -->
+<section class="section" style="animation-delay:.3s">
+  <div class="sec-header">
+    <span class="sec-tag" style="background:rgba(239,68,68,.1);color:var(--red)">PART 03</span>
+    <div>
+      <div class="sec-title">10个可执行战略洞见</div>
+      <div class="sec-desc">每条均有原始聊天记录数据支撑，附具体行动项</div>
+    </div>
+  </div>
+  <div class="insight-list">
+
+    <div class="insight-card" style="border-color:rgba(249,115,22,.3)">
+      <div class="ins-header">
+        <div class="ins-num" style="color:var(--orange)">01</div>
+        <div><div class="ins-title">有声之夜 = 产品中最强的留存机制，应提前到第2周启动</div><div class="ins-tag">留存 · 紧迫度 🔴 最高</div></div>
+      </div>
+      <div class="ins-body">洛清欢(676)：孩子肺炎住院仍继续布置任务。仇苡茉(266)：软件崩溃7-8次仍坚持到凌晨。参赛用户退费率估计&lt;2%。核心逻辑：有声之夜把"个人学习"变成"团队承诺"，退出成本从财务成本变成社会成本。</div>
+      <div class="ins-actions">
+        <div class="action-item"><span class="action-icon">✅</span><span>将有声之夜"预热拉群"从第5周提前到<strong style="color:#fff">第2周末</strong></span></div>
+        <div class="action-item"><span class="action-icon">✅</span><span>第1周群活跃数据中自动标记高响应用户为"队长候选人"</span></div>
+        <div class="action-item"><span class="action-icon">✅</span><span>招募营结束时将有声之夜作为额外的购买理由之一</span></div>
+      </div>
+    </div>
+
+    <div class="insight-card" style="border-color:rgba(59,130,246,.3)">
+      <div class="ins-header">
+        <div class="ins-num" style="color:var(--blue)">02</div>
+        <div><div class="ins-title">班委赋权黄金窗口：首次班会结束后4小时内</div><div class="ins-tag">留存 · 紧迫度 🔴 最高</div></div>
+      </div>
+      <div class="ins-body">仇苡茉：入学当晚22:38申请班委。洛清欢：入学第3天申请。三水也：第3天竞选，200字演讲。班委身份将付费学员转化为课程共建者，退出成本叠加"放弃自己参与建造的东西"的心理代价。</div>
+      <div class="ins-actions">
+        <div class="action-item"><span class="action-icon">✅</span><span>D0班会结束后<strong style="color:#fff">4小时内</strong>私信活跃用户邀请担任班委</span></div>
+        <div class="action-item"><span class="action-icon">✅</span><span>T1→队长，T2→点评助手/后期协调（角色分工标准化）</span></div>
+        <div class="action-item"><span class="action-icon">✅</span><span>班委每周收到班主任1条专属感谢，预防隐性疲惫</span></div>
+      </div>
+    </div>
+
+    <div class="insight-card" style="border-color:rgba(16,185,129,.3)">
+      <div class="ins-header">
+        <div class="ins-num" style="color:var(--green)">03</div>
+        <div><div class="ins-title">老用户转介绍效率是官方渠道3-5倍，且几乎零成本</div><div class="ins-tag">获客 · 紧迫度 🟡 高</div></div>
+      </div>
+      <div class="ins-body">三水也(481)被师兄老樊私聊，班主任不需要做任何销售即完成入学。同学推荐绕过"信任建立"阶段（通常需5天招募营），到课率和设备购买率更高。</div>
+      <div class="ins-actions">
+        <div class="action-item"><span class="action-icon">✅</span><span>建立"学员大使"计划：成功转介绍1人，获专属试音资源包</span></div>
+        <div class="action-item"><span class="action-icon">✅</span><span>学员大使引入的线索贴"高质量"标签，班主任优先级服务</span></div>
+        <div class="action-item"><span class="action-icon">✅</span><span>每期结营举办"感恩会"，公开表彰转介绍学员</span></div>
+      </div>
+    </div>
+
+    <div class="insight-card" style="border-color:rgba(239,68,68,.3)">
+      <div class="ins-header">
+        <div class="ins-num" style="color:var(--red)">04</div>
+        <div><div class="ins-title">声线鉴定后18-48小时是设备销售唯一黄金窗口</div><div class="ins-tag">增收 · 紧迫度 🔴 时效性极强</div></div>
+      </div>
+      <div class="ins-body">洛清欢(676)：声线鉴定次日宣布已购MK4（18小时成单）。仇苡茉(266)：设备问题→班主任当天申请优惠券→当天下单。超过48小时，日常生活会稀释这种动力至接近零。</div>
+      <div class="ins-actions">
+        <div class="action-item"><span class="action-icon">✅</span><span>SOP：声线鉴定结果发出后<strong style="color:#fff">1小时内</strong>推个性化设备推荐</span></div>
+        <div class="action-item"><span class="action-icon">✅</span><span>话术锚点：不讲设备功能，讲"SE2200能让你的知性声线更有质感"</span></div>
+        <div class="action-item"><span class="action-icon">✅</span><span>提前准备优惠券，让下单"当场即可发生"</span></div>
+      </div>
+    </div>
+
+    <div class="insight-card">
+      <div class="ins-header">
+        <div class="ins-num">05</div>
+        <div><div class="ins-title">首次变现成功是留存率最强单一事件，应人为制造里程碑感</div><div class="ins-tag">留存+升单 · 紧迫度 🟡 高</div></div>
+      </div>
+      <div class="ins-body">香水百合：第6周首次签约，立刻询问课程叠加机会。样本中有变现记录的用户无一退费。首次变现把"学习"变成"工作"，用户心理账户发生切换，对课程感知从"花出去的钱"变成"已经回本的投资"。</div>
+      <div class="ins-actions">
+        <div class="action-item"><span class="action-icon">✅</span><span>学员首次签约后，班主任必须群里<strong style="color:#fff">公开@表扬+截图展示</strong></span></div>
+        <div class="action-item"><span class="action-icon">✅</span><span>小程序学习路径设置"首次试音成功"可见里程碑节点</span></div>
+        <div class="action-item"><span class="action-icon">✅</span><span>变现成功<strong style="color:#fff">当天</strong>推进阶课（情绪峰值+未来期待窗口）</span></div>
+      </div>
+    </div>
+
+    <div class="insight-card" style="border-color:rgba(139,92,246,.3)">
+      <div class="ins-header">
+        <div class="ins-num" style="color:var(--purple)">06</div>
+        <div><div class="ins-title">AI驾驭能力是新型留存指标，也是内容供给资产</div><div class="ins-tag">产品 · 紧迫度 🟢 中期</div></div>
+      </div>
+      <div class="ins-body">仇苡茉：凌晨独立生成4个7分50秒冠军级剧本，Prompt指令精准（"五女一男+7分50秒+全员高光+无爱情"）。能精准驾驭AI的用户产出速度更快，成就感更高，同时成为课程内容的供给者而非消费者。</div>
+      <div class="ins-actions">
+        <div class="action-item"><span class="action-icon">✅</span><span>建立"AI金牌编剧"认证标签，对AI产出有声剧本的学员给予专属身份</span></div>
+        <div class="action-item"><span class="action-icon">✅</span><span>优质学员AI剧本收录官方素材库，给予学分/积分奖励</span></div>
+        <div class="action-item"><span class="action-icon">✅</span><span>精英课增加1节"AI辅助剧本创作"课，降低整体剧本门槛</span></div>
+      </div>
+    </div>
+
+    <div class="insight-card">
+      <div class="ins-header">
+        <div class="ins-num">07</div>
+        <div><div class="ins-title">宝妈录音困境是系统性流失风险，应有专属解决方案</div><div class="ins-tag">产品 · 紧迫度 🟡 高</div></div>
+      </div>
+      <div class="ins-body">仇苡茉：录音困境出现8次（娃哭/噪音/家人在/遛娃）。三水也：对父母保密，卧室小声练习。宝妈是喜播最重要用户群（时间多+意愿强+经济允许），但录音环境是最大物理障碍，可能在第2-3个月产生习得性无助。</div>
+      <div class="ins-actions">
+        <div class="action-item"><span class="action-icon">✅</span><span>制作"宝妈录音方案工具包"：孩子睡觉时间表+土法隔音技巧</span></div>
+        <div class="action-item"><span class="action-icon">✅</span><span>设计"娃闹模式录音"课，将障碍转化为课程内容</span></div>
+        <div class="action-item"><span class="action-icon">✅</span><span>话术库增加："娃的伴奏确实最难搞，但你坚持录下来已超棒了"</span></div>
+      </div>
+    </div>
+
+    <div class="insight-card" style="border-color:rgba(239,68,68,.3)">
+      <div class="ins-header">
+        <div class="ins-num" style="color:var(--red)">08</div>
+        <div><div class="ins-title">技术卡点：30分钟响应是生死线，超4小时用户开始质疑购买</div><div class="ins-tag">留存 · 紧迫度 🔴 最高</div></div>
+      </div>
+      <div class="ins-body">香水百合：3次投稿技术卡点，每次班主任快速解决，无退费倾向。技术卡点的危险不在于问题本身，在于"等待解决的焦虑时间"。30分钟内解决=留存；超过4小时无响应=开始质疑购买决策。</div>
+      <div class="ins-actions">
+        <div class="action-item"><span class="action-icon">✅</span><span>班主任SLA：技术问题<strong style="color:#fff">30分钟内响应</strong></span></div>
+        <div class="action-item"><span class="action-icon">✅</span><span>建立高频技术卡点知识库（AU/百度投稿/设备驱动/ToDesk调试）</span></div>
+        <div class="action-item"><span class="action-icon">✅</span><span>不懂时标准动作："帮你找技术老师"+30分钟内给进展</span></div>
+      </div>
+    </div>
+
+    <div class="insight-card">
+      <div class="ins-header">
+        <div class="ins-num">09</div>
+        <div><div class="ins-title">招募营漏斗已验证有效，通关完整度&gt;80%是最强付费预测变量</div><div class="ins-tag">销售 · 紧迫度 🟡 高</div></div>
+      </div>
+      <div class="ins-body">X墨染：100%通关，主动询问报名，无需推销。招募营漏斗本身高效，转化率高低的核心变量在于漏斗入口的用户质量筛选，而非流程本身。高通关用户只需"减少摩擦"而非"继续说服"。</div>
+      <div class="ins-actions">
+        <div class="action-item"><span class="action-icon">✅</span><span>通关率&gt;80%：重点是减少付款摩擦（优惠券/分期/立即可操作）</span></div>
+        <div class="action-item"><span class="action-icon">✅</span><span>通关率60-80%：一对一私信激励，帮助补完缺失考核</span></div>
+        <div class="action-item"><span class="action-icon">✅</span><span>通关率&lt;60%：先激活学习行为，暂停课程推销</span></div>
+      </div>
+    </div>
+
+    <div class="insight-card" style="border-color:rgba(139,92,246,.3)">
+      <div class="ins-header">
+        <div class="ins-num" style="color:var(--purple)">10</div>
+        <div><div class="ins-title">幕后承重者：第4个月若没收到专属感谢，会悄悄流失</div><div class="ins-tag">留存 · 紧迫度 🟡 高</div></div>
+      </div>
+      <div class="ins-body">仇苡茉：独力承担全组后期，AU崩溃7-8次，在群里从不诉苦，班主任无额外关注。"幕后承重者"不会高调抱怨，但3周内未收到专属感谢，会进入"我做了这么多但没人看见"，最终以"生活变忙"为由退出。</div>
+      <div class="ins-actions">
+        <div class="action-item"><span class="action-icon">✅</span><span>班主任每周<strong style="color:#fff">私信</strong>班委1次，专门感谢一件具体贡献（不是群发）</span></div>
+        <div class="action-item"><span class="action-icon">✅</span><span>建立"班委贡献积分制"，可兑换试音资源</span></div>
+        <div class="action-item"><span class="action-icon">✅</span><span>结营颁发"最佳幕后英雄奖"，给予专属荣誉背书</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- 销售漏斗时间轴 -->
+<section class="section" style="animation-delay:.4s">
+  <div class="sec-header">
+    <span class="sec-tag" style="background:rgba(16,185,129,.1);color:var(--green)">PART 04</span>
+    <div><div class="sec-title">销售漏斗关键节点地图</div><div class="sec-desc">基于聊天记录提炼的标准化时间轴</div></div>
+  </div>
+  <div class="funnel">
+    <div class="funnel-steps">
+      <div class="f-step">
+        <div class="f-icon" style="background:rgba(239,68,68,.1)">🎙️</div>
+        <div class="f-content"><div class="f-label">声线鉴定完成</div><div class="f-desc">触发设备销售窗口——个性化推荐（绑定音色特质）</div></div>
+        <span class="f-timing timing-red">鉴定后1小时内</span>
+      </div>
+      <div class="f-step">
+        <div class="f-icon" style="background:rgba(139,92,246,.1)">✅</div>
+        <div class="f-content"><div class="f-label">招募营通关宣布</div><div class="f-desc">通关率&gt;80%→减少摩擦；触发24小时付款黄金窗口</div></div>
+        <span class="f-timing timing-orange">通关后24小时内</span>
+      </div>
+      <div class="f-step">
+        <div class="f-icon" style="background:rgba(59,130,246,.1)">👑</div>
+        <div class="f-content"><div class="f-label">入学D0首次班会结束</div><div class="f-desc">主动私信活跃用户邀请班委——身份赋权触发长期留存</div></div>
+        <span class="f-timing timing-red">班会结束后4小时内</span>
+      </div>
+      <div class="f-step">
+        <div class="f-icon" style="background:rgba(249,115,22,.1)">🎭</div>
+        <div class="f-content"><div class="f-label">入学第2周末</div><div class="f-desc">有声之夜预热拉群——提前构建社会承诺，降低退费可能</div></div>
+        <span class="f-timing timing-orange">第2周末启动</span>
+      </div>
+      <div class="f-step">
+        <div class="f-icon" style="background:rgba(16,185,129,.1)">🏆</div>
+        <div class="f-content"><div class="f-label">首次变现成功</div><div class="f-desc">公开群里表扬+当天推进阶课——情绪峰值窗口</div></div>
+        <span class="f-timing timing-green">成功当天</span>
+      </div>
+      <div class="f-step">
+        <div class="f-icon" style="background:rgba(139,92,246,.1)">💜</div>
+        <div class="f-content"><div class="f-label">每周持续动作</div><div class="f-desc">幕后承重者专属感谢（私信，非群发）+ 技术卡点30分钟响应</div></div>
+        <span class="f-timing timing-blue">每周固定</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 分层运营矩阵 -->
+<section class="section" style="animation-delay:.5s">
+  <div class="sec-header">
+    <span class="sec-tag" style="background:rgba(59,130,246,.1);color:var(--blue)">PART 05</span>
+    <div><div class="sec-title">用户分层运营矩阵</div><div class="sec-desc">高/低付费 × 高/低活跃，四象限策略</div></div>
+  </div>
+  <div class="matrix-grid">
+    <div class="matrix-card" style="border-color:rgba(16,185,129,.3)">
+      <div class="matrix-label">高付费 + 高活跃</div>
+      <div class="matrix-title">🎖️ 核心资产</div>
+      <div class="matrix-action">T1社区建造者 / T2幕后承重者。班委赋权 + 每周专属关怀 + 有声之夜队长，投入最多服务资源。</div>
+    </div>
+    <div class="matrix-card" style="border-color:rgba(239,68,68,.3)">
+      <div class="matrix-label">高付费 + 低活跃</div>
+      <div class="matrix-title">🚨 紧急救援</div>
+      <div class="matrix-action">潜在大客户流失风险。48小时内触达，排查技术卡点/生活卡点，必要时由班主任主管介入。</div>
+    </div>
+    <div class="matrix-card" style="border-color:rgba(249,115,22,.3)">
+      <div class="matrix-label">低付费 + 高活跃</div>
+      <div class="matrix-title">🚀 升单候选</div>
+      <div class="matrix-action">T4务实变现者潜力大。首次变现成功后24小时内推进阶课，趁情绪峰值窗口完成升单。</div>
+    </div>
+    <div class="matrix-card">
+      <div class="matrix-label">低付费 + 低活跃</div>
+      <div class="matrix-title">⏳ 自然淘汰</div>
+      <div class="matrix-action">群内公告激活，不投入过多一对一资源。通关率&lt;60%不主动施压，等用户自然产生购买欲望。</div>
+    </div>
+  </div>
+</section>
+
+<!-- 数据采集建议 -->
+<section class="section" style="animation-delay:.6s">
+  <div class="sec-header">
+    <span class="sec-tag" style="background:rgba(71,71,71,.3);color:var(--dim)">PART 06</span>
+    <div><div class="sec-title">CRM数据采集建议</div><div class="sec-desc">建议纳入系统的标签字段（P0最紧急）</div></div>
+  </div>
+  <table>
+    <thead><tr><th>优先级</th><th>维度</th><th>采集方式</th><th>影响决策</th></tr></thead>
+    <tbody>
+      <tr><td><span class="p0">P0</span></td><td>有声之夜参赛角色</td><td>班主任手动标注</td><td>留存预测、资源投入优先级</td></tr>
+      <tr><td><span class="p0">P0</span></td><td>班委角色获取时间</td><td>班主任手动标注</td><td>赋权时机优化</td></tr>
+      <tr><td><span class="p0">P0</span></td><td>首次变现时间</td><td>平台自动（时间戳）</td><td>升单触发时机</td></tr>
+      <tr><td><span class="p1">P1</span></td><td>设备投入金额</td><td>订单系统自动</td><td>退费成本估算</td></tr>
+      <tr><td><span class="p1">P1</span></td><td>招募营通关完整度</td><td>考核系统自动</td><td>销售话术分级</td></tr>
+      <tr><td><span class="p1">P1</span></td><td>家人支持度</td><td>班主任首次私聊收集</td><td>长期留存预测</td></tr>
+      <tr><td><span class="p2">P2</span></td><td>AI工具使用能力</td><td>班主任观察标注</td><td>内容资产识别</td></tr>
+      <tr><td><span class="p2">P2</span></td><td>职业时间结构</td><td>入学登记表已有</td><td>运营频次匹配</td></tr>
+    </tbody>
+  </table>
+</section>
+
+</div>
+
+<footer>
+  <p>喜播集团 · 用户行为研究报告 · 内部机密<br>
+  样本量：11个付费用户 | 分析周期：2025.09 — 2026.03 | 生成于 2026-04-03</p>
+</footer>
+</body>
+</html>

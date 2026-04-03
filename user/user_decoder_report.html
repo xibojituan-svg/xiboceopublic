@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>喜播用户深度解码报告 · 双轨诊断</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0f1e;
+      --surface: #111827;
+      --surface2: #1a2235;
+      --border: #1f2d45;
+      --primary: #3b82f6;
+      --primary-dim: rgba(59,130,246,0.12);
+      --success: #10b981;
+      --success-dim: rgba(16,185,129,0.12);
+      --warning: #f59e0b;
+      --warning-dim: rgba(245,158,11,0.12);
+      --danger: #ef4444;
+      --danger-dim: rgba(239,68,68,0.12);
+      --purple: #8b5cf6;
+      --purple-dim: rgba(139,92,246,0.12);
+      --text: #f1f5f9;
+      --muted: #64748b;
+      --muted2: #94a3b8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 40px 20px 80px;
+    }
+
+    /* ── 顶部导航 ── */
+    .top-nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(10,15,30,0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+      height: 52px;
+    }
+    .top-nav .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .top-nav .nav-left a {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted2);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .top-nav .nav-left a:hover { color: var(--text); }
+    .top-nav .nav-sep { color: var(--border); margin: 0 4px; }
+    .top-nav .nav-current { font-size: 13px; font-weight: 600; color: var(--text); }
+    .top-nav .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .top-nav .sister-link {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 14px;
+      border-radius: 8px;
+      background: var(--primary-dim);
+      border: 1px solid rgba(59,130,246,0.3);
+      color: var(--primary);
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 700;
+      transition: opacity 0.2s;
+    }
+    .top-nav .sister-link:hover { opacity: 0.8; }
+
+    body { padding-top: 88px; }
+
+    /* ── 页头 ── */
+    .page-header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+    .page-header .badge {
+      display: inline-block;
+      background: var(--primary-dim);
+      color: var(--primary);
+      border: 1px solid rgba(59,130,246,0.3);
+      border-radius: 999px;
+      padding: 4px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+    .page-header h1 {
+      font-size: 36px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #60a5fa, #a78bfa, #34d399);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 12px;
+      line-height: 1.2;
+    }
+    .page-header p {
+      color: var(--muted2);
+      font-size: 15px;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+    .meta-row {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+    .meta-chip {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--muted2);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 6px 14px;
+    }
+    .meta-chip span { color: var(--text); font-weight: 500; }
+
+    /* ── 报告卡片 ── */
+    .report-card {
+      max-width: 900px;
+      margin: 0 auto 48px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+    }
+    .card-header {
+      padding: 28px 32px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+    }
+    .uid-avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+    .card-header-info h2 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .card-header-info .uid-meta {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .tag-primary { background: var(--primary-dim); color: var(--primary); border: 1px solid rgba(59,130,246,0.25); }
+    .tag-success { background: var(--success-dim); color: var(--success); border: 1px solid rgba(16,185,129,0.25); }
+    .tag-warning { background: var(--warning-dim); color: var(--warning); border: 1px solid rgba(245,158,11,0.25); }
+    .tag-danger { background: var(--danger-dim); color: var(--danger); border: 1px solid rgba(239,68,68,0.25); }
+    .tag-purple { background: var(--purple-dim); color: var(--purple); border: 1px solid rgba(139,92,246,0.25); }
+    .tag-gray { background: rgba(100,116,139,0.12); color: var(--muted2); border: 1px solid rgba(100,116,139,0.2); }
+
+    /* ── CEO结论框 ── */
+    .conclusion-box {
+      margin: 28px 32px;
+      background: linear-gradient(135deg, rgba(59,130,246,0.08), rgba(139,92,246,0.08));
+      border: 1px solid rgba(99,102,241,0.25);
+      border-radius: 14px;
+      padding: 22px 26px;
+    }
+    .conclusion-box .label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+    .conclusion-box p {
+      font-size: 15.5px;
+      line-height: 1.75;
+      color: #e2e8f0;
+    }
+    .conclusion-box p strong { color: #fff; }
+
+    /* ── 分区块 ── */
+    .section { padding: 0 32px 28px; }
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--muted2);
+      margin-bottom: 16px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+    .section-title .icon { font-size: 16px; }
+
+    /* ── 论点卡 ── */
+    .pillar-grid { display: flex; flex-direction: column; gap: 12px; }
+    .pillar-item {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 20px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    .pillar-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: var(--primary-dim);
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .pillar-content h4 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #f8fafc;
+      margin-bottom: 4px;
+    }
+    .pillar-content p {
+      font-size: 13.5px;
+      color: var(--muted2);
+      line-height: 1.65;
+    }
+
+    /* ── LTV评分 ── */
+    .ltv-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .ltv-item {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+    }
+    .ltv-item .ltv-name { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+    .ltv-item .stars { font-size: 14px; letter-spacing: 2px; margin-bottom: 4px; }
+    .ltv-item .ltv-reason { font-size: 12px; color: var(--muted2); line-height: 1.5; }
+
+    /* ── 处方块 ── */
+    .rx-block { display: flex; flex-direction: column; gap: 16px; }
+    .rx-item {
+      background: var(--surface2);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .rx-item-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--border);
+    }
+    .rx-item-header .rx-icon { font-size: 16px; }
+    .rx-item-header h4 { font-size: 13px; font-weight: 600; }
+    .rx-body { padding: 14px 18px; }
+    .rx-body p { font-size: 13.5px; color: var(--muted2); line-height: 1.65; margin-bottom: 10px; }
+    .speech-bubble {
+      background: rgba(59,130,246,0.06);
+      border: 1px solid rgba(59,130,246,0.2);
+      border-left: 3px solid var(--primary);
+      border-radius: 0 10px 10px 0;
+      padding: 12px 16px;
+      font-size: 13px;
+      color: #cbd5e1;
+      line-height: 1.75;
+      font-style: italic;
+    }
+
+    /* ── 禁忌红线 ── */
+    .red-lines { display: flex; flex-direction: column; gap: 10px; }
+    .red-line-item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      background: var(--danger-dim);
+      border: 1px solid rgba(239,68,68,0.2);
+      border-radius: 10px;
+      padding: 12px 16px;
+    }
+    .red-line-item .ri { font-size: 18px; flex-shrink: 0; }
+    .red-line-item p { font-size: 13px; color: #fca5a5; line-height: 1.6; }
+    .red-line-item p strong { color: #fff; }
+
+    /* ── 标签云 ── */
+    .tag-cloud { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    /* ── 维度评分行 ── */
+    .score-row {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 20px;
+    }
+    .score-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .score-label { font-size: 12px; color: var(--muted); width: 80px; flex-shrink: 0; }
+    .score-bar-wrap { flex: 1; background: rgba(255,255,255,0.05); border-radius: 999px; height: 6px; }
+    .score-bar { height: 6px; border-radius: 999px; }
+    .score-val { font-size: 12px; font-weight: 600; width: 28px; text-align: right; }
+
+    /* ── 分割线 ── */
+    .divider {
+      max-width: 900px;
+      margin: 0 auto 48px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .divider hr { flex: 1; border: none; border-top: 1px solid var(--border); }
+    .divider span { color: var(--muted); font-size: 13px; }
+
+    /* ── 新增维度高亮卡 ── */
+    .new-dim-card {
+      max-width: 900px;
+      margin: 0 auto 48px;
+      background: linear-gradient(135deg, rgba(245,158,11,0.06), rgba(239,68,68,0.06));
+      border: 1px solid rgba(245,158,11,0.25);
+      border-radius: 16px;
+      padding: 24px 28px;
+    }
+    .new-dim-card .nd-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .new-dim-card .nd-header h3 { font-size: 16px; font-weight: 700; }
+    .new-dim-card table { width: 100%; border-collapse: collapse; }
+    .new-dim-card th, .new-dim-card td {
+      padding: 9px 12px;
+      font-size: 13px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .new-dim-card th { color: var(--muted); font-weight: 600; }
+    .new-dim-card td { color: var(--muted2); }
+    .new-dim-card td:first-child { color: var(--warning); font-weight: 700; }
+
+    @media (max-width: 640px) {
+      .ltv-grid { grid-template-columns: 1fr 1fr; }
+      .card-header { flex-direction: column; gap: 14px; }
+      .page-header h1 { font-size: 26px; }
+      .section, .conclusion-box { padding-left: 20px; padding-right: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── 顶部导航 ── -->
+<nav class="top-nav">
+  <div class="nav-left">
+    <a href="https://xiboceo.com/sales_team_audit.html">← 销售与班主任价值评审</a>
+    <span class="nav-sep">/</span>
+    <span class="nav-current">用户深度解码报告</span>
+  </div>
+  <div class="nav-right">
+    <a class="sister-link" href="https://xiboceo.com/sales_team_audit.html">🔗 返回销售审计</a>
+  </div>
+</nav>
+
+<!-- ══════════════ 页头 ══════════════ -->
+<div class="page-header">
+  <div class="badge">🔬 双轨深度解码报告</div>
+  <h1>喜播用户智能洞察<br>金铭 · 曹聪｜行为解码档案</h1>
+  <p>基于 user-needs-decoder 三轴模型（动机纯度 × 资源底座 × 心理弹性）<br>结合 DISC 性格框架与 LTV 五维评分，生成可执行决策处方</p>
+  <div class="meta-row">
+    <div class="meta-chip">📅 分析日期：<span>2026-04-03</span></div>
+    <div class="meta-chip">📊 样本：<span>2 个临界/沉默流失案例</span></div>
+    <div class="meta-chip">🏷️ 新增维度：<span>S10 / S11 / S12 / S13</span></div>
+  </div>
+</div>
+
+
+<!-- ══════════════ 报告一：金铭 ══════════════ -->
+<div class="report-card">
+  <div class="card-header">
+    <div class="uid-avatar" style="background: rgba(139,92,246,0.15); border: 1px solid rgba(139,92,246,0.3);">🕰️</div>
+    <div class="card-header-info">
+      <h2>金铭 · UID 676987283</h2>
+      <div class="uid-meta">
+        <span class="tag tag-purple">T8 临界观望者</span>
+        <span class="tag tag-primary">C1 类</span>
+        <span class="tag tag-gray">DISC: S/I 混合</span>
+        <span class="tag tag-gray">依恋: 焦虑型</span>
+        <span class="tag tag-warning">⚠️ 高沉默流失风险</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CEO 结论 -->
+  <div class="conclusion-box" style="margin-top:28px;">
+    <div class="label">🎯 CEO 级一句话结论</div>
+    <p><strong>C1类·情绪断联中·必须在24小时内补上「被看见」的空洞</strong><br>
+    金铭有真实兴趣、招募营已通关，但班主任全程发的是5条模板私信，<strong>零次</strong>问过她个人的具体情况。她不是「不想报」，她是「还没被问到真实的问题」。现在最高优先级：用一句真实的问题打破模板惯性。</p>
+  </div>
+
+  <!-- 三大论点 -->
+  <div class="section">
+    <div class="section-title"><span class="icon">🏛️</span> 三大支撑论点</div>
+    <div class="pillar-grid">
+      <div class="pillar-item">
+        <div class="pillar-num">①</div>
+        <div class="pillar-content">
+          <h4>用户本质：外部认可驱动，需要被「允许」</h4>
+          <p>T5/T6 混合原型，有真实声音兴趣，核心动力是「被看见+被肯定」，而非变现本身。她需要班主任告诉她「你行」，而不是把课程功能递给她。</p>
+        </div>
+      </div>
+      <div class="pillar-item">
+        <div class="pillar-num">②</div>
+        <div class="pillar-content">
+          <h4>服务缺口：全程5条私信，0条真实个人对话</h4>
+          <p>班主任发了直播链接、晨练提醒、推销图片，<strong>没有一次引用金铭的个人背景或具体表现</strong>。S10 评分 0、S12 评分 0——两个最核心的临界转化指标同时为零。</p>
+        </div>
+      </div>
+      <div class="pillar-item">
+        <div class="pillar-num">③</div>
+        <div class="pillar-content">
+          <h4>流失风险：24小时临界窗口，未做任何真实触达</h4>
+          <p>招募营通关 + 24小时内无主动回复且无明确拒绝 = T8临界观望态。再多一条模板，她会以「思考一下」为由永久冷却，CRM 不留任何痕迹。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 处方 -->
+  <div class="section">
+    <div class="section-title"><span class="icon">💊</span> 班主任处方（直接可执行）</div>
+    <div class="rx-block">
+      <div class="rx-item">
+        <div class="rx-item-header"><span class="rx-icon">✅</span><h4>动作① · 打破「被当作普通潜客」的感知</h4></div>
+        <div class="rx-body">
+          <p>目标：让她感受到「班主任真的关注过我这个人」，而不是在流水线里</p>
+          <div class="speech-bubble">「金铭，我单独找你说一下——我带过很多学员，但你这几天有一个地方让我印象特别深。不是因为要推课才说这个，就是好奇你当时那个想法是怎么来的。你这类型的声音其实现在市场缺口很大，审听、情感类这块空的很。」</div>
+        </div>
+      </div>
+      <div class="rx-item">
+        <div class="rx-item-header"><span class="rx-icon">✅</span><h4>动作② · 问一个真实的问题，建立真实对话</h4></div>
+        <div class="rx-body">
+          <div class="speech-bubble">「你参加招募营这几天，最主要是想解决什么？是需要多一条收入，还是只是想做个爱好，还是有别的原因？不是要推你什么，就是想搞清楚——这样我才能判断正式课到底适不适合你现在的状态。」</div>
+        </div>
+      </div>
+      <div class="rx-item">
+        <div class="rx-item-header"><span class="rx-icon">✅</span><h4>动作③ · 把「再考虑」的惯性打破，给她一个简单的出口</h4></div>
+        <div class="rx-body">
+          <div class="speech-bubble">「我今天不打算再推课了，就想直接问你——你昨晚没来是没看到消息，还是已经决定暂时不报了？如果是前者，我给你补发录播。如果是后者，告诉我最大顾虑是什么，我帮你看看有没有别的方案。」</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 禁忌红线 -->
+  <div class="section">
+    <div class="section-title"><span class="icon">🚫</span> 禁忌红线</div>
+    <div class="red-lines">
+      <div class="red-line-item"><span class="ri">❌</span><p><strong>继续发赠课/课程介绍图片</strong> → 她已经见过3次了，再发等于告诉她「你只是个普通潜客」，会直接触发「已了解·不感兴趣」的心理归档</p></div>
+      <div class="red-line-item"><span class="ri">❌</span><p><strong>「错过太可惜」等压力话术</strong> → 她的 DISC 偏 S/I 型，压力会让她更沉默，不会让她行动。她需要被邀请，而不是被推动</p></div>
+    </div>
+  </div>
+
+  <!-- LTV -->
+  <div class="section">
+    <div class="section-title"><span class="icon">📊</span> LTV 五维评分</div>
+    <div class="ltv-grid">
+      <div class="ltv-item">
+        <div class="ltv-name">续费概率</div>
+        <div class="stars" style="color: #f59e0b;">★★★☆☆</div>
+        <div class="ltv-reason">有兴趣但未验证动机深度，处于临界</div>
+      </div>
+      <div class="ltv-item">
+        <div class="ltv-name">客单价承受力</div>
+        <div class="stars" style="color: #64748b;">★★☆☆☆</div>
+        <div class="ltv-reason">无财务信息，不可评估</div>
+      </div>
+      <div class="ltv-item">
+        <div class="ltv-name">转介绍潜力</div>
+        <div class="stars" style="color: #f59e0b;">★★★☆☆</div>
+        <div class="ltv-reason">若转化成功+有成果则中等</div>
+      </div>
+      <div class="ltv-item">
+        <div class="ltv-name">内容共创价值</div>
+        <div class="stars" style="color: #f59e0b;">★★★☆☆</div>
+        <div class="ltv-reason">班主任认为她「超过很多学员」</div>
+      </div>
+      <div class="ltv-item">
+        <div class="ltv-name">需求满足度</div>
+        <div class="stars" style="color: #64748b;">★★☆☆☆</div>
+        <div class="ltv-reason">「被看见」需求从未被满足</div>
+      </div>
+      <div class="ltv-item">
+        <div class="ltv-name">风险等级</div>
+        <div class="stars" style="color: #ef4444;">★★★★☆</div>
+        <div class="ltv-reason">24小时未行动 = 高沉默风险</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 标签 -->
+  <div class="section">
+    <div class="section-title"><span class="icon">🏷️</span> 多维标签</div>
+    <div class="tag-cloud">
+      <span class="tag tag-primary">C1类</span>
+      <span class="tag tag-gray">动机纯度-中</span>
+      <span class="tag tag-purple">外部认可驱动</span>
+      <span class="tag tag-gray">DISC-S/I混合</span>
+      <span class="tag tag-gray">焦虑型依恋</span>
+      <span class="tag tag-warning">试水探索原型</span>
+      <span class="tag tag-danger">S10得分:0</span>
+      <span class="tag tag-danger">S12得分:0</span>
+      <span class="tag tag-danger">T8临界观望</span>
+      <span class="tag tag-gray">显性需求:学技能/兼职</span>
+      <span class="tag tag-purple">隐性需求:被看见+被允许</span>
+    </div>
+  </div>
+</div>
+
+<div class="divider"><hr><span>案例二</span><hr></div>
+
+<!-- ══════════════ 报告二：曹聪 ══════════════ -->
+<div class="report-card">
+  <div class="card-header">
+    <div class="uid-avatar" style="background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.25);">🔍</div>
+    <div class="card-header-info">
+      <h2>广东检测鉴定-曹聪 · UID 676987287</h2>
+      <div class="uid-meta">
+        <span class="tag tag-danger">C2 类</span>
+        <span class="tag tag-gray">DISC: C 谨慎型</span>
+        <span class="tag tag-gray">依恋: 回避型</span>
+        <span class="tag tag-danger">🔴 沉默流失确认</span>
+        <span class="tag tag-warning">S13 投毒量: 10+ 条</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="conclusion-box" style="margin-top:28px; background: linear-gradient(135deg, rgba(239,68,68,0.06), rgba(245,158,11,0.06)); border-color: rgba(239,68,68,0.25);">
+    <div class="label" style="color: var(--danger);">🎯 CEO 级一句话结论</div>
+    <p><strong>C2类·沉默抵抗中·已进入不可逆流失通道</strong><br>
+    曹聪的职业背景是「检测鉴定」——她的本能反应就是<strong>鉴别真假</strong>。班主任桃子 18 条私信里有至少 10 条 FOMO/成功学/恐吓话术，这恰恰是让高鉴别力用户<strong>关闭接收通道</strong>的触发器。她不会退费，她只会消失。</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="icon">🏛️</span> 三大支撑论点</div>
+    <div class="pillar-grid">
+      <div class="pillar-item">
+        <div class="pillar-num">①</div>
+        <div class="pillar-content">
+          <h4>用户本质：C型谨慎，职业赋予「高可信度需求」</h4>
+          <p>检测鉴定行业从业者，日常工作就是分辨真伪。她对「夸张承诺」的识别阈值比普通用户低3倍，越是听到「月入10万+」「爆款短剧」，越会触发职业性怀疑，然后关闭沟通。</p>
+        </div>
+      </div>
+      <div class="pillar-item">
+        <div class="pillar-num">②</div>
+        <div class="pillar-content">
+          <h4>服务缺口：18条私信，零次真实对话</h4>
+          <p>班主任察觉了「一直没听课做作业」（3月5日），但后续的处理是<strong>继续发话术轰炸</strong>而非换策略。零次提到她的职业，零次问她「最大顾虑是什么」，最终以「有疑问回复1」作为放弃信号。</p>
+        </div>
+      </div>
+      <div class="pillar-item">
+        <div class="pillar-num">③</div>
+        <div class="pillar-content">
+          <h4>流失路径：沉默消失，CRM无痕迹</h4>
+          <p>C2型+回避型依恋的用户不会主动投诉或退费，她的退出方式是「从不回复」。从3月7日「有疑问回复1」后就再无回复，3月17日又收到招募新期的群发——说明她的账号甚至没有被标记为「临界流失」。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 处方 -->
+  <div class="section">
+    <div class="section-title"><span class="icon">💊</span> 最后挽回处方（窗口极窄）</div>
+    <div class="rx-block">
+      <div class="rx-item">
+        <div class="rx-item-header"><span class="rx-icon">✅</span><h4>动作① · 先承认「我之前发的东西太销售了」，打破防御</h4></div>
+        <div class="rx-body">
+          <div class="speech-bubble">「我刚才翻了一下你的背景，做检测鉴定这行的——其实你们比大多数人更懂怎么识别真假信息对吧。我理解你可能觉得我发的东西太'销售'了，说实话有些话确实是统一发的。我想单独问你一个很直接的问题：你来这个训练营，最希望搞清楚的一件事是什么？」</div>
+        </div>
+      </div>
+      <div class="rx-item">
+        <div class="rx-item-header"><span class="rx-icon">✅</span><h4>动作② · 让她自主说出「停止打扰」或「继续聊」</h4></div>
+        <div class="rx-body">
+          <div class="speech-bubble">「我注意到你这几天一直没有回复，我不确定是时间不方便，还是对课程本身有顾虑，还是已经决定不了。你能告诉我是哪一种吗？——你告诉我不报，我立刻停止打扰你，不会再发消息。」</div>
+        </div>
+      </div>
+      <div class="rx-item">
+        <div class="rx-item-header"><span class="rx-icon">✅</span><h4>动作③ · 用实证代替口号（C型用户核心需求）</h4></div>
+        <div class="rx-body">
+          <div class="speech-bubble">「你做检测鉴定，肯定习惯看实证而不是口号。我能给你发3个实际完成了商单的学员记录截图吗——不是朋友圈，是她们的作品+到账记录。你看完再决定，怎么样？」</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 禁忌红线 -->
+  <div class="section">
+    <div class="section-title"><span class="icon">🚫</span> 禁忌红线</div>
+    <div class="red-lines">
+      <div class="red-line-item"><span class="ri">❌</span><p><strong>继续发「AI时代淘汰你」「抓住机会」「别人已经在赚了」类 FOMO 话术</strong> → C型用户把「夸张承诺」等同于「不可信品牌」，每多发一条，信任值下降一格，不可逆</p></div>
+      <div class="red-line-item"><span class="ri">❌</span><p><strong>「有疑问回复1」此类格式化指令</strong> → 对于已经沉默的用户，这条话=宣布「我已经把你贴上号码了，你的存在对我来说只是一个流量」，基本宣判关系死亡</p></div>
+    </div>
+  </div>
+
+  <!-- S13 评分可视化 -->
+  <div class="section">
+    <div class="section-title"><span class="icon">📉</span> 关键服务质量评分（本案例）</div>
+    <div class="score-row">
+      <div class="score-item">
+        <span class="score-label">S10 个性化</span>
+        <div class="score-bar-wrap"><div class="score-bar" style="width:0%; background:#ef4444;"></div></div>
+        <span class="score-val" style="color:#ef4444;">0分</span>
+      </div>
+      <div class="score-item">
+        <span class="score-label">S12 被看见</span>
+        <div class="score-bar-wrap"><div class="score-bar" style="width:0%; background:#ef4444;"></div></div>
+        <span class="score-val" style="color:#ef4444;">0分</span>
+      </div>
+      <div class="score-item">
+        <span class="score-label">S13 投毒量</span>
+        <div class="score-bar-wrap"><div class="score-bar" style="width:90%; background: linear-gradient(90deg, #f59e0b, #ef4444);"></div></div>
+        <span class="score-val" style="color:#ef4444;">10+</span>
+      </div>
+      <div class="score-item">
+        <span class="score-label">转化概率</span>
+        <div class="score-bar-wrap"><div class="score-bar" style="width:8%; background:#64748b;"></div></div>
+        <span class="score-val" style="color:#64748b;">&lt;8%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- LTV -->
+  <div class="section">
+    <div class="section-title"><span class="icon">📊</span> LTV 五维评分</div>
+    <div class="ltv-grid">
+      <div class="ltv-item">
+        <div class="ltv-name">续费概率</div>
+        <div class="stars" style="color: #64748b;">★★☆☆☆</div>
+        <div class="ltv-reason">沉默超10天，冷却中</div>
+      </div>
+      <div class="ltv-item">
+        <div class="ltv-name">客单价承受力</div>
+        <div class="stars" style="color: #f59e0b;">★★★☆☆</div>
+        <div class="ltv-reason">有稳定职业，经济底座可能稳固</div>
+      </div>
+      <div class="ltv-item">
+        <div class="ltv-name">转介绍潜力</div>
+        <div class="stars" style="color: #f59e0b;">★★★★☆</div>
+        <div class="ltv-reason">检测鉴定圈同质性强，信任建立后价值高</div>
+      </div>
+      <div class="ltv-item">
+        <div class="ltv-name">内容共创价值</div>
+        <div class="stars" style="color: #64748b;">★★☆☆☆</div>
+        <div class="ltv-reason">尚无任何课程参与记录</div>
+      </div>
+      <div class="ltv-item">
+        <div class="ltv-name">需求满足度</div>
+        <div class="stars" style="color: #64748b;">★☆☆☆☆</div>
+        <div class="ltv-reason">逻辑论据需求从未被满足，S13投毒严重</div>
+      </div>
+      <div class="ltv-item">
+        <div class="ltv-name">风险等级</div>
+        <div class="stars" style="color: #ef4444;">★★★★★</div>
+        <div class="ltv-reason">已进入沉默流失通道，极高风险</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 标签 -->
+  <div class="section">
+    <div class="section-title"><span class="icon">🏷️</span> 多维标签</div>
+    <div class="tag-cloud">
+      <span class="tag tag-danger">C2类</span>
+      <span class="tag tag-gray">谨慎型-C型DISC</span>
+      <span class="tag tag-gray">回避型依恋</span>
+      <span class="tag tag-gray">副业变现动机</span>
+      <span class="tag tag-warning">职业:检测鉴定-高可信度需求</span>
+      <span class="tag tag-danger">S10:0</span>
+      <span class="tag tag-danger">S12:0</span>
+      <span class="tag tag-danger">S13投毒:10+</span>
+      <span class="tag tag-danger">沉默流失:确认</span>
+      <span class="tag tag-gray">显性需求:副业收入</span>
+      <span class="tag tag-purple">隐性需求:被逻辑说服而非情绪推动</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ 新增维度摘要 ══════════════ -->
+<div class="new-dim-card">
+  <div class="nd-header">
+    <span style="font-size:20px;">🆕</span>
+    <h3>本次分析新增维度 · 已写入大盘框架</h3>
+  </div>
+  <table>
+    <tr><th>维度编号</th><th>维度名称</th><th>触发案例</th><th>核心洞察</th></tr>
+    <tr>
+      <td>S10</td>
+      <td>班主任话术个性化程度</td>
+      <td>金铭（676987283）</td>
+      <td>全程模板=0分，S10得分0的用户流失率预计高3倍</td>
+    </tr>
+    <tr>
+      <td>S11</td>
+      <td>招募营完课未转化率</td>
+      <td>金铭（676987283）</td>
+      <td>通关≠意向确定，T8临界态需专属话术而非二次推销</td>
+    </tr>
+    <tr>
+      <td>S12</td>
+      <td>「被看见」需求满足度</td>
+      <td>金铭（676987283）</td>
+      <td>有无引用用户具体说过的话，是C1/T8转化最低门槛</td>
+    </tr>
+    <tr>
+      <td>S13</td>
+      <td>话术投毒量</td>
+      <td>曹聪（676987287）</td>
+      <td>FOMO/成功学话术与C/D型转化率负相关，每+1条阻力+30%</td>
+    </tr>
+  </table>
+</div>
+
+</body>
+</html>

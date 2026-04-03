@@ -45,7 +45,7 @@
       font-size: 12px; font-weight: 800; letter-spacing: 1px; margin-bottom: 24px; text-transform: uppercase;
     }
     .origin-pulse { width: 6px; height: 6px; border-radius: 50%; background: var(--brand-primary); box-shadow: 0 0 10px var(--brand-primary); animation: pulse 2s infinite; }
-    h1 { font-size: clamp(26px, 4.5vw, 44px); font-weight: 900; line-height: 1.2; letter-spacing: -1px; margin-bottom: 16px; background: linear-gradient(180deg, #fff 0%, #a1a1aa 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    h1 { font-size: clamp(26px, 4.5vw, 44px); font-weight: 900; line-height: 1.2; letter-spacing: -1px; margin-bottom: 16px; background: linear-gradient(180deg, #fff 0%, #a1a1aa 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
     .hero-subtitle { font-size: clamp(13px, 2vw, 15px); color: var(--text-dim); max-width: 800px; margin: 0 auto; font-weight: 500; }
 
     /* Trust Formula */
@@ -533,6 +533,17 @@
         </div>
       </div>
     </div>
+
+    <!-- ══ 延伸阅读 ══ -->
+    <div style="margin-top:56px; padding:32px; background:linear-gradient(135deg,rgba(139,92,246,0.06),rgba(59,130,246,0.06)); border:1px solid rgba(139,92,246,0.2); border-radius:20px; text-align:center;">
+      <div style="font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#8b5cf6;margin-bottom:12px;">📎 延伸阅读</div>
+      <div style="font-size:20px;font-weight:800;color:#fff;margin-bottom:10px;">🔬 用户深度解码报告</div>
+      <p style="font-size:14px;color:#a1a1aa;max-width:500px;margin:0 auto 20px;">基于 user-needs-decoder 三轴模型，对金铭（T8临界观望者）与曹聪（C2沉默流失）进行 DISC × ABCD × LTV 双轨诊断，揭示「模板话术」如何将 C 型用户推入不可逆流失通道</p>
+      <a href="user/user_decoder_report.html" style="display:inline-flex;align-items:center;gap:8px;padding:12px 28px;background:linear-gradient(135deg,#8b5cf6,#3b82f6);color:#fff;text-decoration:none;border-radius:12px;font-size:14px;font-weight:700;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+        查看用户解码报告 →
+      </a>
+    </div>
+
   </div>
 </body>
 </html>
