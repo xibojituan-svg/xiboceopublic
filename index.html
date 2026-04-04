@@ -4,9 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Xibo 2026-2028 Strategy Nexus</title>
-
-
+  <title>2026-2028 公司生死存亡规划地图</title>
 
   <style>
     :root {
@@ -19,367 +17,100 @@
       --text-muted: #71717a;
 
       --brand-primary: #ef4444;
-      /* Alert Red */
       --brand-secondary: #f97316;
-      /* Xibo Orange */
       --brand-accent: #10b981;
-      /* Healthy Green */
       --brand-glow: rgba(239, 68, 68, 0.2);
     }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       font-family: 'Inter', -apple-system, 'PingFang SC', sans-serif;
-      background-color: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
+      background-color: var(--bg); color: var(--text); line-height: 1.6;
+      overflow-x: hidden; -webkit-font-smoothing: antialiased;
     }
 
-    /* Background FX */
     .bg-glow {
-      position: fixed;
-      top: -20vh;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100vw;
-      height: 60vh;
+      position: fixed; top: -20vh; left: 50%; transform: translateX(-50%);
+      width: 100vw; height: 60vh;
       background: radial-gradient(ellipse at bottom, rgba(249, 115, 22, 0.15) 0%, rgba(9, 9, 11, 0) 70%);
-      z-index: -1;
-      pointer-events: none;
+      z-index: -1; pointer-events: none;
     }
 
+    .main-container { max-width: 1400px; margin: 0 auto; padding: 40px 24px; }
 
-    .main-container {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 40px 24px;
-    }
-
-    /* Hero Section */
-    .hero {
-      margin-bottom: 60px;
-      text-align: center;
-      animation: fadeUp 0.8s ease-out;
-    }
-
+    .hero { margin-bottom: 60px; text-align: center; animation: fadeUp 0.8s ease-out; }
     .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 16px;
-      border-radius: 100px;
-      background: rgba(239, 68, 68, 0.1);
-      border: 1px solid rgba(239, 68, 68, 0.3);
-      color: var(--brand-primary);
-      font-size: 12px;
-      font-weight: 800;
-      letter-spacing: 1px;
-      margin-bottom: 24px;
-      text-transform: uppercase;
+      display: inline-flex; align-items: center; gap: 6px; padding: 6px 16px;
+      border-radius: 100px; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3);
+      color: var(--brand-primary); font-size: 12px; font-weight: 800; letter-spacing: 1px;
+      margin-bottom: 24px; text-transform: uppercase;
     }
-
     .origin-pulse {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--brand-primary);
-      box-shadow: 0 0 10px var(--brand-primary);
-      animation: pulse 2s infinite;
+      width: 6px; height: 6px; border-radius: 50%; background: var(--brand-primary);
+      box-shadow: 0 0 10px var(--brand-primary); animation: pulse 2s infinite;
     }
-
     h1 {
-      font-size: clamp(36px, 6vw, 64px);
-      font-weight: 900;
-      line-height: 1.1;
-      letter-spacing: -2px;
-      margin-bottom: 24px;
+      font-size: clamp(36px, 6vw, 64px); font-weight: 900; line-height: 1.1; letter-spacing: -2px; margin-bottom: 24px;
       background: linear-gradient(180deg, #fff 0%, #a1a1aa 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
+    .hero-subtitle { font-size: clamp(16px, 2vw, 20px); color: var(--text-dim); max-width: 800px; margin: 0 auto; font-weight: 500; }
 
-    .hero-subtitle {
-      font-size: clamp(16px, 2vw, 20px);
-      color: var(--text-dim);
-      max-width: 800px;
-      margin: 0 auto;
-      font-weight: 500;
-    }
-
-    /* Alert / Truth Bar */
     .truth-bar {
-      background: rgba(239, 68, 68, 0.05);
-      border-left: 4px solid var(--brand-primary);
-      padding: 24px 32px;
-      border-radius: 0 16px 16px 0;
-      margin-bottom: 60px;
+      background: rgba(239, 68, 68, 0.05); border-left: 4px solid var(--brand-primary);
+      padding: 24px 32px; border-radius: 0 16px 16px 0; margin-bottom: 60px;
       animation: slideInX 0.8s ease-out 0.2s backwards;
     }
+    .truth-bar h3 { color: var(--text); font-size: 18px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+    .truth-bar p { color: var(--text-dim); font-size: 15px; }
+    .truth-bar strong { color: var(--brand-primary); }
 
-    .truth-bar h3 {
-      color: var(--text);
-      font-size: 18px;
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .truth-bar p {
-      color: var(--text-dim);
-      font-size: 15px;
-    }
-
-    .truth-bar strong {
-      color: var(--brand-primary);
-    }
-
-    /* Strategy Compass */
-    .compass-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 24px;
-      margin-bottom: 80px;
-    }
-
+    .compass-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-bottom: 80px; }
     .compass-card {
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
-      padding: 32px;
-      border-radius: 20px;
-      transition: transform 0.3s, box-shadow 0.3s;
-      position: relative;
-      overflow: hidden;
+      background: var(--bg-surface); border: 1px solid var(--border); padding: 32px; border-radius: 20px;
+      transition: transform 0.3s, box-shadow 0.3s; position: relative; overflow: hidden;
     }
-
-    .compass-card:hover {
-      border-color: rgba(255, 255, 255, 0.2);
-      transform: translateY(-5px);
-    }
-
+    .compass-card:hover { border-color: rgba(255, 255, 255, 0.2); transform: translateY(-5px); }
     .compass-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 4px;
-      background: var(--brand-secondary);
-      opacity: 0;
-      transition: opacity 0.3s;
+      content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px;
+      background: var(--brand-secondary); opacity: 0; transition: opacity 0.3s;
     }
+    .compass-card:hover::before { opacity: 1; }
+    .compass-card:nth-child(2)::before { background: var(--brand-accent); }
+    .compass-card:nth-child(3)::before { background: #3b82f6; }
 
-    .compass-card:hover::before {
-      opacity: 1;
-    }
+    .c-year { font-size: 12px; font-weight: 800; color: var(--text-muted); margin-bottom: 12px; letter-spacing: 1px; }
+    .c-title { font-size: 24px; font-weight: 800; color: #fff; margin-bottom: 16px; }
+    .c-desc { font-size: 14px; color: var(--text-dim); }
+    .c-list { margin-top: 20px; list-style: none; }
+    .c-list li { font-size: 13px; color: var(--text-dim); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+    .c-list li::before { content: '→'; color: var(--brand-secondary); font-weight: bold; }
 
-    .compass-card:nth-child(2)::before {
-      background: var(--brand-accent);
-    }
+    .engine-section { margin-bottom: 80px; animation: fadeUp 1s ease-out backwards; }
+    .engine-header { margin-bottom: 32px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+    .engine-title { font-size: 28px; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 12px; }
+    .engine-badge { font-size: 12px; padding: 4px 10px; background: rgba(255, 255, 255, 0.1); border-radius: 6px; color: var(--text-dim); }
+    .engine-desc { font-size: 15px; color: var(--text-muted); margin-top: 12px; }
 
-    .compass-card:nth-child(3)::before {
-      background: #3b82f6;
-    }
-
-    .c-year {
-      font-size: 12px;
-      font-weight: 800;
-      color: var(--text-muted);
-      margin-bottom: 12px;
-      letter-spacing: 1px;
-    }
-
-    .c-title {
-      font-size: 24px;
-      font-weight: 800;
-      color: #fff;
-      margin-bottom: 16px;
-    }
-
-    .c-desc {
-      font-size: 14px;
-      color: var(--text-dim);
-    }
-
-    .c-list {
-      margin-top: 20px;
-      list-style: none;
-    }
-
-    .c-list li {
-      font-size: 13px;
-      color: var(--text-dim);
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .c-list li::before {
-      content: '→';
-      color: var(--brand-secondary);
-      font-weight: bold;
-    }
-
-    /* Engine Sections */
-    .engine-section {
-      margin-bottom: 80px;
-      animation: fadeUp 1s ease-out backwards;
-    }
-
-    .engine-header {
-      margin-bottom: 32px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .engine-title {
-      font-size: 28px;
-      font-weight: 800;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .engine-badge {
-      font-size: 12px;
-      padding: 4px 10px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 6px;
-      color: var(--text-dim);
-    }
-
-    .engine-desc {
-      font-size: 15px;
-      color: var(--text-muted);
-      margin-top: 12px;
-    }
-
-    /* Link Grid */
-    .portal-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 20px;
-    }
-
+    .portal-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
     .portal-card {
-      display: flex;
-      flex-direction: column;
-      padding: 24px;
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      text-decoration: none;
-      color: var(--text);
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      position: relative;
-      overflow: hidden;
+      display: flex; flex-direction: column; padding: 24px; background: var(--bg-surface);
+      border: 1px solid var(--border); border-radius: 16px; text-decoration: none; color: var(--text);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); position: relative; overflow: hidden;
     }
+    .portal-card:hover { background: var(--bg-surface-hover); border-color: rgba(255, 255, 255, 0.2); transform: scale(1.02); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); }
+    .icon-wrapper { width: 40px; height: 40px; border-radius: 10px; background: rgba(255, 255, 255, 0.05); display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 16px; }
+    .card-title { font-weight: 700; font-size: 16px; margin-bottom: 10px; color: #fff; }
+    .card-desc { font-size: 13px; color: var(--text-dim); flex-grow: 1; }
 
-    .portal-card:hover {
-      background: var(--bg-surface-hover);
-      border-color: rgba(255, 255, 255, 0.2);
-      transform: scale(1.02);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes slideInX { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
 
-    .icon-wrapper {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-      background: rgba(255, 255, 255, 0.05);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-      margin-bottom: 16px;
-    }
+    footer { text-align: center; padding: 60px 0; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 13px; }
 
-    .card-title {
-      font-weight: 700;
-      font-size: 16px;
-      margin-bottom: 10px;
-      color: #fff;
-    }
-
-    .card-desc {
-      font-size: 13px;
-      color: var(--text-dim);
-      flex-grow: 1;
-    }
-
-    /* Animations */
-    @keyframes fadeUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes slideInX {
-      from {
-        opacity: 0;
-        transform: translateX(-30px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateX(0);
-      }
-    }
-
-    @keyframes pulse {
-      0% {
-        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
-      }
-
-      70% {
-        box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
-      }
-
-      100% {
-        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
-      }
-    }
-
-    /* Footer */
-    footer {
-      text-align: center;
-      padding: 60px 0;
-      border-top: 1px solid var(--border);
-      color: var(--text-muted);
-      font-size: 13px;
-    }
-
-    @media (max-width: 768px) {
-      .main-container {
-        padding: 24px 16px;
-      }
-
-      .compass-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .truth-bar {
-        padding: 20px;
-        border-radius: 16px;
-        border-left: none;
-        border-top: 4px solid var(--brand-primary);
-      }
-    }
+    @media (max-width: 768px) { .main-container { padding: 24px 16px; } .compass-grid { grid-template-columns: 1fr; } .truth-bar { padding: 20px; border-radius: 16px; border-left: none; border-top: 4px solid var(--brand-primary); } }
   </style>
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -392,48 +123,48 @@
 
     <header class="hero">
       <div class="badge">
-        <div class="origin-pulse"></div>最高机密 · 全局战略基准
+        <div class="origin-pulse"></div>最高机密 · 全局大方向
       </div>
-      <h1>重铸底层商业基因</h1>
-      <p class="hero-subtitle">从「高毒性狩猎利润」跨越至「S2B2C 农耕双引擎驱动」的 2026-2028 生死导航图</p>
+      <h1>重整公司最核心的赚钱逻辑</h1>
+      <p class="hero-subtitle">彻底废弃「靠忽悠割一把就跑」的烂生意，过渡到「靠好产品和用心服务客户来稳固赚钱」的 2026-2028 生存规划图</p>
     </header>
 
     <div class="truth-bar">
-      <h3>🔴 战略原点：正视残酷真相</h3>
-      <p>退费率 24% (远超 10% 警戒线) 不是执行层面的客诉问题，而是<strong>“商业模式的原罪”</strong>。传统的【夸大承诺 → 高成交 → 交付缺口 → 舆论暴雷】毒性飞轮正在走向终点。转型刻不容缓。
+      <h3>🔴 起点：必须正视残酷的现状</h3>
+      <p>高达 24% 的退费率（远超我们能承受的10%底线）根本不是因为下边客服不努力安抚，而是我们的<strong>“这套赚钱做法本身就有大把毛病”</strong>。旧有的【在前期拼命向用户吹牛忽悠报名极高价大课 → 收下学费 → 到了后面给不到人家想要的虚高结果 → 最终必然引发大规模退费和骂名】——这种恶性循环必须要马上停掉！
       </p>
     </div>
 
     <!-- 战略三阶段 -->
     <div class="compass-grid">
       <div class="compass-card">
-        <div class="c-year">PHASE 01 / 2026</div>
-        <div class="c-title">第一曲线“解毒软着陆”</div>
-        <div class="c-desc">主动斩断污染营收，用防线换时间。</div>
+        <div class="c-year">第一步 / 2026 年初</div>
+        <div class="c-title">先停下容易爆雷的坏生意</div>
+        <div class="c-desc">主动把那些摆明了买不起、没空学或者纯属借钱瞎冲动的人拒之门外，少赚这烫手钱。</div>
         <ul class="c-list">
-          <li>落实 90% D类大黑用户绝对拦截</li>
-          <li>建设 AI 风控与依从性管理系统</li>
-          <li>教育基本盘不暴雷，储备现金流</li>
+          <li>把绝症、欠巨债等最容易惹事的穷客户彻底拦截掉</li>
+          <li>弄一套系统强制盯着手下员工，防他们去乱承诺</li>
+          <li>把剩下大多数正常想学习的人伺候好，囤足手里的现钱</li>
         </ul>
       </div>
       <div class="compass-card">
-        <div class="c-year">PHASE 02 / 2027</div>
-        <div class="c-title">S2B2C 双引擎爆发</div>
-        <div class="c-desc">通过赋能班主任完成能力网络迁移。</div>
+        <div class="c-year">第二步 / 2027</div>
+        <div class="c-title">两条腿走路的新出路</div>
+        <div class="c-desc">把班主任变得能干，除了声音课程本身，再去找第二条搞钱的路子。</div>
         <ul class="c-list">
-          <li>第一曲线彻底无毒，沉淀高净值人群</li>
-          <li>第二曲线(HealthMind)贡献 20% 财报</li>
-          <li>班主任化为底层 B 端资产</li>
+          <li>原来的教育项目干干净净地赚正常人的钱</li>
+          <li>全新的健康相关业务能贡献起码 20% 的收入</li>
+          <li>班主任变成我们和用户绑定最深的核心资产</li>
         </ul>
       </div>
       <div class="compass-card">
-        <div class="c-year">PHASE 03 / 2028+</div>
-        <div class="c-title">数智健康服务超级底座</div>
-        <div class="c-desc">重构公司估值模型，形成极深护城河。</div>
+        <div class="c-year">第三步 / 2028 及以后</div>
+        <div class="c-title">变成一家无法被替代的服务大平台</div>
+        <div class="c-desc">把公司在市场上的估价做高，让别人很难来抄袭倒逼我们。</div>
         <ul class="c-list">
-          <li>健康业务主导，教育作为引蓄水池</li>
-          <li>AI + 10万结构化数据确立核心防线</li>
-          <li>成为最值得信赖的平台型组织</li>
+          <li>重点做健康类服务，教育培训变成找好客户的一个入口</li>
+          <li>掌握十万条老顾客数据和用上聪明好使的电脑工具作为防线</li>
+          <li>变成大家真正心服口服的带头大公司</li>
         </ul>
       </div>
     </div>
@@ -441,34 +172,39 @@
     <!-- Engine A -->
     <section class="engine-section" style="animation-delay: 0.1s;">
       <div class="engine-header">
-        <h2 class="engine-title">引擎A：飞轮净化与客群切割 <span class="engine-badge">System Filter</span></h2>
-        <p class="engine-desc">停止一切向非目标客群过度允诺的毒性销售动作，重新定义 ABCD 资产层级。</p>
+        <h2 class="engine-title">模块一：清理骗人话术和淘汰高危客户 <span class="engine-badge">排查隐患</span></h2>
+        <p class="engine-desc">立刻停止所有向并不富裕的普通打工人画大饼的行为，把手头上的客户根据有没有钱和抗压力彻底分出个三六九等。</p>
       </div>
       <div class="portal-grid">
         <a href="compliance_audit.html" class="portal-card" style="border-color: #ef4444;">
           <div class="icon-wrapper" style="background: rgba(239, 68, 68, 0.1); color: #ef4444;">🚨</div>
-          <div class="card-title">销转违规话术净化大盘</div>
-          <div class="card-desc">自动拦截私建工作室、接单钓鱼等行为。列举并整改98条高风险话术红线底牌，保护交单底盘。</div>
+          <div class="card-title">坚决整顿不着边的小动作</div>
+          <div class="card-desc">严厉查处私底下偷拿接单来当诱饵等现象。明白地列举并惩罚了 98 条绝对不能说的高危推销话语。</div>
         </a>
         <a href="user-segmentation-infographic.html" class="portal-card">
           <div class="icon-wrapper">📊</div>
-          <div class="card-title">ABCD人群分层全景图</div>
-          <div class="card-desc">全量基准地图。将用户切分为战略资产与负债，作为中台判定转化阈值的锚点。</div>
+          <div class="card-title">ABCD客户整体大分类</div>
+          <div class="card-desc">公司级别的参照线。就是把客户分成能持久出钱的和专门来捣蛋的两种，并设置要不要给他们推课的红线。</div>
+        </a>
+        <a href="xibo_user_tiering_synthesis_report.html" class="portal-card" style="border-color: #10b981;">
+          <div class="icon-wrapper" style="background: rgba(16,185,129,0.1); color: #10b981;">🧬</div>
+          <div class="card-title">用户分层与执行规范报告（必看）</div>
+          <div class="card-desc">用大白话写的最全分级指导。把怎么算出他属于哪个级别定死了，防止一线小兵一通瞎猜。</div>
         </a>
         <a href="d_user_optimization.html" class="portal-card">
           <div class="icon-wrapper">🛑</div>
-          <div class="card-title">D类用户熔断与防御机制</div>
-          <div class="card-desc">雷区防线。高危白嫖人群的机器拦截与坚决劝退策略，保护核心B端人力资源。</div>
+          <div class="card-title">怎么挡住和赶走D类危险客户</div>
+          <div class="card-desc">设卡子拦截。凡是那种想空手套白狼或者连吃药钱都拿来的人，想尽办法电脑自动挡，人工也要劝退。</div>
         </a>
         <a href="student_psychology_map.html" class="portal-card">
           <div class="icon-wrapper">🧠</div>
-          <div class="card-title">学员心理诉求洞察全解</div>
-          <div class="card-desc">直击痛点。分析目标学员底层焦虑与付费动因，取代传统虚假承诺话术。</div>
+          <div class="card-title">读懂学生肚子里到底想要啥</div>
+          <div class="card-desc">看进去学员真实的焦虑和究竟为啥要掏钱，别再一味用以前“上了课就能马上月薪过万”去哄别人。</div>
         </a>
         <a href="segmentation_radarmap.html" class="portal-card">
           <div class="icon-wrapper">🎯</div>
-          <div class="card-title">用户分层维度雷达测评</div>
-          <div class="card-desc">通过学习意愿与执行维度的量化，在前端进线阶段实施智能精准分流。</div>
+          <div class="card-title">在最初的时候摸清客户底细</div>
+          <div class="card-desc">用最直观的数据评分，在客户进群的第一时间就搞清楚他是不是个好苗子，分配给该给的员工。</div>
         </a>
       </div>
     </section>
@@ -476,34 +212,34 @@
     <!-- Engine B -->
     <section class="engine-section" style="animation-delay: 0.2s;">
       <div class="engine-header">
-        <h2 class="engine-title">引擎B：交付军团重组 <span class="engine-badge">Organization</span></h2>
-        <p class="engine-desc">将重交付后端的班主任从纯“客服”升级为带有 AI 武器的“诊疗合伙人 (B端)”。</p>
+        <h2 class="engine-title">模块二：重组后方带教的班主任团队 <span class="engine-badge">管好自己人</span></h2>
+        <p class="engine-desc">以前班主任就是一个可怜兮兮的催款客服，必须得把他们给升级成拿着好兵器的合格陪伴者。</p>
       </div>
       <div class="portal-grid">
         <a href="service_delivery_architecture.html" class="portal-card" style="border-color: #3b82f6;">
           <div class="icon-wrapper" style="background: rgba(59,130,246,0.1); color: #3b82f6;">👥</div>
-          <div class="card-title">交付体系重构：会员制与管家服务总纲</div>
-          <div class="card-desc">从“卖课程”升级为面向 ABCD 用户的“技能管家/健康管家”周期体系，外加四段式防暴雷退费与业务实体强隔离阵型。</div>
+          <div class="card-title">怎么把“卖课的”变成真陪跑的</div>
+          <div class="card-desc">从以前单纯“丢个网课叫你听”直接改成“看你的性格配合你进度安排的长线管家”，并且想好四套防退费的急救预案。</div>
         </a>
         <a href="class_manager_analysis.html" class="portal-card">
           <div class="icon-wrapper">🏫</div>
-          <div class="card-title">班主任体系彻底重塑规划</div>
-          <div class="card-desc">破除人效黑洞与情感勒索陷阱，用分层群运营建立护城河。</div>
+          <div class="card-title">班主任的考核与奖惩重新定规矩</div>
+          <div class="card-desc">杜绝那种班主任拼命干却不赚钱还一直受憋屈气的怪圈。给班主任分不同级别的群去干活。</div>
         </a>
         <a href="class_manager_kpi_analysis.html" class="portal-card">
           <div class="icon-wrapper">⚖️</div>
-          <div class="card-title">班主任行为防线与KPI矫正</div>
-          <div class="card-desc">挥舞大棒与胡萝卜。重设 KPI 退费暂扣期机制，从根本上根治诱导逼单。</div>
+          <div class="card-title">拿这套打分规定管紧班主任的嘴</div>
+          <div class="card-desc">大棒与甜枣都要有。改掉之前的死规矩，设置“拿钱延期机制”，让班主任没法去用手段逼人就范。</div>
         </a>
         <a href="live_sop_upgrade_plan.html" class="portal-card">
           <div class="icon-wrapper">📺</div>
-          <div class="card-title">全域直播引流 SOP 升级</div>
-          <div class="card-desc">切除过度承诺瘤。用科学干货建立心智连接，拒绝透支长期信用资产。</div>
+          <div class="card-title">改进直播课那套吹捧自己的方法</div>
+          <div class="card-desc">割掉过去直播时爱拍胸脯乱吹牛的毒瘤。老老实实告诉学员真有用的干货，宁愿少成交也要口碑。</div>
         </a>
         <a href="live_stream_3day_sop.html" class="portal-card">
           <div class="icon-wrapper">📅</div>
-          <div class="card-title">合规体验营 3-Day 销转机制</div>
-          <div class="card-desc">精确到分钟的体验营节点把控，通过实战检验筛走无产出意愿用户。</div>
+          <div class="card-title">那为期 3 天的安全体验营应该咋搞</div>
+          <div class="card-desc">把体验营的流程按分钟算死，用真实的苦练让那些其实根本坚持不下来也不打算花钱的人知难而退。</div>
         </a>
       </div>
     </section>
@@ -511,90 +247,90 @@
     <!-- Engine C -->
     <section class="engine-section" style="animation-delay: 0.3s;">
       <div class="engine-header">
-        <h2 class="engine-title">引擎C：跨域商业猎手 <span class="engine-badge">Conversion</span></h2>
-        <p class="engine-desc">摆脱单一教育 SKU 依赖，依托 A/B 净值群体开展超客单、全托管矩阵收割。</p>
+        <h2 class="engine-title">模块三：寻找更多靠谱的新出路赚钱 <span class="engine-badge">找寻利润</span></h2>
+        <p class="engine-desc">别只盯着目前的单卖一门教育课死磕了，在手里那些有闲钱的大客（A/B类）身上挖一挖新的更长远的来钱道儿。</p>
       </div>
       <div class="portal-grid">
         <a href="user_conversion_insight_article.html" class="portal-card">
           <div class="icon-wrapper">💡</div>
-          <div class="card-title">全局用户转化洞察总纲</div>
-          <div class="card-desc">搭建“高定价 + 高利润 + 长久复购”的升维产品全景蓝图。</div>
+          <div class="card-title">让这些老客户再掏钱的总体思路</div>
+          <div class="card-desc">搭建“稍微贵一点但特别赚钱 + 在很长一段时间里会不停再来购买”的新路子蓝图。</div>
         </a>
         <a href="cross_business_conversion_strategy.html" class="portal-card">
           <div class="icon-wrapper">🔄</div>
-          <div class="card-title">多域 SKU 交叉穿透战略</div>
-          <div class="card-desc">围绕核心用户资产进行横向变现，拉升 LTV 的全盘打法。</div>
+          <div class="card-title">把手里的铁粉盘活卖点别的东西</div>
+          <div class="card-desc">重点围着有信用底子的优质常客转，看看他们除了学习外还有什么发力点，好长期留着他们在公司掏钱。</div>
         </a>
         <a href="ai_short_video_conversion_insight.html" class="portal-card">
           <div class="icon-wrapper">🚀</div>
-          <div class="card-title">AI短视频变现链路研判</div>
-          <div class="card-desc">利用工具提效红利，向目标受众抛出赋能鱼饵的落地流程。</div>
+          <div class="card-title">如果做短视频我们该怎么靠它挣钱</div>
+          <div class="card-desc">弄点能实际帮忙省去人工搞短视频的小电脑工具做卖点，设计好怎么一步步让看视频的人变现。</div>
         </a>
         <a href="ai_writing_conversion_insight.html" class="portal-card">
           <div class="icon-wrapper">✍️</div>
-          <div class="card-title">AI文案代写人群掘金</div>
-          <div class="card-desc">精确区分暴富粉与能力成长营，输出千人千面的营销说辞。</div>
+          <div class="card-title">去挖帮人写文案的活儿有没搞头</div>
+          <div class="card-desc">搞清楚哪些人真的是有写作追求的，哪些人就是想赚一笔稿费快钱的，针对这两种人拿出截然不同的说辞。</div>
         </a>
       </div>
     </section>
 
-    <!-- Engine E: 用户行为研究 -->
+    <!-- Engine E -->
     <section class="engine-section" style="animation-delay: 0.45s;">
       <div class="engine-header">
-        <h2 class="engine-title">引擎E：用户行为研究 <span class="engine-badge">User Intelligence</span></h2>
-        <p class="engine-desc">基于11个付费用户聊天记录深度解码，将137维度收敛为32个核心决策维度，提炼10个可执行战略洞见。</p>
+        <h2 class="engine-title">模块四：把客户肚子里想的翻个底朝天 <span class="engine-badge">猜透心思</span></h2>
+        <p class="engine-desc">这都是建立在偷看 11 个付了款的实战客人的聊天记录上，总结出来的十个真能动手干得进去的事情建议。</p>
       </div>
       <div class="portal-grid">
         <a href="user_insight_report.html" class="portal-card" style="border-color: #8b5cf6;">
           <div class="icon-wrapper" style="background: rgba(139,92,246,0.1); color: #8b5cf6;">🧬</div>
-          <div class="card-title">用户行为洞察研究报告</div>
-          <div class="card-desc">11个真实付费用户深度解码。6种人格原型 · 32核心维度 · 10个可执行洞见。从聊天记录提炼有声之夜留存机制、声线鉴定18小时销售窗口、幕后承重者预警等核心策略。</div>
+          <div class="card-title">聊天记录分析出来的真相报告</div>
+          <div class="card-desc">从真实聊天的字里行间提炼出 6 种完全真实的人格。总结出来在头 18 小时就得看清人家能不能长期跟我们学之类最绝的信息。</div>
         </a>
         <a href="user_decoder_dashboard.html" class="portal-card">
           <div class="icon-wrapper">🔍</div>
-          <div class="card-title">需求解码器 · AI人才解析仪</div>
-          <div class="card-desc">自动化应用125维度框架，对用户聊天记录进行心理解码与人才评估，输出可执行的业务洞察。</div>
+          <div class="card-title">快速鉴别工具面板</div>
+          <div class="card-desc">放进聊天记录，立刻用这套上百个指标的漏子自动分析出这人究竟是个人才还是烂泥扶不上墙，并直接给出下一步建议。</div>
         </a>
         <a href="用户需求解码器.html" class="portal-card">
           <div class="icon-wrapper">🎯</div>
-          <div class="card-title">用户需求解码器</div>
-          <div class="card-desc">结合ABCD分层模型，深度挖掘学员底层动机与付费驱动力，辅助班主任精准服务策略制定。</div>
+          <div class="card-title">到底啥才是他们真正急需的</div>
+          <div class="card-desc">结合ABCD分派级别那一套做法，去刨根问底问出他心底究竟是什么执念迫使他愿意掏下这笔学费，帮班主任找到准确安抚他们的方法。</div>
         </a>
       </div>
     </section>
 
-    <!-- Engine D/E -->
+    <!-- Engine D -->
     <section class="engine-section" style="animation-delay: 0.4s;">
       <div class="engine-header">
-        <h2 class="engine-title">引擎D：财务红压与系统验尸 <span class="engine-badge">Pre-mortem</span></h2>
-        <p class="engine-desc">守住最终生存线，以数据化大盘驱动战略BSC与战役执行，摧毁一切系统性隐患。</p>
+        <h2 class="engine-title">模块五：算清我们真实的财务家底与前车之鉴 <span class="engine-badge">生存底线</span></h2>
+        <p class="engine-desc">看住那条如果不留神就会死肚皮朝天的生死线。一旦发现快亏本了马上砍断隐患的源头。</p>
       </div>
       <div class="portal-grid">
         <a href="bsc_2026_campaigns.html" class="portal-card" style="border-color: var(--brand-secondary);">
           <div class="icon-wrapper" style="background: rgba(249,115,22,0.1); color: var(--brand-secondary);">🎯</div>
-          <div class="card-title">2026 BSC 计分卡与关键战役</div>
-          <div class="card-desc">全景级展示战略指标（两张皮）与必须打赢的 5 场生死硬仗！解码责任与红线。</div>
+          <div class="card-title">2026 必须盯着的钱的账本与要死磕的大战</div>
+          <div class="card-desc">明面上摆出必须去攻克的五座大山和谁该掉脑袋！说明清楚谁该负责任以及我们公司的红底线是什么。</div>
         </a>
         <a href="financial_ue_dashboard.html" class="portal-card">
           <div class="icon-wrapper">💰</div>
-          <div class="card-title">财务 UE 沙盘与 BP 诊断</div>
-          <div class="card-desc">基于5000万净利润目标，动态模拟UE生死线并提供强干预BP研判。</div>
+          <div class="card-title">在沙盘上算出到底亏钱还是赚钱</div>
+          <div class="card-desc">假定我们要实现 5000 万揣进口袋的净利润，倒推回去看现在这模型到底出没出问题，并且该往哪个环节下死手去改。</div>
         </a>
         <a href="channel_roi_cutoff_report.html" class="portal-card">
           <div class="icon-wrapper">📉</div>
-          <div class="card-title">投放渠道 ROI 动态熔断器</div>
-          <div class="card-desc">严刑峻法。跌破模型底线即刻自动切断投流，将资本挥霍扼杀在发生前。</div>
+          <div class="card-title">买流广告花得多赚得少时立刻叫停</div>
+          <div class="card-desc">没有任何商量余地。一旦算出来投出去的广告费根本招不回来愿意买课的钱，马上电脑强行关掉该频道的推流。</div>
         </a>
 
         <a href="competitor_shifang_lihua_analysis.html" class="portal-card">
           <div class="icon-wrapper">☠️</div>
-          <div class="card-title">十方教育暴雷教训（验尸报告）</div>
-          <div class="card-desc">悬在头顶的剑。透彻剖析虚假繁荣背后资金链断裂的底层系统病因。</div>
+          <div class="card-title">看看同行“十方教育”是怎么作死垮掉的</div>
+          <div class="card-desc">活生生悬在我们脑袋上的刀！深扒了他们当初看起来那么光鲜亮丽，怎么背后自己却搞得连员工底薪都发不出最终破产倒闭。</div>
         </a>
         <a href="new_business_process_infographic.html" class="portal-card">
           <div class="icon-wrapper">🔺</div>
-          <div class="card-title">S2B2C 商业模式全景图</div>
-          <div class="card-desc">三角色完整定义：S（喜播平台赋能中台）→ B（认证合伙人/班主任）→ C（终端用户）的价值流转与飞轮逻辑。</div>
+          <div class="card-title">让班主任自己当老板的赚钱模式构想</div>
+          <div class="card-desc">理清楚平台、下面包揽活儿的班主任以及消费者之间到底该怎么各分一杯羹的规矩。</div>
         </a>
       </div>
     </section>
@@ -602,7 +338,7 @@
   </div>
 
   <footer>
-    <p>喜播集团 XIBO Executive Dashboard © 2026<br />Generated dynamically from 01_Strategy_and_OKRs Blueprint.</p>
+    <p>喜播集团 老板决断仪表盘 © 2026<br />去除花而不实的概念语录，确保所有人听得懂做得到。</p>
   </footer>
 </body>
 

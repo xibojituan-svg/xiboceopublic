@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>喜播用户分层综合分析报告 | 统一执行标准</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <style>
+        /* (CSS保持原定极简和暗黑设计美学) */
+        :root {
+            --bg-base: #09090b;
+            --bg-surface: #18181b;
+            --bg-surface-hover: #27272a;
+            --bg-surface-glass: rgba(24, 24, 27, 0.7);
+            
+            --border-subtle: #27272a;
+            --border-hover: #3f3f46;
+            
+            --text-main: #f4f4f5;
+            --text-muted: #a1a1aa;
+            --text-faint: #71717a;
+            
+            --brand-primary: #3b82f6;
+            --brand-glow: rgba(59, 130, 246, 0.15);
+            
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --purple: #8b5cf6;
+            
+            --a-tier: #10b981;
+            --b-tier: #f59e0b;
+            --c1-tier: #8b5cf6;
+            --c2-tier: #f43f5e;
+            --d-tier: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: 
+                radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.08), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.08), transparent 25%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 60px 24px; }
+
+        .hero { text-align: center; margin-bottom: 80px; padding: 60px 0; position: relative; }
+        .hero::before {
+            content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+            width: 100px; height: 4px; background: linear-gradient(90deg, var(--brand-primary), var(--purple));
+            border-radius: 4px;
+        }
+
+        .pill {
+            display: inline-flex; align-items: center; gap: 8px; padding: 6px 16px;
+            background: rgba(255,255,255,0.05); border: 1px solid var(--border-subtle);
+            border-radius: 100px; font-size: 0.85rem; font-weight: 600; color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+        .pill .dot {
+            width: 8px; height: 8px; background: var(--brand-primary);
+            border-radius: 50%; box-shadow: 0 0 10px var(--brand-primary); animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
+
+        h1 {
+            font-size: 3.5rem; font-weight: 900; letter-spacing: -0.03em; margin-bottom: 24px;
+            background: linear-gradient(to right, #ffffff, #a1a1aa); -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent; line-height: 1.2;
+        }
+
+        .hero-desc { font-size: 1.25rem; color: var(--text-muted); max-width: 800px; margin: 0 auto; font-weight: 400; }
+
+        .abstract-card {
+            background: var(--bg-surface-glass); backdrop-filter: blur(12px);
+            border: 1px solid var(--border-subtle); border-radius: 24px; padding: 40px; margin-bottom: 80px;
+            display: flex; gap: 32px; box-shadow: 0 20px 40px rgba(0,0,0,0.4); position: relative; overflow: hidden;
+        }
+        .abstract-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
+            background: linear-gradient(to bottom, var(--brand-primary), var(--purple));
+        }
+
+        .abstract-icon { flex-shrink: 0; width: 64px; height: 64px; background: rgba(59, 130, 246, 0.1); border-radius: 16px; display: flex; align-items: center; justify-content: center; color: var(--brand-primary); }
+        .abstract-content h2 { font-size: 1.75rem; font-weight: 800; margin-bottom: 16px; color: #fff; }
+        .abstract-content p { font-size: 1.1rem; color: var(--text-muted); line-height: 1.8; margin-bottom: 20px; }
+        .highlight-text { color: #fff; font-weight: 600; padding: 2px 8px; background: rgba(255,255,255,0.08); border-radius: 4px; }
+
+        .section-header { display: flex; align-items: center; gap: 16px; margin-bottom: 40px; }
+        .section-number { font-size: 1.2rem; font-weight: 900; color: var(--bg-base); background: var(--text-main); width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 12px; }
+        .section-title { font-size: 2rem; font-weight: 800; color: #fff; }
+
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 80px; }
+        .issue-card { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 20px; padding: 32px; transition: transform 0.3s ease, border-color 0.3s ease; position: relative; }
+        .issue-card:hover { transform: translateY(-8px); border-color: var(--border-hover); }
+        .issue-card .icon-wrapper { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; }
+        .issue-1 .icon-wrapper { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
+        .issue-2 .icon-wrapper { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
+        .issue-3 .icon-wrapper { background: rgba(139, 92, 246, 0.1); color: var(--purple); }
+        .issue-card h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: 12px; color: #fff; }
+        .issue-card p { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 20px; }
+        .issue-card .resolution { margin-top: auto; padding-top: 16px; border-top: 1px dashed var(--border-subtle); font-size: 0.9rem; color: var(--success); font-weight: 500; display: flex; align-items: center; gap: 8px; }
+
+        .architecture-box { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 24px; padding: 40px; margin-bottom: 80px; }
+        .arch-layer { background: rgba(255,255,255,0.02); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 24px 32px; margin-bottom: 16px; display: flex; align-items: flex-start; gap: 24px; position: relative; transition: border-color 0.3s ease; }
+        .arch-layer:hover { border-color: var(--brand-primary); }
+        .arch-layer::after { content: '↓'; position: absolute; bottom: -24px; left: 50%; transform: translateX(-50%); color: var(--text-faint); font-size: 1.5rem; font-weight: 300; }
+        .arch-layer:last-child::after { display: none; }
+        .arch-number { font-size: 1.5rem; font-weight: 900; color: var(--text-faint); width: 48px; }
+        .arch-content { flex: 1; }
+        .arch-content h3 { font-size: 1.35rem; font-weight: 800; color: #fff; margin-bottom: 8px; }
+        .arch-content p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 16px; }
+        .arch-tags { display: flex; flex-wrap: wrap; gap: 10px; }
+        .arch-tag { padding: 6px 12px; background: rgba(0,0,0,0.3); border: 1px solid var(--border-subtle); border-radius: 8px; font-size: 0.85rem; color: var(--text-main); font-weight: 500; }
+        .arch-tag.primary { background: var(--brand-glow); border-color: rgba(59, 130, 246, 0.4); color: #60a5fa; }
+
+        .formula-container { background: linear-gradient(145deg, #18181b, #09090b); border: 1px solid var(--border-hover); border-radius: 20px; padding: 40px; margin-bottom: 40px; text-align: center; }
+        .formula { display: inline-flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 20px; font-size: 1.5rem; font-weight: 800; }
+        .formula-item { background: rgba(255,255,255,0.05); padding: 16px 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); color: #fff; }
+        .formula-operator { color: var(--text-faint); }
+        .axis-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        .axis-card { background: var(--bg-surface); border-left: 3px solid var(--brand-primary); border-radius: 0 16px 16px 0; padding: 24px; }
+        .axis-card.axis-1 { border-left-color: var(--brand-primary); }
+        .axis-card.axis-2 { border-left-color: var(--warning); }
+        .axis-card.axis-3 { border-left-color: var(--purple); }
+        .axis-card h4 { font-size: 1.1rem; color: #fff; margin-bottom: 12px; font-weight: 700; }
+        .axis-card p { font-size: 0.9rem; color: var(--text-muted); }
+
+        table { width: 100%; border-collapse: collapse; background: var(--bg-surface); border-radius: 16px; overflow: hidden; border: 1px solid var(--border-subtle); margin-bottom: 80px; }
+        th, td { padding: 20px 24px; text-align: left; border-bottom: 1px solid var(--border-subtle); }
+        th { background: rgba(255,255,255,0.02); font-size: 0.85rem; color: var(--text-faint); font-weight: 700; }
+        td { font-size: 0.95rem; color: var(--text-main); }
+        tr:last-child td { border-bottom: none; }
+        .tier-badge { display: inline-flex; align-items: center; justify-content: center; padding: 6px 12px; border-radius: 8px; font-weight: 800; font-size: 0.9rem; }
+        .tier-a { background: rgba(16, 185, 129, 0.15); color: var(--a-tier); }
+        .tier-b { background: rgba(245, 158, 11, 0.15); color: var(--b-tier); }
+        .tier-c1 { background: rgba(139, 92, 246, 0.15); color: var(--c1-tier); }
+        .tier-c2 { background: rgba(244, 63, 94, 0.15); color: var(--c2-tier); }
+        .tier-d { background: rgba(239, 68, 68, 0.15); color: var(--d-tier); border: 1px solid var(--d-tier); }
+
+        .timeline { position: relative; margin-top: 40px; }
+        .timeline::before { content: ''; position: absolute; left: 24px; top: 0; height: 100%; width: 2px; background: var(--border-subtle); }
+        .timeline-item { position: relative; padding-left: 64px; margin-bottom: 40px; }
+        .timeline-item::before { content: ''; position: absolute; left: 18px; top: 8px; width: 14px; height: 14px; border-radius: 50%; background: var(--bg-surface); border: 2px solid var(--text-muted); z-index: 2; }
+        .timeline-item.p0::before { border-color: var(--danger); box-shadow: 0 0 10px var(--danger); }
+        .timeline-item.p1::before { border-color: var(--warning); }
+        .timeline-item.p2::before { border-color: var(--brand-primary); }
+        .timeline-item-header { display: flex; align-items: center; gap: 16px; margin-bottom: 12px; }
+        .timeline-tag { padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 700; }
+        .tag-p0 { background: rgba(239,68,68,0.15); color: var(--danger); }
+        .tag-p1 { background: rgba(245,158,11,0.15); color: var(--warning); }
+        .tag-p2 { background: rgba(59,130,246,0.15); color: var(--brand-primary); }
+        .timeline-item h3 { font-size: 1.25rem; font-weight: 700; color: #fff; }
+        .timeline-content { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 24px; }
+        .timeline-content p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 0; }
+
+        footer { text-align: center; padding: 60px 0; margin-top: 80px; border-top: 1px solid var(--border-subtle); color: var(--text-faint); font-size: 0.9rem; }
+
+        @media (max-width: 1024px) { .grid-3 { grid-template-columns: repeat(2, 1fr); } .axis-grid { grid-template-columns: 1fr; } h1 { font-size: 2.5rem; } }
+        @media (max-width: 768px) { .grid-3 { grid-template-columns: 1fr; } .abstract-card { flex-direction: column; } .arch-layer { flex-direction: column; gap: 12px; } .formula { flex-direction: column; } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    
+    <header class="hero">
+        <div class="pill">
+            <div class="dot"></div>
+            老板/负责人 决策参考指南
+        </div>
+        <h1>喜播用户怎么分钱和出力<br>大白话架构设计</h1>
+        <p class="hero-desc">别被各种高大上的词汇绕晕，我们要做的就是：梳理统一之前的各种规矩指引，用最符合常识的方法查清每一个来报名的人，确保每一笔收来的学费都不会惹事，并能安稳赚钱。</p>
+    </header>
+
+    <div class="abstract-card">
+        <div class="abstract-icon">
+            <i data-feather="target"></i>
+        </div>
+        <div class="abstract-content">
+            <h2>一句话总结：把客户分出ABCD级别，不是为了搞个多好看的花名册，而是要果断决定——公司的资源先给谁、重点帮谁、果断淘汰谁。</h2>
+            <p>
+                看完大家写的六份指引文档后，发现目前的规则已经写得很细了，但最大的隐患是<span class="highlight-text">规则脱离实际情况</span>（执行的人经常把简单“贴个爱钱的标签”当成“这是低端客户”来区别对待；旧的评估标准里漏掉了“这人平时到底有没有时间学”和“遇到困难他会不会崩心态”这两个致命点；同时，大家分析了一大堆用户的不同性格，但遇到具体问题时，班主任还是只有一套僵硬的话术去应对）。
+            </p>
+            <p style="margin-bottom:0;">
+                最实在的用户分级其实很简单：**在最底层，我们要用“怎么算”、“有没有闲钱和时间”、“抗压能力怎样”这三条常识来判断，算出这人是A、B、C还是D级；再根据他的个人性格派专人带着话术本上阵负责；最后系统里客观地记下他买课多少钱、用什么手机——这四件事，千万不要混为一谈！**
+            </p>
+        </div>
+    </div>
+
+    <div class="section-header">
+        <div class="section-number">1</div>
+        <h2 class="section-title">现在队伍执行里的三个要命错误</h2>
+    </div>
+    
+    <div class="grid-3">
+        <div class="issue-card issue-1">
+            <div class="icon-wrapper"><i data-feather="tag"></i></div>
+            <h3>把“陈述客观事实”和“最终下决策”搞混</h3>
+            <p>班主任只要看到表格上记着“想兼职变现，很着急”，就觉得这是容易出纠纷的危险人物。记下一个事实和决定怎么对付他是两回事，不能混用。</p>
+            <div class="resolution"><i data-feather="check-circle"></i> 以后让系统出最后结论分类</div>
+        </div>
+        
+        <div class="issue-card issue-2">
+            <div class="icon-wrapper"><i data-feather="layers"></i></div>
+            <h3>看漏了最要命的判定条件</h3>
+            <p>以前主要看对方穷不穷。而实际退费最多的那些人，反而是奔着马上赚钱来的，但一到晚上根本没有一点时间学习。另外受挫就骂公司的人，也没筛出来。</p>
+            <div class="resolution"><i data-feather="check-circle"></i> 把个人的时间和心态设为重要指标</div>
+        </div>
+        
+        <div class="issue-card issue-3">
+            <div class="icon-wrapper"><i data-feather="users"></i></div>
+            <h3>分析出性格后不管了</h3>
+            <p>明明知道这人是“实用过日子型还是虚荣跟风型”，可到了班主任手里，只要他属于普通的 B 类用户，不管是啥性格都用同样的一本推销字典。</p>
+            <div class="resolution"><i data-feather="check-circle"></i> 性格直接绑定针对性的沟通话术</div>
+        </div>
+    </div>
+
+    <div class="section-header">
+        <div class="section-number">2</div>
+        <h2 class="section-title">新的工作结构：四步全部分开</h2>
+    </div>
+
+    <div class="architecture-box">
+        <div class="arch-layer">
+            <div class="arch-number">第四步</div>
+            <div class="arch-content">
+                <h3>沟通的话语和做事套路（决定“班主任怎么跟用户说话”）</h3>
+                <p>根据定好的级别加上用户的真实性格，匹配好每一句要说的话和具体做事标准。</p>
+                <div class="arch-tags">
+                    <span class="arch-tag primary">细分的各种性格对策</span>
+                    <span class="arch-tag primary">现成可以直接念的沟通库</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="arch-layer">
+            <div class="arch-number">第三步</div>
+            <div class="arch-content">
+                <h3>明确的ABCD级别（决定“安排哪种经验的班主任去带”）</h3>
+                <p>只有唯一的ABCD分级结果，直接影响我们要在这个人身上投多少时间、派多贵的员工跟进。</p>
+                <div class="arch-tags">
+                    <span class="arch-tag">⭐ A类 (重点维护的贵宾)</span>
+                    <span class="arch-tag">🟧 B类 (基本花时间的用户)</span>
+                    <span class="arch-tag">🟪 C1类 (花钱买开心的)</span>
+                    <span class="arch-tag">🟥 C2类 (容易反咬一口的)</span>
+                    <span class="arch-tag">🔴 D类 (坚决不能沾惹的)</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="arch-layer">
+            <div class="arch-number">第二步</div>
+            <div class="arch-content">
+                <h3>系统里的算分机制（决定“他的级别是怎么定出来的”）</h3>
+                <p>这就是最底层的计算常识。把几十个杂乱信息归纳成这人最终的三项得分。</p>
+                <div class="arch-tags">
+                    <span class="arch-tag">学习的真实目的</span>
+                    <span class="arch-tag">他的底气保障 (钱/闲余时间/精力)</span>
+                    <span class="arch-tag">承受打击和挫折的心态</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="arch-layer">
+            <div class="arch-number">第一步</div>
+            <div class="arch-content">
+                <h3>死板的数据收集（描述“毫无感情的事实”）</h3>
+                <p>不掺杂任何判断和情绪，只管收集用户的客观回答、聊天记录中用词习惯、用啥价位手机。</p>
+                <div class="arch-tags">
+                    <span class="arch-tag">系统直接拉过来的表格信息</span>
+                    <span class="arch-tag">用户填过的各类问卷情况</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-header">
+        <div class="section-number">3</div>
+        <h2 class="section-title">怎么定人：常识看人的三个硬指标</h2>
+    </div>
+
+    <div class="formula-container">
+        <div class="formula">
+            <div class="formula-item">学习的真实动机</div>
+            <div class="formula-operator">×</div>
+            <div class="formula-item">他的基础条件</div>
+            <div class="formula-operator">×</div>
+            <div class="formula-item">抗挫折的心态</div>
+        </div>
+    </div>
+
+    <div class="axis-grid">
+        <div class="axis-card axis-1">
+            <h4>他的真实动机是啥？</h4>
+            <p>要分清他是真心想精修技能，还是单纯穷怕了急吼吼想来弄两个钱。我们要高度警惕极度缺钱又想要明天就能赚到现钱的人。</p>
+        </div>
+        <div class="axis-card axis-2">
+            <h4>这人客观条件撑得住吗？</h4>
+            <p>就看他有没有钱、空闲时间和多余体力。木桶效应只取他最差的那一点。晚上要带两个宝宝根本没时间的人，就算有钱来买课，也是马上就会退费的定时炸弹。</p>
+        </div>
+        <div class="axis-card axis-3">
+            <h4>万一学不会他心态咋样？</h4>
+            <p>这也是实际干活中最看得出人的核心指标：遇到不会读、读不准的时候，他是向内怪自己学艺不精去找方法，还是向外动不动马上骂公司是骗子。</p>
+        </div>
+    </div>
+
+    <div class="section-header" style="margin-top: 80px;">
+        <div class="section-number">4</div>
+        <h2 class="section-title">给分级的人用什么对策的方法单</h2>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>评定级别</th>
+                <th>这人到底长啥样？</th>
+                <th>通常是什么类型的性格？</th>
+                <th>我们要怎么派人伺候？</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><span class="tier-badge tier-a">A类 重点服务大客</span></td>
+                <td>各项条件好，出成绩概率极高。</td>
+                <td>乐于交流帮群里活跃气氛的人<br>爱钻研技术原理解的人</td>
+                <td><strong>让最精锐的员工一比一对接</strong>。给各种荣誉让他开心，多在群里夸，把这笔核心客情维护到底。</td>
+            </tr>
+            <tr>
+                <td><span class="tier-badge tier-b">B类 公司收入基础</span></td>
+                <td>意愿很强，通常是努力但兜里紧或遇到点阻力的人。</td>
+                <td>务实肯干想要变现的人<br>带娃压力大容易累的人<br>容易随着别人焦虑的人</td>
+                <td><strong>平时多安慰疏导，严禁给他们画饼</strong>。实打实规划接一单算一单的变现方式。遇到太累的人主动体谅，不要老是拿成功学去刺激他们。</td>
+            </tr>
+            <tr>
+                <td><span class="tier-badge tier-c1">C1类 情绪安抚库</span></td>
+                <td>纯粹是钱多找乐子，或者找老阿姨大叔讲讲话闲聊的人。</td>
+                <td>来随便玩玩的<br>看别人买他也买的凑热闹者</td>
+                <td><strong>不费口舌轻松陪聊即可</strong>。完全放弃逼他们去变现赚钱的手段，和他们随便聊天讲故事就行。</td>
+            </tr>
+            <tr>
+                <td><span class="tier-badge tier-c2">C2类 防范碰撞爆雷</span></td>
+                <td>动机极其想赚钱去还债，可是手里一无所有的人。</td>
+                <td>经常在退费边缘闹事的人</td>
+                <td><strong>赶紧降低他买新课程的念头</strong>。不许再让他升级加钱买大课，签好不保证学完肯定能找到活干的声明书。</td>
+            </tr>
+            <tr>
+                <td><span class="tier-badge tier-d">D类 坚决拒之门外</span></td>
+                <td>欠了一屁股烂账、要用治病钱来买课的人。或者不满18岁的。</td>
+                <td>穷凶极恶且欠巨债的人<br>或者生理生病残疾的人</td>
+                <td><strong>别聊了，斩断交易</strong>。让系统直接冻结不给扫码付钱的机会，立马踢走或者给公司的风控客诉老手去处理。</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="section-header">
+        <div class="section-number">5</div>
+        <h2 class="section-title">接下来的干活计划</h2>
+    </div>
+
+    <div class="timeline">
+        
+        <div class="timeline-item p0">
+            <div class="timeline-item-header">
+                <span class="timeline-tag tag-p0">本周内马上做完</span>
+                <h3>把要命的拒收人员明细塞进系统直接拦住</h3>
+            </div>
+            <div class="timeline-content">
+                <p>前面抽查的数据里，甚至有身患绝症、花呗都不够分期的残疾人因为想赚点小钱被导购收进来了，这就等于留了个必定爆炸的地雷。现在必须把「不满18岁、欠高利贷、透支所有卡、绝症重病」这些刺眼的词语设定成系统红线词，一旦碰到立即无法生成订单让主管来审核，绝不允许导购私自放行。</p>
+            </div>
+        </div>
+
+        <div class="timeline-item p1">
+            <div class="timeline-item-header">
+                <span class="timeline-tag tag-p1">两周内做完</span>
+                <h3>系统直接根据标签自动推算出分类结果</h3>
+            </div>
+            <div class="timeline-content">
+                <p>以后绝对不许班主任主管光依靠看到表格里记了两句用户想搞副业的话，就在那边瞎猜对方应该是个优质用户还是劣质用户。直接把判定标准做到系统里去算出来，系统里吐出来的只有这个客户确实属于哪个级别，不含糊，更不要员工自己拍脑门胡来定性。</p>
+            </div>
+        </div>
+
+        <div class="timeline-item p2">
+            <div class="timeline-item-header">
+                <span class="timeline-tag tag-p2">一个月内做完</span>
+                <h3>下发给基层用的沟通对策本子</h3>
+            </div>
+            <div class="timeline-content">
+                <p>发下具体命令：面对普通的B类人群，不能都念同一张说明台本了；遇到真的想靠自己双手干活拿一笔小钱的，设计一套庆祝其哪怕几块钱成功的套话；遇到被债务压得焦虑的，就发一篇心理减压的短文。真正做到一把钥匙开一把锁，绝不要用千篇一律的一通胡侃。</p>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>内部战略定标准说明 · 喜播负责人专属面板</p>
+        <p style="margin-top: 8px; opacity: 0.5;">完全使用人工审核与梳理生成的通俗易懂解释版</p>
+    </footer>
+
+</div>
+
+<script>
+    feather.replace();
+</script>
+</body>
+</html>
