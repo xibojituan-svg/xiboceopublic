@@ -107,7 +107,7 @@
       <div class="xibo-bg-glow-static"></div>
       <div class="xibo-nav-container">
         <nav class="xibo-nav-inner">
-          <a href="index.html" class="xibo-nav-logo">XIBO <span>CEO</span></a>
+          <a href="index.html" class="xibo-nav-logo" style="display: flex; align-items: center;"><img src="logo.png" alt="Logo" style="height: 24px; margin-right: 8px;">XIBO <span>CEO</span></a>
           
           <div class="xibo-nav-item ${isActive('index.html')}">
             <a href="index.html" class="xibo-nav-link">战略总纲图</a>
