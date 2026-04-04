@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>用户行为洞察报告 · 喜播2026</title>
+<title>真实客户聊天复盘与行为洞察集合 · 喜播2026</title>
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <style>
 :root{--bg:#09090b;--bg-s:#18181b;--bg-sh:#27272a;--bd:#3f3f46;--text:#f4f4f5;--dim:#a1a1aa;--muted:#71717a;--red:#ef4444;--orange:#f97316;--green:#10b981;--blue:#3b82f6;--purple:#8b5cf6;}
@@ -122,11 +122,191 @@ footer{text-align:center;padding:48px 0;border-top:1px solid var(--bd);color:var
 <!-- HERO -->
 <header class="hero">
   <div class="badge"><div class="dot"></div>用户行为研究 · 内部机密</div>
-  <h1>11个用户的聊天记录<br>能告诉我们什么</h1>
-  <p class="subtitle">基于付费用户深度聊天记录的行为维度收敛报告 · 从137维炼至32个核心决策维度</p>
+  <h1>客户解剖台与行为洞察集合</h1>
+  <p class="subtitle">深度聊天记录的活检复盘，从137维炼至32个核心决策维度 · 从137维炼至32个核心决策维度</p>
 </header>
 
+
+<style>
+/* 案例表格合并样式 */
+.core-reports { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 50px; }
+.report-card { background: rgba(255, 255, 255, 0.03); border: 1px solid var(--bd); border-radius: 12px; padding: 24px; text-decoration: none; color: var(--text); transition: all 0.3s ease; position: relative; overflow: hidden; }
+.report-card:hover { border-color: var(--orange); transform: translateY(-3px); background: rgba(249, 115, 22, 0.05); }
+.report-card h3 { color: var(--orange); margin-bottom: 12px; font-size: 18px; }
+.table-container { width: 100%; overflow-x: auto; background: var(--bg-s); border-radius: 12px; border: 1px solid var(--bd); margin-bottom: 64px; }
+.table-container table { width: 100%; border-collapse: collapse; text-align: left; }
+.table-container th, .table-container td { padding: 16px 20px; border-bottom: 1px solid var(--bd); }
+.table-container th { background: rgba(0, 0, 0, 0.2); color: var(--dim); font-weight: 600; font-size: 14px; white-space: nowrap; border-bottom: 1px solid var(--bd); }
+.table-container tr:last-child td { border-bottom: none; }
+.table-container tr:hover { background: rgba(255, 255, 255, 0.02); }
+.uid { font-family: monospace; color: #fff; font-weight: bold; }
+.case-tag { display: inline-block; padding: 4px 8px; background: rgba(16, 185, 129, 0.1); color: var(--green); border-radius: 4px; font-size: 12px; margin-bottom: 4px; }
+.case-tag-bad { background: rgba(239, 68, 68, 0.1); color: var(--red); }
+.action-link { display: inline-block; padding: 8px 16px; background: var(--red); color: white; text-decoration: none; border-radius: 6px; font-size: 14px; font-weight: 600; transition: filter 0.2s; white-space: nowrap; }
+.action-link:hover { filter: brightness(1.1); }
+.highlights { color: var(--dim); font-size: 14px; line-height: 1.5; }
+.highlights strong { color: #fff; }
+</style>
+
+<!-- 合并进来的案例清单 -->
+<section class="section" style="animation-delay:.05s">
+  <div class="sec-header">
+    <span class="sec-tag" style="background:rgba(239,68,68,.1);color:var(--red)">PART 00</span>
+    <div>
+      <div class="sec-title">核心案子解剖与复盘</div>
+      <div class="sec-desc">基于近期代表性案例的深度复盘记录，可以直接穿透至分析大图</div>
+    </div>
+  </div>
+  <div class="core-reports">
+        <a href="consumers_core_needs_story.html" class="report-card">
+            <h3>📖 消费者真相：他们到底在花钱买什么？</h3>
+            <p style="font-size: 14px; color: var(--text-dim);">【大白话故事版】剥开伪装的求学羊皮，看这帮成年人内心的真实呼声：想要魔法偷懒棒、要眼前的三十块钱、要被平等尊重的脾气。</p>
+        </a>
+        <a href="class_manager_best_practices.html" class="report-card">
+            <h3>🏆 班主任成单“四大绝杀技”与严打雷区</h3>
+            <p style="font-size: 14px; color: var(--text-dim);">【SOP实操指南】全面提炼聊天记录里最值钱的四个动作（如：真实作业1对1拆解法），并出台了全面封杀“爹味说教”的最高指令。</p>
+        </a>
+    </div>
+
+    <h2 style="font-size: 20px; border-left: 4px solid var(--brand-primary); padding-left: 12px; margin-bottom: 20px;">五个典型尸检/活检案子清单</h2>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th width="12%">案子编号 (客户)</th>
+                    <th width="15%">人群真面目</th>
+                    <th width="28%">关键剧情 (班主任的迷之操作/神操作)</th>
+                    <th width="30%">大白话洞察 (病因分析)</th>
+                    <th width="15%">操作栏</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- 案例 1 -->
+                <tr>
+                    <td>
+                        <div class="uid">UID 676332510</div>
+                        <div style="font-size: 12px; color: var(--text-dim); margin-top: 4px;">挚上生活</div>
+                    </td>
+                    <td>
+                        <span class="case-tag">极品学霸</span>
+                        <div style="font-size: 13px; margin-top: 5px;">耐心高、执行力极强，深夜主动交图</div>
+                    </td>
+                    <td>
+                        <div class="highlights">
+                            <strong>✅ 神级操作：</strong>班主任把他的作业截图出来，专门针对图里的光影发了1v1语音点评。<br><br>
+                            <strong>❌ 灾难操作：</strong>催课时爹味十足：“赚点钱还用人催呢？再不来我拿鞭子抽了”。
+                        </div>
+                    </td>
+                    <td>
+                        <div class="highlights">只要你点拨他的劳动成果，他就认你这个师傅。但花钱的成年人最痛恨被当成受气包的小学生训斥。</div>
+                    </td>
+                    <td>
+                        <a href="user/uid_676332510_report.html" class="action-link" target="_blank">🔍 剥开看详情</a>
+                    </td>
+                </tr>
+
+                <!-- 案例 2 -->
+                <tr>
+                    <td>
+                        <div class="uid">UID 300210894</div>
+                        <div style="font-size: 12px; color: var(--text-dim); margin-top: 4px;">juliet</div>
+                    </td>
+                    <td>
+                        <span class="case-tag">自由职业者</span>
+                        <div style="font-size: 13px; margin-top: 5px;">想找兼职，目的极其明确</div>
+                    </td>
+                    <td>
+                        <div class="highlights">
+                            <strong>❌ 惨烈车祸：</strong>被咱们 3 个销售微信号同时狂轰滥炸。其中一个甚至每天发两三千字的“AI长篇鸡汤模板”。
+                        </div>
+                    </td>
+                    <td>
+                        <div class="highlights">彻底暴露了咱们前端销售抢客的多头内耗。对于精明的职业人，大段黑话模板约等于电子垃圾，极度招恨。</div>
+                    </td>
+                    <td>
+                        <a href="user/uid_300210894_report.html" class="action-link" target="_blank">🔍 剥开看详情</a>
+                    </td>
+                </tr>
+
+                <!-- 案例 3 -->
+                <tr>
+                    <td>
+                        <div class="uid">UID 118444555</div>
+                        <div style="font-size: 12px; color: var(--text-dim); margin-top: 4px;">优植生活</div>
+                    </td>
+                    <td>
+                        <span class="case-tag case-tag-bad">极致潜水党</span>
+                        <div style="font-size: 13px; margin-top: 5px;">大半个月一句话不回</div>
+                    </td>
+                    <td>
+                        <div class="highlights">
+                            <strong>✅ 系统盲盒：</strong>人工介入全部不管用，只能靠不同价格和名头的诱饵海报（比如配音、小龙虾工具）每天甩过去。
+                        </div>
+                    </td>
+                    <td>
+                        <div class="highlights">永远叫不醒装睡的客户，不需要人工去问好，直接端上 1元、9.9元不同的便宜工具任他悄悄下单。</div>
+                    </td>
+                    <td>
+                        <a href="user/uid_118444555_report.html" class="action-link" target="_blank">🔍 剥开看详情</a>
+                    </td>
+                </tr>
+
+                <!-- 案例 4 -->
+                <tr>
+                    <td>
+                        <div class="uid">UID 58905989</div>
+                        <div style="font-size: 12px; color: var(--text-dim); margin-top: 4px;">晓白</div>
+                    </td>
+                    <td>
+                        <span class="case-tag case-tag-bad">高压体力工</span>
+                        <div style="font-size: 13px; margin-top: 5px;">每天加班到夜里十点的理发师</div>
+                    </td>
+                    <td>
+                        <div class="highlights">
+                            <strong>✅ 及时降维：</strong>班主任听出了他的疲惫底色，放弃了推销需要花力气练习的几千块大课，改卖便宜的工具捷径。
+                        </div>
+                    </td>
+                    <td>
+                        <div class="highlights">不要让体力透支的人再去干苦力活（学基本功）。顺着他们的懒惰，给他们卖省事儿的作弊神器。</div>
+                    </td>
+                    <td>
+                        <a href="user/uid_58905989_report.html" class="action-link" target="_blank">🔍 剥开看详情</a>
+                    </td>
+                </tr>
+
+                <!-- 案例 5 -->
+                <tr>
+                    <td>
+                        <div class="uid">UID 676999186</div>
+                        <div style="font-size: 12px; color: var(--text-dim); margin-top: 4px;">灿烂山花</div>
+                    </td>
+                    <td>
+                        <span class="case-tag">务实语文老师</span>
+                        <div style="font-size: 13px; margin-top: 5px;">52岁寻求安全感的体制内群体</div>
+                    </td>
+                    <td>
+                        <div class="highlights">
+                            <strong>✅ 情绪兜底：</strong>没有硬塞大课，而是通过师姐带领和每天打卡，提供了充足的老年大学式“陪伴情绪价值”。
+                        </div>
+                    </td>
+                    <td>
+                        <div class="highlights">对于这种有闲没安全感的人，买的不是技能，是和同一群体聚在一起有话聊、有人夸的场子。</div>
+                    </td>
+                    <td>
+                        <a href="user/uid_676999186_report.html" class="action-link" target="_blank">🔍 剥开看详情</a>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+
+</section>
+
 <!-- META STATS -->
+
 <div class="meta-strip">
   <div class="meta-item"><div class="meta-num">11</div><div class="meta-label">付费用户样本</div></div>
   <div class="meta-item"><div class="meta-num">7380</div><div class="meta-label">最高付费（元）</div></div>
