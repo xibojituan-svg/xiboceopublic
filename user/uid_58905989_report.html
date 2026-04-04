@@ -65,7 +65,7 @@
 </div>
     <div id="render"></div>
     <script>
-        document.getElementById("render").innerHTML = marked.parse(document.getElementById("content").innerText);
+        document.getElementById("render").innerHTML = marked.parse(document.getElementById("content").textContent);
     </script>
 </body>
 </html>
