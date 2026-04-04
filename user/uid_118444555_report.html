@@ -1,9 +1,26 @@
-# 用户体检与带教策略复盘 (UID: 118444555)
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>诊疗报告分析</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; max-width: 900px; margin: 0 auto; padding: 30px; background: #fdfdfd; color: #333; }
+        h1 { color: #8b4513; border-bottom: 2px dashed #d2b48c; padding-bottom: 10px; }
+        h2 { color: #D2691E; margin-top: 30px; }
+        h3 { color: #a0522d; }
+        blockquote { background: #fffaf0; border-left: 5px solid #d2b48c; padding: 15px; margin: 20px 0; }
+        p, li { font-size: 1.05em; }
+    </style>
+</head>
+<body>
+    <div id="content" style="display:none;"># 用户体检与带教策略复盘 (UID: 118444555)
 
-> **客户昵称**：优植生活
-> **现实互动状态**：一字未发，绝对静默
-> **当前状态**：在长达20天的单向信息轰炸中，从未回话，但已被打上“已转化”标签（转化了后端的 1元/9.9元 课程）。
-> **系统最终定级**：**隐藏的 T5类（谨慎跟风/微氪测试型） -> 典型的“自动售货机”收割案例**
+&gt; **客户昵称**：优植生活
+&gt; **现实互动状态**：一字未发，绝对静默
+&gt; **当前状态**：在长达20天的单向信息轰炸中，从未回话，但已被打上“已转化”标签（转化了后端的 1元/9.9元 课程）。
+&gt; **系统最终定级**：**隐藏的 T5类（谨慎跟风/微氪测试型） -&gt; 典型的“自动售货机”收割案例**
 
 ---
 
@@ -51,3 +68,10 @@
     把【喜播大雪】的这套朋友圈和私聊推款库工具化！对于静默人群，我们的班主任系统应该像一个“盲盒抽奖机”——今天推送语音兼职、明天推送AI代写、后天推送自动做视频。
     **只要单价卡在 1元 到 9.9元 之间，总有一款低阶需求能击穿这个静默用户的防备。** 等他买了 9.9 元的课在后台留下了表单数据，我们的模型再来对他进行 ABCD 精准分层判定！
     这就是用“低价饵料”去破冰“死海流量”的最佳样板戏！
+</div>
+    <div id="render"></div>
+    <script>
+        document.getElementById("render").innerHTML = marked.parse(document.getElementById("content").innerText);
+    </script>
+</body>
+</html>

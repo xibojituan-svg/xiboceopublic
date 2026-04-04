@@ -1,9 +1,26 @@
-# 用户体检与带教策略复盘 (UID: 300210894)
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>诊疗报告分析</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; max-width: 900px; margin: 0 auto; padding: 30px; background: #fdfdfd; color: #333; }
+        h1 { color: #8b4513; border-bottom: 2px dashed #d2b48c; padding-bottom: 10px; }
+        h2 { color: #D2691E; margin-top: 30px; }
+        h3 { color: #a0522d; }
+        blockquote { background: #fffaf0; border-left: 5px solid #d2b48c; padding: 15px; margin: 20px 0; }
+        p, li { font-size: 1.05em; }
+    </style>
+</head>
+<body>
+    <div id="content" style="display:none;"># 用户体检与带教策略复盘 (UID: 300210894)
 
-> **客户昵称**：juliet
-> **现实互动状态**：开局极好（秒回确认身份），随后被班主任暴力刷屏吓到彻底装死。
-> **当前状态**：被3个不同的销售号狂轰滥炸，但在“已转化”名单中（预估为在其他号低价转化）。
-> **系统最终定级**：**高潜力的 B类（务实变现的自由职业者） -> 被“机器人推销”严重恶心到的反面教材**
+&gt; **客户昵称**：juliet
+&gt; **现实互动状态**：开局极好（秒回确认身份），随后被班主任暴力刷屏吓到彻底装死。
+&gt; **当前状态**：被3个不同的销售号狂轰滥炸，但在“已转化”名单中（预估为在其他号低价转化）。
+&gt; **系统最终定级**：**高潜力的 B类（务实变现的自由职业者） -&gt; 被“机器人推销”严重恶心到的反面教材**
 
 ---
 
@@ -48,3 +65,10 @@
 1.  **严禁交叉轰炸**：同一线索，在规定周期内只能由**一个主理班主任**跟进。绝不允许出现三个号同时对同一个客户卖不同课的乱象，这是把客户当韭菜割，极其伤品牌！
 2.  **严禁“长文字暴力刷屏”**：对于明确标为【A类/B类 的高薪或自由职业人群】，**立刻停用**那些大段大段带表情包的微商式文案！这种人群有阅读智商洁癖，他们喜欢简短的、数据化的利益点（比如：今天有个 300 块的单子，缺自由撰稿人，你接不接？）。多说一句废话，都会引发他们强烈的社交反感。
 3.  **精细化分层服务**：对于这种主动打上“自由职业者”标签的高潜用户，系统应该立刻跳出警报，将其转接给**高级合伙人/金牌班主任**进行人工 VIP 级的高效沟通，绝不能让她混在大班池子里被群发机器人恶心死。
+</div>
+    <div id="render"></div>
+    <script>
+        document.getElementById("render").innerHTML = marked.parse(document.getElementById("content").innerText);
+    </script>
+</body>
+</html>

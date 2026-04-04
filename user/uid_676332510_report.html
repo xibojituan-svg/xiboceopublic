@@ -1,9 +1,26 @@
-# 用户体检与带教策略复盘 (UID: 676332510)
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>诊疗报告分析</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; max-width: 900px; margin: 0 auto; padding: 30px; background: #fdfdfd; color: #333; }
+        h1 { color: #8b4513; border-bottom: 2px dashed #d2b48c; padding-bottom: 10px; }
+        h2 { color: #D2691E; margin-top: 30px; }
+        h3 { color: #a0522d; }
+        blockquote { background: #fffaf0; border-left: 5px solid #d2b48c; padding: 15px; margin: 20px 0; }
+        p, li { font-size: 1.05em; }
+    </style>
+</head>
+<body>
+    <div id="content" style="display:none;"># 用户体检与带教策略复盘 (UID: 676332510)
 
-> **客户昵称**：挚上生活
-> **现实互动状态**：执行力极高，主动多次交作业，但在后期跟进中遭遇到班主任的“爹味说教”。
-> **当前状态**：成功转化（预期为转化了 AI短视频的新手村/进阶课）。
-> **系统最终定级**：**极度优质的 A类/B类（高执行力的务实变现者）**
+&gt; **客户昵称**：挚上生活
+&gt; **现实互动状态**：执行力极高，主动多次交作业，但在后期跟进中遭遇到班主任的“爹味说教”。
+&gt; **当前状态**：成功转化（预期为转化了 AI短视频的新手村/进阶课）。
+&gt; **系统最终定级**：**极度优质的 A类/B类（高执行力的务实变现者）**
 
 ---
 
@@ -46,3 +63,10 @@
     对于打上【A类/B类、且有过互动】的优质流量线索，停止发送那些大段的行业认知长文！强推我们的班主任去点评客户的作业（不管写的有多烂）。**“因为你关心他的劳动成果，他才会关心你的课程价格。”** 这一条，必须写进金牌班主任的考核 SOP 里！
 2.  **绝对禁止“降智/爹味型”话术**：
     告诉所有的销售管培团队：**我们是陪伴式教练，不是高中教导主任！** 在各类催促话术中，永久禁用类似于“拿鞭子抽”、“少壮不努力”、“赚钱不用人催”这种带有强烈说教色彩和智商压制色彩的词汇。永远用平等的“利益驱动词”（如：今晚拆解 300 元商单，留好位置了）来替代“爹味压迫词”。
+</div>
+    <div id="render"></div>
+    <script>
+        document.getElementById("render").innerHTML = marked.parse(document.getElementById("content").innerText);
+    </script>
+</body>
+</html>

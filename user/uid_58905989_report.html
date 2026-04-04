@@ -1,9 +1,26 @@
-# 用户体检与带教策略复盘 (UID: 58905989)
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>诊疗报告分析</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; max-width: 900px; margin: 0 auto; padding: 30px; background: #fdfdfd; color: #333; }
+        h1 { color: #8b4513; border-bottom: 2px dashed #d2b48c; padding-bottom: 10px; }
+        h2 { color: #D2691E; margin-top: 30px; }
+        h3 { color: #a0522d; }
+        blockquote { background: #fffaf0; border-left: 5px solid #d2b48c; padding: 15px; margin: 20px 0; }
+        p, li { font-size: 1.05em; }
+    </style>
+</head>
+<body>
+    <div id="content" style="display:none;"># 用户体检与带教策略复盘 (UID: 58905989)
 
-> **客户昵称**：晓白 / 26岁 / 成都
-> **现实身份**：理发师（每天晚上 9:30 以后才下班）
-> **当前状态**：拒绝了高客单价正价课，但在后续静默中被打上“已转化”标签（预估为转化了后续 1元/9.9元的 AI 效率副业课）
-> **系统最终定级**：**高危 C2类 -> 降维挽单成功的经典案例**
+&gt; **客户昵称**：晓白 / 26岁 / 成都
+&gt; **现实身份**：理发师（每天晚上 9:30 以后才下班）
+&gt; **当前状态**：拒绝了高客单价正价课，但在后续静默中被打上“已转化”标签（预估为转化了后续 1元/9.9元的 AI 效率副业课）
+&gt; **系统最终定级**：**高危 C2类 -&gt; 降维挽单成功的经典案例**
 
 ---
 
@@ -45,3 +62,10 @@
 
 1.  **明确【拒收标准】**：如果系统摸底发现对方是“全天重体力劳动/服务业，晚上极晚下班”的人，**彻底禁止班主任向他们推销需要深厚功底的“播音高阶课”**！
 2.  **设置【降维拦截网】**：所有被播音高阶课筛下来（或者发现买不起、没时间）的 C2/D 类人群，立刻把他们放进【喜播大树】这种以 **AI 工具课、低单价技能课（1元 / 9.9元 / 99元）** 为核心的池子里。既然他们卷不了硬技术，就卖给他们“一键生成”的软工具。不仅不伤客，还能收割下沉市场的利润！
+</div>
+    <div id="render"></div>
+    <script>
+        document.getElementById("render").innerHTML = marked.parse(document.getElementById("content").innerText);
+    </script>
+</body>
+</html>
