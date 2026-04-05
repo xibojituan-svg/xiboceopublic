@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>喜播集团前后端激励考核方案 V1.0 — CEO战略门户</title>
+    <meta name="description" content="基于法医级审计与平衡计分卡理论设计的新一代绩效体系，以消费者权益为锚点，短期增长与长期健康双轨并行。">
+    <link rel="icon" href="favicon.ico">
+    <script src="navbar.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        :root {
+            --bg: #0a0e1a;
+            --card: #111827;
+            --card-alt: #1a2236;
+            --border: #1e293b;
+            --text: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --accent: #6366f1;
+            --accent-light: #818cf8;
+            --green: #10b981;
+            --green-bg: rgba(16,185,129,0.1);
+            --red: #ef4444;
+            --red-bg: rgba(239,68,68,0.08);
+            --yellow: #f59e0b;
+            --yellow-bg: rgba(245,158,11,0.1);
+            --blue: #3b82f6;
+            --blue-bg: rgba(59,130,246,0.1);
+            --purple: #a855f7;
+            --purple-bg: rgba(168,85,247,0.1);
+            --orange: #f97316;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+        .hero {
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+            border-bottom: 1px solid var(--border);
+            padding: 60px 40px 50px;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 50%, rgba(99,102,241,0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 80%, rgba(168,85,247,0.06) 0%, transparent 40%);
+            animation: pulse 8s ease-in-out infinite alternate;
+        }
+        @keyframes pulse { from { opacity: 0.5; } to { opacity: 1; } }
+        .hero-inner { max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; }
+        .version-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent), var(--purple));
+            color: white;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+        .hero h1 {
+            font-size: 36px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #e0e7ff, #c7d2fe, #a5b4fc);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 12px;
+        }
+        .hero-subtitle {
+            font-size: 16px;
+            color: var(--text-secondary);
+            max-width: 700px;
+            line-height: 1.8;
+        }
+        .hero-meta {
+            margin-top: 24px;
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        .hero-meta-item {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        .hero-meta-item strong { color: var(--accent-light); }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 40px 80px; }
+
+        /* Philosophy Banner */
+        .philosophy {
+            background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(168,85,247,0.05));
+            border: 1px solid rgba(99,102,241,0.2);
+            border-radius: 16px;
+            padding: 32px 36px;
+            margin-bottom: 40px;
+        }
+        .philosophy h2 { font-size: 18px; color: var(--accent-light); margin-bottom: 12px; }
+        .philosophy .formula {
+            font-size: 22px;
+            font-weight: 700;
+            text-align: center;
+            padding: 16px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            margin: 16px 0;
+            letter-spacing: 1px;
+        }
+        .philosophy .formula .gt { color: var(--yellow); margin: 0 8px; }
+        .philosophy p { color: var(--text-secondary); font-size: 14px; }
+
+        /* Section Styles */
+        .section { margin-bottom: 48px; }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+        .section-num {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+        .section-title { font-size: 22px; font-weight: 700; }
+
+        /* Cards */
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 20px; }
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 28px;
+            transition: all 0.3s ease;
+        }
+        .card:hover { border-color: rgba(99,102,241,0.3); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
+        .card h3 { font-size: 16px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        .card p { color: var(--text-secondary); font-size: 13px; line-height: 1.8; }
+
+        /* Tables */
+        .table-wrap { overflow-x: auto; margin: 16px 0; border-radius: 12px; border: 1px solid var(--border); }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        thead { background: var(--card-alt); }
+        th { text-align: left; padding: 14px 16px; font-weight: 600; color: var(--text-secondary); font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; }
+        td { padding: 12px 16px; border-top: 1px solid var(--border); }
+        tr:hover td { background: rgba(99,102,241,0.03); }
+        .grade-s { color: #ef4444; font-weight: 700; }
+        .grade-a { color: #f97316; font-weight: 700; }
+        .grade-b { color: #f59e0b; font-weight: 700; }
+
+        /* Pill Tags */
+        .pill {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .pill-green { background: var(--green-bg); color: var(--green); }
+        .pill-red { background: var(--red-bg); color: var(--red); }
+        .pill-yellow { background: var(--yellow-bg); color: var(--yellow); }
+        .pill-blue { background: var(--blue-bg); color: var(--blue); }
+        .pill-purple { background: var(--purple-bg); color: var(--purple); }
+
+        /* Highlight Box */
+        .highlight-box {
+            border-radius: 12px;
+            padding: 24px 28px;
+            margin: 16px 0;
+            border-left: 4px solid;
+        }
+        .highlight-green { background: var(--green-bg); border-color: var(--green); }
+        .highlight-red { background: var(--red-bg); border-color: var(--red); }
+        .highlight-yellow { background: var(--yellow-bg); border-color: var(--yellow); }
+        .highlight-blue { background: var(--blue-bg); border-color: var(--blue); }
+        .highlight-box h4 { font-size: 14px; margin-bottom: 8px; }
+        .highlight-box p, .highlight-box li { font-size: 13px; color: var(--text-secondary); line-height: 1.8; }
+        .highlight-box ul { padding-left: 18px; }
+
+        /* Architecture Diagram */
+        .arch-diagram {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 32px;
+            margin: 20px 0;
+        }
+        .arch-row {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+        .arch-block {
+            flex: 1;
+            min-width: 200px;
+            background: var(--card-alt);
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+        .arch-block-title { font-size: 12px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+        .arch-block-value { font-size: 20px; font-weight: 800; }
+        .arch-block-desc { font-size: 11px; color: var(--text-secondary); margin-top: 6px; }
+        .arch-arrow { text-align: center; font-size: 24px; color: var(--accent); margin: 8px 0; }
+
+        /* Timeline */
+        .timeline { position: relative; padding-left: 30px; }
+        .timeline::before { content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 2px; background: var(--border); }
+        .timeline-item { position: relative; margin-bottom: 28px; }
+        .timeline-item::before { content: ''; position: absolute; left: -26px; top: 6px; width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--accent); background: var(--bg); }
+        .timeline-item.active::before { background: var(--accent); }
+        .timeline-label { font-size: 12px; color: var(--accent-light); font-weight: 600; margin-bottom: 4px; }
+        .timeline-content { color: var(--text-secondary); font-size: 13px; }
+
+        /* Cost Comparison */
+        .cost-bar { margin: 10px 0; }
+        .cost-bar-label { font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; display: flex; justify-content: space-between; }
+        .cost-bar-track { height: 10px; background: var(--card-alt); border-radius: 5px; overflow: hidden; }
+        .cost-bar-fill { height: 100%; border-radius: 5px; transition: width 1s ease; }
+
+        /* Footer */
+        .footer {
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .footer-text { color: var(--text-secondary); font-size: 12px; }
+        .btn {
+            display: inline-block;
+            padding: 10px 22px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-primary { background: var(--accent); color: white; }
+        .btn-primary:hover { background: var(--accent-light); }
+        .btn-ghost { background: transparent; color: var(--text-secondary); border: 1px solid var(--border); }
+        .btn-ghost:hover { border-color: var(--accent); color: var(--accent-light); }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero { padding: 30px 20px; }
+            .hero h1 { font-size: 24px; }
+            .container { padding: 20px; }
+            .card-grid { grid-template-columns: 1fr; }
+            .arch-row { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero">
+    <div class="hero-inner">
+        <span class="version-badge">V1.0 · 2026年4月定版</span>
+        <h1>前后端团队激励考核方案</h1>
+        <p class="hero-subtitle">基于法医级审计发现的五大致命缺陷、CEO"活下来保5000万"战略纲领、平衡计分卡理论与全球追溯扣回最佳实践，设计的<strong>以消费者权益为锚点</strong>的新一代绩效体系。</p>
+        <div class="hero-meta">
+            <span class="hero-meta-item">设计原则：<strong>奖勤不奖恶 · 罚过不罚误 · 量化可度量 · 简洁可执行</strong></span>
+            <span class="hero-meta-item">理论基础：<strong>平衡计分卡 · 行为经济学 · SaaS Clawback机制</strong></span>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+
+    <!-- 设计哲学 -->
+    <div class="philosophy">
+        <h2>⚖️ 利益优先级铁律</h2>
+        <div class="formula">
+            <span style="color:#10b981">消费者利益</span>
+            <span class="gt">></span>
+            <span style="color:#6366f1">公司长期健康</span>
+            <span class="gt">></span>
+            <span style="color:#f59e0b">员工短期收入</span>
+        </div>
+        <p>新方案不剥夺任何合规员工的应得收入，而是通过结构性调整，让"做正确的事"和"赚更多的钱"指向同一个方向。</p>
+    </div>
+
+    <!-- 第一章：旧方案缺陷 -->
+    <div class="section">
+        <div class="section-header">
+            <div class="section-num" style="background:var(--red-bg);color:var(--red);">1</div>
+            <h2 class="section-title">旧方案的五大致命缺陷</h2>
+        </div>
+        <div class="card-grid">
+            <div class="card">
+                <h3><span class="pill pill-red">F1</span> 纯增量驱动，零减量惩罚</h3>
+                <p>只奖励成交，不惩罚作恶。田颖对零收入考编生毒鸡汤逼单一整天（UID 677039046），考核体系无任何反应。</p>
+            </div>
+            <div class="card">
+                <h3><span class="pill pill-red">F2</span> 转化率=唯一KPI</h3>
+                <p>退费同时砍分子(成交数)且加分母(退费扣回)，对转化率构成"双重打击"，瞬间变成"拼死也不让用户退"的激励扭曲。</p>
+            </div>
+            <div class="card">
+                <h3><span class="pill pill-red">F3</span> "以换代退"对冲规则</h3>
+                <p>后端班主任退费/复购可交叉抵消，催生了"退旗舰保基础"、"退课程买设备"等精密操控术。</p>
+            </div>
+            <div class="card">
+                <h3><span class="pill pill-red">F4</span> 130万=0提成的断崖生死线</h3>
+                <p>有声组长GMV低于130万提成为零，直接制造月末极端逼单恐慌，压力层层向下传导到基层。</p>
+            </div>
+            <div class="card">
+                <h3><span class="pill pill-red">F5</span> 红线仅覆盖1条场景</h3>
+                <p>合规红线仅有"20天后退费造假"一条。对PUA话术、借贷诱导、重症逼单、AI冒充真人等41+起D级违规案卷，<strong>无任何惩戒机制</strong>。</p>
+            </div>
+            <div class="card" style="border-color:rgba(99,102,241,0.3);background:linear-gradient(135deg,var(--card),rgba(99,102,241,0.05));">
+                <h3>💡 旧方案一句话总结</h3>
+                <p style="color:var(--text);font-weight:500;">考核只奖励"成交"，不惩罚"作恶"——这就是基层系统性违规的制度性根源。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 第二章：前端方案 -->
+    <div class="section">
+        <div class="section-header">
+            <div class="section-num" style="background:var(--blue-bg);color:var(--blue);">2</div>
+            <h2 class="section-title">前端团队激励方案（组长 + 助教）</h2>
+        </div>
+
+        <!-- 架构图 -->
+        <div class="arch-diagram">
+            <p style="font-size:12px;color:var(--text-secondary);text-align:center;margin-bottom:20px;">薪酬结构总览</p>
+            <div class="arch-row">
+                <div class="arch-block" style="border-color:var(--blue);">
+                    <div class="arch-block-title">效能奖金</div>
+                    <div class="arch-block-value" style="color:var(--blue);">70%</div>
+                    <div class="arch-block-desc">净GMV × 阶梯提点<br>保障干劲与基本盘</div>
+                </div>
+                <div class="arch-block" style="border-color:var(--green);">
+                    <div class="arch-block-title">质量守护金</div>
+                    <div class="arch-block-value" style="color:var(--green);">30%</div>
+                    <div class="arch-block-desc">净GMV × 2%，90天锁定<br>追溯扣回机制保底线</div>
+                </div>
+            </div>
+            <div class="arch-row">
+                <div class="arch-block">
+                    <div class="arch-block-title">里程碑奖金</div>
+                    <div class="arch-block-value" style="color:var(--yellow);font-size:16px;">1K~3K</div>
+                    <div class="arch-block-desc">需同时满足质量门槛解锁</div>
+                </div>
+                <div class="arch-block">
+                    <div class="arch-block-title">D类拦截奖</div>
+                    <div class="arch-block-value" style="color:var(--purple);font-size:16px;">150元/人</div>
+                    <div class="arch-block-desc">前端主动拦截高危用户<br>正向奖励替代被动惩罚</div>
+                </div>
+            </div>
+        </div>
+
+        <h3 style="font-size:16px;margin:28px 0 16px;">全职组长 · 渐进式效能奖金阶梯</h3>
+        <div class="highlight-box highlight-green">
+            <h4>🔑 核心变革：消除130万=0的断崖生死线</h4>
+            <p>从0开始计提，彻底消除"全有或全无"的月末恐慌。这是行为经济学中经典的渐进式激励设计。</p>
+        </div>
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>净GMV区间</th><th>新方案提点</th><th>旧方案提点</th><th>变化</th></tr></thead>
+                <tbody>
+                    <tr><td>0 ~ 50万</td><td style="color:var(--green);font-weight:600;">0.10%</td><td style="color:var(--red);">0%（零收入）</td><td><span class="pill pill-green">新增保底</span></td></tr>
+                    <tr><td>50万 ~ 100万</td><td>0.20%</td><td>0%</td><td><span class="pill pill-green">新增</span></td></tr>
+                    <tr><td>100万 ~ 150万</td><td>0.30%</td><td>0%~0.05%</td><td><span class="pill pill-green">显著提升</span></td></tr>
+                    <tr><td>150万 ~ 200万</td><td>0.40%</td><td>0.05%~0.25%</td><td><span class="pill pill-green">提升</span></td></tr>
+                    <tr><td>200万 ~ 300万</td><td>0.50%</td><td>0.25%~0.40%</td><td><span class="pill pill-yellow">微调</span></td></tr>
+                    <tr><td>300万以上</td><td>0.55%</td><td>0.40%~0.55%</td><td><span class="pill pill-blue">持平</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3 style="font-size:16px;margin:28px 0 16px;">全职/兼职助教 · 效能奖金</h3>
+        <div class="card-grid">
+            <div class="card">
+                <h3>全职助教提点</h3>
+                <div class="table-wrap" style="margin:0;">
+                    <table>
+                        <thead><tr><th>个人净GMV</th><th>提点</th></tr></thead>
+                        <tbody>
+                            <tr><td>0 ~ 3万</td><td>4%</td></tr>
+                            <tr><td>3万 ~ 5万</td><td>5%</td></tr>
+                            <tr><td>5万 ~ 7万</td><td>7%</td></tr>
+                            <tr><td>7万 ~ 9万</td><td>9%</td></tr>
+                            <tr><td>9万 ~ 11万</td><td>11%</td></tr>
+                            <tr><td>11万以上</td><td style="font-weight:600;">13%<span style="font-size:11px;color:var(--text-secondary);margin-left:6px;">（影子期保持不变）</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card">
+                <h3>兼职助教提点</h3>
+                <div class="table-wrap" style="margin:0;">
+                    <table>
+                        <thead><tr><th>转化率区间</th><th>提点</th></tr></thead>
+                        <tbody>
+                            <tr><td>> 6%</td><td>13%</td></tr>
+                            <tr><td>5% ~ 6%</td><td>10%</td></tr>
+                            <tr><td>4% ~ 5%</td><td>8%</td></tr>
+                            <tr><td>3% ~ 4%</td><td>6%</td></tr>
+                            <tr><td>2% ~ 3%</td><td>5%</td></tr>
+                            <tr><td>≤ 2%</td><td>4%</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <h3 style="font-size:16px;margin:28px 0 16px;">质量守护金 · 追溯扣回机制（90天锁定期）</h3>
+        <div class="highlight-box highlight-yellow">
+            <h4>⚠️ 设计原理（行为经济学 × SaaS Clawback）</h4>
+            <p>员工从每笔成交中额外获得一笔"质量保证金"，但有<strong>90天锁定期</strong>。锁定期内客户未退费/投诉 → 全额释放为收入；发生问题 → 按严重程度扣回。利用"损失厌恶"心理驱动合规行为。</p>
+        </div>
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>触发事件</th><th>扣回比例</th><th>说明</th></tr></thead>
+                <tbody>
+                    <tr><td>90天内无退费/投诉</td><td style="color:var(--green);font-weight:700;">✅ 全额释放</td><td>合规员工不受任何损失</td></tr>
+                    <tr><td>客户90天内正常退费</td><td>扣回该客户100%保证金</td><td>退费=成交质量存疑</td></tr>
+                    <tr><td>客户发起内部投诉（一般）</td><td>扣回该客户50%保证金</td><td>投诉说明服务有瑕疵</td></tr>
+                    <tr><td>客户发起外部投诉/12315</td><td style="color:var(--red);font-weight:700;">扣回200%保证金</td><td>品牌损害，加倍扣回</td></tr>
+                    <tr><td>质检查实存在违规话术</td><td style="color:var(--red);font-weight:700;">当月全部守护金归零</td><td>零容忍</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 第三章：后端方案 -->
+    <div class="section">
+        <div class="section-header">
+            <div class="section-num" style="background:var(--green-bg);color:var(--green);">3</div>
+            <h2 class="section-title">后端团队激励方案（组长 + 班主任）</h2>
+        </div>
+
+        <div class="arch-diagram">
+            <p style="font-size:12px;color:var(--text-secondary);text-align:center;margin-bottom:20px;">薪酬结构总览</p>
+            <div class="arch-row">
+                <div class="arch-block" style="border-color:var(--green);">
+                    <div class="arch-block-title">服务效能金</div>
+                    <div class="arch-block-value" style="color:var(--green);font-size:16px;">基础金 × 人效 × NPS</div>
+                    <div class="arch-block-desc">NPS系数驱动满意度</div>
+                </div>
+                <div class="arch-block" style="border-color:var(--blue);">
+                    <div class="arch-block-title">复购提成</div>
+                    <div class="arch-block-value" style="color:var(--blue);font-size:16px;">独立核算</div>
+                    <div class="arch-block-desc">取消"以换代退"对冲</div>
+                </div>
+                <div class="arch-block" style="border-color:var(--yellow);">
+                    <div class="arch-block-title">质量守护金</div>
+                    <div class="arch-block-value" style="color:var(--yellow);font-size:16px;">20元/人</div>
+                    <div class="arch-block-desc">90天锁定期追溯扣回</div>
+                </div>
+                <div class="arch-block" style="border-color:var(--purple);">
+                    <div class="arch-block-title">留存奖金</div>
+                    <div class="arch-block-value" style="color:var(--purple);font-size:16px;">全新引入</div>
+                    <div class="arch-block-desc">消课率 + 合格率 + 签约率</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="highlight-box highlight-blue">
+            <h4>🔑 核心变革：取消"退费-复购对冲"规则</h4>
+            <p>退费就是退费，复购就是复购，两条线<strong>完全独立核算</strong>。同一用户"退课A买课B"按两笔独立交易处理，消除班主任"以换代退"的操控空间。</p>
+        </div>
+
+        <h3 style="font-size:16px;margin:28px 0 16px;">NPS系数 · 满意度直接决定收入</h3>
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>学员满意度评分</th><th>NPS系数</th><th>对收入的影响</th></tr></thead>
+                <tbody>
+                    <tr><td>≥ 90分</td><td style="color:var(--green);font-weight:700;">1.20</td><td>优秀加成+20%</td></tr>
+                    <tr><td>85 ~ 89分</td><td style="color:var(--green);">1.10</td><td>良好加成+10%</td></tr>
+                    <tr><td>80 ~ 84分</td><td>1.00</td><td>基准（不加不减）</td></tr>
+                    <tr><td>70 ~ 79分</td><td style="color:var(--yellow);">0.85</td><td>扣减-15%</td></tr>
+                    <tr><td>< 70分</td><td style="color:var(--red);font-weight:700;">0.60</td><td>严重扣减-40%</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <p style="font-size:12px;color:var(--text-secondary);margin-top:8px;">* NPS问卷由客服部（杜康杰）牵头设计，产研部提供小程序自动推送能力。结营+3天内未填写的学员不纳入计算。</p>
+
+        <h3 style="font-size:16px;margin:28px 0 16px;">留存奖金 · 长期价值锚（全新引入）</h3>
+        <div class="card-grid">
+            <div class="card">
+                <h3>📚 消课完成率奖</h3>
+                <p>消课完成率 ≥ 80%时触发：<br><strong>每超1%，奖金+50元</strong><br><br>让班主任关注"学员是否真的在上课"，而非仅仅关心"卖了多少东西"。</p>
+            </div>
+            <div class="card">
+                <h3>🎓 学员合格率奖</h3>
+                <p>学员合格率 ≥ 75%（公司战略目标）：<br><strong>额外奖励 1,500元/营期</strong><br><br>CEO战略要求"学员合格率75%"，直接写入班主任收入公式。</p>
+            </div>
+            <div class="card">
+                <h3>🏆 签约/变现率奖</h3>
+                <p>- 学员达成平台签约：<strong>500元/人</strong><br>- 学员首月收入>500元：<strong>300元/人</strong><br><br>第一次把"学员是否真的学有所成"写进了收入公式。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 第四章：合规红线 -->
+    <div class="section">
+        <div class="section-header">
+            <div class="section-num" style="background:var(--red-bg);color:var(--red);">4</div>
+            <h2 class="section-title">合规红线体系（从1条扩展到6条）</h2>
+        </div>
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>编号</th><th>违规行为</th><th>级别</th><th>处罚</th><th>来源案卷</th></tr></thead>
+                <tbody>
+                    <tr><td>R1</td><td>引导/教唆学员20天后退款（业绩造假）</td><td class="grade-a">A类</td><td>开除</td><td>原有红线</td></tr>
+                    <tr><td style="font-weight:700;">R2</td><td style="font-weight:500;">诱导无收入/待业用户使用花呗/消费贷购课</td><td class="grade-a">A类</td><td>开除</td><td>UID 677039046等</td></tr>
+                    <tr><td style="font-weight:700;">R3</td><td style="font-weight:500;">使用挑拨家庭关系话术对抗退费</td><td class="grade-b">B类</td><td>当月效能奖金归零 + 书面警告</td><td>UID 183220041等</td></tr>
+                    <tr><td style="font-weight:700;">R4</td><td style="font-weight:500;">对重症患者/车祸/ICU家属/高龄银发族强留逼单</td><td class="grade-a">A类</td><td>开除</td><td>UID 677030777等</td></tr>
+                    <tr><td style="font-weight:700;">R5</td><td style="font-weight:500;">私自挂载未报备AI工具冒充真人服务</td><td class="grade-s">S类</td><td>立即解除合同 + 追究法律责任</td><td>UID 341425027</td></tr>
+                    <tr><td style="font-weight:700;">R6</td><td style="font-weight:500;">使用年龄焦虑/性别对立/职场恐吓等PUA促单</td><td class="grade-b">B类</td><td>当月效能奖金降一档 + 取消里程碑资格</td><td>UID 677039046等</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 第五章：成本测算 -->
+    <div class="section">
+        <div class="section-header">
+            <div class="section-num" style="background:var(--yellow-bg);color:var(--yellow);">5</div>
+            <h2 class="section-title">成本影响测算 · 守住5000万利润底线</h2>
+        </div>
+        <div class="card-grid">
+            <div class="card">
+                <h3>📊 组长总成本占GMV</h3>
+                <div class="cost-bar">
+                    <div class="cost-bar-label"><span>旧方案</span><span style="color:var(--text);">0.80%</span></div>
+                    <div class="cost-bar-track"><div class="cost-bar-fill" style="width:80%;background:var(--text-secondary);"></div></div>
+                </div>
+                <div class="cost-bar">
+                    <div class="cost-bar-label"><span>新方案</span><span style="color:var(--accent-light);">0.90%</span></div>
+                    <div class="cost-bar-track"><div class="cost-bar-fill" style="width:90%;background:linear-gradient(90deg,var(--accent),var(--purple));"></div></div>
+                </div>
+                <p style="margin-top:12px;">增量仅 <strong>0.10个百分点</strong>，换来退费率系统性下降。</p>
+            </div>
+            <div class="card">
+                <h3>💰 年度增量成本</h3>
+                <p style="font-size:28px;font-weight:800;color:var(--accent-light);margin:12px 0;">≈ 46万/年</p>
+                <p>按有声线4.576亿GMV计算。<br>对比5000万利润底线，占比<strong>不到0.1%</strong>。<br><br>可撬动<strong>数百万级</strong>的退费成本缩减——极高杠杆投资。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 第六章：落地节奏 -->
+    <div class="section">
+        <div class="section-header">
+            <div class="section-num" style="background:var(--purple-bg);color:var(--purple);">6</div>
+            <h2 class="section-title">落地节奏 · 四阶段推行计划</h2>
+        </div>
+        <div class="timeline">
+            <div class="timeline-item active">
+                <div class="timeline-label">第1~2个月 · 影子运行期</div>
+                <div class="timeline-content">新旧方案双轨并行，按旧方案发薪，新方案只做模拟计算。<strong>目的</strong>：验证不会大规模降薪；精确校准NPS系数、守护金比例等参数；给员工心理准备期。</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-label">第3~4个月 · 试点推行期</div>
+                <div class="timeline-content">选择1-2个小组进行新方案试点，与对照组对比转化率、退费率、NPS、投诉数等核心指标。</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-label">第5个月起 · 全面推行期</div>
+                <div class="timeline-content">全公司切换新方案。同步上线个人绩效日报、组长仪表盘、CEO驾驶舱三级报表体系。</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-label">每季度 · 迭代优化期</div>
+                <div class="timeline-content">基于数据复盘，动态调整各项阈值与系数。如D类拦截奖从150元调整至更优额度、NPS权重校准等。</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 第七章：战略对齐 -->
+    <div class="section">
+        <div class="section-header">
+            <div class="section-num" style="background:var(--blue-bg);color:var(--blue);">7</div>
+            <h2 class="section-title">与CEO全年战略的对齐验证</h2>
+        </div>
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>CEO战略纲领</th><th>本方案的响应机制</th><th>度量指标</th></tr></thead>
+                <tbody>
+                    <tr><td>活下来，保5000万利润</td><td>增量成本仅46万/年，不动摇利润底线</td><td>组长总成本占GMV ≤ 0.90%</td></tr>
+                    <tr><td>百万元投诉率降低15%</td><td>质量守护金 + 外诉200%扣回 + 6条红线</td><td>月度外诉数同比下降</td></tr>
+                    <tr><td>大黑用户拦截率≥98%</td><td>D类拦截奖150元/人，正向激励拦截行为</td><td>月度D类拦截数/标记数</td></tr>
+                    <tr><td>NPS≥85分</td><td>NPS系数直接乘入班主任服务效能金</td><td>每营期NPS评分</td></tr>
+                    <tr><td>兼职人效提升15%</td><td>保留阶梯效率激励 + 人效系数上调封顶至1.15倍</td><td>人均GMV同比变化</td></tr>
+                    <tr><td>前端承诺=后端交付</td><td>追溯扣回机制 + 留存奖金（消课/合格/签约）</td><td>消课完成率、学员合格率</td></tr>
+                    <tr><td>学员合格率75%</td><td>班主任达标额外奖励1500元/营期</td><td>60分以上学员占比</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div>
+            <p class="footer-text">喜播集团 · 前后端激励考核方案 V1.0 · 2026年4月</p>
+            <p class="footer-text">理论基础：卡普兰-诺顿平衡计分卡 · 赫茨伯格双因素 · 行为经济学损失厌恶 · SaaS Clawback · 亚当斯公平理论</p>
+        </div>
+        <div style="display:flex;gap:10px;">
+            <a href="index.html" class="btn btn-ghost">← 返回战略门户</a>
+            <a href="case_studies_index.html" class="btn btn-ghost">法医审计案卷</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

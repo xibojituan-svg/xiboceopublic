@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户诊断报告：UID 677043203</title>
+    <style>
+        /* 保持与原报告一致的极简、高级感 UI */
+        :root {
+            --primary-color: #2F3645;
+            --bg-color: #F8F9FA;
+            --box-bg: #FFFFFF;
+            --text-main: #333333;
+            --text-light: #666666;
+            --danger: #E63946;
+            --warning: #F4A261;
+            --accent: #457B9D;
+            --border: #E0E0E0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 2rem;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--box-bg);
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.05);
+        }
+
+        h1 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+            font-size: 1.8rem;
+        }
+
+        .profile-card {
+            background: #fdfdfd;
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .profile-item {
+            margin: 0.5rem 0;
+        }
+
+        .profile-label {
+            font-weight: 600;
+            color: var(--text-light);
+            display: inline-block;
+            width: 90px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: white;
+        }
+        .badge.b-class { background-color: var(--warning); } /* 橙色，B类违背意愿的强压挽单 */
+
+        .section {
+            margin-top: 2.5rem;
+        }
+
+        .section h2 {
+            font-size: 1.3rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section h2::before {
+            content: "";
+            display: inline-block;
+            width: 4px;
+            height: 1.2rem;
+            background: var(--accent);
+            margin-right: 10px;
+            border-radius: 2px;
+        }
+
+        .highlight-box {
+            background-color: #FFFbeb;
+            border-left: 4px solid var(--warning);
+            padding: 1rem 1.5rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1rem 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            border: 1px solid var(--border);
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--bg-color);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .quote {
+            font-style: italic;
+            color: var(--text-light);
+            border-left: 3px solid #ccc;
+            padding-left: 1rem;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>用户诊断报告：UID 677043203 (彩虹)</h1>
+
+    <div class="profile-card">
+        <div class="profile-item"><span class="profile-label">UID：</span>677043203</div>
+        <div class="profile-item"><span class="profile-label">用户画像：</span>职场新人/备考期/宝妈/资金链紧崩</div>
+        <div class="profile-item"><span class="profile-label">风险定级：</span><span class="badge b-class">B类（阻挠退单强加延期）</span></div>
+        <div class="profile-item"><span class="profile-label">核心问题：</span>无视退费诉求，利用话术施压强行“扣押”用户资金办理延期</div>
+        <div class="profile-item"><span class="profile-label">挽单结果：</span>延期失败，最终退费</div>
+        <div class="profile-item"><span class="profile-label">关联销售：</span>魂牵梦萦2(肖梦莹)、喵仙儿(岳鹏)</div>
+    </div>
+
+    <div class="section">
+        <h2>1. 事件全景还原（基于聊天日志）</h2>
+        <p>用户是一位要在三个月内考取资格证、同时需辅导两个孩子的职场新人。在还未开营前，用户评估自身精力彻底透支，直接发声：<span class="quote">“直接退吧，不延期了，月初还要还房贷”</span>。然而销售人员以“师姐在这等你”、“错过我以后就不认识了”、“一个月后你真没时间也不后悔”等道德与机会绑架的口吻，强行说服用户签署“延期开课”替代“退费”。用户在压迫下被迫接受延期，但几天后眼疾发作（睁眼困难需要就医），再次索要退费才最终得到解决。</p>
+        
+        <div class="highlight-box">
+            <strong>核心症结：强力延期成了一种新的“退费拖延战术”</strong><br>
+            这暴露了销售端的一套标准擦边打法——用“先延期一个月观察”代替立刻退款，试图粉饰当月考核数据。不仅霸占了用户本来应该去归还房贷的现金流，还增加了用户后期的客诉怨念与不确定性。
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>2. 销售违规分析（S模型）</h2>
+        <table>
+            <tr>
+                <th>节点</th>
+                <th>销售动作/话术</th>
+                <th>用户反馈/真实诉求</th>
+                <th>漏洞诊断与心理拆解</th>
+            </tr>
+            <tr>
+                <td><strong>触发退意</strong></td>
+                <td>销售在课前画大饼：“能接各种阶段性单子”。</td>
+                <td><span class="quote">“我真的必须先保住工作才行...家里有俩娃...钱还是退回来吧您也知道我凑了几次才凑齐，月初还要还房贷。”</span></td>
+                <td>【硬拼凑的购买力】：用户学费是用零散卡拼凑的，房贷承压。这在前端就不该强逼成单。</td>
+            </tr>
+            <tr>
+                <td><strong>对抗防守</strong></td>
+                <td>“这样你先延期一个月，先观望一下...”“你来训练营是系统分配的，以后错过了师姐就没有我的资源了”...“给师姐一个机会”。</td>
+                <td><span class="quote">“不延期了，直接退吧” -> (疲于应对后妥协)“那先延期到4月2日哈”</span></td>
+                <td>【情感与权利绑架】：无视用户的财务刚需(房贷)，强迫用户“给师姐机会”。这种“软硬施压”极易摧毁契约精神信任。</td>
+            </tr>
+            <tr>
+                <td><strong>最终决堤</strong></td>
+                <td>延期班主任试图再次拖延：“你也可以多延期一些时间嘛”。</td>
+                <td><span class="quote">“眼睛最近又严重了，挂专家号也没看出来... 还是退了吧，不折腾班班了。”</span></td>
+                <td>【被动式拖延恶果】：延期战术本质上没有解决用户根本的“时间匮乏/精力匮乏”问题，最终导致二次客诉甚至潜在纠纷恶化。</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>3. 战略改进与红线补丁</h2>
+        <p>应对“假意延期、实则拖延”的销售套路，规范如下：</p>
+        <ul>
+            <li><strong>“延期替换退费”禁忌法则：</strong> 若用户首因退费的理由是“现金流断裂”或“需要用钱还贷/看病”，销售不得将其强行转化为“学业延期”办理。必须当场启动退费。</li>
+            <li><strong>不可逆决策尊重：</strong> 若用户连用 2 次以上类似“直接退吧”、“不用劝了”的坚决句式，销售端的话术应当即刻闭损（“好的，马上为您处理！”），任何继续利用“机会难得、大咖资源不等人”进行劝返的行为，计为合规违纪扣分。</li>
+        </ul>
+    </div>
+</div>
+
+</body>
+</html>

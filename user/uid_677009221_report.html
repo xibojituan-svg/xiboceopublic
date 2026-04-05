@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>用户行为诊断报告 - UID 677009221</title>
+    <style>
+        :root {
+            --bg-color: #f7f9fc;
+            --container-bg: #ffffff;
+            --primary-color: #2b5797;
+            --text-main: #333333;
+            --text-muted: #666666;
+            --border-color: #e1e4e8;
+            --tag-bg-bad: #ffeef0;
+            --tag-text-bad: #d73a49;
+            --tag-bg-good: #e6ffed;
+            --tag-text-good: #28a745;
+            --tag-bg-neutral: #f1f8ff;
+            --tag-text-neutral: #0366d6;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .report-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--container-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            padding: 40px;
+        }
+
+        .header {
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            color: var(--primary-color);
+        }
+
+        .meta-info {
+            font-size: 14px;
+            color: var(--text-muted);
+            text-align: right;
+        }
+
+        .user-profile {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .profile-item {
+            flex: 1 1 200px;
+        }
+
+        .profile-item strong {
+            display: block;
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .profile-item span {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        h2 {
+            font-size: 20px;
+            color: var(--primary-color);
+            margin-top: 40px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        h2::before {
+            content: "";
+            display: inline-block;
+            width: 4px;
+            height: 20px;
+            background-color: var(--primary-color);
+            margin-right: 10px;
+            border-radius: 2px;
+        }
+
+        .timeline {
+            border-left: 2px solid var(--border-color);
+            margin-left: 10px;
+            padding-left: 20px;
+        }
+
+        .event {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .event::before {
+            content: "";
+            position: absolute;
+            left: -27px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            background-color: var(--container-bg);
+            border: 2px solid var(--primary-color);
+            border-radius: 50%;
+        }
+
+        .event-time {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+        }
+
+        .event-title {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .event-desc {
+            font-size: 15px;
+            color: var(--text-main);
+            background: #f1f8ff;
+            padding: 12px 15px;
+            border-radius: 6px;
+            border-left: 3px solid #0366d6;
+        }
+
+        .analysis-box {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .tag-bad { background: var(--tag-bg-bad); color: var(--tag-text-bad); }
+        .tag-good { background: var(--tag-bg-good); color: var(--tag-text-good); }
+        .tag-neutral { background: var(--tag-bg-neutral); color: var(--tag-text-neutral); }
+
+        .quote {
+            font-style: italic;
+            color: #555;
+            padding: 10px 15px;
+            background: #f9f9f9;
+            border-left: 3px solid #ccc;
+            margin: 10px 0;
+            font-size: 14px;
+        }
+
+        .insight-section {
+            background: linear-gradient(135deg, #f6f8fd 0%, #f1f5f9 100%);
+            border-radius: 8px;
+            padding: 25px;
+            margin-top: 40px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .insight-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #0f172a;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .action-list {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .action-list li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="report-container">
+    <div class="header">
+        <div>
+            <h1>用户退费诊断报告</h1>
+            <div style="margin-top: 8px; font-size: 15px; color: var(--text-muted);">
+                编号：UID 677009221 | 沉浸式诊断时间：2026-04-05
+            </div>
+        </div>
+        <div class="meta-info">
+            <strong>状态：</strong> 极速秒退<br>
+            <strong>流失节点：</strong> 交付延期引爆（支付后2小时内退费）
+        </div>
+    </div>
+
+    <div class="user-profile">
+        <div class="profile-item">
+            <strong>用户标签</strong>
+            <span>梁大少兜兜有糖🍬 (自由职业，全职意向)</span>
+        </div>
+        <div class="profile-item">
+            <strong>核心动机</strong>
+            <span>立刻接单赚钱，强烈变现倾向</span>
+        </div>
+        <div class="profile-item">
+            <strong>优势赛道</strong>
+            <span>粤语悬疑小说播讲</span>
+        </div>
+        <div class="profile-item">
+            <strong>班主任</strong>
+            <span>前序：逍遥师姐 | 正式课：陌嬉(吴念庆)</span>
+        </div>
+    </div>
+
+    <div class="analysis-box">
+        <h3 style="margin-top: 0;">核心流失原因与服务评价</h3>
+        <div>
+            <span class="tag tag-bad">交付预期管理失败</span>
+            <span class="tag tag-bad">CRM隔离漏洞(阿离)</span>
+        </div>
+        <p>这是一个典型的<strong>“交付延期导致强意愿用户极速秒退”</strong>案例。用户自身意愿极高，甚至明确表示打算“全职”从事配音，并在试音中收获了强烈的情绪价值（“像中彩票一样开心”）。但销售前端过度强化了“报名即接单/派发版权书”的预期，导致用户在支付完毕的当下，便迫不及待地去接单专区寻找任务。</p>
+        <p>当被告知“需要等正式课程开始第二周（8天后）才能开通试音通道”时，用户强烈的“即刻变现”需求遭受重创，立刻以“个人原因”为由申请全额退款。更恶劣的是，在用户明确退费断联后，系统仍然在第8天自动触发了下游营销团队“喜播阿离”的跟进营销（“自媒体转型课”），属于严重的CRM隔离失效。</p>
+    </div>
+
+    <h2>事件时间线重建</h2>
+    <div class="timeline">
+        <div class="event">
+            <div class="event-time">2026-03-07 至 03-10 12:00</div>
+            <div class="event-title">强渴望匹配与高度沉浸的拔草期</div>
+            <div class="event-desc">
+                用户表达强烈的学习意愿，直言想做“全职”。通过粤语配音《猎魔人》获得极高情绪价值沉浸感。销售段不断强化“马上发版权书”、“派单资源丰富”的立刻接单预期，推高了用户的变现紧迫感。
+            </div>
+        </div>
+
+        <div class="event">
+            <div class="event-time">2026-03-10 13:45</div>
+            <div class="event-title">转化与支付</div>
+            <div class="event-desc">
+                用户顺利支付精英班学费，随即加入正式班群。
+            </div>
+        </div>
+
+        <div class="event">
+            <div class="event-time">2026-03-10 14:41</div>
+            <div class="event-title">预期破裂：试音通道的时间锁</div>
+            <div class="event-desc">
+                用户急不可耐：<br>
+                <div class="quote">“师姐，我现在可以去哪里录书了吗？”<br>
+                “这些，我们是还不能录的吧？显示都结束。”</div>
+                助教回复：“你现在还没开通，正式课程开始第二周8天。”<br>
+                班主任回复：“第二周开通试音通道，晚上会讲。”
+            </div>
+        </div>
+
+        <div class="event">
+            <div class="event-time">2026-03-10 16:35</div>
+            <div class="event-title">极速秒退与防损心理</div>
+            <div class="event-desc">
+                用户得知无法立刻接单后，在 2 小时内迅速提出：“不好意思班班，我申请退费”。并在确认退费时反复确认“没学不会扣钱吧？”“全款退回”，彻底断绝沟通。
+            </div>
+        </div>
+
+        <div class="event">
+            <div class="event-time">2026-03-18 至 03-20</div>
+            <div class="event-title">系统性骚扰：阿离登场</div>
+            <div class="event-desc">
+                退费8天后，喜播下游营销链“喜播阿离”如约而至，向已经退费的用户推销何圣君的《如何做一个会赚钱的自媒体》。这是SOP自动化失控的铁证。
+            </div>
+        </div>
+    </div>
+
+    <div class="insight-section">
+        <div class="insight-title">💡 关键洞察与管理行动建议</div>
+        <ul class="action-list">
+            <li>
+                <strong>前端预期管理必须降温：</strong>
+                对于这类表现出极强“全职/快速变现”倾向的用户，前端营销在逼单时极易画出“付钱即接单”的毒大饼。这会让正常教学流程中的“技能夯实期（如前8天）”被用户视为“套路和锁单”。应在支付前以白纸黑字的形式前置“新手成长过渡期”，将预期降维打击，宁可前置流失，绝不后置退费。
+            </li>
+            <li>
+                <strong>建立“试音饥饿感”与“破冰任务”：</strong>
+                长达8天的空窗期对于强变现用户是致命的。教务团队应建立【零佣金实战演练单】或【极低门槛的几毛钱破冰体验单】，让他们在第一天就能“接任务”、“录音”、“提交审核”并看到数据流转，用真实的系统动作包裹他们。
+            </li>
+            <li>
+                <strong>【安全红线】彻底修复阿离带来的僵尸营销网：</strong>
+                这已经是我们在诊断中发现的第 N 起退费后被“阿离”骚扰的案例。阿离代表的“有声转自媒体二次变现”营销链与主销售系统在底层数据上<strong>彻底断裂</strong>。必须在系统中对已退费UID强制追加 <code>block_marketing=True</code> 的全域熔断标签，杜绝合规与客诉风险。
+            </li>
+        </ul>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户诊断报告：UID 523429123 - Xibo Strategic Portal</title>
+    <!-- 引入 Tailwind CSS 作为基础样式保障 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/dark-mode.css">
+    <!-- ECharts -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+</head>
+<body class="bg-gray-100 flex h-screen overflow-hidden dark-mode-base">
+    
+    <!-- Sidebar -->
+    <aside class="w-64 bg-slate-900 text-white flex flex-col hidden md:flex sidebar-gradient transition-all duration-300">
+        <div class="h-16 flex items-center justify-center border-b border-slate-800">
+            <h1 class="text-xl font-bold tracking-wider text-cyan-400">XIBO STRATEGY</h1>
+        </div>
+        <nav class="flex-1 overflow-y-auto py-4">
+            <ul class="space-y-1">
+                <li>
+                    <a href="../index.html" class="flex items-center px-6 py-3 text-gray-300 hover:bg-slate-800 hover:text-white transition-colors">
+                        <i class="fas fa-home w-5 mr-3"></i> 战略大盘
+                    </a>
+                </li>
+                <li>
+                    <a href="../customer_cases_and_insights.html" class="flex items-center px-6 py-3 bg-slate-800 text-cyan-400 border-l-4 border-cyan-400">
+                        <i class="fas fa-users w-5 mr-3"></i> 客户案例与洞察
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-screen overflow-hidden bg-gray-50 dark-mode-base">
+        <!-- Header -->
+        <header class="h-16 bg-white shadow-sm flex items-center justify-between px-6 z-10 dark-mode-panel">
+            <div class="flex items-center">
+                <button class="md:hidden text-gray-500 hover:text-gray-700 mr-4">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                <div class="text-sm text-gray-500 dark:text-gray-400">
+                    <a href="../customer_cases_and_insights.html" class="hover:text-cyan-600">客户案例与洞察</a>
+                    <span class="mx-2">/</span>
+                    <span class="text-gray-800 font-medium dark:text-gray-200">UID 523429123 诊断报告</span>
+                </div>
+            </div>
+            <!-- Dark Mode Toggle -->
+            <button id="darkModeToggle" class="text-gray-500 hover:text-cyan-600 focus:outline-none transition-colors">
+                <i class="fas fa-moon text-xl"></i>
+            </button>
+        </header>
+
+        <!-- Content Area -->
+        <div class="flex-1 overflow-y-auto p-6 md:p-8 space-y-6">
+            
+            <!-- Report Header -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 dark-mode-panel">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
+                    <div>
+                        <div class="flex items-center gap-3 mb-2">
+                            <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100">UID 523429123：身体负载过重与毒鸡汤挽单导致的硬性流失案</h2>
+                            <span class="px-3 py-1 bg-red-100 text-red-700 text-xs font-bold rounded-full border border-red-200">已退费</span>
+                            <span class="px-3 py-1 bg-purple-100 text-purple-700 text-xs font-bold rounded-full border border-purple-200">D类用户 (流失/防御层)</span>
+                        </div>
+                        <p class="text-gray-500 text-sm mt-1">诊断时间：2026-04-04 | 案例编号：CASE-030</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Profile & Diagnostic Label -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- User Profile -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 dark-mode-panel md:col-span-1">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2 dark:text-gray-200"><i class="fas fa-id-card text-blue-500 mr-2"></i> 用户画像画像 (T3/T6 混合)</h3>
+                    <div class="space-y-3 text-sm">
+                        <div class="flex justify-between border-b border-gray-50 pb-2 dark:border-gray-700">
+                            <span class="text-gray-500">用户昵称</span>
+                            <span class="font-medium text-gray-800 dark:text-gray-200">毡房 (高雅娟)</span>
+                        </div>
+                        <div class="flex justify-between border-b border-gray-50 pb-2 dark:border-gray-700">
+                            <span class="text-gray-500">地域及特征</span>
+                            <span class="font-medium text-gray-800 dark:text-gray-200">内蒙古赤峰，中年学员</span>
+                        </div>
+                        <div class="flex justify-between border-b border-gray-50 pb-2 dark:border-gray-700">
+                            <span class="text-gray-500">家庭负担</span>
+                            <span class="font-medium text-red-600">极高（九旬父母+高三长子）</span>
+                        </div>
+                        <div class="flex justify-between border-b border-gray-50 pb-2 dark:border-gray-700">
+                            <span class="text-gray-500">身体健康</span>
+                            <span class="font-medium text-red-600">桥本氏甲状腺炎（抗压极差）</span>
+                        </div>
+                        <div class="flex justify-between border-b border-gray-50 pb-2 dark:border-gray-700">
+                            <span class="text-gray-500">设备/IT技能</span>
+                            <span class="font-medium text-yellow-600">严重不足（不会解压、操作软件需靠互助）</span>
+                        </div>
+                        <div class="flex justify-between pt-2">
+                            <span class="text-gray-500">班主任</span>
+                            <span class="font-medium text-gray-800 dark:text-gray-200">吖吖冲鸭 / 陌嬉 / 喜播金金</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Diagnostic Radar -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 dark-mode-panel md:col-span-2">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2 dark:text-gray-200"><i class="fas fa-radar text-blue-500 mr-2"></i> 行为特征多维雷达与底层归因</h3>
+                    <div class="flex h-56">
+                        <div id="radarChart" class="w-1/2 h-full"></div>
+                        <div class="w-1/2 h-full pl-4 flex flex-col justify-center space-y-4">
+                            <div class="p-3 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-100 dark:border-red-800/30">
+                                <h4 class="font-bold text-red-700 mb-1 text-sm dark:text-red-400">S21 P/A情绪受体度：极低</h4>
+                                <p class="text-xs text-red-600 dark:text-red-300">用户因疾病和家庭负累，抗焦虑能力枯竭。班主任试图用“别人70岁都在学”进行比较激励，引发了强烈的反噬与抗拒。</p>
+                            </div>
+                            <div class="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-100 dark:border-blue-800/30">
+                                <h4 class="font-bold text-blue-700 mb-1 text-sm dark:text-blue-400">S20 退费强硬度：高</h4>
+                                <p class="text-xs text-blue-600 dark:text-blue-300">一旦下定决心退款（身体发出严重警告），态度极为坚决，不为班主任的“延期、让儿子学”等缓兵之计所动。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Path to Churn -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 dark-mode-panel">
+                <h3 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2 dark:text-gray-200"><i class="fas fa-route text-orange-500 mr-2"></i> 流失链路复盘 (Path to Churn)</h3>
+                
+                <div class="relative border-l-2 border-gray-200 dark:border-gray-700 ml-3 md:ml-6 space-y-6 mt-6 pb-4">
+                    
+                    <div class="relative">
+                        <div class="absolute w-4 h-4 bg-green-500 rounded-full -left-[9px] top-1 border-2 border-white dark:border-slate-800"></div>
+                        <div class="pl-6">
+                            <h4 class="font-bold text-gray-800 dark:text-gray-200">阶段一：高期待入营与技术碰壁（3月10日-3月22日）</h4>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">用户购课后态度极为积极，对未来充满期待（“师姐带带我”、“我很喜欢读书”）。但在进入实操期后，面临严峻的技术壁垒（不会用电脑录音、不知道如何解压Adobe Audition等软件），学习过程开始消耗巨大的心力，开始焦虑。</p>
+                        </div>
+                    </div>
+
+                    <div class="relative">
+                        <div class="absolute w-4 h-4 bg-orange-500 rounded-full -left-[9px] top-1 border-2 border-white dark:border-slate-800"></div>
+                        <div class="pl-6">
+                            <h4 class="font-bold text-gray-800 dark:text-gray-200">阶段二：身体发出警告，提出退费面临层层推诿（3月22日）</h4>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">由于需照顾高三儿子和九旬父母，叠加自身桥本氏甲状腺炎（抗疲劳能力极差），用户提出退费。第一任师姐（吖吖）以“不能做主”、“影响考核”、“过了7天退费有扣款”为由，试图推诿并建议延期让儿子学。客服也将问题踢回班主任，退费通道受阻。</p>
+                            <div class="mt-2 bg-orange-50 dark:bg-orange-900/20 p-3 rounded text-xs border border-orange-100 dark:border-orange-800">
+                                <strong>服务红线预警：</strong>退款流程冗长踢皮球。前线客服与班主任相互推诿逼单，导致学员心存恐惧（“我怕班班又要劝我坚持”）。
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="relative">
+                        <div class="absolute w-4 h-4 bg-red-500 rounded-full -left-[9px] top-1 border-2 border-white dark:border-slate-800"></div>
+                        <div class="pl-6">
+                            <h4 class="font-bold text-gray-800 dark:text-gray-200">阶段三：班主任无效“毒鸡汤”挽单，加速逃离（3月23日）</h4>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">班主任陌嬉介入后，并未体谅用户的生病状态，反而使用了极具压迫感的话术进行挽留：“时间都是挤出来的”、“心态好身体就好”、“放松点，70多岁的姐姐都在努力学习”、“放弃很容易，坚持才是活力”。这一系列“毒鸡汤”彻底剥夺了用户生病的"合法性"，将其包装为“不努力的借口”，引发彻底反感，最终强硬退费。</p>
+                             <div class="mt-2 bg-red-50 dark:bg-red-900/20 p-3 rounded text-xs border border-red-100 dark:border-red-800">
+                                <strong>干预失效：</strong>这是一种纯粹的缺乏共情力的PUA式沟通。对于确诊慢性疾病的老年用户，强行灌输狼性奋斗鸡汤，是在挑战常识底线。
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="relative">
+                        <div class="absolute w-4 h-4 bg-purple-500 rounded-full -left-[9px] top-1 border-2 border-white dark:border-slate-800"></div>
+                        <div class="pl-6">
+                            <h4 class="font-bold text-gray-800 dark:text-gray-200">阶段四：退费后系统隔离缺失，沦为“新韭菜”（4月2日）</h4>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">更恶劣的是，在用户已经于3月24日完成退费退群后。4月2日，一位新师姐（喜播金金）又找上门来，仿佛完全不知道用户已退费的“重病”前科，开始了从0到1的推销话术：“我是艾米老师的助教……你当时为什么没继续深造呀……可以免费来领课程”。暴露出严重的 CRM 数据隔离故障。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Strategic Insights -->
+            <div class="bg-gray-900 rounded-xl shadow-lg border border-gray-800 p-6 text-white strategy-glow">
+                <h3 class="text-lg font-bold mb-4 border-b border-gray-700 pb-2"><i class="fas fa-lightbulb text-yellow-400 mr-2"></i> 首席执行官战略洞见 (CEO Insights)</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-slate-800/50 p-4 rounded-lg border border-slate-700 font-mono text-sm">
+                        <div class="text-yellow-400 mb-2"><strong>[合规与隔离机制彻底瘫痪]</strong></div>
+                        <p class="text-gray-300">退费后的用户，居然在10天后被分配给另一个销售体系（喜播金金，推销艾米老师课程）。这证明了CRM系统未能将【已退费】状态联动至【营销黑名单】。这会给用户造成“割韭菜公司”的恶劣印象，极易引发工商举报与黑猫投诉。这属于必须连夜修复的系统级Bug。</p>
+                    </div>
+                    <div class="bg-slate-800/50 p-4 rounded-lg border border-slate-700 font-mono text-sm">
+                        <div class="text-cyan-400 mb-2"><strong>[班主任动作变形与毒鸡汤红线]</strong></div>
+                        <p class="text-gray-300">我们不允许对【明确表明身体患病】的用户进行所谓的“心态好病就好”、“别人70岁都在努力”的鸡汤洗脑。当用户触发【身体疾病/重大变故】标签时，班主任的挽单动作必须被后台系统强制熔断（ROI熔断机制），自动开启无摩擦绿色退款通道。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Items -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 dark-mode-panel">
+                <h3 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2 dark:text-gray-200"><i class="fas fa-tasks text-green-500 mr-2"></i> 班主任干预策略 SOP 改进指令</h3>
+                <ul class="space-y-3">
+                    <li class="flex items-start">
+                        <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                        <div>
+                            <strong class="text-gray-800 dark:text-gray-200">工单系统升级：退费踢皮球监测</strong>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">禁止前线与班主任互相利用“考核、扣分”向学员施压。如果监测到学员说出“我不想联系班主任了，你能直接退吗”，直接启动红灯客诉预警升级处理。</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                        <div>
+                            <strong class="text-gray-800 dark:text-gray-200">严格落地《退费用户隔离网》</strong>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">退款一旦通过，该用户的UID必须在全线营销CRM中打上【防骚扰：退费冷却期（6个月）】标签，斩断一切利用裂变活动和其他私域号的新一轮“洗库”行为。</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // Radar Chart Initialization
+        const initRadarChart = () => {
+            const dom = document.getElementById('radarChart');
+            if (!dom) return;
+            const myChart = echarts.init(dom);
+            const option = {
+                radar: {
+                    indicator: [
+                        { name: 'S20 退款强硬度', max: 100 },
+                        { name: 'S21 情绪受体度', max: 100 },
+                        { name: 'S10 服务容忍度', max: 100 },
+                        { name: 'S2 设备操作能力', max: 100 },
+                        { name: 'S11 价格敏感度', max: 100 }
+                    ],
+                    radius: '65%',
+                    axisName: { color: '#64748b', fontSize: 11 },
+                    splitArea: { areaStyle: { color: ['transparent'] } },
+                    splitLine: { lineStyle: { color: 'rgba(0,0,0,0.1)' } }
+                },
+                series: [{
+                    type: 'radar',
+                    data: [{
+                        value: [90, 5, 40, 10, 30],
+                        name: 'UID 523429123',
+                        itemStyle: { color: '#ef4444' },
+                        areaStyle: { color: 'rgba(239, 68, 68, 0.3)' }
+                    }]
+                }]
+            };
+            myChart.setOption(option);
+            window.addEventListener('resize', () => myChart.resize());
+            
+            // Dark mode listener for chart
+            document.getElementById('darkModeToggle').addEventListener('click', () => {
+                setTimeout(() => {
+                    const isDark = document.body.classList.contains('dark');
+                    myChart.setOption({
+                        radar: {
+                            axisName: { color: isDark ? '#94a3b8' : '#64748b' },
+                            splitLine: { lineStyle: { color: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)' } }
+                        }
+                    });
+                }, 100);
+            });
+        };
+
+        // Dark Mode Toggle Logic
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        darkModeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark');
+            const isDark = document.body.classList.contains('dark');
+            darkModeToggle.innerHTML = isDark ? '<i class="fas fa-sun text-yellow-400"></i>' : '<i class="fas fa-moon text-gray-500"></i>';
+        });
+
+        // Initi chart when DOM loaded
+        document.addEventListener('DOMContentLoaded', initRadarChart);
+    </script>
+</body>
+</html>

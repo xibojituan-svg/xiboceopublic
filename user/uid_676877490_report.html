@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UID 676877490 客户诊断报告</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: #f8fafc; color: #1e293b; }
+        .metric-card { background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); border: 1px solid #e2e8f0; }
+        .chat-bubble-user { background-color: #dbeafe; border-radius: 1rem 1rem 0 1rem; color: #1e40af; }
+        .chat-bubble-sales { background-color: #f1f5f9; border-radius: 1rem 1rem 1rem 0; color: #334155; }
+        .highlight-text { background: linear-gradient(120deg, #fef08a 0%, #fef08a 100%); background-repeat: no-repeat; background-size: 100% 30%; background-position: 0 90%; }
+        .header-bg { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: white; }
+    </style>
+</head>
+<body class="antialiased p-6">
+    <div style="max-width: 80rem;" class="mx-auto">
+        <div class="header-bg rounded-2xl p-8 mb-8 shadow-lg flex justify-between items-center">
+            <div>
+                <h1 class="text-3xl font-extrabold mb-2 tracking-tight">客户诊断深度报告</h1>
+                <p class="text-slate-300 text-sm">Case #22 | 深度复盘与转化熔断分析</p>
+            </div>
+            <div class="text-right">
+                <a href="../customer_cases_and_insights.html" class="inline-block bg-white/20 hover:bg-white/30 text-white font-medium py-2 px-4 rounded-lg transition-colors border border-white/20 backdrop-blur-sm">
+                    &larr; 返回索引看板
+                </a>
+            </div>
+        </div>
+
+        <div class="user-profile mb-8">
+            <h2 class="text-xl font-bold mb-4 border-b pb-2">用户画像与关键特征</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div><span class="text-gray-500">UID:</span> <span class="font-semibold">676877490 (罗海珍)</span></div>
+                <div><span class="text-gray-500">转化状态:</span> <span class="text-red-600 font-semibold">退费 (有声课精英版)</span></div>
+                <div><span class="text-gray-500">用户原型:</span> <span class="font-semibold">体能超限者 (底座塌陷型)</span></div>
+                <div><span class="text-gray-500">核心痛点:</span> <span class="font-semibold">生理与环境极限红线</span></div>
+            </div>
+            <div class="mt-4 text-sm text-gray-700 leading-relaxed">
+                <strong>背景还原：</strong> 60多岁高龄女性，在医院从事24小时看护病人的重体力护工工作。个人时间极其稀碎（病人每小时都要护理，“一天吃4~5次，晚上起来3~4趟”），且医院工作环境严苛严禁摸鱼玩手机（护士长严查）。在前端销售反复推销下，凭借“想学点东西变现/喜欢朗诵”的动因购入了3980元的有声精英版课程。但开课后，高强度的早功、打卡与练习直接压垮了她的体力和精力，引发“头好晕”、“身体吃不消”、“体重掉到90多斤”的严重生理性抗议，最终选择退费。
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="metric-card bg-red-50 border-red-100">
+                <h3 class="text-red-800 font-bold mb-2">流失致命触点 (The Breaking Point)</h3>
+                <p class="text-sm text-gray-800 leading-relaxed">
+                    <strong>1. 准入审核过滤缺失：</strong> 前端销售（招募官）对于该高阶高龄群体的真实基建情况（无大块时间、高体力消耗、高年龄）主动屏蔽，只为成单，强行把“脱产/半脱产人群打卡模型”套在物理环境极其逼仄的底层重体力劳动者身上。 <br><br>
+                    <strong>2. 班主任“无脑鸡汤式”强行挽留：</strong> 当用户已出现生理极限报警（明确反馈严重头晕、无法休息熬不住）和突破职场红线（护士长严查玩手机）时，班主任仍试图用“重新梳理规划时间”、“怎么去改变状态”等鸡汤话术进行挽留。未能识别用户面临的并非感性惰性，而是客观物理生死红线。
+                </p>
+            </div>
+            <div class="metric-card bg-green-50 border-green-100">
+                <h3 class="text-green-800 font-bold mb-2">可挽留与优化点 (Optimization Opportunities)</h3>
+                <p class="text-sm text-gray-800 leading-relaxed">
+                    <strong>1. 高龄及重体力群体特级保护熔断预案：</strong> 针对特定年龄段（如55岁以上）且从事特殊重体力高约束工种（护工、流水线工人、重体力劳动者）的用户，应设为“特级健康关怀/干预熔断人群”。一旦反馈“身体吃不消晕眩”，班主任禁止使用任何话术挽留，直接启动快速无损退费通道或全额休学，以免引发不可控的医疗/公关危机。<br><br>
+                    <strong>2. 前端产品线推销互斥风控：</strong> 用户已明确反馈身体极度不适退掉有声课的同时，AI写稿课前端仍毫无感知地持续轰炸销售信息（“天天发信息缠着我报名”），激起用户强烈的反感情绪。多产品线线索系统必须建立全局红黑榜联动机制，一人退费或触发疲劳预警后，全局暂停营销触达。
+                </p>
+            </div>
+        </div>
+
+        <div class="metric-card mb-8">
+            <h2 class="text-xl font-bold mb-6 border-b pb-2">关键对话实录 (Crucial Chat Logs)</h2>
+            
+            <div class="space-y-6">
+                <!-- Chat 1 -->
+                <div class="flex flex-col space-y-2">
+                    <div class="self-end chat-bubble-user p-4 max-w-2xl shadow-sm">
+                        <div class="text-xs text-blue-400 mb-1">罗海珍 (2026-03-12 22:15:57)</div>
+                        <div class="text-sm">我是，我没有时间去练，我连作业都做不了。一天到晚伺候人一样。<br><br>我没有时间，24个小时做护工的，给照顾病人。<br><br>他们这里白天要是病人睡的觉，你看手机也是他们查房…查得很严，他说我老是看见你，每次来都看见你看手机在那里。</div>
+                    </div>
+                </div>
+                
+                <!-- Chat 2 -->
+                <div class="flex flex-col space-y-2">
+                    <div class="self-start chat-bubble-sales p-4 max-w-2xl shadow-sm">
+                        <div class="text-xs text-gray-400 mb-1">陌嬉(吴念庆) [班主任] (2026-03-12 22:18:45)</div>
+                        <div class="text-sm">嗯，像你这样的情况的话我也遇到过，你可以把你的主管跟他好好沟通一下，你腾出一点时间，该照顾的时候你就去做，剩下的时间就是病人休息的时候，你就做一下我们的额外的事情。<br><br>确实比较辛苦，所以你<span class="font-bold text-red-600">更要改变你的这个状态对吧</span>？有机会了就要好好抓住。</div>
+                    </div>
+                </div>
+
+                <!-- Chat 3 -->
+                <div class="flex flex-col space-y-2">
+                    <div class="self-end chat-bubble-user p-4 max-w-2xl shadow-sm">
+                        <div class="text-xs text-blue-400 mb-1">罗海珍 (2026-03-14 07:39:16)</div>
+                        <div class="text-sm">老师，我不行了，我身体吃不消，把钱退给我。我这几天都没上课，头晕死了。<br><br>没有时间，我心里吃不消，我头晕死了，晚上都起来3~4趟，等于是给他换尿不湿，打吊针…每天吃一餐饭，做好几趟吃，我真的不想去，刚好我身体吃不消。</div>
+                    </div>
+                </div>
+
+                <!-- Chat 4 -->
+                <div class="flex flex-col space-y-2">
+                    <div class="self-start chat-bubble-sales p-4 max-w-2xl shadow-sm">
+                        <div class="text-xs text-gray-400 mb-1">陌嬉(吴念庆) [班主任] (2026-03-14 09:21:56)</div>
+                        <div class="text-sm">我不知道你为啥<span class="font-bold text-red-600">退了几次的班了</span>？</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

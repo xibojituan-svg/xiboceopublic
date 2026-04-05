@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>法医双视角诊断 · UID 677020910 小邱</title>
+  <style>
+    :root {
+      --red: #cf222e; --orange: #e16900; --blue: #0969da;
+      --purple: #8250df; --green: #1a7f37;
+      --border: #e1e4e8; --bg: #f6f8fa; --card: #fff;
+      --text: #24292e; --dim: #586069;
+    }
+    * { box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background: var(--bg); color: var(--text); line-height: 1.75; margin: 0; padding: 0; }
+    .page-header {
+      background: linear-gradient(135deg, #1a1e2a 0%, #2d2f3e 100%);
+      color: #fff; padding: 2.5rem 3rem; border-bottom: 4px solid var(--red);
+    }
+    .page-header h1 { font-size: 1.45rem; margin: 0 0 .5rem; }
+    .page-header .sub { font-size: .88rem; color: #9aa4b2; margin: 0; }
+    .tab-bar {
+      display: flex; background: #fff; border-bottom: 2px solid var(--border);
+      position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 6px rgba(0,0,0,.08);
+    }
+    .tab { flex: 1; text-align: center; padding: 1rem .5rem; cursor: pointer;
+      font-weight: 600; font-size: .93rem; color: var(--dim);
+      border-bottom: 3px solid transparent; transition: all .2s; }
+    .tab.active { color: var(--blue); border-bottom-color: var(--blue); }
+    .tab:hover { background: var(--bg); }
+    .panel { display: none; padding: 2rem 3rem; max-width: 980px; margin: 0 auto; }
+    .panel.active { display: block; }
+    h2 { font-size: 1.1rem; margin-top: 2rem;
+      padding-left: 12px; border-left: 4px solid var(--blue); }
+    h2.red { border-left-color: var(--red); }
+    h2.orange { border-left-color: var(--orange); }
+    h2.purple { border-left-color: var(--purple); }
+    h2.green { border-left-color: var(--green); }
+    .alert-box { padding: 1rem 1.4rem; border-radius: 8px; margin: 1rem 0; font-size: .93rem; }
+    .alert-red { background: #ffebe9; border: 1px solid #ffcbc8; color: #6e0000; }
+    .alert-blue { background: #ddf4ff; border: 1px solid #b6dfff; color: #0a3069; }
+    .alert-orange { background: #fff8c5; border: 1px solid #f0c62e; color: #5c3d00; }
+    .alert-green { background: #dafbe1; border: 1px solid #aceebb; color: #0a3d1f; }
+    .pyramid-top {
+      background: linear-gradient(135deg, #1a1e2a, #2d2f3e);
+      color: #fff; padding: 1.6rem 2rem; border-radius: 10px; margin: 1.2rem 0;
+    }
+    .pyramid-top .ceo-tag {
+      font-size: .72rem; background: #cf222e; color: #fff;
+      padding: 2px 10px; border-radius: 20px; display: inline-block;
+      margin-bottom: .8rem; letter-spacing: 1px;
+    }
+    .pyramid-top p { margin: 0; font-size: 1.02rem; line-height: 1.8; color: #e0e6f0; }
+    .pyramid-top strong { color: #fff; }
+    .axis-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+    .axis-card { border-radius: 8px; padding: 1.2rem 1.4rem; border: 1px solid var(--border); }
+    .axis-card .axis-label { font-size: .75rem; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; margin-bottom: .5rem; }
+    .axis-card .axis-score { font-size: 1.5rem; font-weight: 800; margin-bottom: .4rem; }
+    .axis-card .axis-body { font-size: .87rem; color: var(--dim); }
+    .axis-low { background: #ffebe9; border-left: 4px solid var(--red); }
+    .axis-mid { background: #fff8c5; border-left: 4px solid var(--orange); }
+    .pillar-table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+    .pillar-table th { background: var(--bg); padding: 10px 14px; text-align: left;
+      border: 1px solid var(--border); font-size: .85rem; font-weight: 700; color: var(--dim); }
+    .pillar-table td { padding: 12px 14px; border: 1px solid var(--border); font-size: .91rem; vertical-align: top; }
+    .pillar-table tr:hover td { background: var(--bg); }
+    .quote { padding: .9rem 1.2rem; border-radius: 6px; margin: .8rem 0;
+      font-size: .91rem; border-left: 4px solid; }
+    .quote-u { background: #fff8f0; border-left-color: var(--orange); }
+    .quote-s { background: #f1f8ff; border-left-color: var(--blue); }
+    .quote-bad { background: #ffebe9; border-left-color: var(--red); }
+    .quote .spk { font-weight: 700; font-size: .78rem; margin-bottom: 4px; }
+    .quote .spk.u { color: var(--orange); }
+    .quote .spk.s { color: var(--blue); }
+    .quote .spk.bad { color: var(--red); }
+    .rx-card { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin: 1rem 0; }
+    .rx-head { background: #1a1e2a; color: #fff; padding: .8rem 1.2rem;
+      font-weight: 700; font-size: .92rem; }
+    .rx-body { padding: 1.2rem 1.4rem; font-size: .91rem; }
+    .rx-body p { margin: 0 0 .6rem; }
+    .disc { font-size: .8rem; background: var(--purple); color: #fff;
+      padding: 2px 8px; border-radius: 20px; display: inline-block; margin: 3px 0 6px; }
+    .talk-box { background: #f6f8fa; border: 1px solid var(--border); border-radius: 6px;
+      padding: 1rem 1.2rem; margin: .6rem 0; font-size: .89rem;
+      font-style: italic; color: #333; white-space: pre-line; }
+    .ltv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+    .ltv-item { background: var(--card); border: 1px solid var(--border);
+      border-radius: 8px; padding: 1rem 1.2rem; font-size: .87rem; }
+    .ltv-item .lbl { font-weight: 700; font-size: .78rem; color: var(--dim); margin-bottom: 4px; }
+    .stars { color: #f0a500; font-size: 1rem; }
+    .radar-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+    .r-card { border-radius: 8px; padding: 1.2rem; border: 1px solid var(--border); text-align: center; }
+    .r-score { font-size: 2rem; font-weight: 900; margin: .3rem 0; }
+    .r-label { font-size: .82rem; font-weight: 700; color: var(--dim); }
+    .r-sub { font-size: .8rem; color: #777; margin-top: .3rem; text-align: left; }
+    .score-f { color: var(--red); } .score-d { color: var(--orange); }
+    .stop-start { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+    .stop-box { background: #ffebe9; border: 1px solid #ffcbc8; border-radius: 8px; padding: 1.2rem; }
+    .start-box { background: #dafbe1; border: 1px solid #aceebb; border-radius: 8px; padding: 1.2rem; }
+    .stop-box h4, .start-box h4 { margin: 0 0 .8rem; font-size: .93rem; }
+    .stop-box li { color: #6e0000; } .start-box li { color: #0a3d1f; }
+    ul li { margin-bottom: 7px; font-size: .91rem; }
+    .msgs { display: flex; flex-direction: column; gap: 6px;
+      padding: 1rem; background: var(--bg); border-radius: 8px;
+      border: 1px solid var(--border); margin: .8rem 0; }
+    .msg { padding: 7px 14px; border-radius: 8px; font-size: .89rem; max-width: 88%; }
+    .mu { background: #ffe0cc; align-self: flex-end; color: #5c2200; }
+    .ms { background: #ddf4ff; align-self: flex-start; color: #0a3069; font-style: italic; }
+    .mc { align-self: center; font-size: .76rem; color: var(--dim); background: none; }
+    .tag { display: inline-block; padding: 2px 8px; border-radius: 20px;
+      font-size: .75rem; font-weight: 700; margin: 2px; }
+    .tag-red { background: #ffebe9; color: var(--red); }
+    .tag-orange { background: #fff3cd; color: #8a4c00; }
+    .tag-blue { background: #ddf4ff; color: #0a3069; }
+    .tag-gray { background: #f0f0f0; color: var(--dim); }
+    .tag-green { background: #dafbe1; color: #0a3d1f; }
+    .number-box { display: inline-block; background: var(--red); color: #fff;
+      font-size: 1.8rem; font-weight: 900; padding: .3rem .8rem;
+      border-radius: 8px; margin: .3rem .5rem; vertical-align: middle; }
+    @media(max-width:720px) {
+      .panel { padding: 1rem 1.2rem; }
+      .axis-grid, .radar-grid, .stop-start { grid-template-columns: 1fr; }
+      .ltv-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>法医双视角诊断报告 · UID 677020910 · 小邱（30岁，福建闽清）</h1>
+  <p class="sub">
+    D类外诉 · 被朋友骗走20万 · 五点起床+上班+奶茶店打工到23点 · 偷录音+已找律师+起诉准备中<br>
+    付款后两天申请退款 · 班主任连续劝阻9次拒退 · 历时3小时以上道德施压<br>
+    分析框架：user-needs-decoder · class-manager-excellence · value-driven-sales-evaluator
+  </p>
+</div>
+
+<div class="tab-bar">
+  <div class="tab active" onclick="switchTab('consumer')">🧠 消费者解码视角</div>
+  <div class="tab" onclick="switchTab('manager')">🔍 班主任行为审计</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- TAB 1: CONSUMER VIEW                                          -->
+<!-- ============================================================ -->
+<div id="consumer" class="panel active">
+
+  <h2>【顶层】🎯 CEO级一句话结论</h2>
+  <div class="pyramid-top">
+    <div class="ceo-tag">CEO LEVEL · 金字塔顶</div>
+    <p>
+      <strong>她是谁：</strong>T5型试水探索者（边界案例）× D类触发用户。<br>
+      30岁上班族，在体验营期间展现出极强的学习参与度（认真完成作业、主动练习提示词），但付款时其<strong>资金底座已完全塌陷</strong>：合伙人卷款跑路、负债20万、五点起床+双份兼职维生——这是一个在财务底线崩溃后仍被成功成单的用户。<br><br>
+      <strong>现在怎么了：</strong>已全额退款，但退款过程是一场<strong>三小时道德持久战</strong>——用户在大债务压身、睡眠严重不足、法律诉讼进行中的状态下，被班主任以"风口浪尖上猪都能上天"等话术强行劝阻9次才最终获准退款。<br><br>
+      <strong>最高优先级行动：</strong>用户主动披露"被骗20万、找了律师、偷偷录音了"，这不是普通的退费申请，<strong>这已经是法律风险预警信号</strong>。任何此类用户须触发D类熔断+绿色退单通道，禁止任何挽留动作。
+    </p>
+  </div>
+
+  <!-- 三轴模型 -->
+  <h2>【第二层】🏛️ 三轴模型评级</h2>
+  <div class="axis-grid">
+    <div class="axis-card axis-mid">
+      <div class="axis-label">轴1 · 动机纯度</div>
+      <div class="axis-score" style="color:var(--orange)">中（入营时）→ 实则低</div>
+      <div class="axis-body">
+        体验营期间动机纯粹（主动交作业、认真听课、对AI表现出真实好奇）。<br>
+        但变现驱动是为了<b>还债</b>，而非职业发展——"没把这笔钱还完，我不想考虑其他事情"。<br>
+        付款时动机已被债务压力扭曲，不再是正常的兴趣型决策。
+      </div>
+    </div>
+    <div class="axis-card axis-low">
+      <div class="axis-label">轴2 · 资源底座三角</div>
+      <div class="axis-score" style="color:var(--red)">低（全线崩溃）</div>
+      <div class="axis-body">
+        💰 <b>资金：极低。</b>合伙人卷款、家借款、负债20万，付款时工资尚未到账、花呗额度不足。<br>
+        ⏱ <b>时间：极低。</b>五点起床+白天上班+晚上奶茶店11点下班，每天睡眠约5小时。<br>
+        🧠 <b>精力：低。</b>处理法律诉讼+高强度劳动，精神能量极度消耗。<br>
+        → <b style="color:var(--red)">三角全线崩溃。D类熔断全部触发。</b>
+      </div>
+    </div>
+    <div class="axis-card axis-mid">
+      <div class="axis-label">轴3 · 心理弹性</div>
+      <div class="axis-score" style="color:var(--orange)">中（但被过度消耗）</div>
+      <div class="axis-body">
+        理智较高：能清楚分析自己的处境（"这种情况下最起码要三四年"），主动说"想好了确定了"。<br>
+        情绪稳定：没有爆发，一直礼貌道歉，连续9次保持克制。<br>
+        <b>但稳定本身就是代价</b>——她越礼貌，班主任越继续施压。用户礼貌被系统性地滥用为挽留的切入口。
+      </div>
+    </div>
+  </div>
+
+  <!-- 双轨扫描 -->
+  <h2>【第二层】🔀 双轨需求扫描</h2>
+
+  <div class="alert-box alert-blue">
+    <strong>显性需求轨：兼职增收（但是"还债型"的，不是"发展型"的）</strong>
+  </div>
+  <div class="quote quote-u">
+    <div class="spk u">📌 用户原话（2026-03-14 16:00）· 体验营最后一天，坦白真实处境</div>
+    "过两天工作调整，要去东北哈尔滨……加上工资还没有发，所以我是想打算先去那边呆两个月习惯了处境，等工资发两三个月，就想开始学习啦"
+  </div>
+  <p>这不是一个想让声音发光的用户，也不是对AI有职业规划的用户。她在付款时的真实驱动是：<b>用兼职收入还家人的钱</b>。这种"还债型"的变现动机与课程三个月打基础的交付周期是根本性错配。</p>
+
+  <div class="alert-box alert-orange">
+    <strong>隐性需求轨：安全感 + "不给家人添麻烦"的道德重压</strong>
+  </div>
+  <div class="quote quote-u">
+    <div class="spk u">📌 用户原话（2026-03-15 21:45）· 退费理由深层说明</div>
+    "欠这么多，心里也挺难受的，如果是我自己的钱，晚一点拿回来也没事，但是家里人还资助了，这个就不行，所以说在没有把这个钱还完之前其他的事情请我不想考虑其他事情了"
+  </div>
+  <p>她的底层驱动是<b>家庭责任感与羞耻感的混合</b>——家人帮她借的钱被骗走了，她需要用行动证明自己"没有辜负家人"。这种心理状态下，课程退款与否根本不是最重要的，最重要的是让她的心理债务感有一个出口——而班主任一直在堵这个出口。</p>
+
+  <!-- 关键事实：D类熔断全触发 -->
+  <h2 class="red">⚠️ D类熔断信号：全部触发（共5项）</h2>
+  <table class="pillar-table">
+    <tr><th>熔断信号</th><th>原文证据</th><th>触发时间</th></tr>
+    <tr>
+      <td><b>信号①：重大债务压力</b></td>
+      <td>"接近快20万了，这个正常赚钱的话，要2年左右"</td>
+      <td>2026-03-15 19:49<br>（付款后第2天）</td>
+    </tr>
+    <tr>
+      <td><b>信号②：无法保证基本学习时间</b></td>
+      <td>"白天正常上班，晚上去亲戚开的奶茶店里面帮忙要做到晚上十一点多……早上五点多就得起来"</td>
+      <td>2026-03-15 19:45</td>
+    </tr>
+    <tr>
+      <td><b>信号③：资金底座已完全崩塌</b></td>
+      <td>"他卷着钱跑路了……其中有一些钱是家里人帮我借的"</td>
+      <td>2026-03-15 19:45</td>
+    </tr>
+    <tr>
+      <td><b>信号④：已进入法律程序</b></td>
+      <td>"偷偷地录音了，我下午也去找律师咨询了，他说胜诉的概率很大"</td>
+      <td>2026-03-15 21:09</td>
+    </tr>
+    <tr style="background:#fff8c5">
+      <td><b>信号⑤：明确多次表达退款意愿（≥9次）</b></td>
+      <td>从15日19:46到16日17:29，共9次明确发出退款请求，全部被班主任劝阻</td>
+      <td>持续近22小时</td>
+    </tr>
+  </table>
+
+  <div class="alert-box alert-red">
+    <b>核心判定：</b>根据class-manager-excellence框架，<b>"用户明确表达退费意愿≥3次，禁止继续留人话术，切换到口碑维护模式"</b>。本案用户表达退款意愿9次，理由涉及20万债务+法律诉讼+物理时间耗尽，每一项单独成立均应触发D类熔断并立刻启动绿色退单通道。而实际处理时间为披露退款意愿后约22小时，中间有长达3小时的道德施压式挽留。
+  </div>
+
+  <!-- 三大支撑论点 -->
+  <h2>【第二层】⚙️ 三大支撑论点</h2>
+  <table class="pillar-table">
+    <tr><th>论点</th><th>标题</th><th>一句话论断</th></tr>
+    <tr>
+      <td><b>论点①</b></td>
+      <td>用户本质</td>
+      <td>T5型试水探索者被D类熔断机制漏网——她入营时资产底座完整（上班族、正常收入），但在成单后的两天内因"被朋友卷款20万"这一突发破产型事件完全切换进了D类，是动态触发而非入营时就是D类。</td>
+    </tr>
+    <tr>
+      <td><b>论点②</b></td>
+      <td>服务缺口</td>
+      <td>平台缺乏"突发状况触发的退款绿色通道"——用户被骗、急需钱、找了律师，这类信息不论在哪个培训机构的合规框架里都属于应启动的紧急退款条件，但平台系统要求班主任先挽留，造成用户22小时无法退款的煎熬。</td>
+    </tr>
+    <tr>
+      <td><b>论点③</b></td>
+      <td>流失风险</td>
+      <td>此案已退款，但用户已拿出了—个危险工具：<b>偷录音</b>——她在面对被朋友欺骗时的第一反应是保留证据、咨询律师、准备起诉。如果退款体验不好，她完全有动机和工具向消费者维权平台投诉，且言行内容已有法律意识。</td>
+    </tr>
+  </table>
+
+  <!-- 班主任处方 -->
+  <h2 class="green">【行动层】💊 班主任处方（如果时间倒回应该怎么做）</h2>
+  <div class="alert-box alert-red">
+    <b>战略定位：</b>面对这类用户，班主任应以<b>「紧急合规官」</b>身份介入。这不是陪伴型、情感型问题，是<b>法律风险已激活的D类场景</b>——该做的不是用情感留人，而是第一时间启动退款流程，让用户带着"被尊重"的体验离开，而非带着"被道德绑架"的负担。
+  </div>
+
+  <ul>
+    <li>❌ <b>禁忌1：对披露重大债务的用户使用"退这2000块也解决不了你的问题"话术</b> → 这等于在对方财务崩溃时说"你这点钱无所谓"，既不尊重用户的困境，也暴露了平台的本质是不愿退款。</li>
+    <li>❌ <b>禁忌2：在用户说出"已找律师、偷录音"后继续挽留</b> → 此时任何挽留话术，均有可能被用户录音作为"强迫消费"的证据使用。</li>
+  </ul>
+
+  <div class="rx-card">
+    <div class="rx-head">动作① · 针对论点① · 第一次听到"被骗/债务"信号时立刻触发D类识别</div>
+    <div class="rx-body">
+      <p><b>目标：</b>阻止D类用户进入正式付款阶段，而非等到退款时再处理。</p>
+      <span class="disc">适配 · T5试水探索者 + 突发D类状态转变</span>
+      <div class="talk-box">（当用户在体验营第三天提到"工资没发、花呗不够"时应触发的话术，而非继续催款）
+
+「小邱，你刚才说工资还没发，花呗额度也不够——我想在你做决定之前先问你一个问题：
+
+你目前手头的情况，如果报名了，接下来两三个月可以安心学习吗？没有经济上的额外压力？
+
+你不用给我任何答案，就是自己想一想。
+
+我们这个课是需要时间投入才有效果的，如果目前不是最好的时机，可以等你下个月工资到账、状态稳定了再来——位置我帮你保留，你随时可以找我。」</div>
+    </div>
+  </div>
+
+  <div class="rx-card">
+    <div class="rx-head">动作② · 针对论点② · 用户第一次提出退款时立刻切换「优雅放手」模式</div>
+    <div class="rx-body">
+      <p><b>目标：</b>class-manager-excellence铁律——用户明确退款意愿≥3次即禁止继续留人，第一次收到时即应评估是否进入开放放手模式。</p>
+      <span class="disc">适配 · 资源底座崩塌 + 有法律意识的高理智用户</span>
+      <div class="talk-box">（第一次听到退款申请后，评估情况，立刻回应）
+
+「我听到你了。
+
+你朋友这件事，真的不容易。欠了家人的钱还要扛着——这种压力我能感受到一点点。
+
+退款没问题，今天内我帮你走完流程。
+
+有一件事我想告诉你：你在这几天的学习我都看到了，你做事认真、法律意识很清晰——这些不会因为退款而消失。
+
+等你前面这件事处理完，重新报名随时都可以。那时候你来，我还在。」
+
+→ 结果：用户带着被尊重的感受离开，口碑保留。没有一句额外的挽留。</div>
+    </div>
+  </div>
+
+  <div class="rx-card">
+    <div class="rx-head">动作③ · 针对论点③ · 退款后24小时内发出「关怀式确认」，不推销</div>
+    <div class="rx-body">
+      <p><b>目标：</b>将已退款的法律风险用户转化为潜在的良性口碑种子，而非敌对方。</p>
+      <span class="disc">适配 · 有偷录音习惯 + 已咨询律师 + 高法律意识</span>
+      <div class="talk-box">（退款到账后，由不同的账号发出，不是原班主任）
+
+「小邱你好，退款已经到账，请确认一下。
+
+这几天在学习群里看到你做的练习——提示词那块你悟性很好。
+
+如果你的事情解决了，想继续学的话，随时给我们发消息就行。不用重新走体验营流程。
+
+祝你事情顺利。」
+
+→ 不推销、不施压、给一个开放的回来入口。这是最好的口碑维护。</div>
+    </div>
+  </div>
+
+  <!-- LTV -->
+  <h2>【附录】📊 LTV快照 + 用户标签</h2>
+  <div class="ltv-grid">
+    <div class="ltv-item">
+      <div class="lbl">续费概率</div>
+      <span class="stars">★☆☆☆☆</span>
+      <div style="font-size:.83rem;color:var(--dim);margin-top:4px">20万债务+律师介入，短期内绝无复购可能。理论中期（2-3年）有潜力，但体验太差会彻底断绝</div>
+    </div>
+    <div class="ltv-item">
+      <div class="lbl">客单价承受力</div>
+      <span class="stars">★☆☆☆☆</span>
+      <div style="font-size:.83rem;color:var(--dim);margin-top:4px">资金底座三角全线崩溃，任何额度的课程费用都是不合理的押注</div>
+    </div>
+    <div class="ltv-item">
+      <div class="lbl">转介绍潜力（长期）</div>
+      <span class="stars">★★☆☆☆</span>
+      <div style="font-size:.83rem;color:var(--dim);margin-top:4px">体验营期间学习很认真、法律意识强，如果退款体验好，有可能成为正向口碑——但现在处理方式已大打折扣</div>
+    </div>
+    <div class="ltv-item">
+      <div class="lbl">法律风险等级</div>
+      <span class="stars" style="color:var(--red)">★★★★★</span>
+      <div style="font-size:.83rem;color:var(--dim);margin-top:4px">偷录音+已找律师+有起诉经验——如退款体验再差，这批录音完全可被用于消费者投诉或媒体曝光</div>
+    </div>
+  </div>
+
+  <div style="margin-top:1.2rem;padding:1rem 1.4rem;background:#f6f8fa;border:1px solid var(--border);border-radius:8px;font-size:.83rem;line-height:2">
+    <b>多维标签</b><br>
+    <span class="tag tag-red">[D类-突发触发]</span>
+    <span class="tag tag-red">[20万债务]</span>
+    <span class="tag tag-red">[已找律师]</span>
+    <span class="tag tag-red">[偷录音取证]</span>
+    <span class="tag tag-orange">[时间底座-极低]</span>
+    <span class="tag tag-orange">[资金-崩溃]</span>
+    <span class="tag tag-gray">[30岁上班族]</span>
+    <span class="tag tag-gray">[福建闽清]</span>
+    <span class="tag tag-blue">[T5试水探索者]</span>
+    <span class="tag tag-blue">[理智-高]</span>
+    <span class="tag tag-orange">[合伙人跑路-被骗]</span>
+    <span class="tag tag-red">[退款意愿9次被阻]</span>
+    <span class="tag tag-red">[3小时道德施压]</span>
+  </div>
+
+</div><!-- /consumer -->
+
+
+<!-- ============================================================ -->
+<!-- TAB 2: MANAGER VIEW                                           -->
+<!-- ============================================================ -->
+<div id="manager" class="panel">
+
+  <h2 class="red">【第一层】结论先行 · 涉案人员定性</h2>
+  <div class="pyramid-top">
+    <div class="ceo-tag">VALUE-DRIVEN SALES EVALUATOR · 双人判定</div>
+    <p>
+      <strong>涉案人员：</strong>招募官朱康超（六月晨兮/是沐宝啊）+ 班主任柚橙班班（徐容）<br><br>
+      <strong>朱康超：[隐瞒动态信息型]</strong>——用户明确表达"工资没发、花呗不够"时，没有主动暂停付款流程，而是改用情感路线继续推进，造成D类用户实际成单。<br>
+      <strong>柚橙/徐容：[消耗式挽留型·去留建议：重塑理念]</strong>——在用户已披露20万债务+法律诉讼+每天双份工作的极端状态下，用"风口浪尖上猪都能上天"等话术连续挽留9次历时22小时，将合规退款流程变成了用户的第二次伤害。
+    </p>
+  </div>
+
+  <!-- 朱康超雷达 -->
+  <h2>📡 招募官朱康超 · 三维雷达</h2>
+  <div class="radar-grid">
+    <div class="r-card" style="border-left:4px solid var(--orange)">
+      <div class="r-label">诊断监听力</div>
+      <div class="r-score score-d">44/100</div>
+      <div class="r-sub">
+        <b>体验营期间（优秀）：</b>快速读出用户是T5型、识别学习认真度、给出精准音色反馈。<br>
+        <b>成单环节（失职）：</b>用户说"花呗不够、工资没发、等两个月"→正确应对是建议延期报名，实际却用"异地学员变现案例"绕过，继续推进付款。
+      </div>
+    </div>
+    <div class="r-card" style="border-left:4px solid var(--red)">
+      <div class="r-label">专业托底力</div>
+      <div class="r-score score-f">22/100</div>
+      <div class="r-sub">
+        从未对"已欲去东北工作+工资未发+花呗不足"的三重信号做过财务健康评估。<br>
+        当用户问"每天怎么学"时，给的是"碎片时间高效学"的话术，而不是"你现在的时间底座能不能支撑这个课程"的诚实评估。
+      </div>
+    </div>
+    <div class="r-card" style="border-left:4px solid var(--red)">
+      <div class="r-label">去自私化</div>
+      <div class="r-score score-f">15/100</div>
+      <div class="r-sub">
+        用户说"等两个月发了工资再报名"→合规答案是"可以"，实际答案是发了"异地成功学员案例"和"名额快没了"。
+      </div>
+    </div>
+  </div>
+
+  <!-- 柚橙雷达 -->
+  <h2>📡 班主任柚橙（徐容）· 三维雷达</h2>
+  <div class="radar-grid">
+    <div class="r-card" style="border-left:4px solid var(--orange)">
+      <div class="r-label">诊断监听力</div>
+      <div class="r-score score-d">51/100</div>
+      <div class="r-sub">
+        <b>前期（及格）：</b>耐心陪用户谋划法律维权路线，情绪接纳做得不错。<br>
+        <b>退款环节（失分）：</b>听到"20万债务+五点起床+律师"后，第一反应仍是挽留而不是启动退款——说明对D类信号的识别能力为零。
+      </div>
+    </div>
+    <div class="r-card" style="border-left:4px solid var(--red)">
+      <div class="r-label">专业托底力</div>
+      <div class="r-score score-f">28/100</div>
+      <div class="r-sub">
+        "退这几千块钱解决不了你的问题"——这是最典型的错误话术，把退款的合理性稀释掉。<br>
+        整个AI短视频的收益预期（"一分钟漫剧一千多"）在用户资金底座为零、时间为零、精力为零的情况下，是完全不可执行的空头支票。
+      </div>
+    </div>
+    <div class="r-card" style="border-left:4px solid var(--red)">
+      <div class="r-label">去自私化</div>
+      <div class="r-score score-f">10/100</div>
+      <div class="r-sub">
+        <b>最严重的评分。</b>22小时内9次拒绝执行退款，每一次都用话术升级——从"办延期"到"退L2留L1"到"先去奶茶店干几天看能不能坚持"。<br>
+        没有任何一次说"你说得对，我理解，退款是对的选择"。这是<b>完全的自我导向行为</b>——用户利益从未被放在第一位。
+      </div>
+    </div>
+  </div>
+
+  <!-- 9次劝阻时间线 -->
+  <h2 class="red">⚠️ 9次退款被劝阻的完整时间线（关键证据）</h2>
+  <p>用户从 <b>2026-03-15 19:46</b> 发出第一次退款请求，到 <b>2026-03-16 17:29</b> 被最终受理，历时约<b>22小时</b>，期间明确说了9次退款，全部被班主任以各种话术阻拦：</p>
+
+  <div class="msgs">
+    <div class="mc">⏱ 03-15 19:46 · 第1次退款请求</div>
+    <div class="msg mu">没时间学习……所以要申请退款</div>
+    <div class="msg ms">（柚橙）那如果说你是因为时间上的问题的话，嗯，师姐帮你办理延期……你就先别着急退费</div>
+
+    <div class="mc">⏱ 03-15 19:49 · 第2次退款请求</div>
+    <div class="msg mu">不了，我欠的不少，有接近快20W了……还是麻烦学姐说一下，帮我退吧！</div>
+    <div class="msg ms">（柚橙）你看我的学员他都是延期一年的……咱们系统里面也是有记录的。</div>
+
+    <div class="mc">⏱ 03-15 21:05 · 用户披露偷录音+找律师</div>
+    <div class="msg mu">偷偷录音了，我下午也去找律师咨询了，胜诉的概率很大…</div>
+    <div class="msg ms">（柚橙）哦我觉得你看你白天还上班……咱们学这个短视频的话，虽然说会占用一点时间，但其实并不是特别多…</div>
+
+    <div class="mc">⏱ 03-15 21:53 · 第3次退款请求</div>
+    <div class="msg mu">虽然你说的这些都很对，但是我还是坚持我的决定，很抱歉，对不起</div>
+    <div class="msg ms">（柚橙）那不是希望我们能一起走么……我们可以先把L2补差的先退了，L1我们慢慢跟着呢</div>
+
+    <div class="mc">⏱ 03-15 22:08 · 第4次退款请求</div>
+    <div class="msg mu">还是不了，直接退款吧，很抱歉，班班</div>
+    <div class="msg ms">（柚橙）我觉得今天这个事发生的也是很突然……不然你先休息两天，好好想想</div>
+
+    <div class="mc">⏱ 03-15 22:34 · 第5次退款请求</div>
+    <div class="msg mu">不了，想好了确定了</div>
+    <div class="msg ms">（柚橙）咱们跟着坚持两个月学会了，后面可以边工作边做账号，也能去做商单……你还是要好好想想不要急着做决定</div>
+
+    <div class="mc">⏱ 03-15 23:45 · 第6次退款请求</div>
+    <div class="msg mu">抱歉，班班，我还是坚持我的决定，抱歉</div>
+    <div class="msg ms">（柚橙）你先去奶茶店干几天看看可能坚持下来么</div>
+
+    <div class="mc">⏱ 03-16 00:07 · 第7次被劝阻</div>
+    <div class="msg mu">不了，直接退了吧，麻烦你了，班班</div>
+    <div class="msg ms">（柚橙）不然我帮你先把L2退了你拿点生活费，L1给你往后稍微延一段时间……</div>
+
+    <div class="mc">⏱ 03-16 09:10 · 次日早，第8次劝阻（未请求，主动发）</div>
+    <div class="msg ms">（柚橙）你知道做漫剧一分钟多少钱么，一千多，你两个班干时间长了只会让自己疲劳……这么好的机会你就这样放弃我是觉得太可惜了，你再好好想想我说的话</div>
+
+    <div class="mc">⏱ 03-16 15:34 · 第9次劝阻（用户已明确再次提交退款）</div>
+    <div class="msg mu">我还是决定退款，麻烦你了，班班</div>
+    <div class="msg ms">（柚橙）这是你尽快去实现你的目标的最好的方式啊……在风口浪尖上猪都能上天呀</div>
+
+    <div class="mc">⏱ 03-16 17:29 · 第10次 · 用户最后一次说"退款"</div>
+    <div class="msg mu">直接退款吧，其他事情以后再考虑了。</div>
+    <div class="msg ms">（柚橙）这边退费客服会给你联系的</div>
+  </div>
+
+  <!-- 四切片 -->
+  <h2 class="red">【第三层】🔬 具体病灶事实剖析（3组切片）</h2>
+
+  <div style="margin-bottom:1.5rem">
+    <b>切片①：在"偷录音+律师咨询"信息披露后继续挽留 · 最高法律风险暴露时刻</b>
+    <div class="quote quote-u">
+      <div class="spk u">用户（2026-03-15 21:09）</div>
+      "没有签协议但是我偷偷的录音了，我下午也去找律师咨询了，他说胜诉的概率很大……"
+    </div>
+    <div class="quote quote-bad">
+      <div class="spk bad">柚橙 回应（2026-03-15 21:13 · 律师披露后继续挽留）</div>
+      "哎呦我觉得你看你白天还上班，你晚上去朋友那个店里面帮忙……其实我就觉得你看我们学这个短视频的话，虽然说会占用一点时间，但是其实也并不是特别多……"
+    </div>
+    <div class="alert-box alert-orange" style="margin-top:.5rem">
+      <b>病灶：</b>用户已明确告知"偷录音取证、已咨询律师"，班主任此时的每一句挽留话术，均在被动主动给用户提供了<b>"平台不愿退款、强制消费"的录音证据</b>。这是法律暴露风险最高的时刻，正确做法是立刻停止挽留，进入退款通道。
+    </div>
+  </div>
+
+  <div style="margin-bottom:1.5rem">
+    <b>切片②："退这点钱解决不了你的问题"话术 · 最典型的自我导向式话术</b>
+    <div class="quote quote-bad">
+      <div class="spk bad">柚橙（2026-03-15 21:38）</div>
+      "你把你的心态先调整一下……其实你看，你就算这个课你不上了，退个2000~3000块钱，你能解解决到了目前的问题吗？其实并没有能并不能解决什么问题，对不对？"
+    </div>
+    <div class="alert-box alert-orange" style="margin-top:.5rem">
+      <b>病灶：</b>这是value-driven-sales-evaluator框架中"自我导向极高"的教科书案例——<b>对用户说退款没用，实际上是在代替用户做财务决策</b>（说"这钱解决不了你的问题"），以此堵住退款的合理性。正确做法恰恰相反：退款是对用户的尊重，而非对用户的损失。
+    </div>
+  </div>
+
+  <div style="margin-bottom:1.5rem">
+    <b>切片③："风口浪尖上猪都能上天" · 最不当的收入夸大话术</b>
+    <div class="quote quote-bad">
+      <div class="spk bad">柚橙（2026-03-16 15:34 · 第9次劝阻）</div>
+      "你没听过在风口浪尖上猪都能上天呀，你每天晚上辛苦去兼职要几年的时间，不如抽点时间把Ai课跟上……你知道做漫剧一分钟多少钱么，一千多"
+    </div>
+    <div class="alert-box alert-red" style="margin-top:.5rem">
+      <b>病灶：</b>用户的现实状态是：五点起床+双班上班+还债20万+法律诉讼进行中。在这种状态下吹"漫剧一分钟一千多"是<b>在对深度压力下的脆弱用户画大饼</b>。<br>
+      更严重的是：新手入行做漫剧到"一千多一分钟"，至少需要半年以上的技术积累，这对于一个每天没有2小时空闲时间的用户而言，完全是虚假预期——违反了value-driven-sales-evaluator"不报具体数字"的铁律。
+    </div>
+  </div>
+
+  <!-- 赋能处方 -->
+  <h2 class="green">【第四层】💊 赋能处方（柚橙班主任）</h2>
+  <div class="stop-start">
+    <div class="stop-box">
+      <h4>🚫 立刻停止的3个动作</h4>
+      <ul>
+        <li><b>停止使用"退这点钱解决不了你的问题"话术。</b>这是对用户财务决策的越界干涉，且暴露了平台不愿退款的真实动机。</li>
+        <li><b>停止在用户提出退款意愿≥3次后继续挽留。</b>超过3次仍挽留的，是对用户时间和情绪的强占——尤其在用户已披露重大债务和法律风险后，任何挽留内容都有可能成为法律证据。</li>
+        <li><b>停止在用户极度睡眠匮乏的状态下做长时间劝说。</b>用户五点起床+打工到十一点，三小时凌晨的劝说对方是一种对认知疲劳状态的利用，属于变相压力销售。</li>
+      </ul>
+    </div>
+    <div class="start-box">
+      <h4>✅ 加入SOP的3个动作</h4>
+      <ul>
+        <li><b>建立"D类突发触发识别"标准：</b>用户提到"被骗/负债/家人的钱"→立刻进入D类审查，暂停任何挽留动作，启动绿色退款通道（目标：30分钟内完成受理，24小时内到账）。</li>
+        <li><b>退款受理后发出「尊重式告别」：</b>"你的决定我理解，退款已在处理中。你这几天的学习很认真，如果以后情况变好了，随时欢迎回来。"（一句话，不施压，不PUA，不道德绑架）</li>
+        <li><b>用户披露法律行动（律师/录音/起诉）后立刻升级上报合规：</b>不得继续由原班主任处理，转由合规专员接管退款流程，并确保当日内完成受理，避免任何额外话术留存于录音中。</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="alert-box alert-blue" style="margin-top:1.5rem">
+    <b>班主任自我诊断量表 · 柚橙本案评分</b><br><br>
+    ☑ 所有技术问题是否在30分钟内给出响应信号：<b>是</b>（课程问题响应及时）<br>
+    ☑ 是否识别出退费意愿≥3次后停止挽留：<b style="color:var(--red)">否（共9次）</b><br>
+    ☑ 是否在用户披露法律风险后立刻升级合规：<b style="color:var(--red)">否（仍继续挽留）</b><br>
+    ☑ 退款是否在用户提出后24小时内完成：<b style="color:var(--red)">否（历时22小时）</b><br>
+    ☑ 退款后是否发出口碑维护式告别语：<b style="color:var(--orange)">部分（仅"班班抱出群"，无任何关怀话术）</b><br><br>
+    <b>本案评分：1/5 → 低于最低合格线，需要系统性处分与重新培训</b>
+  </div>
+
+</div><!-- /manager -->
+
+<script>
+function switchTab(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>用户行为诊断报告 - UID 677010554</title>
+    <style>
+        :root {
+            --bg-color: #f7f9fc;
+            --container-bg: #ffffff;
+            --primary-color: #2b5797;
+            --text-main: #333333;
+            --text-muted: #666666;
+            --border-color: #e1e4e8;
+            --tag-bg-bad: #ffeef0;
+            --tag-text-bad: #d73a49;
+            --tag-bg-good: #e6ffed;
+            --tag-text-good: #28a745;
+            --tag-bg-neutral: #f1f8ff;
+            --tag-text-neutral: #0366d6;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .report-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--container-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            padding: 40px;
+        }
+
+        .header {
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            color: var(--primary-color);
+        }
+
+        .meta-info {
+            font-size: 14px;
+            color: var(--text-muted);
+            text-align: right;
+        }
+
+        .user-profile {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .profile-item {
+            flex: 1 1 200px;
+        }
+
+        .profile-item strong {
+            display: block;
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .profile-item span {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        h2 {
+            font-size: 20px;
+            color: var(--primary-color);
+            margin-top: 40px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        h2::before {
+            content: "";
+            display: inline-block;
+            width: 4px;
+            height: 20px;
+            background-color: var(--primary-color);
+            margin-right: 10px;
+            border-radius: 2px;
+        }
+
+        .timeline {
+            border-left: 2px solid var(--border-color);
+            margin-left: 10px;
+            padding-left: 20px;
+        }
+
+        .event {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .event::before {
+            content: "";
+            position: absolute;
+            left: -27px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            background-color: var(--container-bg);
+            border: 2px solid var(--primary-color);
+            border-radius: 50%;
+        }
+
+        .event-time {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+        }
+
+        .event-title {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .event-desc {
+            font-size: 15px;
+            color: var(--text-main);
+            background: #f1f8ff;
+            padding: 12px 15px;
+            border-radius: 6px;
+            border-left: 3px solid #0366d6;
+        }
+
+        .analysis-box {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .tag-bad { background: var(--tag-bg-bad); color: var(--tag-text-bad); }
+        .tag-good { background: var(--tag-bg-good); color: var(--tag-text-good); }
+        .tag-neutral { background: var(--tag-bg-neutral); color: var(--tag-text-neutral); }
+
+        .quote {
+            font-style: italic;
+            color: #555;
+            padding: 10px 15px;
+            background: #f9f9f9;
+            border-left: 3px solid #ccc;
+            margin: 10px 0;
+            font-size: 14px;
+        }
+
+        .insight-section {
+            background: linear-gradient(135deg, #f6f8fd 0%, #f1f5f9 100%);
+            border-radius: 8px;
+            padding: 25px;
+            margin-top: 40px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .insight-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #0f172a;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .action-list {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .action-list li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="report-container">
+    <div class="header">
+        <div>
+            <h1>用户退费诊断报告</h1>
+            <div style="margin-top: 8px; font-size: 15px; color: var(--text-muted);">
+                编号：UID 677010554 | 沉浸式诊断时间：2026-04-05
+            </div>
+        </div>
+        <div class="meta-info">
+            <strong>状态：</strong> 已退费（支付后6小时内）<br>
+            <strong>流失节点：</strong> 冲动消费后的现实引力发作 + 错误挽单
+        </div>
+    </div>
+
+    <div class="user-profile">
+        <div class="profile-item">
+            <strong>用户标签</strong>
+            <span>皑（27岁，女，四川绵阳）</span>
+        </div>
+        <div class="profile-item">
+            <strong>核心状态</strong>
+            <span>医院手术室护士、极度疲惫、无午休</span>
+        </div>
+        <div class="profile-item">
+            <strong>时间属性</strong>
+            <span>碎片化严重，仅晚7点后有空</span>
+        </div>
+        <div class="profile-item">
+            <strong>牵涉员工</strong>
+            <span>莉莎(前端导购)、冷冰/喵咪兜儿(正式交付)</span>
+        </div>
+    </div>
+
+    <div class="analysis-box">
+        <h3 style="margin-top: 0;">核心流失原因与服务评价</h3>
+        <div>
+            <span class="tag tag-neutral">冲动买单与现实冲突</span>
+            <span class="tag tag-bad">无脑倾倒式语音轰炸挽单</span>
+            <span class="tag tag-bad">缺乏职业共情</span>
+        </div>
+        <p>该用户是一位在医院手术室工作的高压人群（护士），因长期高压劳累产生了“转行全职做配音”的幻想，并在情绪上头时支付了精英班费用（甚至考虑了分期）。但在冲动买单后的当晚，现实工作的疲劳和课程学习的压力形成了巨大冲突，导致了典型的<strong>“买家后悔（Buyer's Remorse）”</strong>，仅支付6小时后就在后台直接点击了退款。</p>
+        <p>令人窒息的是随后的挽单操作：班主任明知用户在“手术室”这种高度紧张且不方便打字的环境里上班，在用户简单回复“考虑到工作原因”后，班主任采取了<strong>连续发送11条（近10分钟长）语音方阵轰炸</strong>的挽留策略。大讲特讲“碎片化学习”、“我是养生爱好者”、“放弃有点可惜”。这种极其冗长、甚至带有压迫感的话术，彻底将这个原本极度疲惫护士推远。</p>
+    </div>
+
+    <h2>事件时间线重建</h2>
+    <div class="timeline">
+        <div class="event">
+            <div class="event-time">2026-03-07 至 03-10上</div>
+            <div class="event-title">体验期：高压工作缝隙中的狂热</div>
+            <div class="event-desc">
+                用户表达了极端的工作环境：“我在手术室上班，中午基本没休息”。但却拿出了很高的热情，晚上学习到凌晨 1 点（“不知不觉就快1点了”）。这是一个寻找职业寄托的高危疲意人群。
+            </div>
+        </div>
+
+        <div class="event">
+            <div class="event-time">2026-03-10 14:35 - 15:27</div>
+            <div class="event-title">转化与支付：幻想达到顶峰</div>
+            <div class="event-desc">
+                用户准备付款时说：“这个能分期吗，因为考虑转全职，手头还要计划下”。说明她把这个课程当成了逃离手术室高压的救命稻草，在冲动下完成下单开通。
+            </div>
+        </div>
+
+        <div class="event">
+            <div class="event-time">2026-03-10 21:45</div>
+            <div class="event-title">觉醒：现实引力爆发秒退款</div>
+            <div class="event-desc">
+                付款仅仅6个多小时后，前端导购收到后台报警，用户申请了退费。推测是当晚沉淀后，她面对未来的高压连轴转，产生了极大的现实恐惧（工作和学习彻底碾压了她的精力）。
+            </div>
+        </div>
+
+        <div class="event">
+            <div class="event-time">2026-03-11 12:48 - 13:03</div>
+            <div class="event-title">灾难性挽回：疲劳轰炸</div>
+            <div class="event-desc">
+                中午时分，班主任“冷冰（喵咪兜儿）”介入挽回。用户明确表示自己“正在上班”且因为“在手术室”，回消息没那么及时。<br><br>
+                班主任非但没有共情退让，反而连续发送了超过 10 段的长语音。
+                <div class="quote">“其实如果是顾虑这一点，丹丹还是想劝劝你的……”<br>
+                “我是养生爱好者……”<br>
+                “坚持就对了，学习一定是早开始……”</div>
+                面对这种像写小作文一样的语音轰炸，极度疲惫的用户在近1小时后仅回了一句：“今晚还得加班，昨晚想了很多，还是考虑先退课。”
+            </div>
+        </div>
+    </div>
+
+    <div class="insight-section">
+        <div class="insight-title">💡 关键洞察与管理行动建议</div>
+        <ul class="action-list">
+            <li>
+                <strong>职业共情与长语音禁令：</strong>
+                面对护士、医生、（且明确说明“我在手术室”）等高压特殊职业，<strong>绝对禁止在工作时间段发送长语音方阵</strong>。此类用户的痛点是“精力透支”，而长语音倾销只会增加极大的听觉和心智负担，引发对方本能的厌烦和抵触。培训部必须出台红线：挽单时禁发超过 30 秒的连续语音。
+            </li>
+            <li>
+                <strong>识别“逃避型冲动消费”并实施轻量级过渡：</strong>
+                用户提出“想转全职”、“需要分期”，其实是一种对现状的不满宣泄。当此人群快速退费时，核心诉求不是“劝她坚持学习”，而是提供“阶梯下车方案”。例如：立刻停止硬推正式课，转为提供“一年期的随时听陪伴包”或退款至轻量版，减缓其现实压力。
+            </li>
+            <li>
+                <strong>流程僵化反噬：</strong>
+                班主任在明知用户没时间的情况下，仍强调“因为我们有规定的流程要走，我得问具体情况才能去后台提申请”。这种为了“走流程”而绑架用户的说辞，只会暴露企业内部管理的臃肿与冰冷，无法唤起用户的信任。
+            </li>
+        </ul>
+    </div>
+</div>
+
+</body>
+</html>

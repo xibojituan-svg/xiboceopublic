@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>法医双视角诊断 · UID 677010996 一掷</title>
+  <style>
+    :root {
+      --red: #cf222e; --orange: #e16900; --blue: #0969da;
+      --purple: #8250df; --green: #1a7f37; --danger: #9a0000;
+      --border: #e1e4e8; --bg: #f6f8fa; --card: #fff;
+      --text: #24292e; --dim: #586069;
+    }
+    * { box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background: var(--bg); color: var(--text); line-height: 1.75; margin: 0; padding: 0; }
+    .crisis-banner {
+      background: var(--orange); color: #fff; padding: .9rem 2rem;
+      font-weight: 700; font-size: 1rem; text-align: center; letter-spacing: .5px;
+    }
+    .page-header {
+      background: linear-gradient(135deg, #1a1e2a 0%, #2d2f3e 100%);
+      color: #fff; padding: 2.5rem 3rem; border-bottom: 4px solid var(--orange);
+    }
+    .page-header h1 { font-size: 1.45rem; margin: 0 0 .5rem; }
+    .page-header .sub { font-size: .88rem; color: #9aa4b2; margin: 0; }
+    .tab-bar {
+      display: flex; background: #fff; border-bottom: 2px solid var(--border);
+      position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 6px rgba(0,0,0,.08);
+    }
+    .tab { flex: 1; text-align: center; padding: 1rem .5rem; cursor: pointer;
+      font-weight: 600; font-size: .93rem; color: var(--dim);
+      border-bottom: 3px solid transparent; transition: all .2s; }
+    .tab.active { color: var(--blue); border-bottom-color: var(--blue); }
+    .tab:hover { background: var(--bg); }
+    .panel { display: none; padding: 2rem 3rem; max-width: 980px; margin: 0 auto; }
+    .panel.active { display: block; }
+    h2 { font-size: 1.1rem; margin-top: 2rem;
+      padding-left: 12px; border-left: 4px solid var(--blue); }
+    h2.red { border-left-color: var(--red); }
+    h2.danger { border-left-color: var(--danger); }
+    h2.orange { border-left-color: var(--orange); }
+    h2.green { border-left-color: var(--green); }
+    .crisis-card {
+      background: var(--orange); color: #fff;
+      padding: 1.6rem 2rem; border-radius: 10px; margin: 1.2rem 0;
+    }
+    .crisis-card .ceo-tag {
+      font-size: .72rem; background: rgba(255,255,255,.2); color: #fff;
+      padding: 2px 10px; border-radius: 20px; display: inline-block;
+      margin-bottom: .8rem; letter-spacing: 1px;
+    }
+    .crisis-card p { margin: 0; font-size: 1rem; line-height: 1.9; color: #fff8eb; }
+    .crisis-card strong { color: #fff; }
+    .pyramid-top {
+      background: linear-gradient(135deg, #1a1e2a, #2d2f3e);
+      color: #fff; padding: 1.6rem 2rem; border-radius: 10px; margin: 1.2rem 0;
+    }
+    .pyramid-top .ceo-tag {
+      font-size: .72rem; background: #cf222e; color: #fff;
+      padding: 2px 10px; border-radius: 20px; display: inline-block;
+      margin-bottom: .8rem; letter-spacing: 1px;
+    }
+    .pyramid-top p { margin: 0; font-size: 1.02rem; line-height: 1.8; color: #e0e6f0; }
+    .pyramid-top strong { color: #fff; }
+    .alert-box { padding: 1rem 1.4rem; border-radius: 8px; margin: 1rem 0; font-size: .93rem; }
+    .alert-red { background: #ffebe9; border: 1px solid #ffcbc8; color: #6e0000; }
+    .alert-danger { background: #ff0000; border: 2px solid #9a0000; color: #fff; font-weight:700; }
+    .alert-blue { background: #ddf4ff; border: 1px solid #b6dfff; color: #0a3069; }
+    .alert-orange { background: #fff8c5; border: 1px solid #f0c62e; color: #5c3d00; }
+    .alert-green { background: #dafbe1; border: 1px solid #aceebb; color: #0a3d1f; }
+    .axis-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+    .axis-card { border-radius: 8px; padding: 1.2rem 1.4rem; border: 1px solid var(--border); }
+    .axis-card .axis-label { font-size: .75rem; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; margin-bottom: .5rem; }
+    .axis-card .axis-score { font-size: 1.4rem; font-weight: 800; margin-bottom: .4rem; }
+    .axis-card .axis-body { font-size: .87rem; color: var(--dim); }
+    .axis-low { background: #ffebe9; border-left: 4px solid var(--red); }
+    .axis-mid { background: #fff8c5; border-left: 4px solid var(--orange); }
+    .axis-high { background: #dafbe1; border-left: 4px solid var(--green); }
+    .pillar-table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+    .pillar-table th { background: var(--bg); padding: 10px 14px; text-align: left;
+      border: 1px solid var(--border); font-size: .85rem; font-weight: 700; color: var(--dim); }
+    .pillar-table td { padding: 12px 14px; border: 1px solid var(--border); font-size: .91rem; vertical-align: top; }
+    .pillar-table tr:hover td { background: var(--bg); }
+    .quote { padding: .9rem 1.2rem; border-radius: 6px; margin: .8rem 0;
+      font-size: .91rem; border-left: 4px solid; }
+    .quote-u { background: #fff8f0; border-left-color: var(--orange); }
+    .quote-s { background: #f1f8ff; border-left-color: var(--blue); }
+    .quote-bad { background: #ffebe9; border-left-color: var(--red); }
+    .quote-good { background: #dafbe1; border-left-color: var(--green); }
+    .quote .spk { font-weight: 700; font-size: .78rem; margin-bottom: 4px; }
+    .quote .spk.u { color: var(--orange); }
+    .quote .spk.s { color: var(--blue); }
+    .quote .spk.bad { color: var(--red); }
+    .quote .spk.good { color: var(--green); }
+    .rx-card { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin: 1rem 0; }
+    .rx-header { background: var(--bg); padding: 10px 14px; font-weight: 700; font-size: .9rem;
+      border-bottom: 1px solid var(--border); }
+    .rx-body { padding: 14px; font-size: .92rem; }
+    .rx-body ul { margin: 0; padding-left: 20px; }
+    .rx-body li { margin-bottom: 6px; }
+  </style>
+  <script>
+    function switchTab(idx) {
+      document.querySelectorAll('.tab').forEach((t, i) => {
+        t.className = i === idx ? 'tab active' : 'tab';
+      });
+      document.querySelectorAll('.panel').forEach((p, i) => {
+        p.className = i === idx ? 'panel active' : 'panel';
+      });
+    }
+  </script>
+</head>
+<body>
+
+  <div class="crisis-banner">
+    B级预警：前端无差别收割穷人（黑名单群体），后端班主任体现人性关怀“兜底”
+  </div>
+
+  <div class="page-header">
+    <h1>法医双视角诊断 · UID 677010996（学员：一掷/李执云）</h1>
+    <p class="sub">41岁 | 福建泉州 | 负债几十万 | 失信黑名单 | 开油车滴滴入不敷出</p>
+  </div>
+
+  <div class="tab-bar">
+    <div class="tab active" onclick="switchTab(0)">案情核查（Timeline）</div>
+    <div class="tab" onclick="switchTab(1)">高管六棱镜诊断（PRISM）</div>
+    <div class="tab" onclick="switchTab(2)">一号位断头台与药方（Action）</div>
+  </div>
+
+  <!-- 面板 1：案情核查 -->
+  <div class="panel active">
+    
+    <div class="crisis-card">
+      <div class="ceo-tag">核心定性</div>
+      <p><strong>【畸形的客群画像】：</strong>前端销售一味追求转化率，针对负债累累、处在破产边缘的黑名单群体兜售“兼职赚钱梦”，甚至任由用户借朋友的钱来购买课程。<br>
+      <strong>【极强的服务兜底】：</strong>值得庆幸的是，后续负责跟进的班主任（猫萧萧/冷萍）体现了优异的职业操守。在面对用户因浓重福建口音无法通过Lv2普通话考试而崩溃退费时，不仅没有PUA打压，反而耐心疏导、提供网文创作建议并果断放行退款。此案的结局因后端的温情而免于升级为刑事外诉案件。</p>
+    </div>
+
+    <h2 class="red">第一阶段：前端无差别兜售与“造梦”</h2>
+    <div class="alert-box alert-orange">
+      招募官（晨兮师姐）以极为夸张的“有声兼职、20多种变现方式、接官方试音单”为噱头，对这个41岁、地方口音极重且底层挣扎的用户进行了长达数天的转化。完全未设立任何受众准入门槛评估。
+    </div>
+    <div class="quote quote-bad">
+      <div class="spk bad">招募官（晨兮师姐）</div>
+      <p>今天中午我重点讲在有声的20多种变现方式...学成归来，有机会的话未来我们可以一起搭音👍</p>
+    </div>
+    <div class="quote quote-u">
+      <div class="spk u">用户（一掷）</div>
+      <p>我有想法，想成立工作室，因为我有大量的便宜的人工，要怎么做？</p>
+    </div>
+
+    <h2>第二阶段：正式学习的落差与活跃表现</h2>
+    <div class="alert-box alert-blue">
+      用户进入正式学习群后对写剧本和群互动具有极高热情，但他很快遇到了硬屏障——浓重的福建口音导致其数小时无法考过最基础的普通话测试。
+    </div>
+    <div class="quote quote-u">
+      <div class="spk u">用户（一掷）</div>
+      <p>没想到传说中的天选之子居然是我，昨天晚上十二点到两点多我都考不过普通话...我还用拼音逐字逐句来，还是不行。</p>
+    </div>
+
+    <h2 class="green">第三阶段：退费崩溃与“教科书级别”安抚解围</h2>
+    <div class="alert-box alert-green">
+      3月21日，用户决定放弃并请求退款。随着对话深入，其披露了极度悲惨的经济状态：背负几十万债务且被拉入失信黑名单，报名费是借用女性朋友的钱，现因没钱被朋友催债。班主任不仅爽快退费，甚至关怀其生活并鼓励他去写小说。
+    </div>
+    <div class="quote quote-u">
+      <div class="spk u">用户（一掷）</div>
+      <p>我都黑名单了，负债几十万是有的，小说还没收银。本来借朋友车油车跑跑滴滴，现在油价上涨，再跑也没意义...后台可以看到，付款是女的，是我朋友（催债）。</p>
+    </div>
+    <div class="quote quote-good">
+      <div class="spk good">班主任（猫萧萧/冷萍）</div>
+      <p>成年人的学习真的是挺不容易的，尊重你的选择的...跑滴滴不行，没有前几年景气，你这个油车跑不动了...写小说这个也挺好的，既然你有这个文采，那就坚持走下去...去打申请了原路退，有啥就问我。</p>
+    </div>
+
+  </div> <!-- End Panel 1 -->
+
+
+  <!-- 面板 2：高管六棱镜诊断 -->
+  <div class="panel">
+    
+    <div class="pyramid-top">
+      <div class="ceo-tag">Customer PRISM 业务切片</div>
+      <p><strong>底层逻辑断裂：</strong>把昂贵的主力产品卖给毫无还款能力的人，是在赚带血的钱；<br>
+      <strong>管理亮点浮现：</strong>在全员背负退费考核的高压下，依然有班主任能守住“人性的底线”，及时止血了公司的声誉风险。</p>
+    </div>
+
+    <div class="axis-grid">
+      <div class="axis-card axis-low">
+        <div class="axis-label">前端滤网健康度：重度感染</div>
+        <div class="axis-score">E 级</div>
+        <div class="axis-body">对用户年龄、口音、负债记录不加任何过滤。这群人抗风险能力为0，一点风吹草动即刻爆发极端退费或网络维权。这说明前端转化 SOP是饮鸩止渴。</div>
+      </div>
+      <div class="axis-card axis-high">
+        <div class="axis-label">后端履约善意值：卓越</div>
+        <div class="axis-score">A 级</div>
+        <div class="axis-body">班主任猫萧萧（冷萍）面对经济崩溃用户的退出，没有继续施加焦虑，而是利用情绪价值完成了低风险退款。完美遏制了次生投诉灾害。</div>
+      </div>
+      <div class="axis-card axis-mid">
+        <div class="axis-label">退费风险失控指数：中</div>
+        <div class="axis-score">B 级</div>
+        <div class="axis-body">由于服务人员的高素质干预，该案例未演化为黑猫投诉，但“无差别圈养穷人”的底座逻辑说明引流大盘岌岌可危。</div>
+      </div>
+    </div>
+
+  </div> <!-- End Panel 2 -->
+
+
+  <!-- 面板 3：一号位断头台与药方 -->
+  <div class="panel">
+    
+    <h2>1. 业务红线：对极穷/破产人群的“熔断拦截”</h2>
+    <div class="rx-card">
+      <div class="rx-header" style="color:var(--danger)">【止血带】调整流量清洗指标，阻断“绝望之财”</div>
+      <div class="rx-body">
+        <ul>
+          <li><strong>经济准入门槛筛查：</strong> 在招募和支付环节，一经发现使用“朋友代付”、“花呗套现”且聊天中频繁抛出“负债”、“黑名单”的用户，必须强制挂钩“高敏阻断”。停止向其兜售大于3000元的高价课程。</li>
+          <li><strong>打击前端“致富画饼”：</strong> 前端招募官（晨兮）话术中“20种变现方式赚第一桶金”对底层人群具有强烈的赌博诱惑。我们是教培公司，不是理财招商平台。法务必须清查这种兼职诱导话术的合规性。</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2>2. 组织建设：放大“良币”的影响力</h2>
+    <div class="rx-card">
+      <div class="rx-header" style="color:var(--green)">【护城河】树立服务标杆与 SOP 提炼</div>
+      <div class="rx-body">
+        <ul>
+          <li><strong>通报表扬：</strong> 建议在全员大会上对班主任【猫萧萧（冷萍）】予以点名表扬或发放服务奖金。其在退费抗性极大的情况下，依然能设身处地为失业滴滴司机着想，保留了喜播教育最后的体面。</li>
+          <li><strong>将人文关怀写入退费 SOP：</strong> “如果强留不住，就温和放手”。猫萧萧在退费时那句“既然你有文采，小说一定要写下去”的共情话术，生动诠释了“做教育的长期主义”。这种不带攻击性的退款沟通，是阻止外部监管维权最有效的缓冲垫。</li>
+        </ul>
+      </div>
+    </div>
+
+2  </div> <!-- End Panel 3 -->
+
+</body>
+</html>

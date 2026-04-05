@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>用户行为诊断报告 - UID 677009480</title>
+    <style>
+        :root {
+            --bg-color: #f7f9fc;
+            --container-bg: #ffffff;
+            --primary-color: #2b5797;
+            --text-main: #333333;
+            --text-muted: #666666;
+            --border-color: #e1e4e8;
+            --tag-bg-bad: #ffeef0;
+            --tag-text-bad: #d73a49;
+            --tag-bg-good: #e6ffed;
+            --tag-text-good: #28a745;
+            --tag-bg-neutral: #f1f8ff;
+            --tag-text-neutral: #0366d6;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .report-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--container-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            padding: 40px;
+        }
+
+        .header {
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            color: var(--primary-color);
+        }
+
+        .meta-info {
+            font-size: 14px;
+            color: var(--text-muted);
+            text-align: right;
+        }
+
+        .user-profile {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .profile-item {
+            flex: 1 1 200px;
+        }
+
+        .profile-item strong {
+            display: block;
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .profile-item span {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        h2 {
+            font-size: 20px;
+            color: var(--primary-color);
+            margin-top: 40px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        h2::before {
+            content: "";
+            display: inline-block;
+            width: 4px;
+            height: 20px;
+            background-color: var(--primary-color);
+            margin-right: 10px;
+            border-radius: 2px;
+        }
+
+        .timeline {
+            border-left: 2px solid var(--border-color);
+            margin-left: 10px;
+            padding-left: 20px;
+        }
+
+        .event {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .event::before {
+            content: "";
+            position: absolute;
+            left: -27px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            background-color: var(--container-bg);
+            border: 2px solid var(--primary-color);
+            border-radius: 50%;
+        }
+
+        .event-time {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+        }
+
+        .event-title {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .event-desc {
+            font-size: 15px;
+            color: var(--text-main);
+            background: #f1f8ff;
+            padding: 12px 15px;
+            border-radius: 6px;
+            border-left: 3px solid #0366d6;
+        }
+
+        .analysis-box {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .tag-bad { background: var(--tag-bg-bad); color: var(--tag-text-bad); }
+        .tag-good { background: var(--tag-bg-good); color: var(--tag-text-good); }
+        .tag-neutral { background: var(--tag-bg-neutral); color: var(--tag-text-neutral); }
+
+        .quote {
+            font-style: italic;
+            color: #555;
+            padding: 10px 15px;
+            background: #f9f9f9;
+            border-left: 3px solid #ccc;
+            margin: 10px 0;
+            font-size: 14px;
+        }
+
+        .insight-section {
+            background: linear-gradient(135deg, #f6f8fd 0%, #f1f5f9 100%);
+            border-radius: 8px;
+            padding: 25px;
+            margin-top: 40px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .insight-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #0f172a;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .action-list {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .action-list li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="report-container">
+    <div class="header">
+        <div>
+            <h1>用户退费诊断报告</h1>
+            <div style="margin-top: 8px; font-size: 15px; color: var(--text-muted);">
+                编号：UID 677009480 | 沉浸式诊断时间：2026-04-05
+            </div>
+        </div>
+        <div class="meta-info">
+            <strong>状态：</strong> 已退费<br>
+            <strong>流失节点：</strong> 压迫式催缴作业+多头催收爆发
+        </div>
+    </div>
+
+    <div class="user-profile">
+        <div class="profile-item">
+            <strong>用户标签</strong>
+            <span>十八岁老头X (18岁，男，时间极其紧张)</span>
+        </div>
+        <div class="profile-item">
+            <strong>核心状态</strong>
+            <span>忙碌、时间碎片化严重</span>
+        </div>
+        <div class="profile-item">
+            <strong>参与额度</strong>
+            <span>3980元 精英版</span>
+        </div>
+        <div class="profile-item">
+            <strong>牵涉员工</strong>
+            <span>相成宝(销售)、晓寒、李梦娇(交付)、金金(召回)</span>
+        </div>
+    </div>
+
+    <div class="analysis-box">
+        <h3 style="margin-top: 0;">核心流失原因与服务评价</h3>
+        <div>
+            <span class="tag tag-bad">压迫式连环催缴</span>
+            <span class="tag tag-bad">多头越级审问</span>
+            <span class="tag tag-bad">CRM隔离漏洞(金金)</span>
+        </div>
+        <p>这是一起因为<strong>过度跟进、多头压迫“催缴作业”</strong>导致的反噬型退费。用户在正式开课后明确表达了“这两天太忙，没时间”的现实情况。然而业务端不仅没有给予松弛感，反而采取了“现任班主任+前任销售导师”多对一、连环追命式的催缴。甚至前端销售人员（相成宝）跳出来以质问的姿态斥责用户：“干嘛呢？什么情况？怎么不理他？”</p>
+        <p>成人培训中的陪伴服务演变成了令人窒息的“学校教导处审问”，彻底摧毁了用户学习的兴趣和心理防线，导致用户用“没精力学了，太忙了”作为借口直接退费。退费后，不仅前端无任何反思，下游营销团队“喜播金金”还在几天后拿着失真的资料前来“装傻式二次营销”，暴露出喜播内部严重的团队割裂与系统性故障。</p>
+    </div>
+
+    <h2>事件时间线重建</h2>
+    <div class="timeline">
+        <div class="event">
+            <div class="event-time">2026-03-10 14:06</div>
+            <div class="event-title">转化期：成功付费与承诺</div>
+            <div class="event-desc">
+                用户支付 3980 元。前端销售（相成宝）信誓旦旦：“以后我就是你的底气，学习的时候别有玻璃心，有不懂的随时找我。”
+            </div>
+        </div>
+
+        <div class="event">
+            <div class="event-time">2026-03-12 18:29</div>
+            <div class="event-title">伏笔：用户精力告急</div>
+            <div class="event-desc">
+                正式课开始后，用户向班主任晓寒请假：“这两天有点忙，最近没什么时间，我明天下午把作业做完。” 晓寒表示同意放宽到周末。
+            </div>
+        </div>
+
+        <div class="event">
+            <div class="event-time">2026-03-14 至 03-15</div>
+            <div class="event-title">转折：更换班主任与多头催缴</div>
+            <div class="event-desc">
+                不明原因更换了班主任为“李梦娇”。新班主任在周末疯狂追击：“在吗？作业还没交，什么时候交呀？”<br><br>
+                更严重的是，当晚 21:26，前端销售（相成宝）越级跳出来对用户进行“教导主任式”的质问：
+                <div class="quote">“哈喽，晚上好，干嘛呢？你班主任给我反馈说，咱们作业也没做，课程也没看，什么情况？说联系你还联系不上，你没理他。问你啥情况。”</div>
+                这种高压式的两头夹击彻底惹怒/劝退了时间本就紧张的用户。
+            </div>
+        </div>
+
+        <div class="event">
+            <div class="event-time">2026-03-16 14:03</div>
+            <div class="event-title">退费与拒绝挽留</div>
+            <div class="event-desc">
+                用户默默在后台申请退费。当班主任发现后来问，用户回复非常坚决：“没有精力学了，太忙了。” 拒绝了做任何“学习规划”的电话沟通，彻底流失。
+            </div>
+        </div>
+
+        <div class="event">
+            <div class="event-time">2026-03-24 至 03-30</div>
+            <div class="event-title">闹剧：“失忆”的下游阿米巴团队骚扰</div>
+            <div class="event-desc">
+                退费8天后，喜播下游另一个营销实体“喜播金金”接手该UID，发送了一系列极其套版且失真的营销文案：
+                <div class="quote">“在想啊，你当时是为什么没继续深造呀？”<br>
+                “我特意为你留了免费声音体验名额。”</div>
+                系统完全不知道该用户刚刚交过 3980 又退费，还在按“未转化小白”的剧本演戏，荒诞至极。
+            </div>
+        </div>
+    </div>
+
+    <div class="insight-section">
+        <div class="insight-title">💡 关键洞察与管理行动建议</div>
+        <ul class="action-list">
+            <li>
+                <strong>杜绝“按头牛喝水”的高压催收式教学：</strong>
+                成人教育的核心是“成就感”和“松弛度”。当用户反馈“太忙”时，班主任的动作必须立刻由“催缴作业”降本为“发送碎片化知识卡片包裹陪伴”。严禁班主任联合前端销售对用户进行**“多维度包抄、带质问语气的催促”**（如：“干嘛呢？”“你为什么没理班主任”）。这种行为剥夺了成年人的体面，极易激发逆反心理直接要求退款。
+            </li>
+            <li>
+                <strong>梳理前端与交付端的边界：</strong>
+                需要对（相成宝）进行约谈培训。成单交付后，前端不仅不能随意越位代替班主任去“兴师问罪”，反而应当作为红白脸策略中的“白脸”去进行兜底情感疏导。
+            </li>
+            <li>
+                <strong>系统性灾难：立刻建立断点隔离墙：</strong>
+                再次实锤下游营销组（“阿离”、“金金”等系列体系）与主CRM存在数据隔离盲区。退费用户的公海回流逻辑出现了严重的“失忆症”，导致其拿着极其下限的文案去二次骚扰高客单价退费用户。请即刻联合技术中心排查 <code>refund_to_public_pool</code> 相关的标签继承逻辑，至少设立 3-6 个月的冰冻隔离期。
+            </li>
+        </ul>
+    </div>
+</div>
+
+</body>
+</html>

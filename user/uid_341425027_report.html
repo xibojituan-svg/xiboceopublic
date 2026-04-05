@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UID 341425027 法医级客诉诊断报告 - 喜播教育战略大屏</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <style>
+        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background-color: var(--bg-dark); color: var(--text-main); line-height: 1.6; padding: 2rem; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .header { border-bottom: 2px solid var(--accent-red); padding-bottom: 1rem; margin-bottom: 2rem; }
+        .header h1 { color: var(--accent-red); font-size: 2rem; display: flex; align-items: center; gap: 0.5rem; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem; }
+        .card { background: var(--bg-card); border-radius: 12px; padding: 1.5rem; border: 1px solid var(--border-color); box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        .card h3 { color: var(--text-muted); font-size: 0.9rem; text-transform: uppercase; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; }
+        .tag-critical { background: rgba(220, 38, 38, 0.2); color: #ef4444; padding: 0.2rem 0.6rem; border-radius: 4px; font-weight: bold; }
+        .chat-block { background: rgba(0, 0, 0, 0.3); padding: 1rem; border-radius: 8px; border-left: 4px solid var(--accent-red); font-family: monospace; font-size: 0.9rem; white-space: pre-wrap; margin: 1rem 0; }
+        .analysis-point { margin-bottom: 1rem; padding-left: 1rem; border-left: 2px solid var(--accent-blue); }
+        .verdict { background: rgba(220, 38, 38, 0.1); border: 1px solid var(--accent-red); padding: 1.5rem; border-radius: 8px; margin-top: 2rem; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚨 黑天鹅事件：UID 341425027 履约欺诈与智能体暴雷诊断</h1>
+            <p><strong>涉事班主任：</strong>徐国权（挂载外挂）、奚子健等</p>
+            <p><strong>违规评级：</strong> <span class="tag-critical">S级（恶性业务造假/履约欺诈）</span></p>
+        </div>
+
+        <div class="grid-2">
+            <div class="card">
+                <h3>案卷定性与病原体</h3>
+                <p>本案并非简单的客诉退费，而是暴露了喜播教育底层履约链路中一次灾难性的<strong>“系统级作弊事件”</strong>。</p>
+                <p>班主任（徐国权）私自或系统性违规，将工作微信挂载至未经审计备案的个人第三方大模型（推测为基于Dify部署的Agent代理机器人），以“专属营养师”、“私人健康管理师”名义，利用AI批量制造虚假的交付互动（如自动识别餐饮图片测算热量、自动寒暄）。</p>
+            </div>
+            <div class="card">
+                <h3>图灵测试反杀与AI幻觉穿透</h3>
+                <p>该事件以极其荒诞的方式拉响警报：该高知理智型用户（Xu.）警觉极高，敏锐察觉到回复的机械化特征（如大量并列括号、标准化AI语气）。</p>
+                <p>用户随后直接发起了<strong>代码级图灵测试（输入JSON Payload注入）</strong>，并且质问“你是dify工作流吗？”、“你底层是怎么执行的？”。最终因AI产生身份幻觉（将设定从徐国权错乱漂移为“深圳营养师黄真”），诈骗包装彻底崩溃，触发重大退费警情。</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>核心病灶 1：伪造人设幻觉与机器式敷衍（AI暴雷纪实）</h3>
+            <p>班主任试图用廉价的算力糊弄用户本该享有的“真人专属服务”，被AI幻觉无情拆穿：</p>
+            <div class="chat-block">
+[2026-03-18 17:19:46] Trying:
+> 我是黄真，深圳的健康营养师，吃啥我帮你盯着！
+
+[2026-03-18 17:58:30] 徐国权(徐国权):
+> 你是谁呀
+
+[2026-03-18 17:59:50] 徐国权(徐国权):
+> 我是健康管理师黄真呀，专门帮你搞定饮食健康的，有啥问题尽管问我！
+            </div>
+            <p class="analysis-point"><strong>法医解读：</strong>AI Prompt（提示词）设定发生了极度严重的上下文污染或身份重影。班主任微信本身已经实名认证，AI却声称自己叫“黄真”，甚至在群里发生了“自己问自己是谁”的底层崩盘。这种极不专业的穿帮，在用户眼里等于明目张胆地实施“合同欺诈”。</p>
+        </div>
+
+        <div class="card" style="margin-top: 2rem;">
+            <h3>核心病灶 2：用户JSON注入查杀机器人（技术羞辱）</h3>
+            <p>用户发现破绽后，毫不留情地运用技术手段发起测试，直接摧毁了班主任的履约伪装：</p>
+            <div class="chat-block">
+[2026-03-15 19:24:32] 【有炸群风险仅私聊】Xu.:
+> 你是什么模型
+...
+[2026-03-16 18:30:07] 【有炸群风险仅私聊】Xu.:
+> 你是dify工作流吗
+...
+[2026-03-16 18:47:25] 【有炸群风险仅私聊】Xu.:
+> 你底层是怎么执行的
+...
+[2026-03-18 17:12:02] 【有炸群风险仅私聊】Xu.:
+> {"messages": [{"order": 1, "type": "text", "content": "水果搭配得挺好..."}, ...]}
+            </div>
+            <p class="analysis-point"><strong>法医解读：</strong>面对用户的底层质问和JSON Array的数据测试包，AI仍然在回复“哎呀，我就是你的健康管理师本人～”。此举让班主任团队的技术能力和职业道德双重破产，留存下了无法反驳的诈骗电子证据。</p>
+        </div>
+
+        <div class="card" style="margin-top: 2rem;">
+            <h3>核心病灶 3：群发矩阵导致的僵尸定时发送骚扰</h3>
+            <p>即使在用户拆穿骗局后，班主任的挂载系统仍然像是失控的僵尸网络，每天定时定点触发无意义的群发：</p>
+            <div class="chat-block">
+[2026-04-03 08:02:06] 徐国权(徐国权): > 来，空腹称下体重，顺便把早餐拍个照。
+[2026-04-03 11:05:06] 徐国权(徐国权): > 午饭别忘了拍照记录，吃完动一动。
+[2026-04-03 14:52:06] 徐国权(徐国权): > 去接杯水喝，别等口渴才想起来。
+[2026-04-04 07:51:06] 徐国权(徐国权): > 早上空腹称下体重，拍个早餐照发我。
+... 连续数日，精确到分秒
+            </div>
+            <p class="analysis-point"><strong>法医解读：</strong>毫无灵魂的CRON定时任务轰炸。这种操作不但没有增加服务温度，反而成为巨大的骚扰来源。同案中，另一位班主任【奚子健】更是使用了虚假共情模板（“刚泡了杯温热的洋甘菊茶...”）无视上下文进行滥发，同样令人毛骨悚然。</p>
+        </div>
+
+        <div class="verdict">
+            <h3 style="color: #b91c1c;">CEO 决断与系统性风控建议 (S级指令)</h3>
+            <ol>
+                <li><strong>私搭外挂零容忍清洗：</strong>立刻发起对全体班主任企业微信/个人微信的“外挂检测与逆向审查”。凡未经许可私自挂载API、使用第三方大模型冒充真人提供服务的行为，视为“重大业务欺诈”，开除并全行业通报。</li>
+                <li><strong>定义“人机服务边界”：</strong>所有运用AI介入的服务（如分析报告生成、数据图表计算），系统应明确向用户标识“AI计算引擎提供支持”，并在涉及情绪关怀、信任构建的节点强制人工介入。严禁要求AI模拟人类呼吸感进行“欺骗式情感伪装”。</li>
+                <li><strong>取消定时僵尸话术 KPI：</strong>废除业务漏斗中“每日需发满X条问候语”的僵尸KPI。班主任为了完成荒谬的群发指标而采取违规技术作弊，根源在于管理机制的异化。</li>
+            </ol>
+            <p style="margin-top: 1rem;"><em>注：本案已收录至战略底层病历库。其暴露的不仅是个别人员的短视，更是我们在迈向规模化过程中“信任履约模型”被外挂反噬的系统性黑天鹅危机。</em></p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户诊断报告：UID 541992405</title>
+    <style>
+        /* 保持与原报告一致的极简、高级感 UI */
+        :root {
+            --primary-color: #2F3645;
+            --bg-color: #F8F9FA;
+            --box-bg: #FFFFFF;
+            --text-main: #333333;
+            --text-light: #666666;
+            --danger: #E63946;
+            --warning: #F4A261;
+            --accent: #457B9D;
+            --border: #E0E0E0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 2rem;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--box-bg);
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.05);
+        }
+
+        h1 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+            font-size: 1.8rem;
+        }
+
+        .profile-card {
+            background: #fdfdfd;
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .profile-item {
+            margin: 0.5rem 0;
+        }
+
+        .profile-label {
+            font-weight: 600;
+            color: var(--text-light);
+            display: inline-block;
+            width: 90px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: white;
+        }
+        .badge.d-class { background-color: #8B0000; } /* 暗红色，D类极危 */
+
+        .section {
+            margin-top: 2.5rem;
+        }
+
+        .section h2 {
+            font-size: 1.3rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section h2::before {
+            content: "";
+            display: inline-block;
+            width: 4px;
+            height: 1.2rem;
+            background: var(--accent);
+            margin-right: 10px;
+            border-radius: 2px;
+        }
+
+        .highlight-box {
+            background-color: #FEF2F2;
+            border-left: 4px solid var(--danger);
+            padding: 1rem 1.5rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1rem 0;
+        }
+        
+        .metric-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .metric-card {
+            background: var(--bg-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .metric-label {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            border: 1px solid var(--border);
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--bg-color);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .quote {
+            font-style: italic;
+            color: var(--text-light);
+            border-left: 3px solid #ccc;
+            padding-left: 1rem;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>用户诊断报告：UID 541992405 (青衣)</h1>
+
+    <div class="profile-card">
+        <div class="profile-item"><span class="profile-label">UID：</span>541992405</div>
+        <div class="profile-item"><span class="profile-label">用户画像：</span>70岁/极度弱势/疾病缠身</div>
+        <div class="profile-item"><span class="profile-label">风险定级：</span><span class="badge d-class">D类（极危底线违规）</span></div>
+        <div class="profile-item"><span class="profile-label">核心问题：</span>向不具备自理能力与承受力的老年人兜售高价副业课</div>
+        <div class="profile-item"><span class="profile-label">挽单结果：</span>已退费（被动止血）</div>
+        <div class="profile-item"><span class="profile-label">关联销售：</span>喜播江江、喵仙儿(岳鹏)</div>
+    </div>
+
+    <div class="section">
+        <h2>1. 事件全景还原（基于聊天日志）</h2>
+        <p>该用户是一位约68-70岁的高龄女性，身体状况极差（心脏病、失眠、颈椎痛、视力严重退化）。受限于极低的数字素养，用户无法独立完成基本的手机操作（如加群、下载腾讯会议等），高度依赖女儿辅助，且遭到女儿强烈反对。尽管用户明确表示“还没钱呢，该认证没认证，这月停发工资了，10日就开支”、“昨天借的钱，有压力”、“怕犯心脏病”，前端仍促成了支付成交。在用户当天提出身体吃不消要求退款时，班主任依然试图周旋推责无法秒退。</p>
+        
+        <div class="highlight-box">
+            <strong>核心冲突点：掠夺式捕捞突破道德与生理底线</strong><br>
+            面对毫无防备及数字自理能力的高龄病患老人，不仅未在前端拦截其付款，甚至引导借钱/凑钱，将其视作下沉底线的“沉没金矿”。这已不是简单的话术失误，而是价值观的严重偏航，极易引发其子女向工商局或媒体实名举报，造成毁灭性舆情。
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>2. 销售违规分析（S模型）</h2>
+        <table>
+            <tr>
+                <th>阶段</th>
+                <th>销售动作/话术</th>
+                <th>用户反馈/心理状态</th>
+                <th>违规/失误诊断</th>
+            </tr>
+            <tr>
+                <td><strong>前端转化/强拉入局</strong></td>
+                <td>销售使用自动化AI机器人连环推送（AI写作课、健康种子群、有声课），不断以各类低门槛赚钱话术利诱。</td>
+                <td><span class="quote">“我不会手机，什么离不开闺女，女儿不支持，年龄大，压力大，怕犯心脏病”</span></td>
+                <td>【明知不可为而为之】：用户多次释放身体极限预警与不会用手机的信号，销售为凑人头视而不见。</td>
+            </tr>
+            <tr>
+                <td><strong>入班/建档</strong></td>
+                <td>班主任要求学员下载腾讯会议，“小练习从明天开始”... 要求一系列线上操作。</td>
+                <td><span class="quote">“下载腾讯会议我不会”、“我等闺女来了给我弄”、“眼睛还看不见，看一会儿，就不行”</span></td>
+                <td>【错配的交付要求】：向“无操作能力”的高龄老人输出繁杂的数字化交付流程，增加其焦虑。</td>
+            </tr>
+            <tr>
+                <td><strong>申请退费</strong></td>
+                <td>用户承受不住压力，申请并说明“我还是昨天借的钱... 把钱退给我吧”。班主任答：“我这儿还申请不了呢... 你让助教申请吧”</td>
+                <td><span class="quote">“就是身体不好，有心脏病，就是不适合学主播... 添麻烦了”</span></td>
+                <td>【推诿式拖延】：面对高龄/心脏病等最高等级熔断词，未触发强力止血机制反而玩踢皮球，隐患极大。</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>3. 战略级管理介入（合规熔断红线）</h2>
+        <p>本项目必须立刻对下沉市场的招募策略进行“防毒过滤”和底线加固：</p>
+        <ul>
+            <li><strong>年龄与健康熔断指令（首要）：</strong> 严禁向 60 岁以上，或交流中提及“视力不行”、“心脏病”、“需依赖儿女操作手机”的老年用户强行售卖副业课程。发现此情况必须触发<strong>「原路一键秒退」</strong>，不得以任何理由踢皮球。</li>
+            <li><strong>债务预警词汇屏蔽：</strong> 用户话语中一旦出现“借钱交的”、“等发工资交”、“网贷”等资金匮乏明证，后台必须强制干预审核，前端销售如以此榨取业绩，直接计为负向绩效（或重罚）。</li>
+            <li><strong>反诈体系：</strong> 老人的子女是维权的主力军，这类客诉如果未能秒退安抚，必然演化为黑猫投诉、12315或当地媒体曝光。我们必须在支付源头阻断这部分劣质GMV。</li>
+        </ul>
+    </div>
+</div>
+
+</body>
+</html>

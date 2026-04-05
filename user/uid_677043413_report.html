@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户退费诊断报告 - UID 677043413</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #09090b; --bg-surface: #18181b; --bg-surface-hover: #27272a;
+            --border: #3f3f46; --text: #f4f4f5; --text-dim: #a1a1aa; --text-muted: #71717a;
+            --brand-primary: #ef4444; --brand-secondary: #f97316; --brand-accent: #10b981;
+            --tag-red: #fca5a5; --tag-orange: #fdba74; --tag-blue: #93c5fd; --tag-purple: #c4b5fd;
+            --tag-yellow: #fde047; --tag-green: #86efac;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', -apple-system, sans-serif; background-color: var(--bg); color: var(--text); line-height: 1.6; }
+        .main-container { max-width: 900px; margin: 0 auto; padding: 40px 24px; position: relative; z-index: 1; }
+        .header { margin-bottom: 40px; border-bottom: 1px solid var(--border); padding-bottom: 30px; animation: fadeUp 0.8s ease-out; }
+        .badge { display: inline-block; padding: 4px 12px; border-radius: 100px; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; background: rgba(249,115,22,0.1); color: var(--brand-secondary); border: 1px solid rgba(249,115,22,0.3); }
+        h1 { font-size: clamp(28px, 4vw, 42px); font-weight: 900; line-height: 1.2; letter-spacing: -1px; margin-bottom: 16px; }
+        .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+        .tag { font-size: 13px; font-weight: 600; padding: 4px 12px; border-radius: 6px; }
+        .tag-red { background: rgba(239,68,68,0.15); color: var(--tag-red); border: 1px solid rgba(239,68,68,0.3); }
+        .tag-orange { background: rgba(249,115,22,0.15); color: var(--tag-orange); border: 1px solid rgba(249,115,22,0.3); }
+        .tag-purple { background: rgba(139,92,246,0.15); color: var(--tag-purple); border: 1px solid rgba(139,92,246,0.3); }
+        .profile-card { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 16px; padding: 24px; margin-bottom: 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; animation: fadeUp 0.8s ease-out 0.1s backwards; }
+        .metric .label { font-size: 12px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .metric .value { font-size: 16px; font-weight: 600; color: #fff; }
+        .section { margin-bottom: 48px; animation: fadeUp 0.8s ease-out 0.2s backwards; }
+        h2 { font-size: 24px; font-weight: 800; color: #fff; margin-bottom: 24px; display: flex; align-items: center; gap: 10px; }
+        h2::before { content: ''; display: block; width: 4px; height: 24px; background: var(--brand-primary); border-radius: 2px; }
+        .insight-box { background: rgba(239,68,68,0.05); border-left: 4px solid var(--brand-primary); padding: 20px; border-radius: 0 12px 12px 0; margin-bottom: 24px; }
+        .insight-box.warning { border-color: var(--brand-secondary); background: rgba(249,115,22,0.05); }
+        .chat-log { display: flex; flex-direction: column; gap: 16px; }
+        .msg { background: var(--bg-surface); border: 1px solid var(--border); padding: 16px; border-radius: 12px; }
+        .msg.staff { border-color: rgba(239,68,68,0.3); background: rgba(239,68,68,0.02); }
+        .msg.user { border-color: rgba(139,92,246,0.3); background: rgba(139,92,246,0.02); }
+        .msg-meta { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; font-weight: 600; display: flex; justify-content: space-between; }
+        .msg-content { font-size: 15px; color: var(--text); }
+        .msg-highlight { color: #fca5a5; font-weight: 700; background: rgba(239,68,68,0.2); padding: 0 4px; border-radius: 4px; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+    <script src="../navbar.js"></script>
+    <div class="main-container">
+        
+        <div class="header">
+            <div class="badge">C类警戒用户 - 冲动型家庭抵制</div>
+            <h1>退费行为漏洞诊断：260314室内设计2岁半</h1>
+            <div class="tags">
+                <span class="tag tag-red">冲动型消费</span>
+                <span class="tag tag-orange">家庭内部制约</span>
+                <span class="tag tag-purple">过度包装承诺</span>
+            </div>
+            <p style="color: var(--text-dim); font-size: 15px;">典型“未报备家庭后买单”引发的反悔案例。由于客单价不低（旗舰班），用户脑热报名后遭遇了配偶的坚定反对引发退单。干预人员在处理阻力时虽然态度良好，但也大量使用“将心比心，风口猪飞，多投几本回本”等经典话术。</p>
+        </div>
+
+        <div class="profile-card">
+            <div class="metric"><div class="label">UID / 昵称</div><div class="value">677043413 / 260314室内设计2岁半</div></div>
+            <div class="metric"><div class="label">当前状态</div><div class="value" style="color: var(--brand-primary);">已果断退费跑路</div></div>
+            <div class="metric"><div class="label">干预人员</div><div class="value">陈晨6(游茂) & 纸糊的母老虎</div></div>
+            <div class="metric"><div class="label">核心退费动因</div><div class="value" style="color: var(--brand-secondary);">高额冲动消费后妻子坚决反对</div></div>
+        </div>
+
+        <div class="section">
+            <h2>🚨 暴露的核心系统性漏洞</h2>
+            <div class="insight-box">
+                <h3 style="color: #fca5a5; margin-bottom: 8px; font-size: 16px;">1. 销售转化包装过高加剧期待压力</h3>
+                <p>在销售中，宣称“内部学员过稿率90%以”、“很快开始投，一本短本市场价300-3000左右”。用户因为这种“确定性”才敢冲动消费，但这种收益许诺对后续交付和家庭承受能力要求过高。</p>
+            </div>
+            
+            <div class="insight-box warning">
+                <h3 style="color: #fdba74; margin-bottom: 8px; font-size: 16px;">2. 家庭经济制约是硬性熔断点但仍在纠缠</h3>
+                <p>在用户刚提出因为“老婆还是不同意”要退款时，班主任回应“没有商量余地了吗？”，“让你爱人给点耐心，你也为了这个家庭努力”。这其实非常危险，极易促成“破坏别家家庭和睦”的负面口碑甚至导致用户配偶代为投诉12315或报警。</p>
+            </div>
+            
+            <div class="insight-box warning">
+                <h3 style="color: #fdba74; margin-bottom: 8px; font-size: 16px;">3. 竞品负面引发防御心理</h3>
+                <p>面对挽留，学员提及了“网上说你们退款困难... 我相信你们不会像网上说的一样”，说明在申请退款的过程中，用户特意去知乎、小红书、黑猫等平台搜索了“喜播 退费”，防退费门槛已经成为外界对于喜播的一大刻板印象，加重了销售难自证清白的负担。</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>💬 核心案发现场还原 (聊天记录)</h2>
+            <div class="chat-log">
+                <div class="msg user">
+                    <div class="msg-meta"><span>260314室内设计2岁半</span><span>提交退款</span></div>
+                    <div class="msg-content">老师，我和你说实话吧，<span class="msg-highlight">我老婆还是不同意.. 之前我脑袋一热太冲动了</span>。</div>
+                </div>
+
+                <div class="msg staff">
+                    <div class="msg-meta"><span style="color: #fdba74;">陈晨6(游茂) [家庭情感加压挽回]</span><span>2026-03-17 23:23:36</span></div>
+                    <div class="msg-content"><span class="msg-highlight">让你爱人给点耐心，也支持和理解理解你，将心比心。你也是为家庭付出，为了这个家努力。风口的猪都能飞。</span></div>
+                </div>
+
+                <div class="msg user">
+                    <div class="msg-meta"><span>260314室内设计2岁半</span><span>再次强调</span></div>
+                    <div class="msg-content">一模一样[破涕为笑] 我知道你们专业，但是还是希望能退款，谢谢老师啊... 还有<span class="msg-highlight">网上说你们退款困难，不知道真的假的。。</span>我相信还是你们不会像网上说的那样</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🎯 高管动作指令与战略修正建议 (Action Items)</h2>
+            <ul style="color: var(--text-dim); padding-left: 20px; line-height: 1.8;">
+                <li><strong>建立“伴侣一票否决”无损退款SOP：</strong> 当客户提出配偶或家人因经济问题坚决反对时，应将其视为C级（高客诉风险）工单，立刻进入审批流程并免去“将心比心类”挽留环节，避免家庭内部矛盾外溢至外部客诉。</li>
+                <li><strong>负面舆情消解隔离带：</strong> “退款难”已成为学员在决策犹豫期的首要障碍预期。应在退费处理首句加入标准化定心丸：“本机构退款严格按照无损契约精神（不扣除繁琐手续费），预计1-3个工作日原路退回，网络谣言不可轻信。”通过超出预期的痛快退费打碎外部谣言。</li>
+                <li><strong>合规话术筛查：</strong> 严查将兼职收入“保底化”或“高频出现几百到三千收入不等的案例许诺”的擦边违规做法。</li>
+            </ul>
+        </div>
+        
+    </div>
+</body>
+</html>

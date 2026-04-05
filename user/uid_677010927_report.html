@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>法医双视角诊断 · UID 677010927 陌云九（安馨）</title>
+  <style>
+    :root {
+      --red: #cf222e; --orange: #e16900; --blue: #0969da;
+      --purple: #8250df; --green: #1a7f37; --danger: #9a0000;
+      --border: #e1e4e8; --bg: #f6f8fa; --card: #fff;
+      --text: #24292e; --dim: #586069;
+    }
+    * { box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background: var(--bg); color: var(--text); line-height: 1.75; margin: 0; padding: 0; }
+    .crisis-banner {
+      background: #9a0000; color: #fff; padding: .9rem 2rem;
+      font-weight: 700; font-size: 1rem; text-align: center; letter-spacing: .5px;
+    }
+    .page-header {
+      background: linear-gradient(135deg, #1a1e2a 0%, #2d2f3e 100%);
+      color: #fff; padding: 2.5rem 3rem; border-bottom: 4px solid var(--danger);
+    }
+    .page-header h1 { font-size: 1.45rem; margin: 0 0 .5rem; }
+    .page-header .sub { font-size: .88rem; color: #9aa4b2; margin: 0; }
+    .tab-bar {
+      display: flex; background: #fff; border-bottom: 2px solid var(--border);
+      position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 6px rgba(0,0,0,.08);
+    }
+    .tab { flex: 1; text-align: center; padding: 1rem .5rem; cursor: pointer;
+      font-weight: 600; font-size: .93rem; color: var(--dim);
+      border-bottom: 3px solid transparent; transition: all .2s; }
+    .tab.active { color: var(--blue); border-bottom-color: var(--blue); }
+    .tab:hover { background: var(--bg); }
+    .panel { display: none; padding: 2rem 3rem; max-width: 980px; margin: 0 auto; }
+    .panel.active { display: block; }
+    h2 { font-size: 1.1rem; margin-top: 2rem;
+      padding-left: 12px; border-left: 4px solid var(--blue); }
+    h2.red { border-left-color: var(--red); }
+    h2.danger { border-left-color: var(--danger); }
+    h2.orange { border-left-color: var(--orange); }
+    h2.purple { border-left-color: var(--purple); }
+    h2.green { border-left-color: var(--green); }
+    .crisis-card {
+      background: #9a0000; color: #fff;
+      padding: 1.6rem 2rem; border-radius: 10px; margin: 1.2rem 0;
+    }
+    .crisis-card .ceo-tag {
+      font-size: .72rem; background: rgba(255,255,255,.2); color: #fff;
+      padding: 2px 10px; border-radius: 20px; display: inline-block;
+      margin-bottom: .8rem; letter-spacing: 1px;
+    }
+    .crisis-card p { margin: 0; font-size: 1rem; line-height: 1.9; color: #ffe5e5; }
+    .crisis-card strong { color: #fff; }
+    .pyramid-top {
+      background: linear-gradient(135deg, #1a1e2a, #2d2f3e);
+      color: #fff; padding: 1.6rem 2rem; border-radius: 10px; margin: 1.2rem 0;
+    }
+    .pyramid-top .ceo-tag {
+      font-size: .72rem; background: #cf222e; color: #fff;
+      padding: 2px 10px; border-radius: 20px; display: inline-block;
+      margin-bottom: .8rem; letter-spacing: 1px;
+    }
+    .pyramid-top p { margin: 0; font-size: 1.02rem; line-height: 1.8; color: #e0e6f0; }
+    .pyramid-top strong { color: #fff; }
+    .alert-box { padding: 1rem 1.4rem; border-radius: 8px; margin: 1rem 0; font-size: .93rem; }
+    .alert-red { background: #ffebe9; border: 1px solid #ffcbc8; color: #6e0000; }
+    .alert-danger { background: #ff0000; border: 2px solid #9a0000; color: #fff; font-weight:700; }
+    .alert-blue { background: #ddf4ff; border: 1px solid #b6dfff; color: #0a3069; }
+    .alert-orange { background: #fff8c5; border: 1px solid #f0c62e; color: #5c3d00; }
+    .alert-green { background: #dafbe1; border: 1px solid #aceebb; color: #0a3d1f; }
+    .axis-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+    .axis-card { border-radius: 8px; padding: 1.2rem 1.4rem; border: 1px solid var(--border); }
+    .axis-card .axis-label { font-size: .75rem; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; margin-bottom: .5rem; }
+    .axis-card .axis-score { font-size: 1.4rem; font-weight: 800; margin-bottom: .4rem; }
+    .axis-card .axis-body { font-size: .87rem; color: var(--dim); }
+    .axis-low { background: #ffebe9; border-left: 4px solid var(--red); }
+    .axis-mid { background: #fff8c5; border-left: 4px solid var(--orange); }
+    .axis-high { background: #dafbe1; border-left: 4px solid var(--green); }
+    .pillar-table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+    .pillar-table th { background: var(--bg); padding: 10px 14px; text-align: left;
+      border: 1px solid var(--border); font-size: .85rem; font-weight: 700; color: var(--dim); }
+    .pillar-table td { padding: 12px 14px; border: 1px solid var(--border); font-size: .91rem; vertical-align: top; }
+    .pillar-table tr:hover td { background: var(--bg); }
+    .quote { padding: .9rem 1.2rem; border-radius: 6px; margin: .8rem 0;
+      font-size: .91rem; border-left: 4px solid; }
+    .quote-u { background: #fff8f0; border-left-color: var(--orange); }
+    .quote-s { background: #f1f8ff; border-left-color: var(--blue); }
+    .quote-bad { background: #ffebe9; border-left-color: var(--red); }
+    .quote-danger { background: #3d0000; border-left-color: #ff6060; }
+    .quote .spk { font-weight: 700; font-size: .78rem; margin-bottom: 4px; }
+    .quote .spk.u { color: var(--orange); }
+    .quote .spk.s { color: var(--blue); }
+    .quote .spk.bad { color: var(--red); }
+    .quote .spk.danger { color: #ff8080; }
+    .quote-danger .spk.danger { color: #ff9999; }
+    .quote-danger p { color: #ffcccc; margin: 0; }
+    .rx-card { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin: 1rem 0; }
+    .rx-head { background: #1a1e2a; color: #fff; padding: .8rem 1.2rem;
+      font-weight: 700; font-size: .92rem; }
+    .rx-body { padding: 1.2rem 1.4rem; font-size: .91rem; }
+    .rx-body p { margin: 0 0 .6rem; }
+    .disc { font-size: .8rem; background: var(--purple); color: #fff;
+      padding: 2px 8px; border-radius: 20px; display: inline-block; margin: 3px 0 6px; }
+    .talk-box { background: #f6f8fa; border: 1px solid var(--border); border-radius: 6px;
+      padding: 1rem 1.2rem; margin: .6rem 0; font-size: .89rem;
+      font-style: italic; color: #333; white-space: pre-line; }
+    .radar-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+    .r-card { border-radius: 8px; padding: 1.2rem; border: 1px solid var(--border); text-align: center; }
+    .r-score { font-size: 2rem; font-weight: 900; margin: .3rem 0; }
+    .r-label { font-size: .82rem; font-weight: 700; color: var(--dim); }
+    .r-sub { font-size: .8rem; color: #777; margin-top: .3rem; text-align: left; }
+    .score-f { color: var(--red); } .score-d { color: var(--orange); }
+    .score-b { color: #0969da; } .score-a { color: var(--green); }
+    .stop-start { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+    .stop-box { background: #ffebe9; border: 1px solid #ffcbc8; border-radius: 8px; padding: 1.2rem; }
+    .start-box { background: #dafbe1; border: 1px solid #aceebb; border-radius: 8px; padding: 1.2rem; }
+    .stop-box h4, .start-box h4 { margin: 0 0 .8rem; font-size: .93rem; }
+    .stop-box li { color: #6e0000; } .start-box li { color: #0a3d1f; }
+    ul li { margin-bottom: 7px; font-size: .91rem; }
+    .msgs { display: flex; flex-direction: column; gap: 6px;
+      padding: 1rem; background: #f6f8fa; border: 1px solid var(--border);
+      border-radius: 8px; margin: .8rem 0; }
+    .msg { padding: 7px 14px; border-radius: 8px; font-size: .89rem; max-width: 88%; }
+    .mu { background: #ffe0cc; align-self: flex-end; color: #5c2200; }
+    .ms { background: #ddf4ff; align-self: flex-start; color: #0a3069; font-style: italic; }
+    .mx { background: #3d0000; align-self: flex-end; color: #ffcccc; font-weight: 700; }
+    .mc { align-self: center; font-size: .76rem; color: var(--dim); background: none; }
+    .tag { display: inline-block; padding: 2px 8px; border-radius: 20px;
+      font-size: .75rem; font-weight: 700; margin: 2px; }
+    .tag-red { background: #ffebe9; color: var(--red); }
+    .tag-danger { background: #9a0000; color: #fff; }
+    .tag-orange { background: #fff3cd; color: #8a4c00; }
+    .tag-blue { background: #ddf4ff; color: #0a3069; }
+    .tag-gray { background: #f0f0f0; color: var(--dim); }
+    .tag-green { background: #dafbe1; color: #0a3d1f; }
+    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+    .compare-good { background: #dafbe1; border: 1px solid #aceebb; border-radius: 8px; padding: 1.2rem; }
+    .compare-bad { background: #ffebe9; border: 1px solid #ffcbc8; border-radius: 8px; padding: 1.2rem; }
+    .compare-good h4 { color: var(--green); margin: 0 0 .8rem; }
+    .compare-bad h4 { color: var(--red); margin: 0 0 .8rem; }
+    @media(max-width:720px) {
+      .panel { padding: 1rem 1.2rem; }
+      .axis-grid, .radar-grid, .stop-start { grid-template-columns: 1fr; }
+      .compare-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="crisis-banner">
+  🚨 高危心理危机案件 · 用户明确表达轻生意向（跳楼）· 需纳入危机干预SOP · 严禁二次骚扰
+</div>
+
+<div class="page-header">
+  <h1>法医双视角诊断报告 · UID 677010927 · 陌云九（安馨/阿寻）44岁</h1>
+  <p class="sub">
+    D类外诉 · 已退费（3607.5元）· 负债60万 · 长期无业 · 明确表达轻生意向<br>
+    核心问题：前端口头承诺（定向派单/进工作室）断层于正式合同 · 用户精准法律维权+录屏取证<br>
+    班主任喜小满（后端·处理良好）vs. 展颜（前端·营销话术+退款后7天二次骚扰）<br>
+    分析框架：user-needs-decoder · class-manager-excellence · value-driven-sales-evaluator
+  </p>
+</div>
+
+<div class="tab-bar">
+  <div class="tab active" onclick="switchTab('consumer')">🧠 消费者解码视角</div>
+  <div class="tab" onclick="switchTab('manager')">🔍 班主任行为审计</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- TAB 1: CONSUMER VIEW                                          -->
+<!-- ============================================================ -->
+<div id="consumer" class="panel active">
+
+  <!-- 危机先告 -->
+  <h2 class="danger">⚠️ 第零层：危机优先告警（必读）</h2>
+  <div class="crisis-card">
+    <div class="ceo-tag">CRISIS LEVEL · 最高优先级</div>
+    <p>
+      本案用户在退款到账当日，在与班主任的对话中明确说出：<br>
+      <strong>"如果，班班，学习两个月后，我做不到一个月最少挣5000块，或者说看不到以后，没有给出确定性的收益，<br>我可能只有跳楼了，你还会劝我继续在你们这里学习吗？"</strong><br><br>
+      随后补充："我自己现在<strong>一边哭一边在跟你说话</strong>，我一个40多岁的大男人了，没有崩溃到一定程度，不可能轻易流泪。"<br><br>
+      <strong>合规要求：</strong>本案在用户作出上述表述时，应立刻触发《心理危机干预SOP》，包括但不限于：暂停所有商业对话，提供心理援助热线，通报团队主管，并记录存档备查。任何在此类表述发生后继续进行的营销挽留行为，均属于严重违规。
+    </p>
+  </div>
+
+  <h2>【顶层】🎯 CEO级一句话结论</h2>
+  <div class="pyramid-top">
+    <div class="ceo-tag">CEO LEVEL · 金字塔顶</div>
+    <p>
+      <strong>她是谁：</strong>T5型试水探索者（高智商·高理性·极度脆弱资源底座）。44岁，高中学历，疫情致负债60万，长期无业。AI学习是她为自己构想的最后一条出路。她入营时仿佛一个人坐在悬崖边，只要看到真实的出口就会全力冲刺——但她也预设了：如果出口是假的，她就再无路可走。<br><br>
+      <strong>现在怎么了：</strong>已退款，但退款背后是一场<b>系统性欺诈的清醒揭露</b>——她精确识别出"口头承诺≠合同保障"的核心漏洞，并以此为由主动维权退款。退款到账当日，她崩溃哭泣，提出跳楼，随后发出了一篇7段长文，揭示了整个商业模式的结构性欺诈。<br><br>
+      <strong>最高优先级行动：</strong>本案不是普通退款案件——<b>它是一份平台商业模式的真实诊断书</b>。用户精确点出：引流口头承诺→付费后合同权利清空→执行层可随意以"能力不足"推脱的闭环，应立刻触发合规层审查，并在所有课程协议中对当前的"口头承诺不写入合同"实践进行整改。
+    </p>
+  </div>
+
+  <!-- 三轴模型 -->
+  <h2>【第二层】🏛️ 三轴模型评级</h2>
+  <div class="axis-grid">
+    <div class="axis-card axis-high">
+      <div class="axis-label">轴1 · 动机纯度</div>
+      <div class="axis-score" style="color:var(--green)">高（真实学习驱动）</div>
+      <div class="axis-body">
+        入营第一天就钻研提示词、搭建智能体并完成功能拓展，群里主动分享学习心得，被其他同学称赞"太厉害了"。<br>
+        <b>动机100%真实</b>——她是为了出路，不是为了消遣。这使她的背叛感在退款时格外强烈。
+      </div>
+    </div>
+    <div class="axis-card axis-low">
+      <div class="axis-label">轴2 · 资源底座三角</div>
+      <div class="axis-score" style="color:var(--red)">低（三角全线崩溃）</div>
+      <div class="axis-body">
+        💰 <b>资金极低</b>：负债60万，无业，3980元学费占其心理承重比远超正常。<br>
+        ⏱ <b>时间：</b>"只能牺牲睡眠时间"学习，工厂打螺丝，几乎100%非工作时间都用来学习。<br>
+        🧠 <b>精力低</b>：长期债务重压+负罪感（家人不支持）+无业带来的身份危机。<br>
+        → <b style="color:var(--red)">任何无法快速变现的课程，对她都是精神损耗而非投资。</b>
+      </div>
+    </div>
+    <div class="axis-card axis-low">
+      <div class="axis-label">轴3 · 心理弹性</div>
+      <div class="axis-score" style="color:var(--red)">极低（崩溃边缘）</div>
+      <div class="axis-body">
+        "我这辈子完了""万念俱灰""我可能只有跳楼了"——这是心理弹性枯竭的语言。<br>
+        理性判断力完好（能精确识别法律风险、提出合同诉求），但情绪调节资源耗尽——负债+无业+家人否定=三重叠加创伤。
+      </div>
+    </div>
+  </div>
+
+  <!-- 双轨扫描 -->
+  <h2>【第二层】🔀 双轨需求扫描</h2>
+  <div class="alert-box alert-blue">
+    <strong>显性需求轨：快速从AI短视频中获得可量化的月收入（目标5000元/月）以偿还债务</strong>
+  </div>
+  <div class="quote quote-u">
+    <div class="spk u">📌 用户明确说出的期望底线（2026-03-17 12:07）</div>
+    "负债60万，没有学历没有特长，我不知道我还能做什么？……如果，班班，学习两个月后，我做不到一个月最少挣5000块，或者说看不到以后，没有给出确定性的收益，我可能只有跳楼了"
+  </div>
+  <p>这不是一个"想学一门技能"的用户，这是一个<b>把课程当作生命救援绳的用户</b>。她的期望不是"也许能学到什么"，而是"这是我唯一的出路"——这种预设使任何感知到的欺骗都会被放大为生死级别的打击。</p>
+
+  <div class="alert-box alert-orange">
+    <strong>隐性需求轨：被认可、被理解、被告知"你是有能力的人"</strong>
+  </div>
+  <div class="quote quote-u">
+    <div class="spk u">📌 用户发出的7段长文（退款后，2026-03-17 12:36）</div>
+    "我没有崩溃到一定程度，不可能轻易流泪。……黑猫上，网络上，到处都是喜播学员的投诉……他们全都看到了，否定了一切，我无法反驳。所以，如了所有人的愿吧……我无奈，绝望，万念俱灭！"
+  </div>
+  <div class="quote quote-u">
+    <div class="spk u">📌 她对班班的提问，揭示了隐性需求（2026-03-17 12:13）</div>
+    "班班，你客观地评价一下，结合我最开始提供给你的自己的基础信息。你觉得我到底学习能力怎么样？我其实很努力很认真在学。不用鼓励，就真实评价。"
+  </div>
+  <p>这位用户在家人眼中是"废物"、被外部世界否定——她的深层渴望不只是变现，而是<b>有人真实地告诉她"你是有能力的"</b>。遗憾的是，这种需求被平台的"情感抚慰→留课话术"流程利用，而非真正满足。</p>
+
+  <!-- 关键证据：用户发出的系统性诊断 -->
+  <h2 class="danger">🔬 关键证据：用户对商业模式的系统性解剖（最有价值的外部视角）</h2>
+  <p>退款到账后，用户主动给出了这篇7段长文——这是迄今为止所有被分析用户中，<b>对喜播商业模式实施最精准解剖的一份一手外部诊断书</b>：</p>
+  <div class="quote quote-danger">
+    <div class="spk danger">📌 陌云九 · 2026-03-17 12:36 · 长文（精华摘录）</div>
+    <p>
+    "引流直播课程里面各种福利权益天花乱坠，但是没有一个有书面保障，全都是口头空话，这能拿出来说服谁？后面各种理由推脱我又能如何？哪怕有能力做人家就说你没达到要求不给你单子做又能怎样？我无力辩解……"<br><br>
+    "在家人眼里，我就是个废物。花钱去学这些网上到处都能找到的课程就是傻子，学完出来还是什么都做不了，不会有单子给我做，也靠这个挣不了钱。我就是被割韭菜了。"<br><br>
+    "黑猫上，网络上，到处都是喜播学员的投诉，没有合同约束，我们只是弱势群体……他们全都看到了，否定了一切，我无法反驳。"
+    </p>
+  </div>
+  <div class="alert-box alert-orange">
+    <b>管理层行动建议：</b>这段话精确描述了"前端画大饼→合同剥离权利→执行端用'能力不足'打回"的三段式割韭菜闭环。用户并不孤立——她在黑猫和12315上看到类似的投诉，说明这不是个案，而是系统性问题。她的分析比大多数行业分析师更精准，CEO应将此文作为整改起点。
+  </div>
+
+  <!-- 诉求拆解 -->
+  <h2>【第二层】⚙️ 用户诉求三层拆解（从表面到机制）</h2>
+  <table class="pillar-table">
+    <tr><th>层级</th><th>用户的诉求</th><th>背后的缺口</th></tr>
+    <tr>
+      <td><b>第一层（表面）</b></td>
+      <td>"定向派单、进工作室的福利，为什么不能写进合同？"</td>
+      <td>用户对"口头承诺保障力≡零"的合理判断——她理解商业博弈的本质</td>
+    </tr>
+    <tr>
+      <td><b>第二层（机制）</b></td>
+      <td>"合同协议只针对课程交付，连喜马拉雅都被划清了界限——那引流期说的那些话算什么？"</td>
+      <td>合同设计本身就是风险转移装置——有意识地将引流承诺排除在法律约束之外</td>
+    </tr>
+    <tr style="background:#fff8c5">
+      <td><b>第三层（情感）</b></td>
+      <td>"我负债60万，用睡眠时间来学习——如果这只是一场骗局，我已经走投无路了"</td>
+      <td>此用户属于Class-Manager-Excellence框架中必须触发"D类心理熔断"的极高风险用户，任何挽留都是二次伤害</td>
+    </tr>
+  </table>
+
+  <!-- 处方 -->
+  <h2 class="green">【行动层】💊 处方（如果时间倒回）</h2>
+
+  <div class="rx-card">
+    <div class="rx-head">动作① · 前端招募阶段 · 针对"负债+无业+家人反对"用户，拒绝成单</div>
+    <div class="rx-body">
+      <p><b>目标：</b>在用户资源底座三角崩溃时，诚实拒绝而非情感软化继续转化。</p>
+      <span class="disc">适配 · 高理智低弹性 · 负债型用户</span>
+      <div class="talk-box">（当用户说出"负债60万、家人不支持"时，招募官展颜应该说）
+
+「阿寻，我需要认真跟你说一件事。
+
+你的学习天赋我真的看到了——第一天就能搭建智能体并做功能拓展，这在所有新学员里是极少见的。
+
+但正因为如此，我更不想让你做一个对自己不负责的决定。
+
+60万的债务压力下，如果学习两个月后变现不达预期，那种心理崩溃是真实的风险。我们的课程需要时间沉淀——正常的毕业到接稳定商单，通常需要3-6个月。
+
+我建议你先：稳定收入来源，等有了基础资金缓冲之后，带着学习的心态来——而不是带着'这是最后一条路'的压力来。
+
+如果你到时候还想学，随时找我，我给你最好的资源。」</div>
+    </div>
+  </div>
+
+  <div class="rx-card">
+    <div class="rx-head">动作② · 用户提出轻生意向时 · 立刻触发危机干预SOP</div>
+    <div class="rx-body">
+      <p><b>目标：</b>将商业对话零延迟切换为人道主义支持模式，绝对优先于任何课程留续目标。</p>
+      <span class="disc">适配 · 明确轻生表达 · 极度焦虑型 · 即刻生效</span>
+      <div class="talk-box">（当用户说"我可能只有跳楼了"时，班主任必须做的不是"不要说跳楼，不值当"，而是）
+
+「我先暂停所有课程的话题。
+
+你刚才说的话——关于跳楼——我听到了，这对我来说很重要。
+
+你愿意告诉我你现在在哪里吗？你现在安全吗？
+
+如果你今天需要和人说说话，北京心理危机研究与干预中心：010-82951332，
+全国心理援助热线：400-161-9995，24小时都有人接。
+
+课程的事情我们可以之后再谈，或者完全不谈。
+但你今天一定要好好的。」</div>
+    </div>
+  </div>
+
+  <div class="rx-card">
+    <div class="rx-head">动作③ · 退款后 · 建立"60天无骚扰隔离期"，而非7天后再次推销</div>
+    <div class="rx-body">
+      <p><b>目标：</b>对有轻生表达+负债重压的退款用户，执行严格的无打扰保护期，而非如展颜在退款后第7天再次发营销消息。</p>
+      <span class="disc">适配 · 心理危机后退款 · 二次接触分层</span>
+      <div class="talk-box">（退款到账后，由主管而非班主任发送，一条，不再继续）
+
+「安馨，退款已到账，请确认。
+
+这几天跟你聊的内容让我一直想着你。不管后来发生什么，你第一天就搭出来的那个智能体，真的很了不起。
+
+如果哪天你觉得状态好一点了，想重新聊聊，随时都可以。
+不用通知我，直接找就行。
+
+保重。」
+
+→ 此后60天内，零主动联系。由系统将该用户标记为"危机用户-无骚扰期"。</div>
+    </div>
+  </div>
+
+  <!-- 标签 -->
+  <div style="margin-top:1.2rem;padding:1rem 1.4rem;background:#f6f8fa;border:1px solid var(--border);border-radius:8px;font-size:.83rem;line-height:2">
+    <b>多维标签</b><br>
+    <span class="tag tag-danger">[危机级·轻生表达]</span>
+    <span class="tag tag-red">[负债60万·无业]</span>
+    <span class="tag tag-red">[心理弹性·极低]</span>
+    <span class="tag tag-orange">[44岁·高中学历]</span>
+    <span class="tag tag-orange">[家人强烈反对]</span>
+    <span class="tag tag-blue">[T5试水探索者]</span>
+    <span class="tag tag-blue">[高学习驱动·真实动机]</span>
+    <span class="tag tag-blue">[录屏+黑猫+12315精准维权]</span>
+    <span class="tag tag-green">[退款处理良好·后端班主任得分高]</span>
+    <span class="tag tag-red">[退款后第7天被二次营销骚扰]</span>
+    <span class="tag tag-red">[口头承诺合同断层·系统性缺陷揭示者]</span>
+  </div>
+
+</div><!-- /consumer -->
+
+
+<!-- ============================================================ -->
+<!-- TAB 2: MANAGER VIEW                                           -->
+<!-- ============================================================ -->
+<div id="manager" class="panel">
+
+  <h2 class="red">【第一层】结论先行 · 双人对比定性</h2>
+  <div class="pyramid-top">
+    <div class="ceo-tag">VALUE-DRIVEN SALES EVALUATOR · 双人对比</div>
+    <p>
+      <strong>本案罕见特征：</strong>同一案件中出现了两种截然不同的处理模式——后端班主任喜小满（马莉）是迄今分析的班主任中<b>处理最好的典型</b>，前端招募官展颜（李惠）则是<b>典型的CRM无感型+退款后违规二次骚扰</b>。<br><br>
+      <strong>喜小满（后端）：</strong>标杆级处理——倾听、正确识别情绪崩溃迹象、退款处理专业迅速（提交后数小时到账），退款后仍主动告知学员可继续问问题。<b>但在轻生表达出现时，未启动危机干预协议，而是用"不值当"一笔带过，这是最大的滑点。</b><br><br>
+      <strong>展颜（前端）：</strong>用"黑红也是红"、"树大招风"对抗用户对负面评论的合理质疑，退款7天后仍发营销推文二次骚扰——严重违规。
+    </p>
+  </div>
+
+  <!-- 喜小满雷达 -->
+  <h2>📡 班主任喜小满（马莉）· 本案最佳实践参考 · 三维雷达</h2>
+  <div class="radar-grid">
+    <div class="r-card" style="border-left:4px solid var(--green)">
+      <div class="r-label">诊断监听力</div>
+      <div class="r-score score-a">78/100</div>
+      <div class="r-sub">
+        <b>得分点：</b>快速识别用户情绪崩溃迹象（"我能感受到你的崩溃"）；不强迫用户解释退款原因；主动在退款前提交申请，早上6:45就将退款提交完毕。<br>
+        <b>失分点：</b>听到"跳楼"后未升级危机干预，仅说"不值当，谁也没有债"——这是危机场景下的最大失误。
+      </div>
+    </div>
+    <div class="r-card" style="border-left:4px solid var(--blue)">
+      <div class="r-label">专业托底力</div>
+      <div class="r-score score-b">71/100</div>
+      <div class="r-sub">
+        退款处理速度极快（申请后数小时到账），资讯给到位，没有设置障碍。<br>
+        退款同时仍告知用户可继续问问题，"我一直都在"——这是标准的优雅放手。
+      </div>
+    </div>
+    <div class="r-card" style="border-left:4px solid var(--green)">
+      <div class="r-label">去自私化</div>
+      <div class="r-score score-a">72/100</div>
+      <div class="r-sub">
+        没有因为KPI逼迫用户留课；退款后主动透露"我真的很想听你的真实原因，不是为了留你，是为了改进前端"——自我导向极低。<br>
+        承认"前端的课我没有实时跟，了解不够"，没有推卸责任。
+      </div>
+    </div>
+  </div>
+
+  <div class="alert-box alert-green">
+    <b>喜小满是本套分析体系中首位达到"及格线以上"评分的班主任全案例。</b>建议将其本案处理方式作为班主任SOP样本，重点推广：退款提交速度标准、倾听式应对崩溃情绪的话术模板。<br>
+    <b>唯一缺失：</b>轻生表达出现后需强制触发危机升级协议，不能以"不值当"一句话带过。
+  </div>
+
+  <!-- 展颜雷达 -->
+  <h2>📡 招募官展颜（李惠）· 三维雷达</h2>
+  <div class="radar-grid">
+    <div class="r-card" style="border-left:4px solid var(--orange)">
+      <div class="r-label">诊断监听力</div>
+      <div class="r-score score-d">38/100</div>
+      <div class="r-sub">
+        用户说"我去找律师"，展颜说"黑红也是红"——完全无视了用户的精确法律判断，改用品牌防御话术转移焦点。<br>
+        用户提出具体的合同需求，展颜给的是"大学也不保证毕业"的类比——偷换概念。
+      </div>
+    </div>
+    <div class="r-card" style="border-left:4px solid var(--red)">
+      <div class="r-label">专业托底力</div>
+      <div class="r-score score-f">22/100</div>
+      <div class="r-sub">
+        "陪跑官应聘后月薪1.5万"——在用户已明确说出负债60万+要退款后，用极端成功案例继续施压，属于严重失职（虚假预期+不当时机）。<br>
+        "我们不至于骗你一个3980"——实际上这正是用户的核心质疑。
+      </div>
+    </div>
+    <div class="r-card" style="border-left:4px solid var(--red)">
+      <div class="r-label">去自私化</div>
+      <div class="r-score score-f">8/100</div>
+      <div class="r-sub">
+        <b>最严重失分：</b>退款到账7天后（3月24日），以"喜播瑶瑶"名义发送新营销消息继续二次诱导，完全违反了危机用户的无骚扰保护要求。<br>
+        对一位表达过轻生意向+负债60万的退款用户实施持续营销，这是最严重的违规行为之一。
+      </div>
+    </div>
+  </div>
+
+  <!-- 关键违规行为对比 -->
+  <h2 class="red">⚠️ 三组关键违规切片</h2>
+
+  <div style="margin-bottom:1.5rem">
+    <b>切片①：用户质疑"口头承诺无法写入合同" → 展颜用"大学不保证毕业"偷换概念</b>
+    <div class="quote quote-u">
+      <div class="spk u">用户（2026-03-17 10:09）· 精确提出法律问题</div>
+      "连最简单的都不敢写进合同？我学完有能力接单了没地方接我找谁去？空口白话谁不会说？到时候各种推脱刁难我连个证据都没有。"
+    </div>
+    <div class="quote quote-bad">
+      <div class="spk bad">展颜 回应（2026-03-17 10:12）</div>
+      "就大学他也不能写都保证毕业对吧，还是看咱们个人能力，好好学，接商单那是最简单的"
+    </div>
+    <div class="alert-box alert-orange">
+      <b>病灶：</b>"大学不保证毕业"是典型的偷换概念——用户质疑的不是毕业保证，而是"平台在引流时承诺提供定向派单，这是平台义务，与学员能力无关"。展颜用能力归因把平台义务转移给了学员，是话术惯犯行为。
+    </div>
+  </div>
+
+  <div style="margin-bottom:1.5rem">
+    <b>切片②："树大招风"防御话术 → 对用户的实质关切做品牌公关式回避</b>
+    <div class="quote quote-u">
+      <div class="spk u">用户（2026-03-16 22:58）· 指向平台负面证据</div>
+      "如果后期未兑现派单、接单承诺，是否支持全额退费？合同里是否有明确的7天无理由退费条款？"
+    </div>
+    <div class="quote quote-bad">
+      <div class="spk bad">展颜（2026-03-17 09:23）</div>
+      "至于你看的负面消息！师姐只想说：树大招风，别人攻击我们只是因为我们做得太好，动了别人的蛋糕……大胆一点，可能你之前遭遇的一切就是为了让你赶上今天这波难得的机遇。人不可能一直倒霉，所以要坚信发生在我们身边的都是美好。"
+    </div>
+    <div class="alert-box alert-red">
+      <b>病灶：</b>对一个负债60万、被家人否定、濒临心理崩溃的用户说"发生在我们身边的都是美好"——这是危险的认知失调引导，也是彻底的empathy阈值缺失。用户的核心诉求（合同保障）被完全回避，转移成了心灵鸡汤。
+    </div>
+  </div>
+
+  <div style="margin-bottom:1.5rem">
+    <b>切片③：退款7天后继续发二次营销消息 → 对危机用户实施持续骚扰</b>
+    <div class="msgs">
+      <div class="mc">⏱ 2026-03-17 · 退款到账（用户明确表达过轻生意向后）</div>
+      <div class="mc">⏱ 2026-03-24 19:02 · 退款后第7天</div>
+      <div class="ms">（展颜以"喜播瑶瑶"名义）"……现由我们非常优秀的喜播瑶瑶安排您接下来的学习和就业指导。请及时关注喜播瑶瑶私信，您将获得免费课程、学习资料、学习活动、就业机会等各项福利，助您开启兼职副业之旅！"</div>
+      <div class="mc">↑ 这条消息发出时，用户已正式退款，且此前明确表达过轻生意向</div>
+    </div>
+    <div class="alert-box alert-red">
+      <b>病灶：</b>这是本次分析中遇到的第一个"退款后还在进行多渠道营销骚扰"的案件（不同于677021710的"二次骚扰"，这次是换了个账号身份用新话术来推销）。对于明确有轻生表达的用户，这类骚扰在法律上已可被定义为"对精神困境人士的不当骚扰"——风险极高。
+    </div>
+  </div>
+
+  <!-- 最佳实践vs违规对比 -->
+  <h2>⚖️ 本案双人对比 · 最佳实践 vs 违规示范</h2>
+  <div class="compare-grid">
+    <div class="compare-good">
+      <h4>✅ 喜小满（后端） · 做对了的</h4>
+      <ul>
+        <li>早上6:45完成退款申请提交，不拖延</li>
+        <li>数小时内退款到账，处理效率极高</li>
+        <li>没有使用"退这点钱解决不了问题"话术</li>
+        <li>主动说"退款后如果有不懂的还是可以问我"</li>
+        <li>愿意真实听用户的反馈，并承诺去反馈前端话术问题</li>
+        <li>退款时没有设置任何障碍和条件</li>
+      </ul>
+    </div>
+    <div class="compare-bad">
+      <h4>❌ 展颜（前端） · 严重违规的</h4>
+      <ul>
+        <li>"黑红也是红" · 品牌防御话术回避实质问题</li>
+        <li>"树大招风" · 对用户合理质疑用鸡汤嘉许代替回答</li>
+        <li>"大学不保证毕业" · 偷换概念逃避平台义务</li>
+        <li>退款明确申请后仍用"陪跑月薪1.5万"继续施压</li>
+        <li><b>退款后第7天换号继续营销骚扰</b></li>
+        <li>全程未对用户负债60万+轻生表达展示任何empathy</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SOP建议 -->
+  <h2 class="green">【第四层】💊 系统级整顿建议（本案独创）</h2>
+  <div class="stop-start">
+    <div class="stop-box">
+      <h4>🚫 立刻建立的禁区</h4>
+      <ul>
+        <li><b>禁止"黑红也是红""树大招风"等品牌防御话术</b>用于回应用户对平台的合理质疑，该类话术属于对用户认知权的主动干扰。</li>
+        <li><b>禁止对退款后用户在7天内发出任何营销消息</b>——尤其对有明确心理危机记录的用户实施60天无骚扰保护期。</li>
+        <li><b>禁止用"能力不足归因"回避平台派单义务</b>（即"等你有能力了才给你派单"的答复模式，是合同义务的事后免责话术）。</li>
+      </ul>
+    </div>
+    <div class="start-box">
+      <h4>✅ 立刻建立的机制</h4>
+      <ul>
+        <li><b>轻生表达触发词库 + 强制升级协议：</b>任何对话中出现"跳楼""活不下去""死""走投无路"等词汇，立刻触发自动提醒班主任、主管，并切换至危机干预话术模板。</li>
+        <li><b>合同改造：</b>将引流承诺的核心福利（定向派单频次、进工作室的评审标准）写入正式服务协议，否则等于认为口头承诺是合法的欺骗工具。</li>
+        <li><b>建立"危机用户"标签系统：</b>退款用户中凡有轻生表达/重大创伤信息披露的，纳入CRM危机标签，所有后续营销队列自动过滤该群体。</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="alert-box alert-blue" style="margin-top:1.5rem">
+    <b>本案喜小满评分：</b>诊断监听力78 / 专业托底力71 / 去自私化72 → 综合评级：B级（首位进入B级的带班老师）<br>
+    <b>本案展颜评分：</b>诊断监听力38 / 专业托底力22 / 去自私化8 → 综合评级：F级（危机用户处理严重失当+退款后继续骚扰）<br><br>
+    建议：喜小满本案作为标杆样本推广；展颜接受系统性再培训（重点：危机识别 + 退款后骚扰行为后果认知）。
+  </div>
+
+</div><!-- /manager -->
+
+<script>
+function switchTab(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>

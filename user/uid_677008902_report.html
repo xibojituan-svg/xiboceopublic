@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>用户行为诊断报告 - UID 677008902</title>
+    <style>
+        :root {
+            --bg-color: #f7f9fc;
+            --container-bg: #ffffff;
+            --primary-color: #2b5797;
+            --text-main: #333333;
+            --text-muted: #666666;
+            --border-color: #e1e4e8;
+            --tag-bg-bad: #ffeef0;
+            --tag-text-bad: #d73a49;
+            --tag-bg-good: #e6ffed;
+            --tag-text-good: #28a745;
+            --tag-bg-neutral: #f1f8ff;
+            --tag-text-neutral: #0366d6;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .report-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--container-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            padding: 40px;
+        }
+
+        .header {
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            color: var(--primary-color);
+        }
+
+        .meta-info {
+            font-size: 14px;
+            color: var(--text-muted);
+            text-align: right;
+        }
+
+        .user-profile {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .profile-item {
+            flex: 1 1 200px;
+        }
+
+        .profile-item strong {
+            display: block;
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .profile-item span {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        h2 {
+            font-size: 20px;
+            color: var(--primary-color);
+            margin-top: 40px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        h2::before {
+            content: "";
+            display: inline-block;
+            width: 4px;
+            height: 20px;
+            background-color: var(--primary-color);
+            margin-right: 10px;
+            border-radius: 2px;
+        }
+
+        .timeline {
+            border-left: 2px solid var(--border-color);
+            margin-left: 10px;
+            padding-left: 20px;
+        }
+
+        .event {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .event::before {
+            content: "";
+            position: absolute;
+            left: -27px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            background-color: var(--container-bg);
+            border: 2px solid var(--primary-color);
+            border-radius: 50%;
+        }
+
+        .event-time {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+        }
+
+        .event-title {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .event-desc {
+            font-size: 15px;
+            color: var(--text-main);
+            background: #f1f8ff;
+            padding: 12px 15px;
+            border-radius: 6px;
+            border-left: 3px solid #0366d6;
+        }
+
+        .analysis-box {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .tag-bad { background: var(--tag-bg-bad); color: var(--tag-text-bad); }
+        .tag-good { background: var(--tag-bg-good); color: var(--tag-text-good); }
+        .tag-neutral { background: var(--tag-bg-neutral); color: var(--tag-text-neutral); }
+
+        .quote {
+            font-style: italic;
+            color: #555;
+            padding: 10px 15px;
+            background: #f9f9f9;
+            border-left: 3px solid #ccc;
+            margin: 10px 0;
+            font-size: 14px;
+        }
+
+        .insight-section {
+            background: linear-gradient(135deg, #f6f8fd 0%, #f1f5f9 100%);
+            border-radius: 8px;
+            padding: 25px;
+            margin-top: 40px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .insight-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #0f172a;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .action-list {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .action-list li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="report-container">
+    <div class="header">
+        <div>
+            <h1>用户退费诊断报告</h1>
+            <div style="margin-top: 8px; font-size: 15px; color: var(--text-muted);">
+                编号：UID 677008902 | 沉浸式诊断时间：2026-04-05
+            </div>
+        </div>
+        <div class="meta-info">
+            <strong>状态：</strong> 已退费<br>
+            <strong>流失节点：</strong> 突发资金枯竭，部分退费转全额退费
+        </div>
+    </div>
+
+    <div class="user-profile">
+        <div class="profile-item">
+            <strong>用户标签</strong>
+            <span>Fank (38岁，男，东莞，上班族)</span>
+        </div>
+        <div class="profile-item">
+            <strong>核心动机</strong>
+            <span>“迫切需要谋生”、“钱越多，时间越多”</span>
+        </div>
+        <div class="profile-item">
+            <strong>先天优势</strong>
+            <span>声音鉴定为稀缺的“青叔音”</span>
+        </div>
+        <div class="profile-item">
+            <strong>班主任</strong>
+            <span>正式课：晓寒(韩雪冷)</span>
+        </div>
+    </div>
+
+    <div class="analysis-box">
+        <h3 style="margin-top: 0;">核心流失原因与服务评价</h3>
+        <div>
+            <span class="tag tag-neutral">突发性资金枯竭</span>
+            <span class="tag tag-bad">错位画大饼挽单</span>
+            <span class="tag tag-bad">缺乏共情的流程化响应</span>
+        </div>
+        <p>该用户为强变现驱动型，声音先天条件优越。由于“迫切需要谋生”，冲动报了最高阶的班型。但随后遭遇突发事件导致手头现金流断裂（“我现在没钱了”、“急需用钱”），遂申请降维（退掉进阶，保留精英），接着进一步申请全额退费。</p>
+        <p>当用户明确提出“急需用钱”的财务绝境时，主班主任晓寒未能表现出应有的同理心，反而使用强烈的 FOMO（错失恐惧）话术，如“稀缺属性”、“师兄已经赚几百块/h了”、“错过机会多可惜”。这种<strong>无视用户当前财务困境，一味强调“未来可能收益”的画大饼式挽留，显得冷漠且功利</strong>，进一步割裂了双方的信任，导致降转无门，最终彻底流失。</p>
+    </div>
+
+    <h2>事件时间线重建</h2>
+    <div class="timeline">
+        <div class="event">
+            <div class="event-time">2026-03-07 至 03-10</div>
+            <div class="event-title">强渴望、高互动、高额成单</div>
+            <div class="event-desc">
+                用户全程配合度极高，直言“迫切需要谋生”。被助教鉴定为吃香的“青叔音”，情绪高涨。在开营首日直接支付了包含进阶课的高价版套餐。甚至在群内活跃到要和其他学员“互粉互关”（被叫停）。
+            </div>
+        </div>
+
+        <div class="event">
+            <div class="event-time">2026-03-12 17:52</div>
+            <div class="event-title">第一次退让：资金吃紧，申请部分退费</div>
+            <div class="event-desc">
+                用户私聊班主任晓寒：“我想先不报进阶，先学个精英，你看可以吗... 突然遇点事情，需要用钱，我现在没钱了，所以还是先退了吧”。此时用户尚保留学习“精英班”的意愿。
+            </div>
+        </div>
+
+        <div class="event">
+            <div class="event-time">2026-03-13 14:05</div>
+            <div class="event-title">恶化：申请全额退费</div>
+            <div class="event-desc">
+                用户财务状况似有恶化，表示：“突发点状况，我这里精英也要退了... 出点事，急需用钱。”
+            </div>
+        </div>
+
+        <div class="event">
+            <div class="event-time">2026-03-13 14:08</div>
+            <div class="event-title">班主任的“错位画大饼”挽留</div>
+            <div class="event-desc">
+                面对“急需用钱”的客观困境，班主任连续使用三段利益诱惑和焦虑话术进行挽留：
+                <div class="quote">“唉呀，男生现在紧缺，你说咋还不学呢，多可惜呀。”<br>
+                “师兄人家分成书都录好几本了，有50，51h，71h的... 投资对于男生来说挺好的。”<br>
+                “你自己看，最好考虑下，很多时候机会错过就错过了。”</div>
+                面对用户的请求：“你看怎么算一下吧。等我缓过这阵再来找你吧”，班主任机械甩锅：“这个不是我算，你申请就行，公司那边给算”，彻底切断了服务温度。
+            </div>
+        </div>
+    </div>
+
+    <div class="insight-section">
+        <div class="insight-title">💡 关键洞察与管理行动建议</div>
+        <ul class="action-list">
+            <li>
+                <strong>服务红线警示：切忌“何不食肉糜”的冷血挽留：</strong>
+                当用户明确提出“手头没钱、急需用钱”时，班主任强行灌输“未来赚钱多、这是一笔投资”的SOP是最冷血的表现。人在面临生存/现金流危机时，无法听进任何风险投资模型。班主任必须被培训掌握：<strong>面对“断粮”用户，立刻下放姿态，转入“防守型安抚”</strong>（参考 UID 677008811 猫萧萧的案例）。
+            </li>
+            <li>
+                <strong>缺乏“休眠分发”机制：</strong>
+                诸如Fank这样条件好、意愿强，仅因一时资金链断裂退费的用户，其潜客价值极高（用户自己表示“缓过这阵再来找你”）。但班主任在最后甩出冰冷的流程指导后立刻将其踢出群聊，未能建立“潜客休眠池”。
+            </li>
+            <li>
+                <strong>管理要求：</strong>
+                对晓寒（韩雪冷）的该次服务进行指导复盘。当识别到用户存在【财务困境】时，严禁使用【高风险投资回报预期】进行强制挽留。建议针对此类用户推出低至9.9元的“防失联听课证”，维持长期触达，待其财务状况好转后再次激活。
+            </li>
+        </ul>
+    </div>
+</div>
+
+</body>
+</html>

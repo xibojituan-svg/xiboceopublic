@@ -113,7 +113,7 @@
             <a href="index.html" class="xibo-nav-link">战略总纲图</a>
           </div>
 
-          <div class="xibo-nav-item ${isGroupActive(['user-segmentation-infographic.html', 'ABCD_流程图.html', 'student_psychology_map.html', 'user_decoder_dashboard.html', 'sales_team_audit.html'])}">
+          <div class="xibo-nav-item ${isGroupActive(['user-segmentation-infographic.html', 'ABCD_流程图.html', 'student_psychology_map.html', 'user_decoder_dashboard.html', 'sales_team_audit.html', 'case_studies_index.html'])}">
             <div class="xibo-nav-trigger">客群战略矩阵</div>
             <div class="xibo-dropdown-menu">
               <a href="user-segmentation-infographic.html" class="xibo-dropdown-link ${isActive('user-segmentation-infographic.html')}">ABCD 客群边界</a>
@@ -121,6 +121,7 @@
               <a href="student_psychology_map.html" class="xibo-dropdown-link ${isActive('student_psychology_map.html')}">学员心理地图</a>
               <a href="user_decoder_dashboard.html" class="xibo-dropdown-link ${isActive('user_decoder_dashboard.html')}">🧠 用户深度解码</a>
               <a href="sales_team_audit.html" class="xibo-dropdown-link ${isActive('sales_team_audit.html')}">🦸 销售团队评审</a>
+              <a href="case_studies_index.html" class="xibo-dropdown-link ${isActive('case_studies_index.html')}">📋 用户案例库</a>
             </div>
           </div>
 
@@ -142,6 +143,14 @@
 
           <div class="xibo-nav-item ${isActive('ai_native_three_axes.html')}">
             <a href="ai_native_three_axes.html" class="xibo-nav-link">⚔️ AI三板斧</a>
+          </div>
+
+          <div class="xibo-nav-item ${isGroupActive(['incentive_plan_v1.html', 'class_manager_best_practices.html'])}">
+            <div class="xibo-nav-trigger">🎯 激励与考核</div>
+            <div class="xibo-dropdown-menu">
+              <a href="incentive_plan_v1.html" class="xibo-dropdown-link ${isActive('incentive_plan_v1.html')}">📊 激励考核方案 V1.0</a>
+              <a href="class_manager_best_practices.html" class="xibo-dropdown-link ${isActive('class_manager_best_practices.html')}">🏅 班主任最佳实践</a>
+            </div>
           </div>
         </nav>
       </div>

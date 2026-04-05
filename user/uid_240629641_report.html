@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户退费诊断报告 - UID 240629641</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #09090b; --bg-surface: #18181b; --bg-surface-hover: #27272a;
+            --border: #3f3f46; --text: #f4f4f5; --text-dim: #a1a1aa; --text-muted: #71717a;
+            --brand-primary: #ef4444; --brand-secondary: #f97316; --brand-accent: #10b981;
+            --tag-red: #fca5a5; --tag-orange: #fdba74; --tag-blue: #93c5fd; --tag-purple: #c4b5fd;
+            --tag-yellow: #fde047; --tag-green: #86efac;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', -apple-system, sans-serif; background-color: var(--bg); color: var(--text); line-height: 1.6; }
+        .main-container { max-width: 900px; margin: 0 auto; padding: 40px 24px; position: relative; z-index: 1; }
+        .header { margin-bottom: 40px; border-bottom: 1px solid var(--border); padding-bottom: 30px; animation: fadeUp 0.8s ease-out; }
+        .badge { display: inline-block; padding: 4px 12px; border-radius: 100px; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; background: rgba(239,68,68,0.1); color: var(--brand-primary); border: 1px solid rgba(239,68,68,0.3); }
+        h1 { font-size: clamp(28px, 4vw, 42px); font-weight: 900; line-height: 1.2; letter-spacing: -1px; margin-bottom: 16px; }
+        .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+        .tag { font-size: 13px; font-weight: 600; padding: 4px 12px; border-radius: 6px; }
+        .tag-red { background: rgba(239,68,68,0.15); color: var(--tag-red); border: 1px solid rgba(239,68,68,0.3); }
+        .tag-orange { background: rgba(249,115,22,0.15); color: var(--tag-orange); border: 1px solid rgba(249,115,22,0.3); }
+        .tag-purple { background: rgba(139,92,246,0.15); color: var(--tag-purple); border: 1px solid rgba(139,92,246,0.3); }
+        .profile-card { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 16px; padding: 24px; margin-bottom: 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; animation: fadeUp 0.8s ease-out 0.1s backwards; }
+        .metric .label { font-size: 12px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .metric .value { font-size: 16px; font-weight: 600; color: #fff; }
+        .section { margin-bottom: 48px; animation: fadeUp 0.8s ease-out 0.2s backwards; }
+        h2 { font-size: 24px; font-weight: 800; color: #fff; margin-bottom: 24px; display: flex; align-items: center; gap: 10px; }
+        h2::before { content: ''; display: block; width: 4px; height: 24px; background: var(--brand-primary); border-radius: 2px; }
+        .insight-box { background: rgba(239,68,68,0.05); border-left: 4px solid var(--brand-primary); padding: 20px; border-radius: 0 12px 12px 0; margin-bottom: 24px; }
+        .insight-box.warning { border-color: var(--brand-secondary); background: rgba(249,115,22,0.05); }
+        .chat-log { display: flex; flex-direction: column; gap: 16px; }
+        .msg { background: var(--bg-surface); border: 1px solid var(--border); padding: 16px; border-radius: 12px; }
+        .msg.staff { border-color: rgba(239,68,68,0.3); background: rgba(239,68,68,0.02); }
+        .msg.user { border-color: rgba(139,92,246,0.3); background: rgba(139,92,246,0.02); }
+        .msg-meta { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; font-weight: 600; display: flex; justify-content: space-between; }
+        .msg-content { font-size: 15px; color: var(--text); }
+        .msg-highlight { color: #fca5a5; font-weight: 700; background: rgba(239,68,68,0.2); padding: 0 4px; border-radius: 4px; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+    <script src="../navbar.js"></script>
+    <div class="main-container">
+        
+        <div class="header">
+            <div class="badge">C类高危用户 - 信任崩盘</div>
+            <h1>退费行为漏洞诊断：曾碧慧</h1>
+            <div class="tags">
+                <span class="tag tag-red">竞品受害者PTSD</span>
+                <span class="tag tag-orange">过度推销反噬</span>
+                <span class="tag tag-purple">信任度极度脆弱</span>
+            </div>
+            <p style="color: var(--text-dim); font-size: 15px;">典型“受惊鸟”式用户（竞品机构受害者）。在具备极强防备心的情况下，频繁受到群发式和压迫式推销，最终触发了其心理防御机制，认定“所有培训都是套路”而坚决退费。此案暴露了销售团队缺乏对敏感用户的定制化安抚能力。</p>
+        </div>
+
+        <div class="profile-card">
+            <div class="metric"><div class="label">UID / 昵称</div><div class="value">240629641 / 曾碧慧</div></div>
+            <div class="metric"><div class="label">当前状态</div><div class="value" style="color: var(--brand-primary);">已明确提出不想学并移出班级</div></div>
+            <div class="metric"><div class="label">干预人员</div><div class="value">筱斐(招募)、天下乌贼0(班主任)等</div></div>
+            <div class="metric"><div class="label">核心退费动因</div><div class="value" style="color: var(--brand-secondary);">曾在竞品遭遇欺诈，对平台缺乏信任基础</div></div>
+        </div>
+
+        <div class="section">
+            <h2>🚨 暴露的核心系统性漏洞</h2>
+            <div class="insight-box">
+                <h3 style="color: #fca5a5; margin-bottom: 8px; font-size: 16px;">1. 忽视由于竞品造成的信任PTSD</h3>
+                <p>用户明确表示近期刚从“梨花声音”办理了退费（因为发现承诺的工作全为虚假）。这种用户是典型的“受伤者”，此时销售的话术依然使用传统的“画大饼”、“内部通道免审”等承诺模板。这种模板不仅不能增加信任感，反而高度相似竞品的欺诈手段，成为了压死骆驼的最后一根稻草。</p>
+            </div>
+            
+            <div class="insight-box warning">
+                <h3 style="color: #fdba74; margin-bottom: 8px; font-size: 16px;">2. “信息轰炸”加剧反感</h3>
+                <p>对于在犹豫且极具防备心的学员，多个招募官（筱斐、喜播娇娇等）交叉推送诸如“一人公司”、“内部接单名额”、“小龙虾AI”等推销广告。这种无节制的信息轰炸与交叉洗脑，给用户制造了“疯狂割韭菜”的负面印象。</p>
+            </div>
+
+            <div class="insight-box warning">
+                <h3 style="color: #fdba74; margin-bottom: 8px; font-size: 16px;">3. 同质化营销缺乏个性化关怀</h3>
+                <p>虽然销售人员使用了大量长文回复，但长文内容多为复制粘贴的群发模板（如班主任的高谈阔论、招募官各种截图），导致用户感到缺乏真诚对话的基础，从而失去了唯一的信任连结。</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>💬 核心案发现场还原 (聊天记录)</h2>
+            <div class="chat-log">
+                <div class="msg user">
+                    <div class="msg-meta"><span>曾碧慧</span><span>前期沟通</span></div>
+                    <div class="msg-content"><span class="msg-highlight">刚从梨花声音退费回来，我要是把梨花的退了还不是一样被骗...</span></div>
+                </div>
+
+                <div class="msg staff">
+                    <div class="msg-meta"><span style="color: #fdba74;">喜播娇娇 [高频广告推销违和]</span><span>后期推送</span></div>
+                    <div class="msg-content">我单独来找你，刚刚放出10个内部接单名额，💰时薪300！... 简单说，就是把你配音的本事，变成一套能自动运转的变现系统，何圣君老师1元锁位直播课...</div>
+                </div>
+
+                <div class="msg user">
+                    <div class="msg-meta"><span>曾碧慧</span><span>中途咨询</span></div>
+                    <div class="msg-content">如果交钱了退得回来么？<span class="msg-highlight">我有签约了但我退费了还是不敢录</span></div>
+                </div>
+
+                <div class="msg staff">
+                    <div class="msg-meta"><span style="color: #fca5a5;">班主任_天下乌贼0 [冷漠处理]</span><span>2026-03-24 14:22:52</span></div>
+                    <div class="msg-content">同学您好，<span class="msg-highlight">如果您确定不想学习了，那我就帮你把课程暂停，从群里面移出去。</span>如果您为您保留学习权限，那后续会产生新的课时费。</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🎯 高管动作指令与战略修正建议 (Action Items)</h2>
+            <ul style="color: var(--text-dim); padding-left: 20px; line-height: 1.8;">
+                <li><strong>设立“竞品PTSD用户白名单”：</strong> 凡是提及在竞品遭遇过退费、欺诈、索赔的用户，不得直接拉入大群进行轰炸式广告销售。必须由经验丰富的专员一对一接入，展示大平台背书、明确退费无忧条款，打消其顾虑。</li>
+                <li><strong>控制广告分发频次（防沉迷/防骚扰）：</strong> 对处于退费边缘的用户实行全链条“免打扰”措施。禁止多个招募账号（娇娇、金金等）轮番下发送带有收费链接的群消息。</li>
+                <li><strong>规范退款答疑：</strong> 将“学习不好随时能退款”以透明的形式写进合同，而不是作为销售私下许诺的“特殊通道”，增强抗压用户对合同权威性的认可。</li>
+            </ul>
+        </div>
+        
+    </div>
+</body>
+</html>

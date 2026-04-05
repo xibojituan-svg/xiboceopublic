@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户退费诊断报告 - UID 677038996</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #09090b; --bg-surface: #18181b; --bg-surface-hover: #27272a;
+            --border: #3f3f46; --text: #f4f4f5; --text-dim: #a1a1aa; --text-muted: #71717a;
+            --brand-primary: #ef4444; --brand-secondary: #f97316; --brand-accent: #10b981;
+            --tag-red: #fca5a5; --tag-orange: #fdba74; --tag-blue: #93c5fd; --tag-purple: #c4b5fd;
+            --tag-yellow: #fde047; --tag-green: #86efac;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', -apple-system, sans-serif; background-color: var(--bg); color: var(--text); line-height: 1.6; }
+        .main-container { max-width: 900px; margin: 0 auto; padding: 40px 24px; position: relative; z-index: 1; }
+        .header { margin-bottom: 40px; border-bottom: 1px solid var(--border); padding-bottom: 30px; animation: fadeUp 0.8s ease-out; }
+        .badge { display: inline-block; padding: 4px 12px; border-radius: 100px; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; background: rgba(249,115,22,0.1); color: var(--brand-secondary); border: 1px solid rgba(249,115,22,0.3); }
+        h1 { font-size: clamp(28px, 4vw, 42px); font-weight: 900; line-height: 1.2; letter-spacing: -1px; margin-bottom: 16px; }
+        .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+        .tag { font-size: 13px; font-weight: 600; padding: 4px 12px; border-radius: 6px; }
+        .tag-red { background: rgba(239,68,68,0.15); color: var(--tag-red); border: 1px solid rgba(239,68,68,0.3); }
+        .tag-orange { background: rgba(249,115,22,0.15); color: var(--tag-orange); border: 1px solid rgba(249,115,22,0.3); }
+        .tag-purple { background: rgba(139,92,246,0.15); color: var(--tag-purple); border: 1px solid rgba(139,92,246,0.3); }
+        .profile-card { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 16px; padding: 24px; margin-bottom: 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; animation: fadeUp 0.8s ease-out 0.1s backwards; }
+        .metric .label { font-size: 12px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .metric .value { font-size: 16px; font-weight: 600; color: #fff; }
+        .section { margin-bottom: 48px; animation: fadeUp 0.8s ease-out 0.2s backwards; }
+        h2 { font-size: 24px; font-weight: 800; color: #fff; margin-bottom: 24px; display: flex; align-items: center; gap: 10px; }
+        h2::before { content: ''; display: block; width: 4px; height: 24px; background: var(--brand-secondary); border-radius: 2px; }
+        .insight-box { background: rgba(249,115,22,0.05); border-left: 4px solid var(--brand-secondary); padding: 20px; border-radius: 0 12px 12px 0; margin-bottom: 24px; }
+        .insight-box.warning { border-color: var(--brand-primary); background: rgba(239,68,68,0.05); }
+        .chat-log { display: flex; flex-direction: column; gap: 16px; }
+        .msg { background: var(--bg-surface); border: 1px solid var(--border); padding: 16px; border-radius: 12px; }
+        .msg.staff { border-color: rgba(249,115,22,0.3); background: rgba(249,115,22,0.02); }
+        .msg.user { border-color: rgba(139,92,246,0.3); background: rgba(139,92,246,0.02); }
+        .msg-meta { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; font-weight: 600; display: flex; justify-content: space-between; }
+        .msg-content { font-size: 15px; color: var(--text); }
+        .msg-highlight { color: #fdba74; font-weight: 700; background: rgba(249,115,22,0.2); padding: 0 4px; border-radius: 4px; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+    <script src="../navbar.js"></script>
+    <div class="main-container">
+        
+        <div class="header">
+            <div class="badge">C类预期崩塌型用户</div>
+            <h1>退费行为漏洞诊断：外网负面防范 (260313LRR)</h1>
+            <div class="tags">
+                <span class="tag tag-orange">竞品/负面舆情干扰</span>
+                <span class="tag tag-orange">后期隐形消费焦虑</span>
+                <span class="tag tag-purple">外部信任危机</span>
+            </div>
+            <p style="color: var(--text-dim); font-size: 15px;">用户在体验服结束后，受外部网络防诈指南等评述（如设备需二次购买、实际接不到商单）的影响，产生严重的防备心理与预期崩塌，在尚未深度体验课程前决定秒退。</p>
+        </div>
+
+        <div class="profile-card">
+            <div class="metric"><div class="label">UID / 昵称</div><div class="value">677038996 / 260313LRR</div></div>
+            <div class="metric"><div class="label">当前状态</div><div class="value" style="color: var(--brand-secondary);">受惊鸟型退款，观望阶段</div></div>
+            <div class="metric"><div class="label">干预人员</div><div class="value">六月晨兮 (钟樟玲)</div></div>
+            <div class="metric"><div class="label">核心退费动因</div><div class="value" style="color: var(--brand-orange);">外网“防坑指南”导致信任度破产</div></div>
+        </div>
+
+        <div class="section">
+            <h2>🚨 暴露的核心环节洞察</h2>
+            <div class="insight-box">
+                <h3 style="color: #fdba74; margin-bottom: 8px; font-size: 16px;">1. 应对负面舆情缺乏官方标准背书</h3>
+                <p>当用户提出“网上说还有后期的设备费用”、“接不到单”等疑虑时，销售只能靠“要靠你自己辨别”、“手机也可以干”、“官方新闻报道链接”等泛泛之谈进行洗白，缺乏透明且具备杀伤力的真实商业数据和合同级承诺作为防线。这就导致一旦用户受惊，极难再次建立信任。</p>
+            </div>
+            
+            <div class="insight-box warning">
+                <h3 style="color: #fca5a5; margin-bottom: 8px; font-size: 16px;">2. 退款流程阻塞导致最终信任决裂</h3>
+                <p>当用户已经明确表达“若是退款都困难的话那就和那边说的差不多了”时，退款速度直接等同于机构的合法性。这时候的强行留降（“错过挺可惜的要不只退高阶”）毫无意义且只会起反效果。</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>💬 核心案发现场还原 (聊天记录)</h2>
+            <div class="chat-log">
+                <div class="msg user">
+                    <div class="msg-meta"><span>260313LRR</span><span>2026-03-16 21:02:11</span></div>
+                    <div class="msg-content">我看<span class="msg-highlight">网上说的还有后期的设备费用</span>... 先退了吧，后期再看看。</div>
+                </div>
+
+                <div class="msg staff">
+                    <div class="msg-meta"><span>六月晨兮(钟樟玲)</span><span>2026-03-16 21:05:11</span></div>
+                    <div class="msg-content"><span class="msg-highlight">负面肯定的是有的 要靠你自己辨别了。</span>... 【发送CCTV官方报道链接用于力证合规】</div>
+                </div>
+
+                <div class="msg user">
+                    <div class="msg-meta"><span>260313LRR [最后通牒]</span><span>2026-03-16 21:08:11</span></div>
+                    <div class="msg-content"><span class="msg-highlight">要是退款都困难的话那就和那边说的差不多了。</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🎯 高管动作指令与战略修正建议 (Action Items)</h2>
+            <ul style="color: var(--text-dim); padding-left: 20px; line-height: 1.8;">
+                <li><strong>建立“净网式”异议处理库：</strong> 针对常见的“二次卖设备”、“没单接”、“包就业割韭菜”等经典外部负面评价，必须由官方整理出杀手级的话术、真实成功学员视频和透明的《接单白皮书数据》，而不能仅依靠一线班长单薄的个人辩防。</li>
+                <li><strong>信任破裂的危机公关原则：</strong> 当退费上升到“检验你们是不是骗子”的高度时，退款动作必须比销售回款动作更快。设立“舆情疑虑客户一键撤防退款”入口，用极其爽快的退款打消受惊用户的疑虑，为其将来二进宫留下体面退路。</li>
+            </ul>
+        </div>
+        
+    </div>
+</body>
+</html>

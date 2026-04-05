@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户退费诊断报告 - UID 308751415</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #09090b; --bg-surface: #18181b; --bg-surface-hover: #27272a;
+            --border: #3f3f46; --text: #f4f4f5; --text-dim: #a1a1aa; --text-muted: #71717a;
+            --brand-primary: #ef4444; --brand-secondary: #f97316; --brand-accent: #10b981;
+            --tag-red: #fca5a5; --tag-orange: #fdba74; --tag-blue: #93c5fd; --tag-purple: #c4b5fd;
+            --tag-yellow: #fde047; --tag-green: #86efac;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', -apple-system, sans-serif; background-color: var(--bg); color: var(--text); line-height: 1.6; }
+        .main-container { max-width: 900px; margin: 0 auto; padding: 40px 24px; position: relative; z-index: 1; }
+        .header { margin-bottom: 40px; border-bottom: 1px solid var(--border); padding-bottom: 30px; animation: fadeUp 0.8s ease-out; }
+        .badge { display: inline-block; padding: 4px 12px; border-radius: 100px; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; background: rgba(249,115,22,0.1); color: var(--brand-secondary); border: 1px solid rgba(249,115,22,0.3); }
+        h1 { font-size: clamp(28px, 4vw, 42px); font-weight: 900; line-height: 1.2; letter-spacing: -1px; margin-bottom: 16px; }
+        .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+        .tag { font-size: 13px; font-weight: 600; padding: 4px 12px; border-radius: 6px; }
+        .tag-red { background: rgba(239,68,68,0.15); color: var(--tag-red); border: 1px solid rgba(239,68,68,0.3); }
+        .tag-orange { background: rgba(249,115,22,0.15); color: var(--tag-orange); border: 1px solid rgba(249,115,22,0.3); }
+        .tag-purple { background: rgba(139,92,246,0.15); color: var(--tag-purple); border: 1px solid rgba(139,92,246,0.3); }
+        .profile-card { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 16px; padding: 24px; margin-bottom: 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; animation: fadeUp 0.8s ease-out 0.1s backwards; }
+        .metric .label { font-size: 12px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .metric .value { font-size: 16px; font-weight: 600; color: #fff; }
+        .section { margin-bottom: 48px; animation: fadeUp 0.8s ease-out 0.2s backwards; }
+        h2 { font-size: 24px; font-weight: 800; color: #fff; margin-bottom: 24px; display: flex; align-items: center; gap: 10px; }
+        h2::before { content: ''; display: block; width: 4px; height: 24px; background: var(--brand-primary); border-radius: 2px; }
+        .insight-box { background: rgba(239,68,68,0.05); border-left: 4px solid var(--brand-primary); padding: 20px; border-radius: 0 12px 12px 0; margin-bottom: 24px; }
+        .insight-box.warning { border-color: var(--brand-secondary); background: rgba(249,115,22,0.05); }
+        .chat-log { display: flex; flex-direction: column; gap: 16px; }
+        .msg { background: var(--bg-surface); border: 1px solid var(--border); padding: 16px; border-radius: 12px; }
+        .msg.staff { border-color: rgba(239,68,68,0.3); background: rgba(239,68,68,0.02); }
+        .msg.user { border-color: rgba(139,92,246,0.3); background: rgba(139,92,246,0.02); }
+        .msg-meta { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; font-weight: 600; display: flex; justify-content: space-between; }
+        .msg-content { font-size: 15px; color: var(--text); }
+        .msg-highlight { color: #fca5a5; font-weight: 700; background: rgba(239,68,68,0.2); padding: 0 4px; border-radius: 4px; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+    <script src="../navbar.js"></script>
+    <div class="main-container">
+        
+        <div class="header">
+            <div class="badge">B类高危用户 - 软性强压挽单</div>
+            <h1>退费行为漏洞诊断：260314光辉</h1>
+            <div class="tags">
+                <span class="tag tag-red">无视退费诉求</span>
+                <span class="tag tag-orange">过度推销系统课</span>
+                <span class="tag tag-purple">预期落差(非小班)</span>
+            </div>
+            <p style="color: var(--text-dim); font-size: 15px;">典型“借口挽留”引发的用户厌烦案例。用户因精力和时间限制干脆利落地申请退费，但运营团队不仅未能直接满足其合理需求，反而开启了为期数十天的连环推销和心理辅导，严重消耗了品牌好感度。</p>
+        </div>
+
+        <div class="profile-card">
+            <div class="metric"><div class="label">UID / 昵称</div><div class="value">308751415 / 260314光辉</div></div>
+            <div class="metric"><div class="label">当前状态</div><div class="value" style="color: var(--brand-primary);">已确认退费</div></div>
+            <div class="metric"><div class="label">干预人员</div><div class="value">露亚寒社Tina5(龚琪)，清月</div></div>
+            <div class="metric"><div class="label">核心退费动因</div><div class="value" style="color: var(--brand-secondary);">客观时间不够及运营强迫推销引发反感</div></div>
+        </div>
+
+        <div class="section">
+            <h2>🚨 暴露的核心系统性漏洞</h2>
+            <div class="insight-box">
+                <h3 style="color: #fca5a5; margin-bottom: 8px; font-size: 16px;">1. 无视用户的干脆拒单请求</h3>
+                <p>用户在3月18日发出清晰指令“暂时不方便，不用劝，退款下吧，没时间学”。但客服直接无视了“不用劝”的指令，后续继续高频发送长篇鸡汤、“时间就像海绵里的水”式话术，并试图为用户定制“时间规划表”，完全剥夺了用户作为成年人的决定权。</p>
+            </div>
+            
+            <div class="insight-box warning">
+                <h3 style="color: #fdba74; margin-bottom: 8px; font-size: 16px;">2. 营销承诺与实际交付货不对板</h3>
+                <p>用户此前一直误认为是“少人数的精品小班”，但交付后发现身处一个庞大拥杂的“新手村大组资源群”。尽管客服解释那是资源的权益，但仍然形成了服务预期落差。</p>
+            </div>
+
+            <div class="insight-box warning">
+                <h3 style="color: #fdba74; margin-bottom: 8px; font-size: 16px;">3. 冗长且带有道德绑架色彩的结束语</h3>
+                <p>即使在最终用户离去时，销售依然发送“我真的觉得非常遗憾”、“错过了你”之类的长篇卖惨式文案，这已经脱离了正常的商业服务性质，演变成过度情感榨取。</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>💬 核心案发现场还原 (聊天记录)</h2>
+            <div class="chat-log">
+                <div class="msg user">
+                    <div class="msg-meta"><span>260314光辉</span><span>2026-03-18 08:46:01</span></div>
+                    <div class="msg-content"><span class="msg-highlight">师姐，我想退费，没时间学。</span></div>
+                </div>
+
+                <div class="msg user">
+                    <div class="msg-meta"><span>260314光辉</span><span>2026-03-18 11:21:21</span></div>
+                    <div class="msg-content"><span class="msg-highlight">暂时不方便，不用劝，退款下吧，没时间学。</span></div>
+                </div>
+
+                <div class="msg staff">
+                    <div class="msg-meta"><span style="color: #fdba74;">清月(韩李娟) [无视退费诉求的话术]</span><span>2026-03-19 11:24:24</span></div>
+                    <div class="msg-content">我都理解呀... 为了给孩子做出榜样，我觉得还是应该开启副业... <span class="msg-highlight">班班还是希望你再考虑一下</span>，如果真的是时间问题，班班可以跟你一起制定规划。</div>
+                </div>
+
+                <div class="msg staff">
+                    <div class="msg-meta"><span style="color: #fca5a5;">露亚寒社Tina5(龚琪) [冗长情绪轰炸]</span><span>2026-03-27 11:00:10</span></div>
+                    <div class="msg-content">宝子，一转眼都结营一周啦... <span class="msg-highlight">就这样错过你是真心的遗憾，很有可能这是最后一次班班能联系到你了，真的希望你能再认真考虑一下，成就自己改变命运，好么？</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🎯 高管动作指令与战略修正建议 (Action Items)</h2>
+            <ul style="color: var(--text-dim); padding-left: 20px; line-height: 1.8;">
+                <li><strong>界定“明确拒单指令”处理标准：</strong> 规定当用户明确表示“不用劝”、“别发了”等断然拒单词汇时，服务人员需无条件闭麦停止销售进程，24小时内流转至财务处理，违规继续发送鸡汤者扣除绩效。</li>
+                <li><strong>缩短无效挽单链条：</strong> 淘汰使用“遗憾”、“错过了你”、“改变命运”等过度拔高的结尾挽单模板，改为专业且得体的祝福语言：“好的，了解您的客观限制。已将您退款进度推进，有缘江湖再登顶喜马大平台”。</li>
+                <li><strong>交付前期的预期管理：</strong> 规范“小班课”与“大组群”之间的名词解释。不得以大群名义强行拉入高客单价用户，降低其“VIP独享感”。</li>
+            </ul>
+        </div>
+        
+    </div>
+</body>
+</html>

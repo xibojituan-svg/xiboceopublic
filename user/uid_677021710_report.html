@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>法医双视角诊断 · UID 677021710 晴/陈玉花</title>
+  <style>
+    :root {
+      --red: #cf222e; --orange: #e16900; --blue: #0969da;
+      --purple: #8250df; --green: #1a7f37;
+      --border: #e1e4e8; --bg: #f6f8fa; --card: #fff;
+      --text: #24292e; --dim: #586069;
+    }
+    * { box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background: var(--bg); color: var(--text); line-height: 1.75; padding: 0; margin: 0; }
+    /* ── Layout ── */
+    .page-header {
+      background: linear-gradient(135deg, #1a1e2a 0%, #2d2f3e 100%);
+      color: #fff; padding: 2.5rem 3rem; border-bottom: 4px solid var(--red);
+    }
+    .page-header h1 { font-size: 1.45rem; margin: 0 0 .5rem; }
+    .page-header .sub { font-size: .88rem; color: #9aa4b2; margin: 0; }
+    .tab-bar {
+      display: flex; background: #fff; border-bottom: 2px solid var(--border);
+      position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 6px rgba(0,0,0,.08);
+    }
+    .tab { flex: 1; text-align: center; padding: 1rem .5rem; cursor: pointer;
+      font-weight: 600; font-size: .93rem; color: var(--dim);
+      border-bottom: 3px solid transparent; transition: all .2s; }
+    .tab.active { color: var(--blue); border-bottom-color: var(--blue); }
+    .tab:hover { background: var(--bg); }
+    .panel { display: none; padding: 2rem 3rem; max-width: 980px; margin: 0 auto; }
+    .panel.active { display: block; }
+    /* ── Components ── */
+    h2 { font-size: 1.1rem; margin-top: 2rem;
+      padding-left: 12px; border-left: 4px solid var(--blue); }
+    h2.red { border-left-color: var(--red); }
+    h2.orange { border-left-color: var(--orange); }
+    h2.purple { border-left-color: var(--purple); }
+    h2.green { border-left-color: var(--green); }
+    .alert-box {
+      padding: 1rem 1.4rem; border-radius: 8px; margin: 1rem 0; font-size: .93rem;
+    }
+    .alert-red { background: #ffebe9; border: 1px solid #ffcbc8; color: #6e0000; }
+    .alert-blue { background: #ddf4ff; border: 1px solid #b6dfff; color: #0a3069; }
+    .alert-orange { background: #fff8c5; border: 1px solid #f0c62e; color: #5c3d00; }
+    .alert-green { background: #dafbe1; border: 1px solid #aceebb; color: #0a3d1f; }
+    /* ── CEO Pyramid ── */
+    .pyramid-top {
+      background: linear-gradient(135deg, #1a1e2a, #2d2f3e);
+      color: #fff; padding: 1.6rem 2rem; border-radius: 10px; margin: 1.2rem 0;
+    }
+    .pyramid-top .ceo-tag {
+      font-size: .72rem; background: #cf222e; color: #fff;
+      padding: 2px 10px; border-radius: 20px; display: inline-block;
+      margin-bottom: .8rem; letter-spacing: 1px;
+    }
+    .pyramid-top p { margin: 0; font-size: 1.02rem; line-height: 1.8; color: #e0e6f0; }
+    .pyramid-top strong { color: #fff; }
+    /* ── 3-Axis ── */
+    .axis-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+    .axis-card {
+      border-radius: 8px; padding: 1.2rem 1.4rem;
+      border: 1px solid var(--border);
+    }
+    .axis-card .axis-label { font-size: .75rem; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; margin-bottom: .5rem; }
+    .axis-card .axis-score {
+      font-size: 1.5rem; font-weight: 800; margin-bottom: .4rem;
+    }
+    .axis-card .axis-body { font-size: .87rem; color: var(--dim); }
+    .axis-low { background: #ffebe9; border-left: 4px solid var(--red); }
+    .axis-mid { background: #fff8c5; border-left: 4px solid var(--orange); }
+    .axis-high { background: #dafbe1; border-left: 4px solid var(--green); }
+    /* ── Pillars ── */
+    .pillar-table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+    .pillar-table th {
+      background: var(--bg); padding: 10px 14px; text-align: left;
+      border: 1px solid var(--border); font-size: .85rem; font-weight: 700; color: var(--dim);
+    }
+    .pillar-table td { padding: 12px 14px; border: 1px solid var(--border); font-size: .91rem; vertical-align: top; }
+    .pillar-table tr:hover td { background: var(--bg); }
+    /* ── Quotes ── */
+    .quote {
+      padding: .9rem 1.2rem; border-radius: 6px; margin: .8rem 0;
+      font-size: .91rem; border-left: 4px solid;
+    }
+    .quote-u { background: #fff8f0; border-left-color: var(--orange); }
+    .quote-s { background: #f1f8ff; border-left-color: var(--blue); }
+    .quote-bad { background: #ffebe9; border-left-color: var(--red); }
+    .quote .spk { font-weight: 700; font-size: .78rem; margin-bottom: 4px; }
+    .quote .spk.u { color: var(--orange); }
+    .quote .spk.s { color: var(--blue); }
+    .quote .spk.bad { color: var(--red); }
+    /* ── Rx（处方） ── */
+    .rx-card {
+      border: 1px solid var(--border); border-radius: 8px;
+      overflow: hidden; margin: 1rem 0;
+    }
+    .rx-head {
+      background: #1a1e2a; color: #fff; padding: .8rem 1.2rem;
+      font-weight: 700; font-size: .92rem;
+    }
+    .rx-body { padding: 1.2rem 1.4rem; font-size: .91rem; }
+    .rx-body p { margin: 0 0 .6rem; }
+    .rx-body .disc { font-size: .8rem; background: var(--purple); color: #fff;
+      padding: 2px 8px; border-radius: 20px; display: inline-block; margin: 3px 0 6px; }
+    .talk-box {
+      background: #f6f8fa; border: 1px solid var(--border); border-radius: 6px;
+      padding: 1rem 1.2rem; margin: .6rem 0; font-size: .89rem;
+      font-style: italic; color: #333; white-space: pre-line;
+    }
+    /* ── LTV ── */
+    .ltv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+    .ltv-item { background: var(--card); border: 1px solid var(--border);
+      border-radius: 8px; padding: 1rem 1.2rem; font-size: .87rem; }
+    .ltv-item .lbl { font-weight: 700; font-size: .78rem; color: var(--dim); margin-bottom: 4px; }
+    .stars { color: #f0a500; font-size: 1rem; }
+    /* ── Sales Radar ── */
+    .radar-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+    .r-card { border-radius: 8px; padding: 1.2rem; border: 1px solid var(--border); text-align: center; }
+    .r-score { font-size: 2rem; font-weight: 900; margin: .3rem 0; }
+    .r-label { font-size: .82rem; font-weight: 700; color: var(--dim); }
+    .r-sub { font-size: .8rem; color: #777; margin-top: .3rem; }
+    .score-f { color: var(--red); }
+    .score-d { color: var(--orange); }
+    .score-c { color: #e5c000; }
+    .score-b { color: #4caf50; }
+    /* ── Moment Timeline ── */
+    .moment-list { padding-left: 0; list-style: none; margin: 0; }
+    .moment-item {
+      display: grid; grid-template-columns: 100px 1fr;
+      gap: 1rem; padding: .8rem 0; border-bottom: 1px solid var(--border);
+    }
+    .moment-time { font-size: .8rem; font-weight: 700; color: var(--dim); padding-top: 3px; }
+    .moment-content { font-size: .91rem; }
+    .moment-content .t { font-weight: 700; }
+    .moment-content .v { font-size: .84rem; color: var(--dim); margin-top: 2px; }
+    .tag { display: inline-block; padding: 2px 8px; border-radius: 20px;
+      font-size: .75rem; font-weight: 700; margin: 2px; }
+    .tag-red { background: #ffebe9; color: var(--red); }
+    .tag-orange { background: #fff3cd; color: #8a4c00; }
+    .tag-blue { background: #ddf4ff; color: #0a3069; }
+    .tag-green { background: #dafbe1; color: #0a3d1f; }
+    .tag-gray { background: #f0f0f0; color: var(--dim); }
+    /* ── Stop/Start ── */
+    .stop-start { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+    .stop-box { background: #ffebe9; border: 1px solid #ffcbc8; border-radius: 8px; padding: 1.2rem; }
+    .start-box { background: #dafbe1; border: 1px solid #aceebb; border-radius: 8px; padding: 1.2rem; }
+    .stop-box h4, .start-box h4 { margin: 0 0 .8rem; font-size: .93rem; }
+    .stop-box li { color: #6e0000; } .start-box li { color: #0a3d1f; }
+    ul li { margin-bottom: 7px; font-size: .91rem; }
+    /* ── Msg chain ── */
+    .msgs { display: flex; flex-direction: column; gap: 6px;
+      padding: 1rem; background: var(--bg); border-radius: 8px;
+      border: 1px solid var(--border); margin: .8rem 0; }
+    .msg { padding: 7px 14px; border-radius: 8px; font-size: .89rem; max-width: 88%; }
+    .mu { background: #ffe0cc; align-self: flex-end; color: #5c2200; }
+    .ms { background: #ddf4ff; align-self: flex-start; color: #0a3069; font-style: italic; }
+    .mc { align-self: center; font-size: .76rem; color: var(--dim); background: none; }
+    /* ── Responsive ── */
+    @media(max-width:720px) {
+      .panel { padding: 1rem 1.2rem; }
+      .axis-grid, .radar-grid, .stop-start { grid-template-columns: 1fr; }
+      .ltv-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>法医双视角诊断报告 · UID 677021710 · 晴（陈玉花）</h1>
+  <p class="sub">
+    D类外诉 · 47岁工厂上班族 · 初中文凭 · 付款后被晾置72小时 · 明确发出起诉通知<br>
+    分析框架：user-needs-decoder（消费者视角）+ class-manager-excellence / value-driven-sales-evaluator（班主任视角）
+  </p>
+</div>
+
+<!-- Tab Bar -->
+<div class="tab-bar">
+  <div class="tab active" onclick="switchTab('consumer')">🧠 消费者解码视角</div>
+  <div class="tab" onclick="switchTab('manager')">🔍 班主任行为审计</div>
+</div>
+
+<!-- ======================================================== -->
+<!-- TAB 1: CONSUMER VIEW                                      -->
+<!-- ======================================================== -->
+<div id="consumer" class="panel active">
+
+  <!-- CEO顶层结论 -->
+  <h2>【顶层】🎯 CEO级一句话结论</h2>
+  <div class="pyramid-top">
+    <div class="ceo-tag">CEO LEVEL · 金字塔顶</div>
+    <p>
+      <strong>她是谁：</strong>T4型务实变现者 + D类高危用户的边界案例。<br>
+      47岁工厂上班族，初中文凭，已在他处亏损1.5万元、仅挣200元，<strong>这是一个有明确被骗史、资金底座已严重透支的高弹性缺失用户</strong>——她在付款前清楚说出"就怕又是一次一次要钱"，这句话是她最后的理性防线，但无人响应。<br><br>
+      <strong>现在怎么了：</strong>已全额退款，案件表面已结，但真实损伤是<strong>用户在花了5000元后对整个行业的信任彻底归零</strong>，在付款后72小时内无人跟进、连发14条消息无回应的情况下被迫自救起诉。<br><br>
+      <strong>最高优先级行动：</strong>本案是"销售成交后服务断崖"的教科书级案例，必须触发<strong>付款后24小时班主任到位SLA机制</strong>和<strong>有被骗史用户合规审查流程</strong>，两项机制缺一不可。
+    </p>
+  </div>
+
+  <!-- 三轴模型评级 -->
+  <h2>【第二层】🏛️ 三轴模型评级</h2>
+  <div class="axis-grid">
+    <div class="axis-card axis-low">
+      <div class="axis-label">轴1 · 动机纯度</div>
+      <div class="axis-score" style="color:var(--red)">低</div>
+      <div class="axis-body">
+        变现急迫性极高（B3级）+ 对结果确定性依赖极强 + 入群就问"以后有没有单子"。<br>
+        动机是对的（想赚钱），但因历史创伤导致预期错位：<b>她要的是"立刻接单"，平台卖的是"三个月打基础"</b>，这是根本性需求错配。
+      </div>
+    </div>
+    <div class="axis-card axis-low">
+      <div class="axis-label">轴2 · 资源底座三角</div>
+      <div class="axis-score" style="color:var(--red)">低（短板触发）</div>
+      <div class="axis-body">
+        💰 <b>资金：低。</b>支付宝+花呗额度不足，需东拼西凑，已亏损1.5万。<br>
+        ⏱ <b>时间：中。</b>"上12休24"，有固定休息时段，时间结构还行。<br>
+        🧠 <b>精力：中。</b>认真完成作业，态度积极，但焦虑持续消耗精力。<br><br>
+        → 短板为资金，底座定性为<b style="color:var(--red)">低</b>（取最短板原则）。
+      </div>
+    </div>
+    <div class="axis-card axis-low">
+      <div class="axis-label">轴3 · 心理弹性</div>
+      <div class="axis-score" style="color:var(--red)">低</div>
+      <div class="axis-body">
+        有明确的竞品被骗史，外部归因强（"又被骗了"）。<br>
+        情景依赖性高——"师姐这么坚强"触发了强依恋，一旦师姐断联，情绪立刻崩溃。<br>
+        对服务依赖极强：<b>72小时无回复直接触发"我真的不希望你是骗子"→ 起诉通知</b>，应激阈值极低。
+      </div>
+    </div>
+  </div>
+
+  <!-- 双轨需求分析 -->
+  <h2>【第二层】🔀 双轨需求扫描</h2>
+
+  <div class="alert-box alert-blue" style="margin-bottom:.5rem">
+    <strong>显性需求轨</strong>：兼职接单挣钱（不是学习，是立刻赚到第一笔钱）
+  </div>
+  <div class="quote quote-u">
+    <div class="spk u">📌 用户原话（2026-03-14 10:17）· 付款前最后一次说出真实需求</div>
+    "都学了快四个多月了，就叫做了四个单子，挣了二百多点……就怕总是一次一次让买东西，真的会有单子可做吗…从开始学到能接单，大概得交多少钱呢"
+  </div>
+  <p>这不是一个在表达"我想学声音"的用户，她的全部动机是<b>用声音换到实际收入</b>，体验营前三天她完成了所有作业，动力来源是"有了单子就有话语权"——这是家庭财务压力下的生存驱动，而非兴趣。</p>
+
+  <div class="alert-box alert-orange" style="margin-bottom:.5rem">
+    <strong>隐性需求轨</strong>：历史创伤修复 + 外部认可 + "这次不一样"的自我说服
+  </div>
+  <div class="quote quote-u">
+    <div class="spk u">🛑 用户原话（2026-03-17 09:52）· 付款后崩溃期的真实内心</div>
+    "只有心踏实了才能好好学下去。别的同学都加老师班主任微信了吧，说一周就可以下单了，有问题都不知道去问谁"
+  </div>
+  <p>
+    她说的"心踏实了"不是在要求功能，而是在要求<b>被当成真实存在的人对待</b>——这是一个有被骗史用户用来排解"我这次又被骗了吗"的焦虑的唯一通道。<br>
+    隐性需求核心：<strong>她需要的是一个可以随时找到的、真实的人的存在感</strong>，班主任的"号掉线"直接触发了她最深的恐惧。
+  </p>
+
+  <!-- 三大支撑论点 -->
+  <h2>【第二层】⚙️ 三大支撑论点</h2>
+  <table class="pillar-table">
+    <tr>
+      <th>论点编号</th><th>论点标题</th><th>一句话论断</th>
+    </tr>
+    <tr>
+      <td><strong>论点①</strong></td>
+      <td>用户本质</td>
+      <td>
+        她是<b>T4型务实变现者</b>（class-manager-excellence框架），底层驱动力是"第一笔真实收入"而非学习成长——她连续三天认真完成作业的驱动力是"早日接单"，而非把声音艺术练好。
+      </td>
+    </tr>
+    <tr>
+      <td><strong>论点②</strong></td>
+      <td>服务缺口</td>
+      <td>
+        <b>付款即断服</b>：这是最严重的服务缺口。体验营期间班主任响应及时（用来完成转化），付款完成后角色立刻消失——她得到的信号是"我买完了，就没人管我了"，这是对T4型用户最致命的打击。
+      </td>
+    </tr>
+    <tr>
+      <td><strong>论点③</strong></td>
+      <td>流失风险</td>
+      <td>
+        如果不干预：此案已退款，但<b>后续喜播金金的再次接触</b>是在退款用户身上继续刷信任赤字——这个用户的口碑已经负值，任何二次接触只会让她向周围人传播更多负面体验。
+      </td>
+    </tr>
+  </table>
+
+  <!-- 班主任处方（消费者视角应对） -->
+  <h2 class="green">【行动层】💊 班主任处方（如果时间倒回应该怎么做）</h2>
+
+  <div class="alert-box alert-red">
+    <strong>战略定位</strong>：面对这类用户，班主任应以<b>「合规诊断官」</b>身份介入，而非「情感陪伴者」——她的需求核心是"花钱能不能换到真实收入"，情感话术只能拖延爆雷，解决不了根本问题。
+  </div>
+
+  <p><strong>🚫 禁忌红线</strong></p>
+  <ul>
+    <li>❌ <b>禁忌1：对有被骗史用户回避"要花多少钱"这个直接问题</b> → 班主任收到她说"就怕总是一次一次让买东西、大概得交多少钱"时，用"跟上节奏"带过，这直接证实了她最坏的预期：再次被骗。</li>
+    <li>❌ <b>禁忌2：在资金底座未确认完整的情况下推动付款</b> → 用户支付宝额度不足、花呗有限、家人不支持，这是D类熔断应触发的典型信号，任何一个都应该暂停付款流程，但反而被班主任引导"对公+花呗拼凑"绕过。</li>
+  </ul>
+
+  <div class="rx-card">
+    <div class="rx-head">动作① · 针对论点① · 在付款前做真实需求诊断</div>
+    <div class="rx-body">
+      <p><b>目标：</b>确认用户的变现预期是否与产品实际交付周期匹配，提前消解"又被骗"的定时炸弹。</p>
+      <span class="disc">适配 · T4型务实变现者 + 低心理弹性</span>
+      <div class="talk-box">「晴，你刚才说你在别的地方花了一万多没挣到钱，我想先直接回答你那个最重要的问题：从开始到第一笔真实的钱，大概要多久？
+
+我不骗你：我们课程系统学完是三个月左右，你才开始有机会试投第一次试音。那笔试音的收入通常是80-200元，不是立刻大几千。
+
+我先问你：你现在手头的状况，支撑三个月不进账没关系吗？如果你目前急需收入，我建议你先把免费体验营的内容都跑完，那个是零成本的——等你感受一下流程再决定要不要付款更安全。」</div>
+    </div>
+  </div>
+
+  <div class="rx-card">
+    <div class="rx-head">动作② · 针对论点② · 付款后24小时内必须主动接触</div>
+    <div class="rx-body">
+      <p><b>目标：</b>把T4型用户从"我付了钱没人管我"的恐惧中拉出来，建立最低信任底座。</p>
+      <span class="disc">适配 · 服务断崖修复 + 高服务依赖性</span>
+      <div class="talk-box">（付款成功当晚或次日上午，班主任必须主动发）
+
+「晴，確认你的权益已经开通了！
+
+先告诉你接下来的路：
+① 今天我把你拉进正式学习群，里面会有你的班主任XXX老师主动来找你
+② 本周内你会收到第一个学习任务提醒，按节奏做就行
+③ 有任何问题，直接发我——这个号不会消失的
+
+你之前问过'什么时候能接单'，等你完成第一阶段课程（大约3-4周），我帮你看看哪些试音单适合你御姐音的音色，第一个资源我亲自给你找。」</div>
+    </div>
+  </div>
+
+  <div class="rx-card">
+    <div class="rx-head">动作③ · 针对论点③ · 当用户明确说退费时立刻切换"优雅放手"模式</div>
+    <div class="rx-body">
+      <p><b>目标：</b>class-manager-excellence铁律·用户明确退费意愿≥3次，立刻切换口碑维护模式，不做挽留。</p>
+      <span class="disc">适配 · 低心理弹性 + 有被骗史 + 高归因外部</span>
+      <div class="talk-box">（用户第一次说"退了吧不想学了"后直接回）
+
+「好，我尊重你。
+
+我帮你走退款流程，今天内给你处理完、不用你多跑一步。
+
+你这段时间认真完成作业，御姐音底子是真的好——这段时间没白练。
+
+以后如果时间和状态都合适了，直接来找我，什么时候都行。」
+
+→ 不补救、不挽留、不道德施压。带着被尊重的感受离开，才是真正的口碑维护。</div>
+    </div>
+  </div>
+
+  <!-- LTV快照 -->
+  <h2>【附录】📊 LTV快照 + 用户标签</h2>
+  <div class="ltv-grid">
+    <div class="ltv-item">
+      <div class="lbl">续费概率</div>
+      <span class="stars">★☆☆☆☆</span>
+      <div style="font-size:.83rem;color:var(--dim);margin-top:4px">已退款，且为有被骗史用户，信任底座归零，短期内再次付费的概率接近0</div>
+    </div>
+    <div class="ltv-item">
+      <div class="lbl">客单价承受力</div>
+      <span class="stars">★☆☆☆☆</span>
+      <div style="font-size:.83rem;color:var(--dim);margin-top:4px">资金底座极低，支付全程依赖对公+花呗拼凑，正常客单价超出其真实负担能力</div>
+    </div>
+    <div class="ltv-item">
+      <div class="lbl">转介绍潜力</div>
+      <span class="stars">★☆☆☆☆</span>
+      <div style="font-size:.83rem;color:var(--dim);margin-top:4px">退费体验差（72小时被晾置），且本身社交网络有限（工厂上班族），负向口碑传播概率高于正向</div>
+    </div>
+    <div class="ltv-item">
+      <div class="lbl">내容共创价值</div>
+      <span class="stars">★☆☆☆☆</span>
+      <div style="font-size:.83rem;color:var(--dim);margin-top:4px">初中文凭，无内容创作背景，暂无可开发的内容价值</div>
+    </div>
+    <div class="ltv-item">
+      <div class="lbl">需求满足度</div>
+      <span class="stars">★☆☆☆☆</span>
+      <div style="font-size:.83rem;color:var(--dim);margin-top:4px">核心需求（接单变现）未被满足，体验营3天后付款前已表达11次变现焦虑，均未被回应</div>
+    </div>
+    <div class="ltv-item">
+      <div class="lbl">风险等级</div>
+      <span class="stars" style="color:var(--red)">★★★★★</span>
+      <div style="font-size:.83rem;color:var(--dim);margin-top:4px">已发出正式法律起诉通知，若退款未到账将面临法律纠纷；退款后仍被再次接触，二次刺激风险持续存在</div>
+    </div>
+  </div>
+
+  <div style="margin-top:1.2rem;padding:1rem 1.4rem;background:#f6f8fa;border:1px solid var(--border);border-radius:8px;font-size:.83rem;line-height:2">
+    <b>多维标签</b><br>
+    <span class="tag tag-red">[D类边界]</span>
+    <span class="tag tag-orange">[资金底座-低]</span>
+    <span class="tag tag-gray">[上班族-工厂]</span>
+    <span class="tag tag-gray">[47岁]</span>
+    <span class="tag tag-gray">[初中文凭]</span>
+    <span class="tag tag-red">[有被骗史/亏损1.5万]</span>
+    <span class="tag tag-orange">[花呗拼凑付款]</span>
+    <span class="tag tag-red">[T4务实变现者]</span>
+    <span class="tag tag-red">[心理弹性-低]</span>
+    <span class="tag tag-orange">[服务依赖-高]</span>
+    <span class="tag tag-blue">[御姐音-声音条件OK]</span>
+    <span class="tag tag-red">[法律起诉威胁]</span>
+    <span class="tag tag-red">[付款后被晾置72H]</span>
+    <span class="tag tag-orange">[家人不支持]</span>
+    <span class="tag tag-orange">[需求错配-立刻变现vs三个月打基础]</span>
+  </div>
+
+</div><!-- /consumer panel -->
+
+
+<!-- ======================================================== -->
+<!-- TAB 2: MANAGER VIEW                                       -->
+<!-- ======================================================== -->
+<div id="manager" class="panel">
+
+  <h2 class="red">【第一层】结论先行 · 销售行为定性</h2>
+  <div class="pyramid-top">
+    <div class="ceo-tag">VALUE-DRIVEN SALES EVALUATOR · 判定结论</div>
+    <p>
+      <strong>类型定性：[逐利收单型] · 体验营优秀 → 付款后蒸发</strong><br><br>
+      招募助教朱康超（六月晨兮/是沐宝啊）在体验营阶段展现了高执行力，但本质上是以情感投入为工具的<strong>转化机器</strong>——一旦成单完成，服务顿时断崖式消失，暴露了其自我导向（Self-Orientation）极高的本质：<br>
+      用户≠学员，用户=KPI指标。<br><br>
+      <strong>去留建议：需要重塑理念 + 建立服务闭环考核机制</strong>。不建议直接淘汰——体验营阶段的信任建立能力值得保留，但付款后服务完全缺位属于系统性失职，须纳入KPI考核。
+    </p>
+  </div>
+
+  <!-- 三维雷达 -->
+  <h2>【第二层】📡 核心能力三维雷达</h2>
+  <div class="radar-grid">
+    <div class="r-card" style="border-left:4px solid var(--orange)">
+      <div class="r-label">诊断监听力</div>
+      <div class="r-score score-d">42/100</div>
+      <div class="r-sub">
+        <b>表层：优秀。</b>体验营3天内快速识别用户有被骗史、摸清其时间结构、识别音色优势。<br>
+        <b>深层：缺失。</b>用户11次表达变现焦虑（"真的会有单子吗""从开始学到能接单要交多少钱"），<b>全部被话术绕过</b>，从未正面回答。这不是没听到，是选择性不听。
+      </div>
+    </div>
+    <div class="r-card" style="border-left:4px solid var(--red)">
+      <div class="r-label">专业托底力</div>
+      <div class="r-score score-f">18/100</div>
+      <div class="r-sub">
+        从未帮用户算清楚投入产出比。用户问"要花多少钱才能接单"，回应是"平台规范我来讲解"——这是<b>逃避诚实信息的典型话术遮盖行为</b>。<br><br>
+        更严重：用户支付宝不足→引导对公转账→花呗补差额，这个流程没有任何对用户财务健康的评估，只有"钱怎么进来"的考量。
+      </div>
+    </div>
+    <div class="r-card" style="border-left:4px solid var(--red)">
+      <div class="r-label">去自私化</div>
+      <div class="r-score score-f">12/100</div>
+      <div class="r-sub">
+        <b>最致命的一项。</b>在整个记录中，<b>无一次出现利他行为</b>：<br>
+        • 未曾建议用户"先跑完体验营免费内容再决定"<br>
+        • 发现用户资金不足后，<b>主动协助拼凑付款而非建议延期报名</b><br>
+        • 付款后72小时内无主动跟进，信任套现即结束<br>
+        这是"自我导向"的教科书级正例。
+      </div>
+    </div>
+  </div>
+
+  <!-- 原型识别 -->
+  <h2 class="purple">用户原型识别（class-manager-excellence框架）</h2>
+  <div class="alert-box alert-orange">
+    <b>识别结论：T4型务实变现者</b>（但被班主任用错了T5型（试水探索者）的策略服务）<br><br>
+    T4型的识别信号：问的是"这个能赚多少"、"怎么投稿"——晴在入群第一条就问"以后不会要钱吧"，体验营全程问的是"有稳定单子吗"，对声音艺术本身几乎没有发起过探索性谈话。<br><br>
+    <b>班主任实际使用的是T6型（高焦虑从众者）策略</b>——持续情感供给、赞美声线、建立角色依附——这对T4型来说是<b>误诊误治</b>：T4型不需要情感，需要路径和第一笔真实数字。
+  </div>
+
+  <!-- 黄金时刻分析 -->
+  <h2>7个黄金时刻 · 本案命中/错过对照</h2>
+  <ul class="moment-list">
+    <li class="moment-item">
+      <div class="moment-time">时刻1<br>声线鉴定后1小时</div>
+      <div class="moment-content">
+        <div class="t">✅ 命中（但动机不纯）→ 设备推销 · 未触发</div>
+        <div class="v">声线鉴定当天确实给出了音色反馈，但没有推设备，而是直接进入情感依附建设路线。在T4型用户这里，跳过设备推销是好事，但没有给出变现路径是坏事。</div>
+      </div>
+    </li>
+    <li class="moment-item">
+      <div class="moment-time">时刻3<br>通关宣布后24小时</div>
+      <div class="moment-content">
+        <div class="t"><span class="tag tag-red">❌ 完全错过</span> → 付款转化策略是对的，但成动没有SLA</div>
+        <div class="v">通关后快速推动付款（正确），但付款完成后零跟进——成交的那一刻，班主任的服务角色应该是转化完成→班主任接盘，但这个交接完全缺失。</div>
+      </div>
+    </li>
+    <li class="moment-item">
+      <div class="moment-time">时刻4<br>入学第2周末</div>
+      <div class="moment-content">
+        <div class="t"><span class="tag tag-red">❌ 没有机会 · 付款后已被放弃</span></div>
+        <div class="v">用户付款后三天内就申请退款，有声之夜从未进入视野。根本原因是班主任在时刻3成单后即脱离。</div>
+      </div>
+    </li>
+    <li class="moment-item">
+      <div class="moment-time">时刻6<br>技术卡点30分内</div>
+      <div class="moment-content">
+        <div class="t"><span class="tag tag-red">❌ 严重违反 · 超出4小时</span> → 实际延误72小时</div>
+        <div class="v">用户的"卡点"不是录音软件崩溃，而是"找不到班主任"这个最基础的服务缺口。72小时无响应远超铁律红线的4小时上限。</div>
+      </div>
+    </li>
+  </ul>
+
+  <!-- 铁律红线核查 -->
+  <h2 class="red">5条铁律红线 · 踩中本案的核查</h2>
+  <table class="pillar-table">
+    <tr><th>红线</th><th>本案是否触发</th><th>具体违规事实</th></tr>
+    <tr>
+      <td>🚫 红线1：技术问题超过4小时不回复</td>
+      <td><span class="tag tag-red">严重违反</span></td>
+      <td>用户付款后到退款申请，等待时间超<b>72小时</b>，发出14条消息无任何回应</td>
+    </tr>
+    <tr>
+      <td>🚫 红线2：班委幕后承重者3周无专属私信</td>
+      <td><span class="tag tag-gray">不适用</span></td>
+      <td>用户3天内退款，未进入长期课程阶段</td>
+    </tr>
+    <tr>
+      <td>🚫 红线3：有声之夜负面情绪不干预</td>
+      <td><span class="tag tag-gray">不适用</span></td>
+      <td>同上</td>
+    </tr>
+    <tr>
+      <td>🚫 红线4：对宝妈录音困境给无效建议</td>
+      <td><span class="tag tag-orange">部分触发</span></td>
+      <td>用户"上12休24"的工作节奏下，班主任从未主动设计碎片化学习方案，只有结构化任务清单</td>
+    </tr>
+    <tr>
+      <td>🚫 红线5：首次变现后超过24小时推进阶课</td>
+      <td><span class="tag tag-gray">不适用（从未变现）</span></td>
+      <td>——</td>
+    </tr>
+    <tr style="border-top:2px solid var(--red)">
+      <td><b style="color:var(--red)">🚫 新增红线（本案发现）：明确退费意愿≥3次后禁止留人话术</b></td>
+      <td><span class="tag tag-red">严重违反</span></td>
+      <td>用户发出正式退款申请并明确起诉通知后，班主任回复"可以的，没问题（先慢慢来，我入行是从兼职开始的）"——这是发送了缓存话术的自动回复，<b>完全没有进入退费流程切换</b></td>
+    </tr>
+  </table>
+
+  <!-- 病灶四切片 -->
+  <h2 class="red">【第三层】🔬 具体病灶事实剖析（4组切片）</h2>
+
+  <div style="margin-bottom:1.5rem">
+    <b>切片①：隐瞒变现路径真相 · 用"跟上节奏"代替正面回答</b>
+    <div class="quote quote-u">
+      <div class="spk u">用户（2026-03-14 10:17）</div>
+      "就怕总是一次一次让买东西，真的会有单子可做吗……从开始学到能接单，大概得交多少钱呢"
+    </div>
+    <div class="quote quote-bad">
+      <div class="spk bad">朱康超 回应（2026-03-14 10:17）</div>
+      "如果你是专业主播的话，那你是可以免费去考试……你先把这些行业内的所有东西都了解清楚，尤其是我们工作方面，了解清楚，你再考虑要不要进行下一步的学习……你先跟上我的节奏吧。"
+    </div>
+    <div class="alert-box alert-orange" style="margin-top:.5rem">
+      <b>心理学诊断：</b>"跟上我的节奏"是<b>转移注意力+权威框架</b>技巧的结合，把用户从"我要知道要花多少钱"的理性需求，拉回"听老师的话"的情感服从模式。这不是回答，是绕过。<br>
+      对有被骗史的T4型用户，这个回避动作等于踩了她的最敏感地雷。
+    </div>
+  </div>
+
+  <div style="margin-bottom:1.5rem">
+    <b>切片②：引导拼凑付款 · 资金底座崩塌信号被忽视</b>
+    <div class="msgs">
+      <div class="msg mu">老师相交四千，剩下再叫花呗，怎么交呢</div>
+      <div class="msg mu">支付宝额度不够了</div>
+      <div class="msg ms">（助教）稍等，咱们可以对公哦</div>
+      <div class="msg mu">老师那是微信码，支付码又是七千多，怎么在花呗上交呢</div>
+      <div class="msg ms">（助教）同学，这个码哦，扫进去之后输入金额就可以啦</div>
+      <div class="msg mu">还差2380元需要用花呗</div>
+      <div class="msg ms">（助教）稍等哦（继续尝试换码）</div>
+    </div>
+    <div class="alert-box alert-orange">
+      <b>病灶：</b>value-driven-sales-evaluator红线2明确规定："支付方式是花呗/借贷 + 提到经济紧张 → 触发暂停，不应进入付费流程。"<br>
+      本案中，用户已明确：支付宝额度不足、花呗有限、家人不支持、已亏损1.5万——<b>4个D类熔断信号同时触发</b>，助教反而主动提供多个支付入口协助完成支付，这是主动绕过风控。
+    </div>
+  </div>
+
+  <div style="margin-bottom:1.5rem">
+    <b>切片③：付款后服务断崖 · 14条求助消息0响应</b>
+    <div class="msgs">
+      <div class="msg mu">师姐我怎么没有班主任呢</div>
+      <div class="msg mu">问了几次师姐，为啥这没有班主任，真怕又被骗了，这可是我仅仅的几千块呢</div>
+      <div class="msg mu">师姐，能给我说一下吗，心里很不踏实的感觉</div>
+      <div class="msg mu">老师请给个回复好吧</div>
+      <div class="msg mu">就是因为看到师姐好坚强，还有老师们，很慈祥，才加入的，可师姐问的问题为啥不说话</div>
+      <div class="mc">（以上约15小时内发送，无任何回复）</div>
+      <div class="msg mu">不行的话，交点钱用法律程序了只能</div>
+      <div class="msg mu">今天看不到，明天就起诉了只能</div>
+      <div class="ms msg" style="max-width:90%">（朱康超次日回：抱歉哈，这个号掉线了，我也没注意到……）</div>
+    </div>
+    <div class="alert-box alert-red">
+      <b>病灶：</b>这不是个人失误，是系统性的"收钱即结束"行为模式。助教在成单环节保持高速响应（平均5分钟内回复），成单后响应时间变成72+小时。<br>
+      信任方程式：<b>信任度 = (能力+可靠性+亲近度) / 自我导向</b>——可靠性在72小时内归零，自我导向暴露无遗。
+    </div>
+  </div>
+
+  <div style="margin-bottom:1.5rem">
+    <b>切片④：退款后「喜播金金」再次接触 · 退款用户被二次骚扰</b>
+    <div class="quote quote-bad">
+      <div class="spk bad">喜播金金（2026-03-27 22:59）· 退款已完成后第10天</div>
+      "晴，今天想和你聊聊～还记得体验课里那段情感朗诵吗？我分享给我们官方点评官老师听了之后，她和我说你的音色潜力超棒！……你当时是为什么没继续深造呀？"
+    </div>
+    <div class="alert-box alert-orange">
+      <b>病灶：</b>用户已全额退款，原因是被晾置、发出起诉威胁。这个结果表明<b>用户对平台信任已到达负值</b>。<br>
+      在此状态下继续"情感关怀式"的再营销接触，<b>不会带来转化，只会激活用户的被操控感</b>，大幅提高其向外传播负面评价的概率。<br>
+      class-manager-excellence补充规定（防线①）：<b>退款用户须进入"无打扰防守期"，禁止任何形式的群发、私聊、战报发送</b>。
+    </div>
+  </div>
+
+  <!-- 赋能处方 -->
+  <h2 class="green">【第四层】💊 对朱康超的赋能处方（SOP级）</h2>
+  <div class="stop-start">
+    <div class="stop-box">
+      <h4>🚫 立刻停止的3个动作</h4>
+      <ul>
+        <li><b>停止用"跟上节奏"绕过变现路径的直接问题。</b>每次用户问"要花多少钱""什么时候接单"，必须在30字以内给出直接回答，不可转移话题。</li>
+        <li><b>停止在用户资金底座明显不足的情况下引导拼凑付款。</b>只要用户提到支付宝/花呗额度不足、家人不支持、已有亏损史，暂停付款流程，进入合规审查。</li>
+        <li><b>停止对退款用户的情感再营销接触。</b>退款完成后30天内，任何账号不得对该用户发起主动联系，哪怕是"关怀式"话术。</li>
+      </ul>
+    </div>
+    <div class="start-box">
+      <h4>✅ 加入SOP的3个动作</h4>
+      <ul>
+        <li><b>付款成功后24小时内，班主任必须主动发出「开学服务宣言」。</b>内容包含：班主任联系方式、本周第一个学习节点、第一个可期待的成果时间点。不得晚于付款后次日中午12点。</li>
+        <li><b>建立「有被骗史用户」合规审查流程。</b>用户在入营期间披露曾在其他平台损失超过500元的，必须在付款前完成"需求-产品匹配度诊断"（用3个问题确认预期对齐），并签署书面版"服务周期与预期说明"。</li>
+        <li><b>退款流程必须24小时内完成，并由专人回访。</b>退款完成后，由合规专员（而非原助教）发出一条退出关怀信息，内容是：退款已到账确认 + 下次回来的免费入口（不得推销，只给一个信息）。</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="alert-box alert-blue" style="margin-top:1.5rem">
+    <b>自我诊断量表（class-manager-excellence第五章）· 朱康超本周评分</b><br><br>
+    ☑ 所有技术问题是否在30分钟内给出响应信号：<b style="color:var(--red)">否（72小时无响应）</b><br>
+    ☐ 是否私信感谢了至少1个班委/幕后贡献者：不适用<br>
+    ☐ 是否关注了有声之夜小组的群内情绪：不适用<br>
+    ☐ 有学员首次变现后，是否当天推了进阶课：不适用<br>
+    ☑ 是否主动触达了本周没有发言的T6型用户：<b style="color:var(--red)">否（付款后未主动触达任何用户）</b><br>
+    ☑ 声线鉴定后，是否在1小时内推了设备推荐：不适用<br><br>
+    <b>本周评分：0/3 → 低于最低合格线（3/6），需要系统性复盘</b>
+  </div>
+
+</div><!-- /manager panel -->
+
+<script>
+function switchTab(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>

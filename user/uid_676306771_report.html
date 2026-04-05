@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>合规盲区通报：伪造接单大厅与断层孤岛（UID 676306771）</title>
+    <style>
+        :root {
+            --primary-color: #111;
+            --bg-color: #f6f8fa;
+            --box-bg: #fff;
+            --text-main: #24292e;
+            --text-light: #586069;
+            --danger: #cf222e;
+            --warning: #dbab09;
+            --accent: #0969da;
+            --border: #e1e4e8;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 2rem;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--box-bg);
+            padding: 2.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border-top: 5px solid var(--accent);
+        }
+
+        h1 {
+            color: var(--primary-color);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.8rem;
+            margin-bottom: 1.5rem;
+            font-size: 1.6rem;
+            text-align: left;
+        }
+
+        .alert-banner {
+            background-color: #ffebe9;
+            color: var(--danger);
+            padding: 1rem;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 1rem;
+            border: 1px solid rgba(255,129,130,0.4);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .alert-banner::before {
+            content: "⚠️";
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        .profile-card {
+            background: #fff;
+            border: 1px solid var(--border);
+            padding: 1.2rem;
+            border-radius: 6px;
+            margin-bottom: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .profile-item {
+            font-size: 0.95rem;
+        }
+
+        .profile-label {
+            font-weight: 600;
+            color: var(--text-light);
+            display: inline-block;
+            width: 100px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: white;
+            background-color: var(--danger);
+        }
+        
+        .badge.warning {
+            background-color: var(--warning);
+            color: #333;
+        }
+
+        h2 {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            margin-top: 2rem;
+            padding-left: 10px;
+            border-left: 4px solid var(--accent);
+        }
+
+        p {
+            font-size: 0.95rem;
+            color: #333;
+        }
+
+        .complaint-box {
+            background: #f1f8ff;
+            border: 1px solid #c8e1ff;
+            padding: 1.2rem;
+            border-radius: 6px;
+            font-style: italic;
+            color: #444;
+            margin: 1rem 0;
+            line-height: 1.8;
+        }
+
+        .action-items {
+            background-color: #fff8c5;
+            border: 1px solid #e1e4e8;
+            padding: 1.5rem;
+            border-radius: 6px;
+            margin-top: 2rem;
+        }
+
+        .action-items h3 {
+            margin-top: 0;
+            color: #9a6700;
+            font-size: 1.1rem;
+        }
+
+        ul {
+            padding-left: 20px;
+            margin-bottom: 0;
+        }
+
+        li {
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+        
+        .empty-log-warning {
+            display: flex;
+            align-items: flex-start;
+            background: #fff;
+            padding: 1rem;
+            border-radius: 6px;
+            border-left: 4px solid var(--warning);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>法医级诊断：虚假派单大厅与取证真空断层 (UID 676306771)</h1>
+    
+    <div class="alert-banner">
+        业务线存在严重的“PPT造假收割”行为，且系统在数据取证上陷入了瘫痪（该用户底层日志已被清空或隐藏）。
+    </div>
+
+    <div class="profile-card">
+        <div class="profile-item"><span class="profile-label">涉案 UID：</span>676306771</div>
+        <div class="profile-item"><span class="profile-label">纠纷定性：</span>涉嫌虚假商业数据诈骗</div>
+        <div class="profile-item"><span class="profile-label">风险定级：</span><span class="badge">A类高危极案</span></div>
+        <div class="profile-item"><span class="profile-label">外诉路径：</span>2026-01-15 外部信访</div>
+        <div class="profile-item"><span class="profile-label">数据状态：</span><span class="badge warning">本地日志为零 (取证熔断)</span></div>
+        <div class="profile-item"><span class="profile-label">核弹焦点：</span>体验营派单截图与实际App货不对板</div>
+    </div>
+
+    <h2>1. 证据链条离奇断档</h2>
+    <div class="empty-log-warning">
+        <p style="margin:0;"><strong>技术盘查结果极不正常：</strong> 针对 676306771 的企微穿透溯源显示<code>暂无私聊内容，暂无群聊内容</code>。这说明用户在认清骗局后直接物理屏蔽/删除了我们的销售网络，或者班主任在退费纠纷初期为了销毁所谓“保过包单”的违规截图证据而提前释放了客资流水。这种零日志状态，反而使得外部机构的市场监管投诉卷宗成为了揭开真相的唯一孤证。</p>
+    </div>
+
+    <h2>2. 市场局外诉卷宗透视：典型的“海蜃骗局”</h2>
+    <div class="complaint-box">
+        “体验营最后一天宣传，付费后拿到【毕业证书】才可以在平台接单。<strong>但实际接单通道和训练营里老师展示的接单通道截图是不一样的。</strong> 毕业后尝试很久都不中接不了单子，并没有当初宣传的那么大需求量，平台更新的书籍也不多，根本不能获得收益……” —— 摘自行政外诉立案卷宗
+    </div>
+    
+    <p>剥去包装，这是一个极其恶劣的 <strong>“PPT造假收割 (海市蜃楼骗局)”</strong>：</p>
+    <ul>
+        <li><strong>制造假象：</strong> 体验营最后一天，讲师在直播间放出的“海量商单截图”是被严重夸大、甚至通过虚假后台合成的数据。用来营造一种“闭眼接单、遍地黄金”的幻觉。</li>
+        <li><strong>证书勒索：</strong> 用“毕业证书是平台派单的唯一准入证”作为话术大棒，强逼小白掏腰包。</li>
+        <li><strong>空壳交付：</strong> 等用户交了钱、拿了证，进入实名接单大厅一看，发现界面和体验营完全不同（货不对板），单源枯竭，中单率趋近于零。</li>
+    </ul>
+
+    <div class="action-items">
+        <h3>🚨 管理层整顿建议 (直接下达公宣部与教务中心)</h3>
+        <ul>
+            <li><strong>取缔体验营“虚假造景”：</strong> 销售课件（PPT大纲、直播间底图）必须接入合规审查。今后在体验营展示的内部接单大厅截图，必须与用户最终登录的真实操作大屏 100% 一致！严禁使用P图美化商单数量。</li>
+            <li><strong>追责凭证毁灭行为：</strong> 彻查技术系统，排查为何2026年1月爆发的单子在本地系统里“查无记录”。如属销售个人隐藏/删号行为，必须按顶格开除处理。</li>
+            <li><strong>接单中转站审计：</strong> 对接单平台的数据注入进行排查，如果平台的有效书籍上新量和活跃派单量无法承载大量招募的所谓“高阶学员”，必须暂停这类以虚假兼职为唯一卖点的前端割韭菜招生。</li>
+        </ul>
+    </div>
+</div>
+
+</body>
+</html>

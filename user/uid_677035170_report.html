@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>连环恶性业务线揭秘：UID 677035170 整顿通报</title>
+    <style>
+        :root {
+            --primary-color: #1a1a1a;
+            --bg-color: #f4f4f4;
+            --box-bg: #ffffff;
+            --text-main: #2b2b2b;
+            --text-light: #595959;
+            --danger: #d90429;
+            --warning: #ff8fa3;
+            --accent: #2b2d42;
+            --border: #e2e8f0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 2rem;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+            background: var(--box-bg);
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            border-top: 6px solid var(--danger);
+        }
+
+        h1 {
+            color: var(--danger);
+            border-bottom: 2px solid var(--danger);
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            text-align: center;
+        }
+
+        .alert-banner {
+            background-color: #ffe6e6;
+            color: #cc0000;
+            padding: 1rem;
+            border-radius: 6px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            border: 1px solid #ffcccc;
+        }
+
+        .profile-card {
+            background: #fafafa;
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .profile-item {
+            margin: 0.5rem 0;
+            font-size: 1.05rem;
+        }
+
+        .profile-label {
+            font-weight: 600;
+            color: var(--text-light);
+            display: inline-block;
+            width: 100px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: white;
+            background-color: var(--danger);
+        }
+
+        h2 {
+            font-size: 1.4rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            margin-top: 2.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        h2::before {
+            content: "🔥";
+            margin-right: 10px;
+        }
+
+        .timeline-box {
+            background-color: white;
+            border-left: 4px solid var(--danger);
+            padding: 1.2rem 1.5rem;
+            margin: 1rem 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .timeline-title {
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .insight-box {
+            background-color: #f8f9fa;
+            border: 1px dashed #ced4da;
+            padding: 1.5rem;
+            border-radius: 6px;
+            margin-top: 2rem;
+        }
+
+        .insight-box h3 {
+            color: var(--primary-color);
+            margin-top: 0;
+        }
+
+        ul.action-list {
+            padding-left: 20px;
+        }
+        
+        ul.action-list li {
+            margin-bottom: 10px;
+        }
+        
+        strong.highlight {
+            color: var(--danger);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>全员警报：连环恶性业务线揭秘与整治大字报</h1>
+    <div class="alert-banner">由 UID 677035170 案件牵出的系统性欺诈、流程黑洞及公关自杀式漏洞</div>
+
+    <div class="profile-card">
+        <div class="profile-item"><span class="profile-label">涉案 UID：</span>677035170 (冯满满 / 高阶学员)</div>
+        <div class="profile-item"><span class="profile-label">涉案金额：</span>7380元 (3980+3400) + 未知设备费</div>
+        <div class="profile-item"><span class="profile-label">风险定级：</span><span class="badge">S级 (系统结构性败坏)</span></div>
+        <div class="profile-item"><span class="profile-label">导火索：</span>隐瞒设备费 + 局部退费嘲讽 + 长达20天系统僵尸骚扰</div>
+        <div class="profile-item"><span class="profile-label">外诉节点：</span>2026-03-16 直诉消协机构</div>
+        <div class="profile-item"><span class="profile-label">责任归属：</span>前端全责骗报 + 后端群发系统瘫痪</div>
+    </div>
+
+    <h2>第一幕：“没有其他费用”的阴阳履约</h2>
+    <div class="timeline-box">
+        <div class="timeline-title">行为还原：用低门槛将人骗进门，关门强卖设备</div>
+        <p>销售“花气袭人(宋晓磊)”在售前极其明确地承诺了不需要额外花费。但在用户缴齐 7380 元刚刚进入班级后，业务端直接变脸，告知其“手机录音质量不合格”，逼迫其必须购买硬件设备才能达标接单。用户发现被严重欺骗，收到设备包裹后根本不敢拆封，直接要求全额退款退学。</p>
+        <p><strong class="highlight">高管深省结论：</strong> 我们业务线前端骗报，后端收割的产业链已然成型！将买设备藏在交学费之后，在监管局眼中就是典型的诱捕式连环套。</p>
+    </div>
+
+    <h2>第二幕：电话黑匣子与“局部退款”的恶性挑衅</h2>
+    <div class="timeline-box">
+        <div class="timeline-title">行为还原：为了逃避微信取证的电话威逼，以及退回零头后的嘲讽</div>
+        <p>当用户在微信怒提退全款（包含最初购买的3980以及设备），销售不仅不走标准程序，反而回复：“退款需要走一下流程，班主任会给你打个电话”。他们试图用语音电话来掩盖不予退全款的话术逻辑。更恶劣的是，在只给用户退了后来补交的3400元差额后，销售在微信里发偷笑表情嘲讽：“你看没有像网上说的那样退款难[偷笑]...”。</p>
+        <p><strong class="highlight">高管深省结论：</strong> 客服态度极度病态。这种故意转电话黑箱操作并使用文字挑衅客户的做法，直接成为了催化客户向保护热线举报的最后一把火。</p>
+    </div>
+
+    <h2>第三幕：长达 20 天的“系统僵尸”灾难（最恶劣）</h2>
+    <div class="timeline-box">
+        <div class="timeline-title">行为还原：毫无底线的客诉期定时广播轰炸</div>
+        <p>这是比上一个案件更极端的系统漏洞暴露：**直到今天（4月5日），距离该用户打消协维权电话（3月16日）已经过去了整整20多天！**而在我们的系统里，这位满腔怒火的外部诉讼人，居然在3月28日、4月2日、4月3日、每天早上7点，都在无脑收到公司班主任群发的开播提醒和鸡汤文案（“早功课开始啦”、“宝贝，爱你呀”）！</p>
+        <p><strong class="highlight">高管深省结论：</strong> 公司用来处理退费抗诉的系统，和用来发通知卖课的群发系统**彻彻底底是瞎子**。不仅没有建立最核心的隔离墙，反而用每天一次的系统通知持续激怒已经去诉诸法律的用户，属于标准的“公关自杀”行为。</p>
+    </div>
+
+    <div class="insight-box">
+        <h3>🚨 董事级死命令与大刀整治动作（即日生效）</h3>
+        <ul class="action-list">
+            <li><strong>一、 取缔虚假宣传与隐瞒费用：</strong> 凡需依靠特定硬件才能完成最终商业交付的课程，必须在缴费前置协议中红字高亮设备门槛。严禁“手机也能赚”将小白用户先骗后杀的手段。违者直接开除。</li>
+            <li><strong>二、 “电话退单”转留痕管控：</strong> 取消班主任利用“电话黑匣子”避规的权限。退单争议必须有书面记录或带有录音留档的服务录音，严禁文字内的恶性嘲讽与挑衅表情。</li>
+            <li><strong>三、 黑洞隔离系统必须今夜上线：</strong> 研发中心最高优先级指令！一旦客户在企微内触发“投诉、工商局、12315、退费未果”等关键词节点，或者进入退费流程登记，该UID所在的所有系统自动化SOP（群发、复购、课耗提醒）**必须即刻物理阻断（切入系统黑洞池），实现永久消音！**绝不允许此类激怒外诉客体的蠢行再度发生！</li>
+        </ul>
+    </div>
+</div>
+
+</body>
+</html>
