@@ -26,18 +26,19 @@
         -webkit-backdrop-filter: blur(24px);
         border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         font-family: 'Inter', -apple-system, sans-serif;
-        overflow: visible !important; /* 核心：确保下拉菜单不被剪裁 */
+        overflow: visible !important;
       }
+      .xibo-nav-header { display: none; }
       .xibo-nav-inner {
         max-width: 1240px; margin: 0 auto;
         display: flex; align-items: center;
-        height: 60px; padding: 0 20px; gap: 4px;
-        overflow: visible !important; /* 核心：禁止旧模板的 overflow-x: auto */
+        min-height: 60px; padding: 0 20px; gap: 4px;
+        overflow: visible !important;
       }
       .xibo-nav-logo {
         font-size: 16px; font-weight: 900; color: #fff;
         text-decoration: none; margin-right: 20px;
-        letter-spacing: -0.5px;
+        letter-spacing: -0.5px; display: flex; align-items: center;
       }
       .xibo-nav-logo span { color: #f97316; }
 
@@ -61,6 +62,7 @@
         content: "▾"; font-size: 10px; opacity: 0.5; transition: transform 0.2s;
       }
       .xibo-nav-item:hover .xibo-nav-trigger::after { transform: rotate(180deg); opacity: 1; }
+      .xibo-nav-item.mobile-dropdown-open .xibo-nav-trigger::after { transform: rotate(180deg); opacity: 1; }
 
       .xibo-dropdown-menu {
         position: absolute; top: 100%; left: 0;
@@ -74,8 +76,10 @@
         z-index: 100000;
       }
       
-      .xibo-nav-item:hover .xibo-dropdown-menu {
-        opacity: 1; visibility: visible; transform: translateY(0);
+      @media (min-width: 1025px) {
+        .xibo-nav-item:hover .xibo-dropdown-menu {
+          opacity: 1; visibility: visible; transform: translateY(0);
+        }
       }
 
       .xibo-dropdown-link {
@@ -99,6 +103,43 @@
 
       /* 隐藏页面上可能存在的旧导航栏，避免重复 */
       .site-nav, .navbar, #site-nav { display: none !important; }
+
+      /* Mobile styles */
+      @media (max-width: 1024px) {
+        .xibo-nav-header {
+          display: flex; align-items: center; justify-content: space-between;
+          height: 60px; padding: 0 20px;
+        }
+        .xibo-mobile-toggle {
+          background: transparent; border: none; color: #fff;
+          font-size: 24px; cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center; width: 40px; height: 40px;
+        }
+        .xibo-nav-inner {
+          display: none;
+          flex-direction: column; align-items: flex-start;
+          height: auto; padding: 10px 20px 20px 20px; gap: 8px;
+          background: rgba(18, 18, 20, 0.98);
+          position: absolute; top: 60px; left: 0; right: 0;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+          max-height: calc(100vh - 60px); overflow-y: auto !important;
+        }
+        .xibo-nav-inner.mobile-open {
+          display: flex;
+        }
+        .xibo-nav-logo.desktop-only { display: none !important; }
+        .xibo-nav-item { width: 100%; flex-direction: column; align-items: flex-start; height: auto; }
+        .xibo-nav-link, .xibo-nav-trigger { width: 100%; box-sizing: border-box; padding: 12px 14px; font-size: 15px; }
+        
+        .xibo-dropdown-menu {
+          position: static; opacity: 1; visibility: visible; transform: none;
+          display: none;
+          width: 100%; box-sizing: border-box; background: transparent; border: none; box-shadow: none;
+          padding: 0 0 0 16px; margin: 0;
+        }
+        .xibo-nav-item.mobile-dropdown-open .xibo-dropdown-menu {
+          display: flex;
+        }
+      }
     `;
     document.head.appendChild(style);
 
@@ -106,8 +147,13 @@
     var navHtml = `
       <div class="xibo-bg-glow-static"></div>
       <div class="xibo-nav-container">
+        <!-- 移动端 Header -->
+        <div class="xibo-nav-header">
+          <a href="index.html" class="xibo-nav-logo"><img src="logo.png" alt="Logo" style="height: 24px; margin-right: 8px;">XIBO <span>CEO</span></a>
+          <button class="xibo-mobile-toggle">☰</button>
+        </div>
         <nav class="xibo-nav-inner">
-          <a href="index.html" class="xibo-nav-logo" style="display: flex; align-items: center;"><img src="logo.png" alt="Logo" style="height: 24px; margin-right: 8px;">XIBO <span>CEO</span></a>
+          <a href="index.html" class="xibo-nav-logo desktop-only"><img src="logo.png" alt="Logo" style="height: 24px; margin-right: 8px;">XIBO <span>CEO</span></a>
           
           <div class="xibo-nav-item ${isActive('index.html')}">
             <a href="index.html" class="xibo-nav-link">战略总纲图</a>
@@ -185,13 +231,38 @@
         injectNav();
     }
 
-    // 4. 增加移动端触碰支持
+    // 4. 增加移动端触碰支持与汉堡菜单逻辑
     window.addEventListener('load', function() {
+        // Toggle mobile menu
+        var mobileToggle = document.querySelector('.xibo-mobile-toggle');
+        var navInner = document.querySelector('.xibo-nav-inner');
+        if (mobileToggle && navInner) {
+            mobileToggle.addEventListener('click', function(e) {
+                navInner.classList.toggle('mobile-open');
+                mobileToggle.innerHTML = navInner.classList.contains('mobile-open') ? '✕' : '☰';
+                e.stopPropagation();
+            });
+        }
+
+        // Toggle mobile dropdowns
         document.querySelectorAll('.xibo-nav-trigger').forEach(trigger => {
             trigger.addEventListener('click', function(e) {
-                if (window.innerWidth < 1024) {
-                    const menu = this.nextElementSibling;
-                    const isVisible = window.getComputedStyle(menu).visibility === 'visible';
+                if (window.innerWidth <= 1024) {
+                    var parentItem = this.closest('.xibo-nav-item');
+                    var isOpen = parentItem.classList.contains('mobile-dropdown-open');
+                    
+                    // 关闭其他已打开的菜单
+                    document.querySelectorAll('.xibo-nav-item').forEach(item => {
+                        item.classList.remove('mobile-dropdown-open');
+                    });
+                    
+                    if (!isOpen) {
+                        parentItem.classList.add('mobile-dropdown-open');
+                    }
+                    e.stopPropagation();
+                } else {
+                    var menu = this.nextElementSibling;
+                    var isVisible = window.getComputedStyle(menu).visibility === 'visible';
                     document.querySelectorAll('.xibo-dropdown-menu').forEach(m => {
                         m.style.visibility = 'hidden';
                         m.style.opacity = '0';
@@ -204,6 +275,22 @@
                     e.stopPropagation();
                 }
             });
+        });
+
+        // Click outside to close mobile menu
+        document.addEventListener('click', function(e) {
+            if (window.innerWidth <= 1024) {
+                if (!e.target.closest('.xibo-nav-container') && navInner && navInner.classList.contains('mobile-open')) {
+                    navInner.classList.remove('mobile-open');
+                    if (mobileToggle) mobileToggle.innerHTML = '☰';
+                }
+            } else {
+                document.querySelectorAll('.xibo-dropdown-menu').forEach(m => {
+                    m.style.visibility = '';
+                    m.style.opacity = '';
+                    m.style.transform = '';
+                });
+            }
         });
     });
 })();
