@@ -1,101 +1,169 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UID 676877490 客户诊断报告</title>
+    <title>喜播战略诊断平台 - CEO直达特急通报</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            900: '#0f1115',
+                            800: '#161920',
+                            700: '#1f242d',
+                            600: '#343b47',
+                        },
+                        danger: {
+                            500: '#ef4444',
+                            900: '#7f1d1d'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: #f8fafc; color: #1e293b; }
-        .metric-card { background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); border: 1px solid #e2e8f0; }
-        .chat-bubble-user { background-color: #dbeafe; border-radius: 1rem 1rem 0 1rem; color: #1e40af; }
-        .chat-bubble-sales { background-color: #f1f5f9; border-radius: 1rem 1rem 1rem 0; color: #334155; }
-        .highlight-text { background: linear-gradient(120deg, #fef08a 0%, #fef08a 100%); background-repeat: no-repeat; background-size: 100% 30%; background-position: 0 90%; }
-        .header-bg { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: white; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', system-ui, sans-serif; background-color: #0f1115; color: #f3f4f6; }
+        .grid-bg {
+            background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .glow-red { box-shadow: 0 0 20px rgba(239, 68, 68, 0.15); }
     </style>
 </head>
-<body class="antialiased p-6">
-    <div style="max-width: 80rem;" class="mx-auto">
-        <div class="header-bg rounded-2xl p-8 mb-8 shadow-lg flex justify-between items-center">
-            <div>
-                <h1 class="text-3xl font-extrabold mb-2 tracking-tight">客户诊断深度报告</h1>
-                <p class="text-slate-300 text-sm">Case #22 | 深度复盘与转化熔断分析</p>
-            </div>
-            <div class="text-right">
-                <a href="../customer_cases_and_insights.html" class="inline-block bg-white/20 hover:bg-white/30 text-white font-medium py-2 px-4 rounded-lg transition-colors border border-white/20 backdrop-blur-sm">
-                    &larr; 返回索引看板
-                </a>
+<body class="grid-bg min-h-screen">
+    <!-- Navbar Placeholder -->
+    <nav class="border-b border-white/10 bg-dark-800/80 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded bg-danger-500/20 flex items-center justify-center border border-danger-500/50">
+                        <svg class="w-5 h-5 text-danger-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    </div>
+                    <span class="text-lg font-bold tracking-wider text-red-500">最高级别警报：极限弱势群体掠夺式营销</span>
+                </div>
+                <div class="text-sm font-mono text-gray-400">UID: 676877490 | 案卷评级：S级红牌</div>
             </div>
         </div>
+    </nav>
 
-        <div class="user-profile mb-8">
-            <h2 class="text-xl font-bold mb-4 border-b pb-2">用户画像与关键特征</h2>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div><span class="text-gray-500">UID:</span> <span class="font-semibold">676877490 (罗海珍)</span></div>
-                <div><span class="text-gray-500">转化状态:</span> <span class="text-red-600 font-semibold">退费 (有声课精英版)</span></div>
-                <div><span class="text-gray-500">用户原型:</span> <span class="font-semibold">体能超限者 (底座塌陷型)</span></div>
-                <div><span class="text-gray-500">核心痛点:</span> <span class="font-semibold">生理与环境极限红线</span></div>
-            </div>
-            <div class="mt-4 text-sm text-gray-700 leading-relaxed">
-                <strong>背景还原：</strong> 60多岁高龄女性，在医院从事24小时看护病人的重体力护工工作。个人时间极其稀碎（病人每小时都要护理，“一天吃4~5次，晚上起来3~4趟”），且医院工作环境严苛严禁摸鱼玩手机（护士长严查）。在前端销售反复推销下，凭借“想学点东西变现/喜欢朗诵”的动因购入了3980元的有声精英版课程。但开课后，高强度的早功、打卡与练习直接压垮了她的体力和精力，引发“头好晕”、“身体吃不消”、“体重掉到90多斤”的严重生理性抗议，最终选择退费。
-            </div>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            <div class="metric-card bg-red-50 border-red-100">
-                <h3 class="text-red-800 font-bold mb-2">流失致命触点 (The Breaking Point)</h3>
-                <p class="text-sm text-gray-800 leading-relaxed">
-                    <strong>1. 准入审核过滤缺失：</strong> 前端销售（招募官）对于该高阶高龄群体的真实基建情况（无大块时间、高体力消耗、高年龄）主动屏蔽，只为成单，强行把“脱产/半脱产人群打卡模型”套在物理环境极其逼仄的底层重体力劳动者身上。 <br><br>
-                    <strong>2. 班主任“无脑鸡汤式”强行挽留：</strong> 当用户已出现生理极限报警（明确反馈严重头晕、无法休息熬不住）和突破职场红线（护士长严查玩手机）时，班主任仍试图用“重新梳理规划时间”、“怎么去改变状态”等鸡汤话术进行挽留。未能识别用户面临的并非感性惰性，而是客观物理生死红线。
-                </p>
-            </div>
-            <div class="metric-card bg-green-50 border-green-100">
-                <h3 class="text-green-800 font-bold mb-2">可挽留与优化点 (Optimization Opportunities)</h3>
-                <p class="text-sm text-gray-800 leading-relaxed">
-                    <strong>1. 高龄及重体力群体特级保护熔断预案：</strong> 针对特定年龄段（如55岁以上）且从事特殊重体力高约束工种（护工、流水线工人、重体力劳动者）的用户，应设为“特级健康关怀/干预熔断人群”。一旦反馈“身体吃不消晕眩”，班主任禁止使用任何话术挽留，直接启动快速无损退费通道或全额休学，以免引发不可控的医疗/公关危机。<br><br>
-                    <strong>2. 前端产品线推销互斥风控：</strong> 用户已明确反馈身体极度不适退掉有声课的同时，AI写稿课前端仍毫无感知地持续轰炸销售信息（“天天发信息缠着我报名”），激起用户强烈的反感情绪。多产品线线索系统必须建立全局红黑榜联动机制，一人退费或触发疲劳预警后，全局暂停营销触达。
-                </p>
-            </div>
-        </div>
-
-        <div class="metric-card mb-8">
-            <h2 class="text-xl font-bold mb-6 border-b pb-2">关键对话实录 (Crucial Chat Logs)</h2>
-            
-            <div class="space-y-6">
-                <!-- Chat 1 -->
-                <div class="flex flex-col space-y-2">
-                    <div class="self-end chat-bubble-user p-4 max-w-2xl shadow-sm">
-                        <div class="text-xs text-blue-400 mb-1">罗海珍 (2026-03-12 22:15:57)</div>
-                        <div class="text-sm">我是，我没有时间去练，我连作业都做不了。一天到晚伺候人一样。<br><br>我没有时间，24个小时做护工的，给照顾病人。<br><br>他们这里白天要是病人睡的觉，你看手机也是他们查房…查得很严，他说我老是看见你，每次来都看见你看手机在那里。</div>
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        
+        <!-- Header Section -->
+        <header class="bg-dark-800 border border-danger-500/30 rounded-xl p-8 glow-red relative overflow-hidden">
+            <div class="absolute inset-0 bg-danger-500/5"></div>
+            <div class="relative z-10 flex flex-col md:flex-row gap-8 justify-between items-start">
+                <div class="space-y-4 max-w-3xl">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 bg-red-500/10 text-red-400 rounded-full text-xs font-bold border border-red-500/20">
+                        <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                        品牌毒药行为
                     </div>
+                    <h1 class="text-3xl font-bold">六旬重体力护工遭“AI造富”连环洗脑收割</h1>
+                    <p class="text-gray-400 leading-relaxed text-sm">
+                        **系统失明与伦理底线双重溃散：** 面向60岁以上、24小时连轴转的高危特困群体（医院陪护），在用户明确表示“头晕吃不消”、“农村老太根本看不懂”且“害怕因此丢掉饭碗”的情况下，销售仍为完成KPI套用逼单模板，疯狂推销4380元“旗舰版AI写作班”。这是典型的掠夺式销售，极易引发恶性品牌危机和监管介入！
+                    </p>
                 </div>
-                
-                <!-- Chat 2 -->
-                <div class="flex flex-col space-y-2">
-                    <div class="self-start chat-bubble-sales p-4 max-w-2xl shadow-sm">
-                        <div class="text-xs text-gray-400 mb-1">陌嬉(吴念庆) [班主任] (2026-03-12 22:18:45)</div>
-                        <div class="text-sm">嗯，像你这样的情况的话我也遇到过，你可以把你的主管跟他好好沟通一下，你腾出一点时间，该照顾的时候你就去做，剩下的时间就是病人休息的时候，你就做一下我们的额外的事情。<br><br>确实比较辛苦，所以你<span class="font-bold text-red-600">更要改变你的这个状态对吧</span>？有机会了就要好好抓住。</div>
+                <div class="flex flex-col gap-3 min-w-[200px]">
+                    <div class="bg-dark-900 border border-white/5 p-4 rounded-lg">
+                        <div class="text-xs text-gray-500 mb-1">涉事销售</div>
+                        <div class="font-bold text-red-400">郝月英 (二丫4)</div>
                     </div>
-                </div>
-
-                <!-- Chat 3 -->
-                <div class="flex flex-col space-y-2">
-                    <div class="self-end chat-bubble-user p-4 max-w-2xl shadow-sm">
-                        <div class="text-xs text-blue-400 mb-1">罗海珍 (2026-03-14 07:39:16)</div>
-                        <div class="text-sm">老师，我不行了，我身体吃不消，把钱退给我。我这几天都没上课，头晕死了。<br><br>没有时间，我心里吃不消，我头晕死了，晚上都起来3~4趟，等于是给他换尿不湿，打吊针…每天吃一餐饭，做好几趟吃，我真的不想去，刚好我身体吃不消。</div>
-                    </div>
-                </div>
-
-                <!-- Chat 4 -->
-                <div class="flex flex-col space-y-2">
-                    <div class="self-start chat-bubble-sales p-4 max-w-2xl shadow-sm">
-                        <div class="text-xs text-gray-400 mb-1">陌嬉(吴念庆) [班主任] (2026-03-14 09:21:56)</div>
-                        <div class="text-sm">我不知道你为啥<span class="font-bold text-red-600">退了几次的班了</span>？</div>
+                    <div class="bg-dark-900 border border-white/5 p-4 rounded-lg">
+                        <div class="text-xs text-gray-500 mb-1">涉案金额</div>
+                        <div class="font-bold text-gray-200">¥ 4,380.00 (转化未遂/已退费)</div>
                     </div>
                 </div>
             </div>
+        </header>
+
+        <!-- Core Insights -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Left: User Profile -->
+            <div class="bg-dark-800 border border-white/5 rounded-xl p-6">
+                <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                    被害人群画像 (ABCD解码)
+                </h3>
+                <div class="space-y-4">
+                    <div class="p-4 bg-dark-900 rounded-lg border border-white/5">
+                        <div class="text-sm font-bold text-blue-400 mb-2">A: 事实标签 (Fact)</div>
+                        <ul class="text-sm text-gray-300 space-y-1 list-disc pl-4">
+                            <li>60多岁农村女性，低学历，数字鸿沟重度受害者</li>
+                            <li>职业：24小时住家/医院护工，随时面临抽查</li>
+                            <li>近期被跨业务线收割记录：“报名了10个课，声音课都退掉了”</li>
+                        </ul>
+                    </div>
+                    <div class="p-4 bg-dark-900 rounded-lg border border-white/5">
+                        <div class="text-sm font-bold text-red-400 mb-2">B/C: 隐核痛点与行为模式</div>
+                        <p class="text-sm text-gray-300 leading-relaxed">
+                            处于极度的生存焦虑中（"年后出来我都找不到找工作"），生理与心理双重濒临崩盘（"头好晕吃不消", "太熬夜了"）。完全缺乏分辨“知识付费”骗局的能力。
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Sales Breakdown -->
+            <div class="bg-dark-800 border border-white/5 rounded-xl p-6">
+                <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    销售SOP毒性分析
+                </h3>
+                <div class="space-y-4">
+                    <div class="p-4 bg-dark-900 rounded-lg border border-orange-500/20 border-l-4 border-l-orange-500">
+                        <div class="text-sm font-bold text-orange-400 mb-1">1. 丧失人性的“无差别收割”</div>
+                        <p class="text-xs text-gray-400">
+                            当用户坦白自己是护工且头昏不适时，销售竟顺着回击：“正因为你做护工辛苦，才更需要AI写作...没时间就在病人睡觉时听10分钟”。强行把“护工的苦”和“AI写作”绑定。
+                        </p>
+                    </div>
+                    <div class="p-4 bg-dark-900 rounded-lg border border-red-500/20 border-l-4 border-l-red-500">
+                        <div class="text-sm font-bold text-red-400 mb-1">2. 疯狂的FOMO信息轰炸</div>
+                        <p class="text-xs text-gray-400">
+                            在长达半个月的周期里，发送超过80条冗长的“鸡汤逼单SOP”（诸如“你纠结的每一分钟，都是别人赶超你的距离”）。这种密集轰炸对高龄农村群体造成了极大的心理折磨。
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
 
-    </div>
+        <!-- Systemic Risk Alert -->
+        <div class="bg-gradient-to-r from-red-900/30 to-dark-800 border border-red-500/30 rounded-xl p-6">
+            <h3 class="text-xl font-bold mb-4 text-red-500 flex items-center gap-2">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                CEO 战略断言与风控熔断机制
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
+                <div>
+                    <h4 class="font-bold text-gray-200 mb-3 border-b border-white/10 pb-2">当前组织痛点</h4>
+                    <p class="text-sm text-gray-400 leading-relaxed">
+                        这就是单纯的 <strong>“跟单转化率”</strong> 绩效考核结出的恶果！当销售的收入唯“转化”论时，他们连重病的高龄残障护工都不会放过。销售团队中 <strong>“医者心”的全面丧失</strong>，意味着整个流水线已经从“教育与赋能”异化为了“高利贷催收式”的黑产套路。不建立硅基的风控大闸，这种暴雷是迟早且必然的。
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-red-400 mb-3 border-b border-red-500/20 pb-2">立刻生效的风控熔断机制</h4>
+                    <ul class="text-sm text-gray-300 space-y-3">
+                        <li class="flex items-start gap-2">
+                            <span class="text-red-500">❌</span>
+                            <span><strong>弱势群体特征拦截网：</strong>研发立即在企微聊天监控体系上架设词频大闸。凡触发【60岁/农村/病/低保/透支/吃不消/护工/工地等重体力】等词库，直接冻结该UID的跟单SOP权限，转由人工审核岗进行劝离/安抚。</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-red-500">❌</span>
+                            <span><strong>交叉被割用户“保底隔离”：</strong>数据显示其同时被声音课和写作课收割。立刻上线“单生态多线保护墙”，凡在一个业务线触发退费/警报的用户，180天内禁止所有业务线的营销SOP触达。</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-green-500">✅</span>
+                            <span><strong>升级导向：</strong>全面验证与提速【星探模式与硅基员工】的更迭，让硅基系统代替销售甄别那些根本不具备交付能力的用户，剥夺销售随意“画饼”的权力！</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </main>
 </body>
 </html>

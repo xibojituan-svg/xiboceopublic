@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>销售质检与系统隔离失效：UID 677043320 案卷通报</title>
+    <style>
+        :root {
+            --primary-color: #1a1a1a;
+            --bg-color: #f4f4f4;
+            --box-bg: #ffffff;
+            --text-main: #2b2b2b;
+            --text-light: #595959;
+            --danger: #d90429;
+            --warning: #ffb703;
+            --accent: #2b2d42;
+            --border: #e2e8f0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 2rem;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+            background: var(--box-bg);
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            border-top: 6px solid var(--danger);
+        }
+
+        h1 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            text-align: center;
+        }
+
+        .alert-banner {
+            background-color: #ffe6e6;
+            color: #cc0000;
+            padding: 1rem;
+            border-radius: 6px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            border: 1px solid #ffcccc;
+        }
+
+        .profile-card {
+            background: #fafafa;
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .profile-item {
+            margin: 0.5rem 0;
+            font-size: 1.05rem;
+        }
+
+        .profile-label {
+            font-weight: 600;
+            color: var(--text-light);
+            display: inline-block;
+            width: 100px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: white;
+            background-color: var(--danger);
+        }
+
+        h2 {
+            font-size: 1.4rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            margin-top: 2.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .timeline-box {
+            background-color: white;
+            border-left: 4px solid var(--danger);
+            padding: 1.2rem 1.5rem;
+            margin: 1rem 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .timeline-title {
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .insight-box {
+            background-color: #f8f9fa;
+            border: 1px dashed #ced4da;
+            padding: 1.5rem;
+            border-radius: 6px;
+            margin-top: 2rem;
+        }
+
+        .insight-box h3 {
+            color: var(--primary-color);
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        ul.action-list {
+            padding-left: 20px;
+        }
+        
+        ul.action-list li {
+            margin-bottom: 10px;
+        }
+        
+        strong.highlight {
+            color: var(--danger);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>案例诊断：低净值硬逼单与“僵尸隔离”再次失效（底线告急）</h1>
+    <div class="alert-banner">严重警告：本案集成了“向无支付能力者诱导分期包退”以及“退费后同一班主任仍继续群发骚扰”两大核心恶疾！</div>
+
+    <div class="profile-card">
+        <div class="profile-item"><span class="profile-label">涉案 UID：</span>677043320 (国家边角料 / 25岁文员)</div>
+        <div class="profile-item"><span class="profile-label">涉案销售：</span>张培清 (微信化名：放飞的大眼睛/梦境)</div>
+        <div class="profile-item"><span class="profile-label">风险定级：</span><span class="badge">S级 (极度恶劣逼单及SOP骚扰)</span></div>
+        <div class="profile-item"><span class="profile-label">主要违规：</span>向明确“资金紧张需要花家人的钱”的小白推高客单价；同一账号在退费后进行二次垃圾营销。</div>
+    </div>
+
+    <h2>第一幕（疯狂试探）：突破底线的资金诱导</h2>
+    <div class="timeline-box">
+        <div class="timeline-title">场景还原：没有条件，创造条件也要收割</div>
+        <p>用户是一个 25 岁的普通文员，连电脑都没有（“但是我没有电脑啊”）。当进入转化环节时，用户明确表示：“因为价格有点高，我现在付怕家里人不同意”。<br>
+        这时候班主任展示了标准的“短视吸血套路”：<br>
+        1. 允许用户**“现在付款，晚上回去问，不行就退”**。这是严重的合规红线，人为制造冲动消费后100%引发退费客诉大危机。<br>
+        2. 当用户直言“现在我有点资金紧张啊”时，销售毫无保护甚至退库（劝退）用户的意识，反而顺势降级：**“这样的话咱们可以先学精英课，压力小得多”**。这把我们长期价值驱动的产品，直接降格成了地摊上“买不起大就买小”的低端倾销。</p>
+    </div>
+
+    <h2>第二幕（必然的反噬）：两小时后的光速退款</h2>
+    <div class="timeline-box" style="border-left-color: #fca311;">
+        <div class="timeline-title">场景还原：预料之中的支付反悔</div>
+        <p>用户付钱后不到三小时（回去问了家里人），果然回来要求退款：“主要是这个钱是他们的，等我自己有能力了再来”。销售在极度敷衍地挽留了几句后，冷冷甩下一句：“这个需要联系客服……那就那边出去了呀”，即刻将其踢出辅导流程。**这是经典的一锤子买卖后的冷暴力**。</p>
+    </div>
+    
+    <h2>第三幕（连环炸雷）：系统隔离失效与个人群发双重崩溃</h2>
+    <div class="timeline-box">
+        <div class="timeline-title">场景还原：6天后的鬼故事</div>
+        <p>如果说之前案卷里的二次骚扰还是跨部门“喜播瑶瑶”不认识这位退费用户造成的。那这个案卷则彻底撕下了管理失控的遮羞布：<br>
+        在用户退费**整整 6 天以后**（3月24日），**曾经把她踢出群、让她去找客服的同一个班主任“放飞的大眼睛”**，竟然再次通过微信给她发去了推销链接：<br>
+        <em>“宝子，今晚7点最后一次官方直播课啦... 你能来吗？？？”</em><br>
+        <strong class="highlight">诊断结论：</strong> 班主任不仅没有在后台标注这个已经被得罪跑的退费者，甚至连清理自己微信标签列表的基本素养都没有。任由自动群发SOP软件把所有的黑名单全部“扫射”一遍！这就是点燃工商客诉的超级火药桶！</p>
+    </div>
+
+    <div class="insight-box">
+        <h3>⚡ 顶层行动法令：严查销售质量管控</h3>
+        <ul class="action-list">
+            <li><strong>一牌罚单：建立“支付能力红牌熔断机制”。</strong> 平台必须在支付页面或前端问卷加入刚性逻辑：当用户标签打上“无电脑”、“拿家人的钱”、“负债”、“极度资金紧张”时，系统强制禁止对该用户弹出高阶课支付链接。敢给这种用户发付费链接的班主任，一律扣发当月全部绩效质量金。</li>
+            <li><strong>系统清理：全面叫停私域自动化扫街群发工具。</strong> 对退费用户的二次骚扰已经绝不是偶然，而是 100% 的管理灾难。立刻要求全终端停止使用所有第三方SOP群发工具，直到全部补缴“用户支付状态黑名单拦截”补丁。所有发送动作必须经过最后一道企业风控拦截器。</li>
+        </ul>
+    </div>
+</div>
+
+</body>
+</html>

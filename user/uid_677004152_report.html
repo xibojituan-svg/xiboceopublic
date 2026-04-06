@@ -1,86 +1,174 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>法医级案件诊断报告 - UID 677004152</title>
-    <style>
-        :root {
-            --primary: #0F172A;
-            --danger: #EF4444;
-            --warning: #F59E0B;
-            --success: #10B981;
-            --info: #3B82F6;
-            --text-main: #334155;
-            --bg-body: #F8FAFC;
+    <title>喜播战略诊断平台 - CEO直达特急通报</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            900: '#0f1115',
+                            800: '#161920',
+                            700: '#1f242d',
+                            600: '#343b47',
+                        },
+                        danger: {
+                            500: '#ef4444',
+                            900: '#7f1d1d'
+                        }
+                    }
+                }
+            }
         }
-        body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg-body); color: var(--text-main); line-height: 1.6; padding: 2rem; }
-        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
-        h1 { color: var(--primary); border-bottom: 2px solid var(--primary); padding-bottom: 0.5rem; }
-        .badge { display: inline-block; padding: 0.25rem 0.75rem; border-radius: 999px; font-weight: 600; font-size: 0.875rem; color: white; }
-        .badge-warning { background: var(--warning); color: #fff; }
-        .section { margin-top: 2rem; border: 1px solid #E2E8F0; border-radius: 8px; padding: 1.5rem; }
-        .section-title { font-size: 1.25rem; font-weight: 700; color: var(--primary); margin-top: 0; margin-bottom: 1rem; border-left: 4px solid var(--warning); padding-left: 0.75rem; }
-        .evidence-box { background: #FFFBEB; border-left: 4px solid var(--warning); padding: 1rem; margin-bottom: 1rem; font-family: monospace; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-        .solution-box { background: #F8FAFC; border: 1px solid var(--info); border-radius: 8px; padding: 1.5rem; margin-top: 1rem; }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', system-ui, sans-serif; background-color: #0f1115; color: #f3f4f6; }
+        .grid-bg {
+            background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .glow-red { box-shadow: 0 0 20px rgba(239, 68, 68, 0.15); }
     </style>
 </head>
-<body>
-    <div class="container">
-        <h1>🔍 法医级案件诊断报告 - UID 677004152</h1>
-        <div style="margin-bottom: 2rem;">
-            <span class="badge badge-warning">C级预警：设备成本恐慌与隐性负债退单</span>
-            <span>触发时间：2026-04-03</span>
-            <span>业务模块：有声书演播</span>
+<body class="grid-bg min-h-screen">
+    <nav class="border-b border-white/10 bg-dark-800/80 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded bg-danger-500/20 flex items-center justify-center border border-danger-500/50">
+                        <svg class="w-5 h-5 text-danger-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    </div>
+                    <span class="text-lg font-bold tracking-wider text-red-500">重点案件警报：错位交付与硬件推销导致的口碑崩塌</span>
+                </div>
+                <div class="text-sm font-mono text-gray-400">UID: 677004152 | 案卷评级：A级黄牌</div>
+            </div>
         </div>
+    </nav>
 
-        <div class="grid">
-            <!-- 消费者视角 -->
-            <div class="section">
-                <h2 class="section-title">👤 第一性原理：消费者心理解码与深层需求</h2>
-                <p><strong>用户画像：</strong> 中年女性（宸溪），河北某烧烤店老板娘。日常生活极其忙碌，长期失眠并需服用中药。处于高强度的家庭与小生意重压之下。</p>
-                <p><strong>显性退费理由：</strong> “没有时间，老公强烈反对，让我好好养身体”。</p>
-                <p><strong>潜流解码：【财务隐瞒引发的“炸雷恐慌”】</strong></p>
-                <p>在深度解析聊天记录后发现，“老公反对”、“身体不好”是防御性借口。真正的退费扳机，是她面临着<strong>巨大的隐性开支压力</strong>：</p>
-                <ol>
-                    <li>她背着丈夫支付了精英班+高阶班（总计约 7380 元）。</li>
-                    <li>为了排面，她偷偷新买了一台戴尔 i7 笔记本电脑（预计花费大几千）。</li>
-                    <li>紧接着，班主任的“推荐设备”环节又推了一个高达 3999 元的 MK4 麦克风。这成了压垮她的最后一根稻草。</li>
-                </ol>
-                <div class="evidence-box">
-                    <strong>关键取证（2026-04-01 15:44）：</strong><br>
-                    “我刚买了个电脑，M K四是买还是不买，我犹豫了很长时间...我不想让我老公知道我消费挺高的。我今天才买了电脑，我要是买MK4，就透支了，能不能先退我高阶的钱？”
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        
+        <!-- Header Section -->
+        <header class="bg-dark-800 border border-danger-500/30 rounded-xl p-8 glow-red relative overflow-hidden">
+            <div class="absolute inset-0 bg-danger-500/5"></div>
+            <div class="relative z-10 flex flex-col md:flex-row gap-8 justify-between items-start">
+                <div class="space-y-4 max-w-3xl">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 bg-red-500/10 text-red-400 rounded-full text-xs font-bold border border-red-500/20">
+                        <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                        需求强奸与交付拖延
+                    </div>
+                    <h1 class="text-3xl font-bold">个体商户遭遇“过度承诺”与“设备刺客”，退款受阻</h1>
+                    <p class="text-gray-400 leading-relaxed text-sm">
+                        **用户属性被粗暴无视：** 用户（家里开烧烤店）起初明确表示“只挣零花钱，不投资”，但仍在连环SOP下被转化成高级学员（3980元）。进入交付期后，直接遭遇价格近4000元的设备推销，加上烧烤旺季来临无暇上课，产生严重焦虑要求退款，班主任却使用“学完精英再退高阶”的典型“以换代退”手法拖延阻止退款，不仅损害了品牌信誉，而且带来了难以挽回的退费纠纷隐患。
+                    </p>
+                </div>
+                <div class="flex flex-col gap-3 min-w-[200px]">
+                    <div class="bg-dark-900 border border-white/5 p-4 rounded-lg">
+                        <div class="text-xs text-gray-500 mb-1">涉事销售与班主任</div>
+                        <div class="font-bold text-red-400">张红梅 (筱斐/晴空) / 吴念庆(陌嬉)</div>
+                    </div>
+                    <div class="bg-dark-900 border border-white/5 p-4 rounded-lg">
+                        <div class="text-xs text-gray-500 mb-1">涉案金额与项目</div>
+                        <div class="font-bold text-gray-200">¥ 3,980.00 (高阶/已退费)</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Core Insights -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Left: User Profile -->
+            <div class="bg-dark-800 border border-white/5 rounded-xl p-6">
+                <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                    被害人群画像 (ABCD解码)
+                </h3>
+                <div class="space-y-4">
+                    <div class="p-4 bg-dark-900 rounded-lg border border-white/5">
+                        <div class="text-sm font-bold text-blue-400 mb-2">A: 事实标签 (Fact)</div>
+                        <ul class="text-sm text-gray-300 space-y-1 list-disc pl-4">
+                            <li>个体户：正在经营烧烤店，有明确的业务旺季（夏天）。</li>
+                            <li>初期明确底线：“只是想接单赚零花钱，不会投资”。</li>
+                            <li>硬件预算极低：面对班主任推荐的3999设备直呼“超预算，预算只有2000”，连换电脑主机的费用都需考量。</li>
+                        </ul>
+                    </div>
+                    <div class="p-4 bg-dark-900 rounded-lg border border-white/5">
+                        <div class="text-sm font-bold text-red-400 mb-2">B/C: 隐核痛点与行为模式</div>
+                        <p class="text-sm text-gray-300 leading-relaxed">
+                            属于**高防御防割韭菜心理（D类风控型）**，本只求无成本的“斜杠收入”。硬被套入重交付的高阶课程后，加上沉重的硬件添置要求，形成了严重的**金钱与时间双重碾压危机**。当其现实生活（烧烤旺季）需要其精力时，放弃学习成为必然选择，其内心认为这一投资是个“负累”。
+                        </p>
+                    </div>
                 </div>
             </div>
 
-            <!-- 班主任视角 -->
-            <div class="section">
-                <h2 class="section-title">👩‍🏫 班主任动作质量对比审计</h2>
-                <p><strong>后端班主任（陌嬉）：操作合规，但缺乏“降级护城河”</p>
-                <ul>
-                    <li><strong>亮点动作：</strong> 陌嬉在整个沟通过程中表现出了极大的耐心与共情力，鼓励学员“就当消遣买个包”、“录故事给孩子听”，整体态度温和。最终即使面对坚定退费，也利落地核算金额（6219.17元）并按时退款，用户离别时还表示“感谢陪伴”。这有效切断了恶性外诉（投诉到12315或黑猫）的可能性。</li>
-                    <li><strong>失误动作：</strong> 在“设备推荐”环节没有做好层级分流。班主任直接丢出了一套高昂的设备组合，虽然强调了“预算不够可以缓缓”，但在攀比心理（“群里的师兄妹都已经买了”）和学习焦虑的催化下，高昂的硬件推荐直接击溃了下沉市场用户的财务防线，导致其为了买设备而试图“退核心课的实收”。</li>
-                </ul>
+            <!-- Right: Sales Breakdown -->
+            <div class="bg-dark-800 border border-white/5 rounded-xl p-6">
+                <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    业务SOP毒性分析
+                </h3>
+                <div class="space-y-4">
+                    <div class="p-4 bg-dark-900 rounded-lg border border-orange-500/20 border-l-4 border-l-orange-500">
+                        <div class="text-sm font-bold text-orange-400 mb-1">1. 罔顾用户初衷的“越级转化”</div>
+                        <p class="text-xs text-gray-400">
+                            用户在招生初期说出“不投资”，销售应将其规划为小b进行“免费渠道测试”或“低客单试水”。然而，受限于转化KPI，强行向“高阶版”突破，造成产品严重过载。
+                        </p>
+                    </div>
+                    <div class="p-4 bg-dark-900 rounded-lg border border-red-500/20 border-l-4 border-l-red-500">
+                        <div class="text-sm font-bold text-red-400 mb-1">2. 麻木的“设备刺客”推荐</div>
+                        <p class="text-xs text-gray-400">
+                            在明知用户家庭有现实开销压力下，直接甩出3999元的设备链与复杂的电脑配置要求。这成为压死骆驼的最后一根稻草：“本来就没钱，还要再投这么多，不是骗局是什么？”
+                        </p>
+                    </div>
+                    <div class="p-4 bg-dark-900 rounded-lg border border-purple-500/20 border-l-4 border-l-purple-500">
+                        <div class="text-sm font-bold text-purple-400 mb-1">3. 软性逼单：以换代退的套索</div>
+                        <p class="text-xs text-gray-400">
+                            明确表示“无时间必须退费”时，前销售却以“把精英毕业了再退高阶”的荒谬逻辑进行拦截挽留，极大地消耗了用户对机构的最后一点忍耐，也把简单退费拖成了复杂外诉。
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="solution-box">
-            <h2 class="section-title">💡 深度破局：硬件恐慌的“ROI柔性熔断”机制</h2>
-            <p><strong>核心痛点：</strong> 不要用“专业发烧友”的硬件标准去吓跑只是想“尝试兼职”的下沉小白。用户还没赚到第一分钱，就已经支出了近2万元（学费+新电脑+旗舰级麦克风），这种极端的ROI倒挂必然引发恐慌性退费。</p>
-            
-            <h3>1. 产品侧：“三轨制”硬件推荐清单（严禁一刀切推旗舰机）：</h3>
-            <ul>
-                <li><strong>体验轻轨（手机党方案）：</strong> 强调手机+降噪APP即可完成前期的旁白试音，0元硬件投入！</li>
-                <li><strong>高性价中轨（百元级）：</strong> 推荐 300-800 元的超高性价比入门设备（如得胜、罗技等），专门针对宝妈、兼职人群。</li>
-                <li><strong>专业旗舰高轨：</strong> 才能向预算充足的学员推荐 MK4（3999元）等专业设备。</li>
-            </ul>
-
-            <h3>2. 班务侧：“同侪压力降温”SOP：</h3>
-            <ul>
-                <li>很多用户是因为“群里的同学都买了”，觉得再不买就会落后而焦虑退课。班主任必须在班会上明确宣发：<strong>“硬件不换成绩！大家量力而行，前一个月只看发声技巧，完全不需要专业设备！”</strong></li>
-            </ul>
+        <!-- Systemic Risk Alert -->
+        <div class="bg-gradient-to-r from-red-900/30 to-dark-800 border border-red-500/30 rounded-xl p-6">
+            <h3 class="text-xl font-bold mb-4 text-red-500 flex items-center gap-2">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                CEO 战略断言与风控熔断机制
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
+                <div>
+                    <h4 class="font-bold text-gray-200 mb-3 border-b border-white/10 pb-2">深层错位引发的“堰塞湖”危机</h4>
+                    <p class="text-sm text-gray-400 leading-relaxed">
+                        这就是典型的 <strong>“强力逼单+错位交付”</strong>。我们不能用高端大课去“收割”那些本来只想轻度试水的个体商户和时间极度碎片化的人群。用高昂的设备配置去吓退他们，并在他们醒悟需要退费时再用“以换代退”的套索捆绑，这是透支我们的底裤。必须借助“硅基识别”机制，让“时间贫困者”或者“低预算人群”直接走B线的轻量兼职路线，不要让他们污染我们的完课率和退费池。
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-red-400 mb-3 border-b border-red-500/20 pb-2">立刻生效的风控熔断机制</h4>
+                    <ul class="text-sm text-gray-300 space-y-3">
+                        <li class="flex items-start gap-2">
+                            <span class="text-red-500">❌</span>
+                            <span><strong>“无时间/不投资”关键词熔断：</strong>凡在售前明确表示“不投资、时间极少”的用户，后台强制取消销售推介高单价课件的权限，限定进入“零门槛轻试音孵化池”。此类强转必须经过特批。</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-red-500">❌</span>
+                            <span><strong>禁止以进阶换退费：</strong>一旦学员发起因不可抗力（时间不够）的正当退费，严禁销售或班主任使用“学一部分拿证再退剩余部分”的阴阳手段拦截，必须触发极速直退程序。</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-green-500">✅</span>
+                            <span><strong>硬件梯度推荐前置化：</strong>班主任在交付指导时，硬件配置单必须是“梯度式”（基础入门级/高性价比二手建议/专业级），且置顶必须是不超1000元的低保真入门套装，杜绝粗暴推销3999的高级套装。</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
-    </div>
+
+    </main>
 </body>
 </html>
